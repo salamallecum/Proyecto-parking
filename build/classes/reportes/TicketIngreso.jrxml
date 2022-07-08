@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="215" pageHeight="400" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab793075-905a-452a-bd5a-f61aa0d24f96">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="placa_vehiculo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
+     facturas.`Placa` AS facturas_Placa,
+     facturas.`Propietario` AS facturas_Propietario,
+     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,
+     facturas.`Facturado_por` AS facturas_Facturado_por,
+     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,
+     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,
+     facturas.`Codigo` AS facturas_Codigo,
+     facturas.`Estado_fctra` AS facturas_Estado_fctra,
+     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero
+FROM
+     `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`
+     INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`
+     INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`
+WHERE
+     facturas.`Placa` = $P{placa_vehiculo}
+ AND facturas.`Estado_fctra` = 'Abierta']]>
+	</queryString>
+	<field name="convenios_Nombre_convenio" class="java.lang.String"/>
+	<field name="facturas_Placa" class="java.lang.String"/>
+	<field name="facturas_Propietario" class="java.lang.String"/>
+	<field name="facturas_Tipo_vehiculo" class="java.lang.String"/>
+	<field name="facturas_Facturado_por" class="java.lang.String"/>
+	<field name="facturas_Hora_ingreso" class="java.sql.Timestamp"/>
+	<field name="tarifas_Nombre_tarifa" class="java.lang.String"/>
+	<field name="facturas_Codigo" class="java.lang.Integer"/>
+	<field name="facturas_Estado_fctra" class="java.lang.String"/>
+	<field name="parqueaderos_Nombre_parqueadero" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="45" y="17" width="130" height="17" uuid="46372098-013a-4db4-94bc-2533f9b74b6c"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sistema de Parking]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="35" width="69" height="13" uuid="a6932ed0-9ca4-44f6-a2b0-4fb9052a4f03"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Bienvenido!!!]]></text>
+			</staticText>
+			<image>
+				<reportElement x="12" y="0" width="0" height="59" uuid="2924d0b4-edac-4da6-95d2-105957fcb29d"/>
+				<imageExpression><![CDATA["C:\\Recursos academicos\\mis proyectos\\Java\\proyectos netbeans Java\\ProyectoParking\\src\\imagenes\\ImgTickets.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="101" y="0" width="74" height="17" uuid="0137507e-5651-4d73-ad65-6e7dbe304caa"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="1" y="1" width="45" height="59" uuid="18dc51b5-8e8a-4e92-9053-c14358a420c0"/>
+				<imageExpression><![CDATA["E:\\MIS PROYECTOS\\Java\\proyectos netbeans Java\\ProyectoParking\\src\\icons\\ImgTickets.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="219" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="21" width="28" height="20" uuid="9ae23c64-267f-40e5-8fe8-66bf207a2ac8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="28" y="21" width="73" height="20" uuid="8fc2dad4-8397-4fa2-b6b8-fae33ce30949"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Placa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="41" width="45" height="20" uuid="e0bc0c79-775f-4f3f-8f3f-ba88642bb43b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Propietario:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="45" y="41" width="100" height="20" uuid="53a4d0cc-effe-4366-b4b8-dc154a0d1530"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Propietario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="61" width="28" height="20" uuid="a12de412-ad76-464a-805e-5b8787e6f340"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Clase:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="28" y="61" width="100" height="20" uuid="365d1f2c-99b1-45b0-b494-781c0b869f47"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Tipo_vehiculo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="81" width="77" height="20" uuid="4b5e0034-aada-4672-8ba0-93a60c8712c3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N°  Parqueadero:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="101" width="58" height="20" uuid="0542909e-d892-4aa4-8a0b-b4f0ecccc9bc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Facturado por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="58" y="101" width="100" height="20" uuid="a8a8422a-6d19-4052-b02d-f76891ae1657"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Facturado_por}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="121" width="45" height="20" uuid="57ebc7a1-6fba-4ecb-a93b-9e525a0a7992"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Convenio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="46" y="121" width="112" height="20" uuid="f9faf062-7fb0-4366-b047-204fb9da1b6c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{convenios_Nombre_convenio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="141" width="28" height="20" uuid="2ce063cb-3213-46bc-b2a6-787f6d201ecc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tarifa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="28" y="141" width="112" height="20" uuid="2018388d-da8b-4596-a5bb-c24b86c11d7c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tarifas_Nombre_tarifa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="161" width="77" height="20" uuid="9a65989f-753b-4a88-b963-1973a9b26609"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora de Ingreso:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="77" y="161" width="93" height="20" uuid="04d51b0b-e869-472c-b3d6-7881a4d7c3bd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Hora_ingreso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="201" width="175" height="18" uuid="c04e1c0e-a030-49a9-8538-1b9a2802be93"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Todos los derechos reservados ©.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="58" height="20" uuid="5b9beb11-12b1-4525-9688-1a0277afc0b4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo Fctra:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="58" y="0" width="100" height="20" uuid="237f8fd3-83f0-4525-a525-307b12fdfbcd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="78" y="81" width="92" height="20" uuid="4096df4e-e78d-48b5-969c-5f03e768a697"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

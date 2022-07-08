@@ -1,0 +1,5 @@
+==============================================
+  SISTEMA DE PARKING - CIERRE DE CAJA         
+                                              
+ Cod Fctra  |  Placa  |  Valor($)   |  Efectiv
+----------------------------------------------

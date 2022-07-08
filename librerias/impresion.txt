@@ -1,0 +1,26 @@
+==============================================
+            ESTADO DEL PARQUEADERO            
+                                              
+ Estado  |  No Parq  |  Placa   |  Parqueado? 
+----------------------------------------------
+ Ocupado  |  1A  |  BJG978  |  No             
+ Ocupado  |  2A  |  CSA503  |  No             
+ Ocupado  |  3A  |  BTA624  |  No             
+ Ocupado  |  4A  |  ERF67U  |  No             
+ Disponible  |  5A  |    |                    
+ Ocupado  |  6A  |  XLS457  |  Si             
+ Ocupado  |  7A  |  BGY478  |  Si             
+ Disponible  |  8A  |  ERF67Y  |              
+ Ocupado  |  9A  |  CDF678  |  Si             
+ Ocupado  |  10A  |  RTG78R  |  Si            
+ Disponible  |  11A  |  null  |  null         
+ Disponible  |  12A  |  null  |  null         
+ Disponible  |  13A  |  null  |  null         
+ Disponible  |  14A  |  null  |  null         
+ Disponible  |  15A  |  null  |  null         
+ Disponible  |  16A  |  null  |  null         
+ Disponible  |  17A  |  null  |  null         
+ Disponible  |  18A  |  null  |  null         
+ Disponible  |  19A  |  null  |  null         
+ Disponible  |  20A  |  null  |  null         
+ Disponible  |  21A  |  null  |  null         
