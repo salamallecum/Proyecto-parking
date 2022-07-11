@@ -679,3 +679,196 @@ DEBUG 2022-07-05 19:55:40,363 net.sf.jasperreports.engine.fill.JRFillDataset (JR
  INFO 2022-07-08 12:48:05,386 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
  INFO 2022-07-08 12:48:05,386 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
  INFO 2022-07-08 12:48:05,405 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-08 15:48:13,513 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 15:48:13,529 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 15:50:24,956 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-08 16:16:16,844 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 16:16:16,844 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 16:16:16,873 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-08 16:16:25,950 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 16:16:25,966 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ WARN 2022-07-08 16:16:33,476 controlador.UsuarioControlador (UsuarioControlador.java:logueo:200) - ADVERTENCIA - Se intentó acceder al sistema con datos erróneos
+ WARN 2022-07-08 16:16:33,477 vista.Login (Login.java:ingresoAlSistema:275) - ADVERTENCIA - Se intentó acceder al sistema con un usuario no activo
+ WARN 2022-07-08 16:16:41,962 controlador.UsuarioControlador (UsuarioControlador.java:logueo:200) - ADVERTENCIA - Se intentó acceder al sistema con datos erróneos
+ WARN 2022-07-08 16:16:41,963 vista.Login (Login.java:ingresoAlSistema:275) - ADVERTENCIA - Se intentó acceder al sistema con un usuario no activo
+ INFO 2022-07-08 16:16:58,846 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-08 16:19:33,785 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:639) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-07-08 16:34:23,783 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 16:34:23,783 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 16:34:23,793 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-08 17:39:02,635 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 17:39:03,307 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 17:39:11,462 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-08 17:39:21,078 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 17:39:21,078 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 17:39:21,090 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-08 17:39:54,839 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 17:39:54,855 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 17:42:16,083 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-08 17:43:42,637 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:646) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-07-08 17:43:49,105 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 17:43:49,105 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 17:43:49,115 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-08 17:54:45,453 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 17:54:45,469 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 17:55:21,322 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-08 17:56:21,802 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:646) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-07-08 18:07:06,024 vista.AcercaDe (AcercaDe.java:<init>:27) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-08 18:07:06,034 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:531) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-08 18:07:50,253 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-08 18:07:50,254 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-08 18:07:50,267 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-09 13:15:03,384 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-09 13:15:03,395 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ WARN 2022-07-09 13:15:15,504 controlador.UsuarioControlador (UsuarioControlador.java:logueo:200) - ADVERTENCIA - Se intentó acceder al sistema con datos erróneos
+ WARN 2022-07-09 13:15:15,504 vista.Login (Login.java:ingresoAlSistema:275) - ADVERTENCIA - Se intentó acceder al sistema con un usuario no activo
+ INFO 2022-07-09 13:15:37,275 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-09 13:16:21,086 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:656) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-07-09 13:16:49,082 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-09 13:16:49,083 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-09 13:16:49,103 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-09 13:18:23,752 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-09 13:18:24,449 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-09 13:18:31,037 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-09 13:19:19,495 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-09 13:19:19,496 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-09 13:19:19,516 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 12:45:40,691 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 12:45:41,366 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 12:46:03,100 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 12:50:34,672 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 12:50:34,672 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 12:50:34,680 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 12:53:22,992 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 12:53:23,670 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 12:53:30,809 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 13:00:10,686 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 13:00:10,687 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 13:00:10,720 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 13:09:26,913 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 13:09:27,588 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 13:09:37,827 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 13:12:39,033 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 13:12:39,033 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 13:12:39,063 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 13:19:28,436 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 13:19:29,107 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 13:19:38,949 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 14:52:06,653 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 14:52:06,653 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 14:52:06,681 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 14:56:21,360 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 14:56:21,369 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 14:56:30,007 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 15:02:25,046 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:02:25,047 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:02:25,064 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 15:02:38,274 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:02:38,940 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:02:57,188 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 15:14:43,095 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:14:43,096 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:14:43,119 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 15:43:32,969 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:43:33,646 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:43:41,818 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 15:43:52,390 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:43:52,390 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:43:52,398 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 15:49:01,735 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:49:01,745 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:49:13,026 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 15:58:01,569 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:58:01,569 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:58:01,595 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 15:58:05,359 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 15:58:05,370 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 15:58:11,873 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 16:03:38,428 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:03:38,428 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:03:38,447 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 16:05:14,714 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:05:14,725 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ WARN 2022-07-11 16:06:07,542 controlador.UsuarioControlador (UsuarioControlador.java:logueo:200) - ADVERTENCIA - Se intentó acceder al sistema con datos erróneos
+ WARN 2022-07-11 16:06:07,542 vista.Login (Login.java:ingresoAlSistema:275) - ADVERTENCIA - Se intentó acceder al sistema con un usuario no activo
+ INFO 2022-07-11 16:06:15,658 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 16:19:43,381 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:19:43,396 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:19:47,247 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:19:47,247 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:19:47,259 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 16:20:11,001 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:20:11,017 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:23:51,204 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:23:51,892 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:24:00,113 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 16:29:22,213 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:29:22,214 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:29:22,225 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 16:31:50,461 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:31:50,461 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:32:00,278 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 16:37:11,040 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:37:11,040 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:37:11,062 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 16:37:24,411 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:37:24,427 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:37:31,319 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 16:38:13,776 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:38:13,777 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:38:13,786 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 16:51:40,413 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:51:41,099 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:55:12,900 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 16:55:26,996 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:55:27,677 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 16:55:45,935 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 16:55:45,946 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:07:02,590 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:07:03,278 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:07:14,000 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 17:09:25,842 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:09:25,843 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:09:25,863 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 17:11:41,587 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:11:41,597 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:11:49,659 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 17:14:28,695 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:14:28,696 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:14:28,716 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 17:16:42,576 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 17:25:18,247 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:25:18,247 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:25:18,257 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 17:25:37,328 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:25:38,004 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:25:49,447 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 17:35:17,682 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:35:17,683 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:35:17,702 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 17:35:35,303 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:35:35,313 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:35:45,363 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 17:36:05,596 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:463) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 17:37:37,224 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:37:37,225 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:37:37,234 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 17:51:08,853 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 17:51:08,863 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 17:51:16,405 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:00:54,733 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:460) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 18:01:09,498 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:460) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 18:02:08,035 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:460) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 18:04:46,874 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:04:46,875 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:04:46,896 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:04:52,927 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:04:52,936 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:05:05,153 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:05:34,112 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:460) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 18:05:44,143 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:460) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 18:06:25,166 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:460) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 18:06:47,815 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:460) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-07-11 18:11:19,956 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:11:19,957 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:11:19,964 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente

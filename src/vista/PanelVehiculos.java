@@ -38,8 +38,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     public static boolean hayVehiculoEnEdicion = false;
     public static boolean vehiculoEnParqueadero = false;
     
-    VehiculoControlador vehicontrolador;
-    Vehiculo nuevoVehiculo;
+    VehiculoControlador vehicontrolador = new VehiculoControlador();
+    Vehiculo nuevoVehiculo = new Vehiculo(0, "", "", "", 0, 0, 0);
     
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
@@ -557,8 +557,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         tarifa_cmb = cmb_tarifa.getSelectedIndex();
         vehiculoEnParqueadero = check_estaVehiculoEnParqueadero.isSelected();
         String vehiculoEstaEnParqueo = "";
-                
-               
+                       
         int minimoCaracteres = 6;
         
         if(placa.equals("")){
@@ -570,14 +569,14 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             validacion++;
         }
         
-        if(clase_cmb == 1){
+        if(clase_cmb == 0){
             clase_string = "Seleccione";
             cmb_clase.setBackground(Color.red);
             validacion++;
         }        
-        else if(clase_cmb == 2){
+        else if(clase_cmb == 1){
             clase_string = "AUTOMOVIL";
-        }else if(clase_cmb == 3){
+        }else if(clase_cmb == 2){
             clase_string = "MOTO";
         }
         
@@ -617,6 +616,14 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             validacion++;
         }      
         
+        boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(parqueadero_cmb);
+        
+        if(parqueaderoEstaOcupado == true){
+            JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.");
+            cmb_parqueaderos.setSelectedIndex(0);
+            validacion++;
+        } 
+             
         if(validacion == 0 ){
                      
             //Encapsulamos el objeto vehiculo 
@@ -631,6 +638,16 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             
             vehicontrolador.crearVehiculo(nuevoVehiculo);
             parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqueadero_cmb, vehiculoEstaEnParqueo);
+            
+            //Agregamos el objeto vehiculo a la tabla de vehiculos
+            Object[] fila = new Object[6];
+            fila[0] = placa;
+            fila[1] = dueño;
+            fila[2] = clase_string;
+            fila[3] = parqControla.consultarNombreDeParqueaderoMedianteID(parqueadero_cmb);
+            fila[4] = convenioControla.consultarNombreDeConvenioMedianteID(convenio_cmb);
+            fila[5] = tarifaControla.consultarNombreDeTarifaMedianteID(tarifa_cmb);
+            modelo.addRow(fila);
                         
             JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.");
             Limpiar();
@@ -896,6 +913,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         cmb_parqueaderos.setSelectedIndex(0);
         cmb_convenios.setSelectedIndex(0);
         cmb_tarifa.setSelectedIndex(0);
+        check_estaVehiculoEnParqueadero.setSelected(false);
     } 
         
     public void Normalizar(){
@@ -905,9 +923,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         cmb_parqueaderos.setBackground(Color.WHITE);
         cmb_convenios.setBackground(Color.WHITE);
         cmb_tarifa.setBackground(Color.WHITE);
+        check_estaVehiculoEnParqueadero.setBackground(Color.WHITE);
     }
     
-     //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero, Convenios y tarifas en tiempo real    
+    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero, Convenios y tarifas en tiempo real    
     @Override
     public void run() {
         Thread ct = Thread.currentThread();
@@ -916,7 +935,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         
         while(ct == hilo1){
 
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosDisponibles());
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderos());
             cmb_parqueaderos.setModel(modeloParq);
 
             try{

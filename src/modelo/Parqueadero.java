@@ -118,7 +118,7 @@ public class Parqueadero {
         return datos;
     }  
     
-    //Agrega los valores de la tabla de parqueaderos al combobox de la ventana de edición de vehiculos
+    //Agrega los valores de la tabla de parqueaderos al combobox de la ventana de registro y edición de vehiculos
     public Vector<Parqueadero> mostrarParqueaderos(){
         
         //Traemos todoslos parqueaderos

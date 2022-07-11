@@ -36,9 +36,7 @@ public class VehiculoControlador {
     private final URL url = VehiculoControlador.class.getResource("/clasesDeApoyo/Log4j.properties");
     
     //Constructor
-    public VehiculoControlador() {}
-    
-    
+    public VehiculoControlador() {}   
     
     //Metodo que evalua la existencia de un vehiculo previamente en el sistema
     public boolean evaluarExistenciaDelVehiculo(String placa){
@@ -358,6 +356,35 @@ public class VehiculoControlador {
         return vehiculoTieneFacturas;
     }
 
+    //Metodo que permite la edicion de un vehiculo en el sistema
+    public void actualizarVehiculo(Vehiculo vehAActualizar){
+        
+        try{
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement("update vehiculos set Placa ='"+vehAActualizar.getPlaca()+"',Propietario='"+vehAActualizar.getPropietario()+"',Clase='"+vehAActualizar.getClase()+"',Id_parqueadero="+vehAActualizar.getId_parqueadero()+",Id_convenio="+vehAActualizar.getId_convenio()+",Id_tarifa="+vehAActualizar.getId_tarifa()+" where Id_vehiculo="+vehAActualizar.getId());
 
+            pst.executeUpdate();
+            cn.close(); 
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar vehiculo!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al modificar un vehiculo del sistema: " + e);
+        } 
+    }
+    
+    //Metodo que recarga el vehiculo
+    public void recargarVehiculo(int idDelVehiculo, String placa){
+        
+        try{
+            Connection cn9 = Conexion.conectar();
+            PreparedStatement pst9 = cn9.prepareStatement("update vehiculos set Placa ='"+placa+"' where Id_vehiculo ='"+idDelVehiculo+"'");
 
+            pst9.executeUpdate();
+            cn9.close();
+
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al recargar vehiculo, contacte al administrador.");
+        } 
+    }
+    
+    
 }

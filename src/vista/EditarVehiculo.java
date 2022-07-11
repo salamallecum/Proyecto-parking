@@ -1,34 +1,33 @@
 package vista;
 
-import clasesDeApoyo.Conexion;
+import controlador.ConvenioControlador;
+import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
+import controlador.TarifaControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import controlador.VehiculoControlador;
+import javax.swing.DefaultComboBoxModel;
 import modelo.Convenio;
 import modelo.Parqueadero;
 import modelo.Tarifa;
-import controlador.VehiculoControlador;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
+import static vista.PanelVehiculos.modelo;
 
 
 /**
  *
  * @author ALEJO
  */
-public class EditarVehiculo extends javax.swing.JFrame {
+public class EditarVehiculo extends javax.swing.JFrame{
 
     String vehiculo_actualizado="";
     String propietariaBack;
@@ -36,6 +35,7 @@ public class EditarVehiculo extends javax.swing.JFrame {
     String claseBack;
     int convenioBack;
     int tarifaBack;
+    String estaEnParqBack;
     
     boolean elVehiculoTieneFacturas = false;
     boolean elVehiculoEstaEnParqueadero = false;
@@ -45,18 +45,20 @@ public class EditarVehiculo extends javax.swing.JFrame {
     int FilaAnterior;
     DefaultTableModel modelo;
     int seleccionParq;
-    
-    Convenio conv = new Convenio();
-    Tarifa tarif = new Tarifa();
-    Parqueadero parq = new Parqueadero();
-    
-    Parqueadero nomParq;
-    Convenio nomConvenio;
-    Tarifa nomTarifa;  
+   
     Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", 0, 0, 0);
+    Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", 0, 0, 0);
     
     VehiculoControlador vehicontrolador = new VehiculoControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
+    ConvenioControlador convenioControla = new ConvenioControlador();
+    TarifaControlador tarifaControla = new TarifaControlador();
+    FacturaControlador facturaControla = new FacturaControlador();
+        
+    //Declaramos los objetos  y se los aprovisionamos a su combobox
+    Parqueadero parq = new Parqueadero();
+    Convenio conv = new Convenio();
+    Tarifa tarif = new Tarifa();
       
     private final Logger log = Logger.getLogger(EditarVehiculo.class);
     private URL url = EditarVehiculo.class.getResource("Log4j.properties");
@@ -84,7 +86,7 @@ public class EditarVehiculo extends javax.swing.JFrame {
 
         DefaultComboBoxModel modeloTarif = new DefaultComboBoxModel(tarif.mostrarTarifasDisponibles());
         cmb_tarifas.setModel(modeloTarif);
-        
+                       
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
         vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(vehiculo_actualizado);
          
@@ -109,6 +111,15 @@ public class EditarVehiculo extends javax.swing.JFrame {
 
         aparienciaTipoVehiculo();
         elVehiculoEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(vehiculo_actualizado);
+        
+        if(elVehiculoEstaEnParqueadero){
+            check_editEstaVehiculoEnParqueadero.setSelected(true);
+            estaEnParqBack = "Si";
+        }else{
+            check_editEstaVehiculoEnParqueadero.setSelected(false);
+            estaEnParqBack = "No";
+        }        
+        
         elVehiculoTieneFacturas = vehicontrolador.consultarSiVehiculoTieneFacturas(vehiculo_actualizado);
         parqControla.liberarParqueadero(vehiculo_actualizado);
         vehicontrolador.liberarVehiculo(ID);
@@ -264,9 +275,9 @@ public class EditarVehiculo extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_actualizar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_cancelar)
-                .addGap(44, 44, 44))
+                .addGap(52, 52, 52))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,8 +328,10 @@ public class EditarVehiculo extends javax.swing.JFrame {
     
     //Metodo del boton cancelar
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
-        ocuparParqueadero(vehiculo_actualizado, propietariaBack, noParqueaderoBack);
-        recargarVehiculo();
+               
+        parqControla.reocuparParqueadero(vehiculo_actualizado, propietariaBack, noParqueaderoBack, estaEnParqBack);
+        Limpiar();
+        vehicontrolador.recargarVehiculo(ID, vehiculo_actualizado);
         PanelVehiculos.hayVehiculoEnEdicion = false;
         dispose();    
     }//GEN-LAST:event_btn_cancelarActionPerformed
@@ -332,146 +345,132 @@ public class EditarVehiculo extends javax.swing.JFrame {
         
         placa = txt_placa.getText().trim();
         dueño = txt_dueño.getText().trim();
-      
-        tipVehi_cmb = cmb_clase.getSelectedIndex() + 1;
-       
+        tipVehi_cmb = cmb_clase.getSelectedIndex();
+        int parqueadero_cmb = cmb_noParqueadero.getSelectedIndex();
+        int convenio_cmb = cmb_convenios.getSelectedIndex();
+        int tarifa_cmb = cmb_tarifas.getSelectedIndex();
+        boolean vehiculoEnParqueadero = check_editEstaVehiculoEnParqueadero.isSelected();
+        String vehiculoEstaEnParqueo = "";
         
-        //Creamos un objeto de la clase modelo Convenio con lo seleccionado en el combobox de Convenio
-        nomConvenio = (Convenio)cmb_convenios.getSelectedItem(); 
-        
-        //Creamos un objeto de la clase modelo Tarifa con lo seleccionado en el combobox de Tarifas
-        nomTarifa = (Tarifa)cmb_tarifas.getSelectedItem(); 
-        
-        //Creamos un objeto de la clase modelo Parqueadero con lo seleccionado en el combobox de Parq
-        nomParq = (Parqueadero)cmb_noParqueadero.getSelectedItem(); 
-        
-        
-        int convenioValido = nomConvenio.getId();
-        int tarifaValida = nomTarifa.getId();
-        int parqValido = nomParq.getId();
-        
+        String logError = "";
+                    
+       int minimoCaracteres = 6;
         
         if(placa.equals("")){
             txt_placa.setBackground(Color.red);
             validacion++;
         }
+        
         if(dueño.equals("")){
             txt_dueño.setBackground(Color.red);
             validacion++;
         }
         
-        if(tipVehi_cmb == 1){
-            tipoVehi_string = "Seleccione"; 
+        if(tipVehi_cmb == 0){
+            tipoVehi_string = "Seleccione";
+            cmb_clase.setBackground(Color.red);
             validacion++;
         }        
-        else if(tipVehi_cmb == 2){
+        else if(tipVehi_cmb == 1){
             tipoVehi_string = "AUTOMOVIL";
-        }else if(tipVehi_cmb == 3){
+        }else if(tipVehi_cmb == 2){
             tipoVehi_string = "MOTO";
-        } 
+        }
         
-        if(parqValido==0){
+        if(parqueadero_cmb==0){
             cmb_noParqueadero.setBackground(Color.red);
             validacion++;
         }
         
-        if(convenioValido==0){
+        if(convenio_cmb==0){
             cmb_convenios.setBackground(Color.red);
             validacion++;
         }
         
-        if(tarifaValida==0){
+        if(tarifa_cmb==0){
             cmb_tarifas.setBackground(Color.red);
             validacion++;
         }
-        
-        //Valida que el vehiculo ingresado no exista previamente en la BD  
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select Placa from vehiculos where Placa = '" + placa + "'");
-            
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                txt_placa.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.");
-                cn.close();
-                txt_placa.setText(vehiculo_actualizado);
-                Normalizar();
-            } else {           
-               
-                //Valida que el parqueadero indicado no se encuentre ocupado
-                try {
-                    Connection cn5 = Conexion.conectar();
-                    PreparedStatement pst5;
-                    pst5 = cn5.prepareStatement(
-                                "select Nombre_parqueadero, Estado from parqueaderos where Nombre_parqueadero = '" + nomParq.getNombre() + "' AND Estado='Ocupado'");
-            
-                    ResultSet rs5 = pst5.executeQuery();
-            
-                    if (rs5.next()) {
-                        cmb_noParqueadero.setBackground(Color.red);
-                        JOptionPane.showMessageDialog(null, "El parqueadero indicado se encuentra ocupado.");
-                        cn5.close();
-                        Normalizar();
-                    } else {              
-
-                        if (validacion == 0) {
-
-                            FilaAnterior = tablaVehi.getSelectedRow();
-                
-                            try{
-                                Connection c8 = Conexion.conectar();
-                                PreparedStatement pst8 = c8.prepareStatement("update vehiculos set Placa ='"+placa+"',Propietario='"+dueño+"',Clase='"+tipoVehi_string+"',Id_parqueadero="+nomParq.getId()+",Id_convenio="+nomConvenio.getId()+",Id_tarifa="+nomTarifa.getId()+" where Placa ='000000'");
-
-                                pst8.executeUpdate();
-                                c8.close();
-
-                                Object Fila[] = new Object[6];
-                                Fila[0] = placa;
-                                Fila[1] = dueño;
-                                Fila[2] = tipoVehi_string;
-                                Fila[3] = nomParq.getNombre();
-                                Fila[4] = nomConvenio.getNombre();
-                                Fila[5] = nomTarifa.getNombreTarifa();
-
-                                modelo.addRow(Fila);
-                                modelo.removeRow(FilaAnterior);
-                                
-                                //Actualizamos el parqueadero de Disponible a Ocupado
-                                ocuparParqueadero(placa, dueño, nomParq.getId());
-                                
-                                //Actualizamos las facturas con la info nueva
-                                actualizarFacturas(placa, dueño, tipoVehi_string, nomParq.getId(), nomConvenio.getId(), nomTarifa.getId());
-                                
-                                JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente");
-                                PanelVehiculos.hayVehiculoEnEdicion = false;
-                                dispose();
-                                                               
-                            }catch(SQLException e){
-                                JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar!!, contacte al administrador.");
-                            }    
-                            
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
-                            Normalizar();
-                        }               
-                    }    
-                } catch (SQLException ex) {
-                   JOptionPane.showMessageDialog(null, "¡¡ERROR al revisar cupo!!, contacte al administrador.");
-                }
-            }
-        } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al revisar existencia de vehiculo, contacte al administrador.");
+              
+        if(txt_placa.getText().length() < minimoCaracteres){
+            txt_placa.setBackground(Color.red);
+            JOptionPane.showMessageDialog(null,"Placa no válida.");
+            txt_placa.setText("");
+            validacion++;
         }
+        
+        if(vehiculoEnParqueadero){
+            vehiculoEstaEnParqueo = "Si";
+        }else{
+            vehiculoEstaEnParqueo = "No";
+        }
+        
+        boolean vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(placa);
+        
+        if(vehiculoYaPreviamenteRegistrado == true){
+            JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.");
+            txt_placa.setText("");
+            validacion++;
+        }      
+        
+        boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(parqueadero_cmb);
+        
+        if(parqueaderoEstaOcupado == true){
+            JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.");
+            cmb_noParqueadero.setSelectedIndex(0);
+            validacion++;
+        }
+        
+        if (validacion == 0) {
+            
+            FilaAnterior = tablaVehi.getSelectedRow();
+            
+            //Encapsulamos el objeto vehiculo 
+            vehiculoEditado.setId(ID);
+            vehiculoEditado.setPlaca(placa);
+            vehiculoEditado.setPropietario(dueño);
+            vehiculoEditado.setClase(tipoVehi_string);
+            vehiculoEditado.setId_parqueadero(parqueadero_cmb);
+            vehiculoEditado.setId_convenio(convenio_cmb);
+            vehiculoEditado.setId_tarifa(tarifa_cmb); 
+            
+            vehicontrolador.actualizarVehiculo(vehiculoEditado);
+            parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqueadero_cmb, vehiculoEstaEnParqueo);
+            
+            if(elVehiculoTieneFacturas == true){
+                facturaControla.actualizarFacturas(placa, dueño, tipoVehi_string, parqueadero_cmb, convenio_cmb, tarifa_cmb);
+            }
+            
+            //Agregamos el objeto vehiculo a la tabla de vehiculos
+            Object[] fila = new Object[6];
+            fila[0] = placa;
+            fila[1] = dueño;
+            fila[2] = tipoVehi_string;
+            fila[3] = parqControla.consultarNombreDeParqueaderoMedianteID(parqueadero_cmb);
+            fila[4] = convenioControla.consultarNombreDeConvenioMedianteID(convenio_cmb);
+            fila[5] = tarifaControla.consultarNombreDeTarifaMedianteID(tarifa_cmb);
+            
+            modelo.addRow(fila);
+            modelo.removeRow(FilaAnterior);
+                        
+            JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.");
+            this.dispose();  
+            PanelVehiculos.hayVehiculoEnEdicion = false;
+            
+            log.info("INFO - Se ha actualizado un vehiculo en el sistema.");
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos." + logError);
+            Normalizar();
+        } 
+
+                            
     }//GEN-LAST:event_btn_actualizarActionPerformed
 
     private void txt_placaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_placaKeyTyped
         
         //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 5;
+        int numeroCaracteres = 6;
         if(txt_placa.getText().length()== numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 6 caracteres");
@@ -593,6 +592,7 @@ public class EditarVehiculo extends javax.swing.JFrame {
         cmb_noParqueadero.setSelectedIndex(0);
         cmb_convenios.setSelectedIndex(0);
         cmb_tarifas.setSelectedIndex(0);
+        check_editEstaVehiculoEnParqueadero.setSelected(false);
     }
     
     //Metodo que normaliza el formulario
@@ -604,72 +604,7 @@ public class EditarVehiculo extends javax.swing.JFrame {
         cmb_convenios.setBackground(Color.WHITE);
         cmb_tarifas.setBackground(Color.WHITE);
     }
-    
-    //Pasa el parqueadero seleccionado de disponible a ocupado
-    public void ocuparParqueadero(String placaV, String dueñoV, int ParqueaderoV){
-                 
-//        if(ParqueaderoV == noParqueaderoBack){
-//            
-////            if(vehiculoEstabaEnParquadero == true){
-////            //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado 
-////            try{
-////                Connection cn3 = Conexion.conectar();
-////                PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Ocupado', Placa='"+placaV+"',Propietario='"+dueñoV+"',Esta_en_parqueadero='Si' where Id_parqueadero ='"+ParqueaderoV+"'");
-////
-////                pst3.executeUpdate();
-////                cn3.close();
-////
-////            }catch(SQLException e){
-////                JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar!!, contacte al administrador.");
-////                Limpiar();
-////            }
-////            
-////            }else if(vehiculoEstabaEnParquadero == false){
-////                //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado 
-////                try{
-////                    Connection cn3 = Conexion.conectar();
-////                    PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Ocupado', Placa='"+placaV+"',Propietario='"+dueñoV+"',Esta_en_parqueadero='No' where Id_parqueadero ='"+ParqueaderoV+"'");
-////
-////                    pst3.executeUpdate();
-////                    cn3.close();
-////
-////                }catch(SQLException e){
-////                    JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar!!, contacte al administrador.");
-////                    Limpiar();
-////                }
-////            }        
-//        }else{
-//            if(vehiculoEstabaEnParquadero == true){
-//            //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado 
-//            try{
-//                Connection cn3 = Conexion.conectar();
-//                PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Ocupado', Placa='"+placaV+"',Propietario='"+dueñoV+"',Esta_en_parqueadero='Si' where Id_parqueadero ='"+ParqueaderoV+"'");
-//
-//                pst3.executeUpdate();
-//                cn3.close();
-//
-//            }catch(SQLException e){
-//                JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar!!, contacte al administrador.");
-//                Limpiar();
-//            }
-//            
-//            }else if(vehiculoEstabaEnParquadero == false){
-//                //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado 
-//                try{
-//                    Connection cn3 = Conexion.conectar();
-//                    PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Ocupado', Placa='"+placaV+"',Propietario='"+dueñoV+"',Esta_en_parqueadero='No' where Id_parqueadero ='"+ParqueaderoV+"'");
-//
-//                    pst3.executeUpdate();
-//                    cn3.close();
-//
-//                }catch(SQLException e){
-//                    JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar!!, contacte al administrador.");
-//                    Limpiar();
-//                }
-//            } 
-//        }
-    }
-    
+       
        
     //Metodo que define la apariencia del formulario con respecto al campo clase
     public void aparienciaTipoVehiculo(){
@@ -707,39 +642,5 @@ public class EditarVehiculo extends javax.swing.JFrame {
             cmb_tarifas.setSelectedIndex(1);
         } 
     }
-    
-    //Metodo que recarga el vehiculo
-    public void recargarVehiculo(){
-        
-        try{
-            Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update vehiculos set Placa ='"+vehiculo_actualizado+"' where Id_vehiculo ='"+ID+"'");
-
-            pst9.executeUpdate();
-            cn9.close();
-
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al recargar vehiculo, contacte al administrador.");
-        } 
-    }
-    
-    
-    
-    
- 
-    
-    public void actualizarFacturas(String placa, String dueño, String tipVehi, int IdParq, int IdConv, int IdTarif){
-        
-        try{
-            Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+placa+"', Propietario='"+dueño+"', Tipo_vehiculo='"+tipVehi+"', No_parqueadero='"+IdParq+"', Id_convenio='"+IdConv+"', Id_tarifa='"+IdTarif+"' where Placa ='"+vehiculo_actualizado+"' and Estado_fctra='Abierta'");
-
-            pst9.executeUpdate();
-            cn9.close();
-
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al actualizar facturas, contacte al administrador.");
-            System.out.println(e);
-        } 
-    }
+      
 }

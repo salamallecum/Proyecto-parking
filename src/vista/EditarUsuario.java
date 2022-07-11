@@ -369,7 +369,7 @@ public class EditarUsuario extends javax.swing.JFrame {
         if (validacion == 0) {
 
             FilaAnterior = tablaUsuarios.getSelectedRow();
-            String nombre = tablaUsuarios.getValueAt(FilaAnterior, 0).toString();
+            //String nombre = tablaUsuarios.getValueAt(FilaAnterior, 0).toString();
             
             //Encapsulamos el objeto
             usuarioAModificar.setId(ID);

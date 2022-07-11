@@ -24,6 +24,10 @@ public class ConvenioControlador {
     
    private final Logger log = Logger.getLogger(ConvenioControlador.class);
    private URL url = ConvenioControlador.class.getResource("Log4j.properties");
+   
+   //Constructor
+    public ConvenioControlador() {}
+   
     
     //Metodo que carga la tabla de convenios al iniciar en clase gestionarConvenios
     public void cargarTablaConvenios(){
@@ -216,7 +220,7 @@ public class ConvenioControlador {
 
     //Metodo que trae un objeto de tipo convenio con los atributos para su edición o eliminacion
     public Convenio traerUnConvenioAlFormulario(String nomConv){
-        
+              
         Convenio convenioRescatado = new Convenio();
         PreparedStatement ps1 = null;
         try{
@@ -238,5 +242,28 @@ public class ConvenioControlador {
            log.fatal("ERROR - Se ha producido un error al seleccionar un convenio de la tabla de convenios del sistema: " + e); 
         }
         return convenioRescatado;
+    }
+
+    //Metodo que permite consultar el nombre de un convenio para su muestreo usando su id
+    public String consultarNombreDeConvenioMedianteID(int idConv){
+              
+        String nombreConvenio = "";
+                
+        //Consulta el nombre del convenio utilizando su id
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select Nombre_convenio from convenios where Id_convenio = " + idConv);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                nombreConvenio = rs.getString("Nombre_convenio");   
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar convenio!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de un convenio utilizando su ID: " + e);
+        } 
+        return nombreConvenio;
     }
 }

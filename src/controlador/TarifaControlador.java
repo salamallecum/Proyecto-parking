@@ -24,6 +24,10 @@ public class TarifaControlador {
     private final Logger log = Logger.getLogger(TarifaControlador.class);
     private URL url = TarifaControlador.class.getResource("Log4j.properties");
     
+    //Constructor
+    public TarifaControlador() {}
+    
+    
     //Metodo que carga el contenido dela tabla tarifas de la BD
     public void cargarTarifas(){
         
@@ -269,5 +273,28 @@ public class TarifaControlador {
         tarif.setTarifaCobraTiempoAdicional("");
         tarif.setMontoTiempoAdicional("");
         tarif.setUnidadDelTiempoAdicional("");
+    }
+    
+    //Metodo que permite consultar el nombre de una tarifa para su muestreo usando su id
+    public String consultarNombreDeTarifaMedianteID(int idTarif){
+              
+        String nombreTarifa = "";
+                
+        //Consulta el nombre de la tarifa utilizando su id
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select Nombre_tarifa from tarifas where Id_tarifa = " + idTarif);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                nombreTarifa= rs.getString("Nombre_tarifa");   
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar tarifa!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de una tarifa utilizando su ID: " + e);
+        } 
+        return nombreTarifa;
     }
 }
