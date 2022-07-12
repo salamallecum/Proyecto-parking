@@ -872,3 +872,226 @@ DEBUG 2022-07-05 19:55:40,363 net.sf.jasperreports.engine.fill.JRFillDataset (JR
  INFO 2022-07-11 18:11:19,956 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
  INFO 2022-07-11 18:11:19,957 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
  INFO 2022-07-11 18:11:19,964 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:38:19,789 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:38:20,452 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:38:30,739 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:40:06,294 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:40:06,302 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:41:08,609 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:41:08,609 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:41:08,618 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:41:21,357 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:41:21,367 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:41:32,843 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:41:35,669 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:41:35,669 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:41:35,683 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:41:42,807 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:41:50,862 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:41:50,870 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:42:00,925 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:42:00,932 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:42:47,029 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:42:47,029 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:42:47,037 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:43:36,418 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:43:37,084 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:43:44,229 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:43:47,199 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:43:47,206 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:44:46,036 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:44:46,037 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:44:46,044 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:44:54,280 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:44:55,627 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:45:03,436 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:45:41,477 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:45:41,485 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:47:27,235 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:47:27,236 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:47:27,253 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:47:35,400 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:48:15,616 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:48:15,624 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:50:50,921 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:50:50,921 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:50:50,929 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:52:21,893 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:52:22,584 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:52:29,465 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:52:31,983 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:52:31,991 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:52:41,945 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:52:41,946 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:52:41,954 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 18:52:49,344 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 18:52:52,323 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:52:52,330 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:52:57,862 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:52:57,870 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:53:30,013 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 18:53:30,020 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:549) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 18:59:40,598 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 18:59:40,599 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 18:59:40,609 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 19:02:39,079 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:02:39,088 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:02:46,538 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 19:02:48,980 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 19:02:48,986 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:552) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 19:02:56,713 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 19:02:56,721 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:552) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 19:03:05,043 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:03:05,044 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:03:05,052 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 19:06:31,068 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:06:31,077 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:06:38,436 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 19:06:41,057 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 19:06:41,066 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:552) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 19:06:47,929 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 19:06:54,919 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 19:07:07,389 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+ INFO 2022-07-11 19:07:07,396 vista.MenuAdministrador (MenuAdministrador.java:jMenuItem_AcercaDeActionPerformed:552) - INFO - Se consulta información acerca del desarrollo del sistema
+ INFO 2022-07-11 19:07:12,167 vista.AcercaDe (AcercaDe.java:<init>:28) - INFO - Se consulta información acerca de la creación del sistema
+DEBUG 2022-07-11 19:08:22,407 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:146) - Fill 1: created for ListadoVehiculos
+DEBUG 2022-07-11 19:08:22,761 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:185) - created delayed actions 1 for filler 1
+DEBUG 2022-07-11 19:08:22,790 net.sf.jasperreports.extensions.ExtensionsEnvironment (ExtensionsEnvironment.java:createDefaultRegistry:78) - Instantiating extensions registry class net.sf.jasperreports.extensions.DefaultExtensionsRegistry
+DEBUG 2022-07-11 19:08:22,792 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:getRegistries:130) - Loading registries for cache key sun.misc.Launcher$AppClassLoader@7f31245a
+DEBUG 2022-07-11 19:08:22,793 net.sf.jasperreports.engine.util.JRLoader (JRLoader.java:collectResources:724) - Found resource jasperreports_extension.properties at jar:file:/E:/MIS%20PROYECTOS/Java/proyectos%20netbeans%20Java/ProyectoParking/librerias/libReports/jasperreports-6.0.0.jar!/jasperreports_extension.properties in classloader sun.misc.Launcher$AppClassLoader@7f31245a
+DEBUG 2022-07-11 19:08:22,795 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:158) - Loading JasperReports extension properties resource jar:file:/E:/MIS%20PROYECTOS/Java/proyectos%20netbeans%20Java/ProyectoParking/librerias/libReports/jasperreports-6.0.0.jar!/jasperreports_extension.properties
+DEBUG 2022-07-11 19:08:22,798 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.components.headertoolbar.HeaderToolbarParameterContributorExtensionFactory for property net.sf.jasperreports.extension.registry.factory.header.toolbar.parameter.contributor
+DEBUG 2022-07-11 19:08:22,798 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for header.toolbar.parameter.contributor using factory class net.sf.jasperreports.components.headertoolbar.HeaderToolbarParameterContributorExtensionFactory
+DEBUG 2022-07-11 19:08:22,802 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.types.date.DateRangeQueryClauseExtensions for property net.sf.jasperreports.extension.registry.factory.date.range.clause.functions
+DEBUG 2022-07-11 19:08:22,802 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for date.range.clause.functions using factory class net.sf.jasperreports.types.date.DateRangeQueryClauseExtensions
+DEBUG 2022-07-11 19:08:22,808 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.repo.DefaultRepositoryExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.repository
+DEBUG 2022-07-11 19:08:22,808 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for repository using factory class net.sf.jasperreports.repo.DefaultRepositoryExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,810 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.parts.PartComponentsExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.parts
+DEBUG 2022-07-11 19:08:22,810 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for parts using factory class net.sf.jasperreports.parts.PartComponentsExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,816 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.ContentTypeMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.content.type.mapping
+DEBUG 2022-07-11 19:08:22,816 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for content.type.mapping using factory class net.sf.jasperreports.web.util.ContentTypeMappingExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,817 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.simple.font.families
+DEBUG 2022-07-11 19:08:22,818 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for simple.font.families using factory class net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,819 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.data.DefaultDataAdapterServiceExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.data.adapter.services
+DEBUG 2022-07-11 19:08:22,819 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for data.adapter.services using factory class net.sf.jasperreports.data.DefaultDataAdapterServiceExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,821 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.WebResourceHandlersExtensionRegistryFactory for property net.sf.jasperreports.extension.registry.factory.jive.web.resource.handlers
+DEBUG 2022-07-11 19:08:22,821 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for jive.web.resource.handlers using factory class net.sf.jasperreports.web.util.WebResourceHandlersExtensionRegistryFactory
+DEBUG 2022-07-11 19:08:22,823 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.util.CastorMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.castor.mapping
+DEBUG 2022-07-11 19:08:22,823 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for castor.mapping using factory class net.sf.jasperreports.util.CastorMappingExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,824 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.export.MatcherExportFilterMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.matcher.exporter.filter.mapping
+DEBUG 2022-07-11 19:08:22,824 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for matcher.exporter.filter.mapping using factory class net.sf.jasperreports.engine.export.MatcherExportFilterMappingExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,826 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.governors.GovernorExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.governor
+DEBUG 2022-07-11 19:08:22,826 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for governor using factory class net.sf.jasperreports.governors.GovernorExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,827 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.RequirejsModuleMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.requirejs.module.mapping
+DEBUG 2022-07-11 19:08:22,828 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for requirejs.module.mapping using factory class net.sf.jasperreports.web.util.RequirejsModuleMappingExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,829 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.query.SQLQueryClauseFunctionsExtensions for property net.sf.jasperreports.extension.registry.factory.sql.clause.functions
+DEBUG 2022-07-11 19:08:22,829 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for sql.clause.functions using factory class net.sf.jasperreports.engine.query.SQLQueryClauseFunctionsExtensions
+DEBUG 2022-07-11 19:08:22,835 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.style.PropertyStyleProviderExtensionFactory for property net.sf.jasperreports.extension.registry.factory.property.style.provider
+DEBUG 2022-07-11 19:08:22,836 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for property.style.provider using factory class net.sf.jasperreports.engine.style.PropertyStyleProviderExtensionFactory
+DEBUG 2022-07-11 19:08:22,845 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.JacksonMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.jackson.mapping
+DEBUG 2022-07-11 19:08:22,845 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for jackson.mapping using factory class net.sf.jasperreports.web.util.JacksonMappingExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,846 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.extensions.DefaultExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.default
+DEBUG 2022-07-11 19:08:22,847 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for default using factory class net.sf.jasperreports.extensions.DefaultExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,848 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.components.ComponentsExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.components
+DEBUG 2022-07-11 19:08:22,849 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for components using factory class net.sf.jasperreports.components.ComponentsExtensionsRegistryFactory
+DEBUG 2022-07-11 19:08:22,865 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.components.headertoolbar.HeaderToolbarConditionalStyleProviderExtensionFactory for property net.sf.jasperreports.extension.registry.factory.header.toolbar.style.provider
+DEBUG 2022-07-11 19:08:22,865 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for header.toolbar.style.provider using factory class net.sf.jasperreports.components.headertoolbar.HeaderToolbarConditionalStyleProviderExtensionFactory
+DEBUG 2022-07-11 19:08:23,406 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: BACKGROUND} for band 2046132811
+DEBUG 2022-07-11 19:08:23,423 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: TITLE} for band 2124036474
+DEBUG 2022-07-11 19:08:23,424 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_HEADER} for band 64026697
+DEBUG 2022-07-11 19:08:23,424 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_HEADER} for band 1587638910
+DEBUG 2022-07-11 19:08:23,425 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: DETAIL} for band 726298868
+DEBUG 2022-07-11 19:08:23,425 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_FOOTER} for band 2119364302
+DEBUG 2022-07-11 19:08:23,426 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_FOOTER} for band 937999363
+DEBUG 2022-07-11 19:08:23,426 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: SUMMARY} for band 433807048
+DEBUG 2022-07-11 19:08:23,517 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:setPageHeight:108) - Filler 1 - pageHeight: 792, columnFooterOffsetY: 748, lastPageColumnFooterOffsetY: 772
+DEBUG 2022-07-11 19:08:23,517 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:488) - Fill 1: filling report
+DEBUG 2022-07-11 19:08:23,524 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:createQueryDatasource:1112) - Fill 1: Creating sql query executer
+DEBUG 2022-07-11 19:08:23,532 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:createStatement:254) - SQL query string: SELECT
+     vehiculos.`Id_parqueadero` AS vehiculos_Id_parqueadero,
+     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,
+     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
+     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
+     vehiculos.`Placa` AS vehiculos_Placa,
+     vehiculos.`Propietario` AS vehiculos_Propietario,
+     vehiculos.`Clase` AS vehiculos_Clase
+FROM
+     `tarifas` tarifas INNER JOIN `vehiculos` vehiculos ON tarifas.`Id_tarifa` = vehiculos.`Id_tarifa`
+     INNER JOIN `convenios` convenios ON vehiculos.`Id_convenio` = convenios.`Id_convenio`
+     INNER JOIN `parqueaderos` parqueaderos ON vehiculos.`Id_parqueadero` = parqueaderos.`Id_parqueadero`
+DEBUG 2022-07-11 19:08:23,560 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:addPage:1138) - Fill 1: adding page 1
+DEBUG 2022-07-11 19:08:23,561 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillTitle:306) - Fill 1: title at 20
+DEBUG 2022-07-11 19:08:23,624 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateImage@5be8ec4d
+DEBUG 2022-07-11 19:08:23,650 net.sf.jasperreports.engine.fill.SimpleTextLineWrapper (SimpleTextLineWrapper.java:createElementFontInfosFillCache:303) - creating element font infos cache of size 2000
+DEBUG 2022-07-11 19:08:23,778 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@1fe214e3
+DEBUG 2022-07-11 19:08:23,780 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@56a48112
+DEBUG 2022-07-11 19:08:23,780 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@1e1d7d06
+DEBUG 2022-07-11 19:08:23,781 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@1e1d7d06 for (null, {java.util.Date, EEEEE dd MMMMM yyyy,null,null,null})
+DEBUG 2022-07-11 19:08:23,781 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 2124036474}
+DEBUG 2022-07-11 19:08:23,782 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 64026697}
+DEBUG 2022-07-11 19:08:23,782 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillColumnHeader:461) - Fill 1: column header at 112
+DEBUG 2022-07-11 19:08:23,799 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@58a9eefd
+DEBUG 2022-07-11 19:08:23,799 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@58a9eefd for object net.sf.jasperreports.engine.fill.JRTemplateText@26ee4214
+DEBUG 2022-07-11 19:08:23,800 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@58a9eefd for object net.sf.jasperreports.engine.fill.JRTemplateText@28b5208a
+DEBUG 2022-07-11 19:08:23,800 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@58a9eefd for object net.sf.jasperreports.engine.fill.JRTemplateText@11c3936b
+DEBUG 2022-07-11 19:08:23,800 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@58a9eefd for object net.sf.jasperreports.engine.fill.JRTemplateText@68a59a8
+DEBUG 2022-07-11 19:08:23,801 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@58a9eefd for object net.sf.jasperreports.engine.fill.JRTemplateText@52a0458f
+DEBUG 2022-07-11 19:08:23,801 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1587638910}
+DEBUG 2022-07-11 19:08:23,801 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 132
+DEBUG 2022-07-11 19:08:23,809 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8
+DEBUG 2022-07-11 19:08:23,810 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for (null, null)
+DEBUG 2022-07-11 19:08:23,810 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for object net.sf.jasperreports.engine.fill.JRTemplateText@237ba9b9
+DEBUG 2022-07-11 19:08:23,810 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for (null, null)
+DEBUG 2022-07-11 19:08:23,811 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for object net.sf.jasperreports.engine.fill.JRTemplateText@5fe5dd9b
+DEBUG 2022-07-11 19:08:23,811 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for (null, null)
+DEBUG 2022-07-11 19:08:23,811 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for object net.sf.jasperreports.engine.fill.JRTemplateText@49149c7b
+DEBUG 2022-07-11 19:08:23,812 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for (null, null)
+DEBUG 2022-07-11 19:08:23,812 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for object net.sf.jasperreports.engine.fill.JRTemplateText@7144fb07
+DEBUG 2022-07-11 19:08:23,812 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@4e5ed6c8 for (null, null)
+DEBUG 2022-07-11 19:08:23,812 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@f8ca2f7
+DEBUG 2022-07-11 19:08:23,813 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@f8ca2f7 for (null, null)
+DEBUG 2022-07-11 19:08:23,814 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 726298868}
+DEBUG 2022-07-11 19:08:23,815 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 152
+DEBUG 2022-07-11 19:08:23,818 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 726298868}
+DEBUG 2022-07-11 19:08:23,818 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 172
+DEBUG 2022-07-11 19:08:23,820 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 726298868}
+DEBUG 2022-07-11 19:08:23,820 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 192
+DEBUG 2022-07-11 19:08:23,822 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 726298868}
+DEBUG 2022-07-11 19:08:23,823 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillSummary:1018) - Fill 1: summary at 212
+DEBUG 2022-07-11 19:08:23,823 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 2119364302}
+DEBUG 2022-07-11 19:08:23,824 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillPageFooter:992) - Fill 1: page footer at 748
+DEBUG 2022-07-11 19:08:23,846 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@2e3e504c
+DEBUG 2022-07-11 19:08:23,847 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2e3e504c for (null, null)
+DEBUG 2022-07-11 19:08:23,847 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@56c91760
+DEBUG 2022-07-11 19:08:23,847 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@56c91760 for (null, null)
+DEBUG 2022-07-11 19:08:23,848 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:addBoundElement:752) - Adding evaluation of net.sf.jasperreports.engine.fill.JRTemplatePrintText@6b8be673 by net.sf.jasperreports.engine.fill.JRFillTextField@75e78e75 for evaluation {type: REPORT, group: null, band: 0}
+DEBUG 2022-07-11 19:08:23,849 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:addDelayedAction:185) - 1 adding delayed action delayed evaluation {element: net.sf.jasperreports.engine.fill.JRFillTextField@75e78e75, printElement: net.sf.jasperreports.engine.fill.JRTemplatePrintText@6b8be673} at {type: REPORT, group: null, band: 0}, key page net.sf.jasperreports.engine.base.JRBasePrintPage@19fddf91, index 0
+DEBUG 2022-07-11 19:08:23,850 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 937999363}
+DEBUG 2022-07-11 19:08:23,850 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 433807048}
+DEBUG 2022-07-11 19:08:23,851 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: COLUMN, group: null, band: 0}
+DEBUG 2022-07-11 19:08:23,851 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: PAGE, group: null, band: 0}
+DEBUG 2022-07-11 19:08:23,851 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: REPORT, group: null, band: 0}
+DEBUG 2022-07-11 19:08:23,851 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:254) - 1 running actions for page net.sf.jasperreports.engine.base.JRBasePrintPage@19fddf91 at 0
+DEBUG 2022-07-11 19:08:23,852 net.sf.jasperreports.engine.fill.ElementEvaluationAction (ElementEvaluationAction.java:execute:57) - resolving element net.sf.jasperreports.engine.fill.JRTemplatePrintText@6b8be673 by net.sf.jasperreports.engine.fill.JRFillTextField@75e78e75 on {type: REPORT, group: null, band: 0}
+DEBUG 2022-07-11 19:08:23,853 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: MASTER, group: null, band: 0}
+DEBUG 2022-07-11 19:08:23,853 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:550) - Fill 1: ended
+DEBUG 2022-07-11 19:08:23,853 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:closeQueryExecuter:1193) - Fill 1: closing query executer
+ INFO 2022-07-11 19:08:23,945 controlador.VehiculoControlador (VehiculoControlador.java:generarReportePDFdeVehiculosRegistrados:112) - INFO - Reporte de vehiculos registrados generado satisfactoriamente.
+ INFO 2022-07-11 19:08:31,885 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:08:31,886 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:08:31,905 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 19:09:08,374 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:09:08,384 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:09:14,909 controlador.UsuarioControlador (UsuarioControlador.java:logueo:192) - INFO - El usuario Operario: Arace se ha logueado satisfactoriamente.
+ INFO 2022-07-11 19:09:22,996 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:09:22,996 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:09:23,006 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 19:09:35,688 controlador.UsuarioControlador (UsuarioControlador.java:logueo:192) - INFO - El usuario Operario: Arace se ha logueado satisfactoriamente.
+ INFO 2022-07-11 19:09:39,083 vista.MenuUsuario (MenuUsuario.java:jMenuItem_AcercaDeActionPerformed:338) - INFO - Se consulta información acerca del desarrollo del sistema modo user
+ INFO 2022-07-11 19:10:12,671 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:10:12,671 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:10:12,681 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-07-11 19:10:25,206 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-07-11 19:10:30,963 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-07-11 19:10:30,963 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-07-11 19:10:30,971 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:243) - INFO - El usuario ha cerrado sesión satisfactoriamente

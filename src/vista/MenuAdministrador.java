@@ -21,7 +21,9 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     String hora, minutos, segundos, ampm;
     Calendar calendario;
     Date fechaHoraActual;
-    Thread h1;   
+    Thread h1; 
+    
+    public static boolean acercaDeDesdeMenuAdministradorAbierto = false;    
     
     /**
      * Creates new form MenuAdministrador
@@ -117,9 +119,9 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         lbl_bienvenida = new javax.swing.JLabel();
         lbl_buenTurno = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        menuLogout = new javax.swing.JMenu();
         jMenuItem_cerrarSesion = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuAbout = new javax.swing.JMenu();
         jMenuItem_AcercaDe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -304,10 +306,16 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         lbl_buenTurno.setFont(new java.awt.Font("Tahoma", 2, 36)); // NOI18N
         lbl_buenTurno.setText("Buen turno!!! ");
 
-        jMenu1.setText("Sistema");
-        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuLogout.setText("Sistema");
+        menuLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuLogoutMouseClicked(evt);
+            }
+        });
 
-        jMenuItem_cerrarSesion.setText("Cerrar sesion");
+        jMenuItem_cerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout.png"))); // NOI18N
+        jMenuItem_cerrarSesion.setText("Cerrar sesión");
         jMenuItem_cerrarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem_cerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -319,28 +327,39 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
                 jMenuItem_cerrarSesionActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem_cerrarSesion);
+        menuLogout.add(jMenuItem_cerrarSesion);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(menuLogout);
 
-        jMenu2.setText("Ayuda");
-        jMenu2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+        menuAbout.setText("Ayuda");
+        menuAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuAboutMouseClicked(evt);
+            }
+        });
+        menuAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
+                menuAboutActionPerformed(evt);
             }
         });
 
+        jMenuItem_AcercaDe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/about.png"))); // NOI18N
         jMenuItem_AcercaDe.setText("Acerca de");
         jMenuItem_AcercaDe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem_AcercaDe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem_AcercaDeMouseClicked(evt);
+            }
+        });
         jMenuItem_AcercaDe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem_AcercaDeActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem_AcercaDe);
+        menuAbout.add(jMenuItem_AcercaDe);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuAbout);
 
         setJMenuBar(jMenuBar1);
 
@@ -522,14 +541,28 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         dispose();
     }//GEN-LAST:event_jMenuItem_cerrarSesionActionPerformed
 
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+    private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu2ActionPerformed
+    }//GEN-LAST:event_menuAboutActionPerformed
 
     private void jMenuItem_AcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_AcercaDeActionPerformed
         new AcercaDe().setVisible(true);
+        jMenuItem_AcercaDe.setEnabled(false);
+        acercaDeDesdeMenuAdministradorAbierto = true;
         log.info("INFO - Se consulta información acerca del desarrollo del sistema");
     }//GEN-LAST:event_jMenuItem_AcercaDeActionPerformed
+
+    private void jMenuItem_AcercaDeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem_AcercaDeMouseClicked
+        
+    }//GEN-LAST:event_jMenuItem_AcercaDeMouseClicked
+
+    private void menuLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseClicked
+
+    }//GEN-LAST:event_menuLogoutMouseClicked
+
+    private void menuAboutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuAboutMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuAboutMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Administrador;
@@ -541,16 +574,16 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     private javax.swing.JButton btn_cerrarSesion;
     private javax.swing.JButton btn_parametros;
     private javax.swing.JButton btn_vehiculos;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem_AcercaDe;
-    private javax.swing.JMenuItem jMenuItem_cerrarSesion;
+    public static javax.swing.JMenuItem jMenuItem_AcercaDe;
+    public static javax.swing.JMenuItem jMenuItem_cerrarSesion;
     private javax.swing.JLabel lbl_Imagen;
     private javax.swing.JLabel lbl_bienvenida;
     private javax.swing.JLabel lbl_buenTurno;
     private javax.swing.JLabel lbl_fotodePerfil;
     public static javax.swing.JLabel lbl_nombreUsuario;
+    public static javax.swing.JMenu menuAbout;
+    private javax.swing.JMenu menuLogout;
     private javax.swing.JTextField txt_Reloj;
     // End of variables declaration//GEN-END:variables
      

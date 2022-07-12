@@ -3,6 +3,7 @@ package vista;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.log4j.Logger;
@@ -24,7 +25,6 @@ public class AcercaDe extends javax.swing.JFrame {
         setSize(580, 450);
         setResizable(false);
         setLocationRelativeTo(null);
-        log.info("INFO - Se consulta información acerca de la creación del sistema");
     }
     
     @Override
@@ -56,6 +56,11 @@ public class AcercaDe extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Acerca del sistema");
         setIconImage(getIconImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -64,7 +69,7 @@ public class AcercaDe extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagenPrincipal.png"))); // NOI18N
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("2021 -  Todos los derechos reservados.©");
+        jLabel3.setText("2022 -  Todos los derechos reservados.©");
 
         jLabel4.setText("Desarrollado por: ALEJO");
 
@@ -77,7 +82,7 @@ public class AcercaDe extends javax.swing.JFrame {
 
         jLabel8.setText("Telefono: 4897894 - 3112236781");
 
-        jLabel9.setText("Dirección: Calle 5A # 70-45  Bogotá, Colombia");
+        jLabel9.setText("Dirección: Carrera 71C # 63A-38  Bogotá, Colombia");
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/empresa.png"))); // NOI18N
 
@@ -96,18 +101,22 @@ public class AcercaDe extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jLabel10))
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 11, Short.MAX_VALUE)))))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(66, 66, 66)
+                                                .addComponent(jLabel10))
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(7, 7, 7)
+                                        .addComponent(jLabel9)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -140,6 +149,10 @@ public class AcercaDe extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cerrarAcercaDe();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -193,4 +206,31 @@ public class AcercaDe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
+
+    //Metodo que se invoca al cerrar el jFrame
+    private void cerrarAcercaDe(){
+        
+        String botones[] = {"Cerrar", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Acerca de", 0, 0, null, botones, this);
+        
+        if(eleccion == JOptionPane.YES_OPTION){
+            boolean desdeMenAdministrador = MenuAdministrador.acercaDeDesdeMenuAdministradorAbierto;
+            boolean desdeMenUsuario = MenuUsuario.acercaDeDesdeMenuUsuarioAbierto;
+            
+            if(desdeMenAdministrador == true){
+                MenuAdministrador.jMenuItem_AcercaDe.setEnabled(true);
+                MenuAdministrador.acercaDeDesdeMenuAdministradorAbierto = false;
+                dispose();
+            }
+            
+            if(desdeMenUsuario == true){
+                MenuUsuario.jMenuItem_AcercaDe.setEnabled(true);
+                MenuUsuario.acercaDeDesdeMenuUsuarioAbierto = false;
+                dispose();
+            }
+            
+        }else{
+            new AcercaDe().setVisible(true);
+        }
+    }
 }

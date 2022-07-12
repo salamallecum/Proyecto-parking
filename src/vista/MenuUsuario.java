@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.WindowConstants;
 import org.apache.log4j.Logger;
+import static vista.MenuAdministrador.jMenuItem_AcercaDe;
 
 
 /**
@@ -25,6 +26,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
     Date fechaHoraActual;
     Thread h1;
    
+    public static boolean acercaDeDesdeMenuUsuarioAbierto = false;    
 
     public static PanelUsuarios panelUsu;
     PanelCaja panelCaja;
@@ -81,8 +83,9 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
         Panel_Sesion = new javax.swing.JPanel();
         lbl_nombreUsuario = new javax.swing.JLabel();
         btn_cerrarSesion = new javax.swing.JButton();
+        Pnl_fotoDelPerfil = new javax.swing.JPanel();
+        lbl_fotodePerfil1 = new javax.swing.JLabel();
         txt_Reloj = new javax.swing.JTextField();
-        lbl_fotoDePerfil = new javax.swing.JLabel();
         lbl_bienvenida = new javax.swing.JLabel();
         lbl_buenTurno = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -139,6 +142,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
         );
 
         Panel_Sesion.setBackground(new java.awt.Color(51, 51, 255));
+        Panel_Sesion.setPreferredSize(new java.awt.Dimension(325, 100));
 
         lbl_nombreUsuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lbl_nombreUsuario.setForeground(new java.awt.Color(255, 255, 255));
@@ -153,6 +157,26 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
             }
         });
 
+        Pnl_fotoDelPerfil.setPreferredSize(new java.awt.Dimension(52, 52));
+
+        lbl_fotodePerfil1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/usuarioDefa.png"))); // NOI18N
+        lbl_fotodePerfil1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout Pnl_fotoDelPerfilLayout = new javax.swing.GroupLayout(Pnl_fotoDelPerfil);
+        Pnl_fotoDelPerfil.setLayout(Pnl_fotoDelPerfilLayout);
+        Pnl_fotoDelPerfilLayout.setHorizontalGroup(
+            Pnl_fotoDelPerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Pnl_fotoDelPerfilLayout.createSequentialGroup()
+                .addComponent(lbl_fotodePerfil1)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        Pnl_fotoDelPerfilLayout.setVerticalGroup(
+            Pnl_fotoDelPerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Pnl_fotoDelPerfilLayout.createSequentialGroup()
+                .addComponent(lbl_fotodePerfil1)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         txt_Reloj.setEditable(false);
         txt_Reloj.setBackground(new java.awt.Color(0, 255, 0));
         txt_Reloj.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -165,37 +189,35 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
             }
         });
 
-        lbl_fotoDePerfil.setBackground(new java.awt.Color(255, 255, 255));
-        lbl_fotoDePerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/usuarioDefa.png"))); // NOI18N
-        lbl_fotoDePerfil.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         javax.swing.GroupLayout Panel_SesionLayout = new javax.swing.GroupLayout(Panel_Sesion);
         Panel_Sesion.setLayout(Panel_SesionLayout);
         Panel_SesionLayout.setHorizontalGroup(
             Panel_SesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_SesionLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Pnl_fotoDelPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(Panel_SesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txt_Reloj, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(Panel_SesionLayout.createSequentialGroup()
-                        .addComponent(lbl_fotoDePerfil)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lbl_nombreUsuario)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_Reloj, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
         Panel_SesionLayout.setVerticalGroup(
             Panel_SesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_SesionLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
+                .addComponent(Pnl_fotoDelPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
+            .addGroup(Panel_SesionLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addGroup(Panel_SesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lbl_nombreUsuario)
-                    .addComponent(btn_cerrarSesion)
-                    .addComponent(lbl_fotoDePerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_cerrarSesion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txt_Reloj, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addComponent(txt_Reloj, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         lbl_bienvenida.setFont(new java.awt.Font("Tahoma", 1, 60)); // NOI18N
@@ -207,7 +229,8 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
 
         jMenu1.setText("Sistema");
 
-        jMenuItem_cerrarSesion.setText("Cerrar sesion");
+        jMenuItem_cerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout.png"))); // NOI18N
+        jMenuItem_cerrarSesion.setText("Cerrar sesión");
         jMenuItem_cerrarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem_cerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -231,6 +254,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
             }
         });
 
+        jMenuItem_AcercaDe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/about.png"))); // NOI18N
         jMenuItem_AcercaDe.setText("Acerca de");
         jMenuItem_AcercaDe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem_AcercaDe.addActionListener(new java.awt.event.ActionListener() {
@@ -252,27 +276,27 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
                 .addComponent(Panel_Administrador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Panel_Sesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(203, 203, 203)
                         .addComponent(lbl_bienvenida)
                         .addGap(0, 334, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbl_buenTurno)
-                        .addGap(174, 174, 174))))
+                        .addGap(174, 174, 174))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Panel_Sesion, javax.swing.GroupLayout.DEFAULT_SIZE, 866, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Panel_Administrador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(Panel_Sesion, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_Sesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(164, 164, 164)
                 .addComponent(lbl_bienvenida)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_buenTurno)
-                .addGap(0, 323, Short.MAX_VALUE))
+                .addGap(0, 329, Short.MAX_VALUE))
         );
 
         pack();
@@ -329,23 +353,26 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
 
     private void jMenuItem_AcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_AcercaDeActionPerformed
         new AcercaDe().setVisible(true);
-         log.info("INFO - Se consulta información acerca del desarrollo del sistema modo user");
+        jMenuItem_AcercaDe.setEnabled(false);
+        acercaDeDesdeMenuUsuarioAbierto = true;
+        log.info("INFO - Se consulta información acerca del desarrollo del sistema modo user");
     }//GEN-LAST:event_jMenuItem_AcercaDeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Administrador;
     private javax.swing.JPanel Panel_Sesion;
+    private javax.swing.JPanel Pnl_fotoDelPerfil;
     private javax.swing.JButton btn_Caja;
     private javax.swing.JButton btn_cerrarSesion;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    public static javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem_AcercaDe;
-    private javax.swing.JMenuItem jMenuItem_cerrarSesion;
+    public static javax.swing.JMenuItem jMenuItem_AcercaDe;
+    public static javax.swing.JMenuItem jMenuItem_cerrarSesion;
     private javax.swing.JLabel lbl_Imagen;
     private javax.swing.JLabel lbl_bienvenida;
     private javax.swing.JLabel lbl_buenTurno;
-    private javax.swing.JLabel lbl_fotoDePerfil;
+    private javax.swing.JLabel lbl_fotodePerfil1;
     private javax.swing.JLabel lbl_nombreUsuario;
     private javax.swing.JTextField txt_Reloj;
     // End of variables declaration//GEN-END:variables
