@@ -1,37 +1,26 @@
 package vista;
 
-import clasesDeApoyo.Conexion;
 import com.sun.glass.events.KeyEvent;
+import controlador.ConvenioControlador;
+import controlador.FacturaControlador;
+import controlador.ParqueaderoControlador;
+import controlador.TarifaControlador;
+import controlador.VehiculoControlador;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import modelo.Convenio;
 import modelo.Parqueadero;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import static vista.LiquidacionVehiculo.lbl_convenio;
 import static vista.LiquidacionVehiculo.lbl_tarifa;
 import java.net.URL;
+import javax.swing.table.DefaultTableModel;
+import modelo.Factura;
+import modelo.Vehiculo;
 import org.apache.log4j.Logger;
+import static vista.PanelUsuarios.modelo;
 
 /**
  *
@@ -41,8 +30,7 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
 
     Parqueadero nomParqueadero;
     Convenio nomConvenio;
-   
-    String fecha_factura;
+      
     String fecha_movVehiculo;
     String user;
     String convenioParaTicket;
@@ -63,12 +51,20 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
     public static boolean laCajaFueAbierta = false;
     public static boolean hayVehiculoLiquidandose = false;
     public static String parqueadero_update;
-    public static DefaultTableModel modelo;
     public static int contadorFacturas;
     
     private final Logger log = Logger.getLogger(PanelCaja.class);
     private URL url = PanelCaja.class.getResource("Log4j.properties");
     
+    FacturaControlador facturaControla = new FacturaControlador();    
+    ConvenioControlador convControla = new ConvenioControlador();
+    TarifaControlador tarifaControlador = new TarifaControlador();
+    ParqueaderoControlador parqControlador = new ParqueaderoControlador();
+    VehiculoControlador vehControla = new VehiculoControlador();
+    
+    public static DefaultTableModel modeloCaja;
+    
+    Factura nuevaFactura = new Factura(0, 0, "", "", "", "", 0, "", "", "", 0, 0, "", 0);
     
     //Declaramos un objeto tipo Parqueadero y se lo aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
@@ -486,46 +482,55 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
 
     private void btn_abrirCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_abrirCajaActionPerformed
         
-        int decision = JOptionPane.showConfirmDialog(this, "Desea aperturar la Caja?.", "Abrir Caja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int decision = JOptionPane.showConfirmDialog(this, "¿Desea aperturar la Caja?.", "Apertura de caja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                             
-        //Aperuramos la caja
+        //Aperturamos la caja
         if(decision == JOptionPane.YES_OPTION){
-            desbloquearPanel();
             
-            laCajaFueAbierta = true;
-            contadorFacturas = 0;            
+            int decision_conteoDeCaja = JOptionPane.showConfirmDialog(this, "¿Desea realizar un arqueo de caja?.", "Arqueo de caja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             
-            hilo1 = new Thread(this);
-            hilo1.start();
+            if(decision_conteoDeCaja == JOptionPane.YES_OPTION){
+                
+                //Se abre el jFrame para realizar el arqueo de caja
+                new ArqueoDeCaja().setVisible(true);
             
-            hilo2 = new Thread(this);
-            hilo2.start();
+            }else if(decision_conteoDeCaja == JOptionPane.NO_OPTION){    
+                
+                desbloquearPanel();
             
-           
-            //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
-            table_operacionParqueadero.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e){
-                int fila_point = table_operacionParqueadero.rowAtPoint(e.getPoint());
-                int columna_point = 1;
+                laCajaFueAbierta = true;
+                contadorFacturas = 0;            
 
-                if(fila_point > -1){
-                    parqueadero_update = (String) modelo.getValueAt(fila_point, columna_point);
-                    
-                    if(hayVehiculoLiquidandose == true){
-                        JOptionPane.showMessageDialog(null,"No permitido.");
-                    }else{
-                       hayVehiculoLiquidandose = true;  
-                       LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
-                       liquidacion_vehiculo.setVisible(true);
+                hilo1 = new Thread(this);
+                hilo1.start();
+
+                hilo2 = new Thread(this);
+                hilo2.start();            
+
+                //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
+                table_operacionParqueadero.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e){
+                        int fila_point = table_operacionParqueadero.rowAtPoint(e.getPoint());
+                        int columna_point = 1;
+
+                        if(fila_point > -1){
+                            parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
+
+                            if(hayVehiculoLiquidandose == true){
+                                JOptionPane.showMessageDialog(null,"No permitido.");
+                            }else{
+                               hayVehiculoLiquidandose = true;  
+                               LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
+                               liquidacion_vehiculo.setVisible(true);
+                            }
+
+                        }
                     }
-                    
-                }
-            }
-        });
-        }else if(decision == JOptionPane.NO_OPTION){                                                                                                                          
-        
-        }                       
+                });
+            }               
+           
+        }else if(decision == JOptionPane.NO_OPTION){}                       
         
     }//GEN-LAST:event_btn_abrirCajaActionPerformed
 
@@ -566,119 +571,93 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
             txt_Placa.requestFocus();
         }
         else{
-            //Validamos que el vehiculo no se encuentre en el parqueadero
-            try {
-                Connection cn = Conexion.conectar();
-                PreparedStatement pst;
-                pst = cn.prepareStatement(
-                            "select Placa, Esta_en_parqueadero from parqueaderos where Placa = '"+placa+"' AND Esta_en_parqueadero='Si'");
+            
+            boolean elVehiculoSeEncuentraEnParqueadero = vehControla.verificarSiVehiculoEstaEnParqueadero(placa);
+            
+            if(elVehiculoSeEncuentraEnParqueadero == true){
+                
+                txt_Placa.setBackground(Color.green);
+                int decisionLiquidacion = JOptionPane.showConfirmDialog(this, "El vehiculo indicado ya se encuentra en el parqueadero, ¿Generar Liquidación?", "Liquidar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-                ResultSet rs = pst.executeQuery();
-                ResultSetMetaData rsmd = rs.getMetaData();
-                int cantidadColumnas = rsmd.getColumnCount();
+                if(decisionLiquidacion == JOptionPane.YES_OPTION){ 
+                    generarLiquidacion(placa);
+                    txt_Placa.setBackground(Color.WHITE);
+                    Limpiar();
+                }else if(decisionLiquidacion == JOptionPane.NO_OPTION){
+                    Limpiar();
+                    txt_Placa.requestFocus();
+                }
+                
+                Limpiar();
+                Normalizar();
+                
+            }else{
+                
+                boolean elvehiculoYaEstapreviamenteRegistrado = vehControla.evaluarExistenciaDelVehiculo(placa);
+                
+                if(elvehiculoYaEstapreviamenteRegistrado == true){
+                
+                    int decision = JOptionPane.showConfirmDialog(this, "El vehiculo está registrado, ¿Generar ingreso?", "Ingresar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            
+                    //Obtenemos los datos del vehiculo registrado
+                    if(decision == JOptionPane.YES_OPTION){  
+                        
+                        Vehiculo vehiculoRegistrado = vehControla.consultarInformacionDeUnVehiculo(placa);
 
-                if (rs.next()) {
-                    txt_Placa.setBackground(Color.green);
-                    int decisionLiquidacion = JOptionPane.showConfirmDialog(this, "El vehiculo indicado ya se encuentra en el parqueadero, ¿Generar Liquidación?", "Liquidar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                    
-                    
-                    if(decisionLiquidacion == JOptionPane.YES_OPTION){ 
-                        
-                        generarLiquidacion(placa);
-                        txt_Placa.setBackground(Color.WHITE);
-                        Limpiar();
-                        
-                    }else if(decisionLiquidacion == JOptionPane.NO_OPTION){
+                        txt_nombrePropietario.setText(vehiculoRegistrado.getPropietario());
+                        cmb_clase.setSelectedItem(vehiculoRegistrado.getClase());
+
+                        idParq = vehiculoRegistrado.getId_parqueadero();
+                        idConvenio = vehiculoRegistrado.getId_convenio();
+                        idTarifa = vehiculoRegistrado.getId_tarifa();
+
+                        txt_nombrePropietario.setEditable(false);
+                        cmb_clase.setEnabled(false);
+                        cmb_numParqueadero.setVisible(false);
+                        lbl_parqueadero.setVisible(true);
+
+                        usoIngresoRegistrado = true;
+                        usoIngresoDesconocido = false;
+
+                        parqControlador.consultarNombreDeParqueaderoMedianteID(idParq);
+                        convControla.consultarNombreDeConvenioMedianteID(idConvenio);
+                        tarifaControlador.consultarNombreDeTarifaMedianteID(idTarifa);
+
+                    }else if(decision == JOptionPane.NO_OPTION){
                         Limpiar();
                         txt_Placa.requestFocus();
-                        cn.close();
                     }
-                                       
-                    cn.close();
-                    Limpiar();
-                    Normalizar();
+                
                 }else{
-                    //Valida si el vehiculo esta registrado
-                    try {
-                        Connection cn1 = Conexion.conectar();
-                        PreparedStatement pst1;
-                        pst1 = cn1.prepareStatement(
-                                    "select Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Placa = '"+placa+"'");
+                    JOptionPane.showMessageDialog(null, "Vehiculo desconocido.");
+                    LimpiezaSinPlaca();
+                    txt_nombrePropietario.setEditable(true);
+                    cmb_clase.setEnabled(true);
+                    cmb_numParqueadero.setVisible(true);
+                    cmb_numParqueadero.setEnabled(true);
+                    lbl_parqueadero.setVisible(false);
 
-                        ResultSet rs1 = pst1.executeQuery();
-
-                        if (rs1.next()) {
-
-                            int decision = JOptionPane.showConfirmDialog(this, "El vehiculo está registrado, ¿Generar ingreso?", "Ingresar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            
-                            //Obtenemos los datos del vehiculo registrado
-                            if(decision == JOptionPane.YES_OPTION){                                                                                                                             
-                                                              
-                                txt_nombrePropietario.setText(rs1.getString("Propietario"));
-                                cmb_clase.setSelectedItem(rs1.getString("Clase"));
-                                
-                                idParq= rs1.getInt("Id_parqueadero");
-                                idConvenio = rs1.getInt("Id_convenio");
-                                idTarifa = rs1.getInt("Id_tarifa");
-                                
-                                txt_nombrePropietario.setEditable(false);
-                                cmb_clase.setEnabled(false);
-                                cmb_numParqueadero.setVisible(false);
-                                lbl_parqueadero.setVisible(true);
-                                
-                                usoIngresoRegistrado = true;
-                                usoIngresoDesconocido = false;
-                                
-                                cargarNoParqueadero(idParq);
-                                cargarNombreConvenio(idConvenio);
-                                cargarNombreTarifa(idTarifa);
-                               
-                            }else if(decision == JOptionPane.NO_OPTION){
-                                Limpiar();
-                                txt_Placa.requestFocus();
-                                cn1.close();
-                            }
-                        }else{
-                            JOptionPane.showMessageDialog(null, "Vehiculo desconocido.");
-                            LimpiezaSinPlaca();
-                            txt_nombrePropietario.setEditable(true);
-                            cmb_clase.setEnabled(true);
-                            cmb_numParqueadero.setVisible(true);
-                            cmb_numParqueadero.setEnabled(true);
-                            lbl_parqueadero.setVisible(false);
-                            
-                            usoIngresoDesconocido = true;
-                            usoIngresoRegistrado = false;
-                        }
-
-                    }catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar vehiculo registrado!!, contacte al administrador.");
-                    }
-                }   
-            }catch (SQLException e) {
-               JOptionPane.showMessageDialog(null, "¡¡ERROR al checkear disponibilidad de vehiculo!!, contacte al administrador.");
+                    usoIngresoDesconocido = true;
+                    usoIngresoRegistrado = false;
+                }            
             }
         }
     }
     
-    //Metodo que ingresa vehiculos a parqueadero
+    //Metodo que ingresa vehiculos no registrados en el sistema al parqueadero
     public void ingresarVehiculoDesconocido(){
         
         int clase_cmb,  validacion = 0;
-        String placa, dueño, convenio, tarifa = "";
+        String placa, dueño = "";
         String clase_string = "";
         
-        //Creamos un objeto de la clase modelo Parqueadero con lo seleccionado en el combobox de n° parqueadero
-        nomParqueadero = (Parqueadero)cmb_numParqueadero.getSelectedItem();     
-
         placa = txt_Placa.getText().trim();
         dueño = txt_nombrePropietario.getText().trim();
-        convenio = txt_convenio.getText().trim();
-        tarifa = txt_tarifa.getText().trim();
+        String convenioAAplicar = txt_convenio.getText().trim();
+        String tarifaAAplicar = txt_tarifa.getText().trim();
+        clase_cmb = cmb_clase.getSelectedIndex();
+        int noParq = cmb_numParqueadero.getSelectedIndex();
 
-        clase_cmb = cmb_clase.getSelectedIndex() + 1;
-
-        int validoParqueadero = nomParqueadero.getId();
         int minimoCaracteres = 6;
 
         if(placa.equals("")){
@@ -690,17 +669,17 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
             validacion++;
         }  
 
-        if(clase_cmb == 1){
+        if(clase_cmb == 0){
             clase_string = "Seleccione";
             cmb_clase.setBackground(Color.red);
             validacion++;
-        } else if(clase_cmb == 2){
+        } else if(clase_cmb == 1){
             clase_string = "AUTOMOVIL";
-        }else if(clase_cmb == 3){
+        }else if(clase_cmb == 2){
             clase_string = "MOTO";
         }
 
-        if(validoParqueadero==0){
+        if(noParq==0){
             cmb_numParqueadero.setBackground(Color.red);
             validacion++;
         }
@@ -711,102 +690,76 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
             txt_Placa.setText("");
             txt_Placa.requestFocus();
             validacion++;
-        }             
-        //Valida que el parqueadero indicado no se encuentre ocupado
-        try {
-            Connection cn5 = Conexion.conectar();
-            PreparedStatement pst5;
-            pst5 = cn5.prepareStatement(
-                        "select Nombre_parqueadero, Estado from parqueaderos where Nombre_parqueadero = '" + nomParqueadero.getNombre() + "' AND Estado='Ocupado'");
-
-            ResultSet rs5 = pst5.executeQuery();
-
-        if (rs5.next()) {
+        }   
+        
+        boolean elParqSeleccionadoEstaOcupado = parqControlador.consultarDisponibilidadDeParqueaderoMedianteID(noParq);
+        
+        if(elParqSeleccionadoEstaOcupado ==  true){
             cmb_numParqueadero.setBackground(Color.red);
             JOptionPane.showMessageDialog(null, "El parqueadero indicado se encuentra ocupado.");
-            cn5.close();
             cmb_numParqueadero.setSelectedIndex(0);
-        } else { 
+            
+        }else{
+            
+            if(validacion == 0){
+                
+                nuevaFactura.setId(0);
+                nuevaFactura.setCodigo(facturaControla.codigosFactura());
+                nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
+                nuevaFactura.setPlaca(placa);
+                nuevaFactura.setPropietario(dueño);
+                nuevaFactura.setClaseDeVehiculo(clase_string);
+                nuevaFactura.setId_parqueadero(noParq);
+                nuevaFactura.setFacturadoPor(user);
+                nuevaFactura.setEstadoDeFactura("Abierta");
+                nuevaFactura.setEstaContabilizada("No");
+                nuevaFactura.setId_convenio(convControla.consultarIdDeunConvenio(convenioAAplicar));
+                nuevaFactura.setId_tarifa(tarifaControlador.consultarIdDeunaTarifa(tarifaAAplicar));
+                nuevaFactura.setFechaDeIngresoVehiculo(facturaControla.fecha_Ingresovehiculo());
+                nuevaFactura.setId_cierre(1);
+                
+                //Creamos el objeto Factura
+                facturaControla.crearFactura(nuevaFactura);
+                
+                //Ocupamos el parqueadero con la info del vehiculo facturado
+                parqControlador.actualizarEstadoDeParqueadero(placa, dueño, nuevaFactura.getId_parqueadero(), "Si");
 
-            if (validacion == 0) {
-                //Inserta el registro en la base de datos
-                try {               
-                    Connection cn2 = Conexion.conectar();
-                    PreparedStatement pst2 = cn2.prepareStatement(
-                        "insert into facturas values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                Object[] fila = new Object[5];
+                fila[0] = facturaControla.fecha_de_factura();
+                fila[1] = placa;
+                fila[2] = dueño;
+                fila[3] = facturaControla.fecha_Ingresovehiculo();
+                fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(noParq);
 
-                    pst2.setInt(1, 0);
-                    pst2.setDouble(2, codigosFactura());
-                    pst2.setString(3, fecha_de_factura());
-                    pst2.setString(4, placa);
-                    pst2.setString(5, dueño);
-                    pst2.setString(6, clase_string);
-                    pst2.setInt(7, nomParqueadero.getId());
-                    pst2.setString(8, user);
-                    pst2.setString(9, "Abierta");
-                    pst2.setString(10, "No"); 
-                    pst2.setInt(11, consultarIdConvenio(convenio));
-                    pst2.setInt(12, consultarIdTarifa(tarifa));
-                    pst2.setString(13, fecha_Ingresovehiculo()); 
-                    pst2.setString(14, fecha_Ingresovehiculo());
-                    pst2.setInt(15, 0);
-                    pst2.setInt(16, 0);
-                    pst2.setInt(17, 0);
-                    pst2.setInt(18, 1);
-                    
-                    
-                    pst2.executeUpdate();
-                    cn2.close();
-                    
-                    ocuparParqueadero(placa, dueño, nomParqueadero.getId());
+                modelo.addRow(fila);
 
-                    Object[] fila = new Object[5];
-                    fila[0] = fecha_de_factura();
-                    fila[1] = placa;
-                    fila[2] = dueño;
-                    fila[3] = fecha_Ingresovehiculo();
-                    fila[4] = nomParqueadero.getNombre();
-                    
-                    modelo.addRow(fila);
+                txt_Placa.setBackground(Color.green);
+                txt_nombrePropietario.setBackground(Color.green);
+                cmb_clase.setBackground(Color.green);
+                cmb_numParqueadero.setBackground(Color.green);
+                txt_convenio.setBackground(Color.green);
+                txt_tarifa.setBackground(Color.green);
 
-                    txt_Placa.setBackground(Color.green);
-                    txt_nombrePropietario.setBackground(Color.green);
-                    cmb_clase.setBackground(Color.green);
-                    cmb_numParqueadero.setBackground(Color.green);
-                    txt_convenio.setBackground(Color.green);
-                    txt_tarifa.setBackground(Color.green);
-
-                    JOptionPane.showMessageDialog(null, "Vehiculo ingresado satisfactoriamente.");              
-                    generarTicketIngreso(placa);
-                    Normalizar();
-                    Limpiar();
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        System.err.println(e);
-                        JOptionPane.showMessageDialog(null, "¡¡ERROR al ingresar vehiculo desconocido!!, contacte al administrador.");
-                        Limpiar();
-                    }
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
+                JOptionPane.showMessageDialog(null, "Vehiculo ingresado satisfactoriamente.");              
+                facturaControla.generarTicketIngreso(placa);
                 Normalizar();
+                Limpiar();
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
+                Normalizar(); 
             }
-        }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al revisar cupo!!, contacte al administrador.");
-        }
+        }   
     }
     
     public void ingresarVehiculoRegistrado(){
         
         int parqueaderos_cmb, clase_cmb,  validacion = 0;
         String placa, dueño, clase_string = "";
-        String noParq = "";
 
         placa = txt_Placa.getText().trim();
         dueño = txt_nombrePropietario.getText().trim();
-        clase_cmb = cmb_clase.getSelectedIndex() + 1;
+        clase_cmb = cmb_clase.getSelectedIndex();
         
         int minimoCaracteres = 6;
 
@@ -819,14 +772,14 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
             validacion++;
         }  
 
-        if(clase_cmb == 1){
+        if(clase_cmb == 0){
             clase_string = "Seleccione";
             cmb_clase.setBackground(Color.red);
             validacion++;
         }        
-        else if(clase_cmb == 2){
+        else if(clase_cmb == 1){
             clase_string = "AUTOMOVIL";
-        }else if(clase_cmb == 3){
+        }else if(clase_cmb == 2){
             clase_string = "MOTO";
         }
 
@@ -838,119 +791,70 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
             validacion++;
         }   
        
-        //Valida que no exista una factura ya abierta con dicho vehiculo  
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select Placa from facturas where Placa = '" + placa + "' AND Estado_fctra ='Abierta'");
+        boolean elVehiculoTieneUnaFacturaciónAbierta = vehControla.consultarSiVehiculoTieneFacturasAbiertas(placa);
+        
+        if(elVehiculoTieneUnaFacturaciónAbierta == true){
+            txt_Placa.setBackground(Color.red);
+            JOptionPane.showMessageDialog(null, "El vehiculo ya ingresó previamente al parqueadero.");
+            Limpiar();
+            Normalizar();
+        }else{
             
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                txt_Placa.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "El vehiculo ya ingresó al parqueadero.");
-                cn.close();
-                Limpiar();
+            if(validacion == 0){
+                
+                nuevaFactura.setId(0);
+                nuevaFactura.setCodigo(facturaControla.codigosFactura());
+                nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
+                nuevaFactura.setPlaca(placa);
+                nuevaFactura.setPropietario(dueño);
+                nuevaFactura.setClaseDeVehiculo(clase_string);
+                nuevaFactura.setId_parqueadero(idParq);
+                nuevaFactura.setFacturadoPor(user);
+                nuevaFactura.setEstadoDeFactura("Abierta");
+                nuevaFactura.setEstaContabilizada("No");
+                nuevaFactura.setId_convenio(idConvenio);
+                nuevaFactura.setId_tarifa(idTarifa);
+                nuevaFactura.setFechaDeIngresoVehiculo(facturaControla.fecha_Ingresovehiculo());
+                nuevaFactura.setId_cierre(1);
+                
+                //Creamos el objeto Factura
+                facturaControla.crearFactura(nuevaFactura);
+                
+                //Ocupamos el parqueadero con la info del vehiculo facturado
+                parqControlador.actualizarEstadoDeParqueadero(placa, dueño, nuevaFactura.getId_parqueadero(), "Si");
+
+                Object[] fila = new Object[5];
+                fila[0] = facturaControla.fecha_de_factura();
+                fila[1] = placa;
+                fila[2] = dueño;
+                fila[3] = facturaControla.fecha_Ingresovehiculo();
+                fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(idParq);
+
+                modelo.addRow(fila);
+                
+                txt_Placa.setBackground(Color.green);
+                txt_nombrePropietario.setBackground(Color.green);
+                cmb_clase.setBackground(Color.green);
+                txt_convenio.setBackground(Color.green);
+                txt_tarifa.setBackground(Color.green);
+
+                JOptionPane.showMessageDialog(null, "Vehiculo ingresado satisfactoriamente.");              
+                facturaControla.generarTicketIngreso(placa);
+                cmb_numParqueadero.setVisible(true);
+                cmb_numParqueadero.setEnabled(true);
+                cmb_clase.setEnabled(true);
+                lbl_parqueadero.setText("");
+                lbl_parqueadero.setVisible(false);
                 Normalizar();
-            } else {  
-        
-                if (validacion == 0) {
-                    //Inserta el registro en la base de datos
-                    try {
-                        Connection cn2 = Conexion.conectar();
-                        PreparedStatement pst2 = cn2.prepareStatement(
-                            "insert into facturas() values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-                        pst2.setInt(1, 0);
-                        pst2.setInt(2, codigosFactura());
-                        pst2.setString(3, fecha_de_factura());
-                        pst2.setString(4, placa);
-                        pst2.setString(5, dueño);
-                        pst2.setString(6, clase_string);
-                        pst2.setInt(7, idParq);
-                        pst2.setString(8, user);
-                        pst2.setString(9, "Abierta");
-                        pst2.setString(10, "No"); 
-                        pst2.setInt(11, idConvenio);
-                        pst2.setInt(12, idTarifa);    
-                        pst2.setString(13, fecha_Ingresovehiculo()); 
-                        pst2.setString(14, fecha_Ingresovehiculo()); 
-                        pst2.setInt(15, 0);
-                        pst2.setInt(16, 0);
-                        pst2.setInt(17, 0); 
-                        pst2.setInt(18, 1);
-
-                        pst2.executeUpdate();
-                        cn2.close();
-
-                        ocuparParqueadero(placa, dueño, idParq);
+                Limpiar();
                 
-                        Object[] fila = new Object[5];
-                        fila[0] = fecha_de_factura();
-                        fila[1] = placa;
-                        fila[2] = dueño;
-                        fila[3] = fecha_Ingresovehiculo();
-                        fila[4] = cargarNombreParqParaTicket(idParq);
-                
-                        modelo.addRow(fila);
-
-                        txt_Placa.setBackground(Color.green);
-                        txt_nombrePropietario.setBackground(Color.green);
-                        cmb_clase.setBackground(Color.green);
-                        txt_convenio.setBackground(Color.green);
-                        txt_tarifa.setBackground(Color.green);
-
-                        JOptionPane.showMessageDialog(null, "Vehiculo ingresado satisfactoriamente.");              
-                        generarTicketIngreso(placa);
-                        cmb_numParqueadero.setVisible(true);
-                        cmb_numParqueadero.setEnabled(true);
-                        cmb_clase.setEnabled(true);
-                        lbl_parqueadero.setText("");
-                        lbl_parqueadero.setVisible(false);
-                        Normalizar();
-                        Limpiar();
-                
-                    } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "¡¡ERROR al ingresar vehiculo conocido!!, contacte al administrador.");
-                        Limpiar();
-                    }
-        
-                } else {
-                    JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
-                    Normalizar();
-                }
-            }
-        }catch (SQLException ex) {
-             JOptionPane.showMessageDialog(null, "¡¡ERROR al validad factura vigente de vehiculo!!, contacte al administrador.");
+            }else {
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
+                Normalizar();
+            }      
         }
     }  
-    
-    //Metodo que genera los codigos de las facturas
-    public int codigosFactura(){
-        Random miAleatorio = new Random();
-        int N = miAleatorio.nextInt(1000000000);
-        return N;
-    }
-    
-    //Metodo que genera la fecha en que fue generada la factura
-    public String fecha_de_factura(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        fecha_factura = sdf.format(date);
-        return fecha_factura;
-    }
-            
-    //Metodo que genera la fecha de entrada del vehiculo       
-    public String fecha_Ingresovehiculo(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        fecha_movVehiculo = dateFormat.format(date);
-        return fecha_movVehiculo;
-    }
-
+     
     //Metodo que limpia el formulario
     public void Limpiar(){
         txt_Placa.setText("");
@@ -978,69 +882,7 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
         txt_convenio.setBackground(Color.WHITE);
         txt_tarifa.setBackground(Color.WHITE);
     }
-    
-    //Metodo que carga el nombre del convenio en el txt correspondiente
-    public void cargarNombreConvenio(int variable){
-        
-        //Traemos el nombre del convenio 
-        try {
-           Connection cn3 = Conexion.conectar();
-           PreparedStatement pst3;
-           pst3 = cn3.prepareStatement(
-                       "select Nombre_convenio from convenios where Id_convenio = '"+variable+"'");
-
-           ResultSet rs3 = pst3.executeQuery();
-
-           if (rs3.next()) {
-               txt_convenio.setText(rs3.getString("Nombre_convenio"));
-           }
-       }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar nombre del convenio!!, contacte al administrador.");
-       }
-    }
-    
-    //Metodo que carga el nombre de la tarifa en el txt correspondiente
-    public void cargarNombreTarifa(int variable){
-        
-        //Traemos el nombre del convenio 
-        try {
-           Connection cn3 = Conexion.conectar();
-           PreparedStatement pst3;
-           pst3 = cn3.prepareStatement(
-                       "select Nombre_tarifa from tarifas where Id_tarifa = '"+variable+"'");
-
-           ResultSet rs3 = pst3.executeQuery();
-
-           if (rs3.next()) {
-               txt_tarifa.setText(rs3.getString("Nombre_tarifa"));
-           }
-       }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar nombre de la tarifa!!, contacte al administrador.");
-
-       }
-    }
-    
-    //Metodo que carga el nombre del parqueadero con su id
-    public void cargarNoParqueadero(int variable){
-        
-        //Traemos el nombre del convenio 
-        try {
-           Connection cn3 = Conexion.conectar();
-           PreparedStatement pst3;
-           pst3 = cn3.prepareStatement(
-                       "select Nombre_parqueadero from parqueaderos where Id_parqueadero = '"+variable+"'");
-
-           ResultSet rs3 = pst3.executeQuery();
-
-           if (rs3.next()) {
-               lbl_parqueadero.setText(rs3.getString("Nombre_parqueadero"));
-           }
-       }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar nombre del parqueadero, contacte al administrador.");
-
-       }
-    }
-    
+     
     //Metodo que bloquea el panel
     public void desbloquearPanel(){
         btn_abrirCaja.setEnabled(false);
@@ -1056,123 +898,7 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
         cmb_numParqueadero.setEnabled(true);
 
     }
-    
-    //Metodo que genera el ticket de ingreso
-    public void generarTicketIngreso(String placaVehiculo){
-        
-        try{
-            Connection cn3 = Conexion.conectar();
-            
-            //Agregamos los parametros con los cuales se generara el ticket
-            Map parametros = new HashMap ();
-            parametros.put("placa_vehiculo", placaVehiculo);
-                     
-            JasperReport reporte = null;
-            //String path = "src\\Reportes\\TicketIngreso.jasper";
-
-            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketIngreso.jasper"));
-
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, cn3);
-
-            //Da una vista previa del ticket
-            /*
-            JasperViewer view = new JasperViewer(jprint, false);
-            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            view.setVisible(true);
-            view.setTitle("Ticket de ingreso vehiculo " + placaVehiculo);
-            */
-            
-            //Hace que se imprima directamente
-            JasperPrintManager.printReport(jprint, false);
-            
-
-        }catch(JRException ex){
-            //Logger.getLogger(PanelUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de ingreso, contacte aladministrador!!");
-        }
-    }
-
-    //Metodo que retorna el nombre del convenio para el ticket
-    public String cargarNombreConvenioParaTicket(int variable){
-        
-        //Traemos el nombre del convenio 
-        try {
-           Connection cn3 = Conexion.conectar();
-           PreparedStatement pst3;
-           pst3 = cn3.prepareStatement(
-                       "select Nombre_convenio from convenios where Id_convenio = '"+variable+"'");
-
-           ResultSet rs3 = pst3.executeQuery();
-
-           if (rs3.next()) {
-               convenioParaTicket = rs3.getString("Nombre_convenio");
-              
-           }
-       }catch (SQLException e) {
-           JOptionPane.showMessageDialog(null, "Error al cargar propiedad del ticket, contacte al administrador!!!. ");
-        }
-         return convenioParaTicket;
-    }
-    
-    //Metodo que retorna el nombre del tarifa para el ticket
-    public String cargarNombreTarifaParaTicket(int variable){
-        //Traemos el nombre del convenio 
-        try {
-           Connection cn3 = Conexion.conectar();
-           PreparedStatement pst3;
-           pst3 = cn3.prepareStatement(
-                       "select Nombre_tarifa from tarifas where Id_tarifa = '"+variable+"'");
-
-           ResultSet rs3 = pst3.executeQuery();
-
-           if (rs3.next()) {
-               tarifaParaTicket = rs3.getString("Nombre_tarifa");
-              
-           }
-       }catch (SQLException e) {
-           JOptionPane.showMessageDialog(null, "Error al cargar propiedad del ticket, contacte al administrador!!!. ");
-       }
-         return tarifaParaTicket;
-    }
-    
-    
-    public String cargarNombreParqParaTicket(int variable){
-        //Traemos el nombre del parqueadero 
-        try {
-           Connection cn3 = Conexion.conectar();
-           PreparedStatement pst3;
-           pst3 = cn3.prepareStatement(
-                       "select Nombre_parqueadero from parqueaderos where Id_parqueadero = '"+variable+"'");
-
-           ResultSet rs3 = pst3.executeQuery();
-
-           if (rs3.next()) {
-               parqParaTicket = rs3.getString("Nombre_parqueadero");
-              
-           }
-       }catch (SQLException e) {
-           JOptionPane.showMessageDialog(null, "Error al cargar nombre del parqueadero para sistema y ticket. ");
-       }
-         return parqParaTicket;
-    }
-    
-    //Pasa el parqueadero seleccionado de disponible a ocupado
-    public void ocuparParqueadero(String placaV, String dueñoV, int ParqueaderoV){
-        
-        //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado
-        try{
-            Connection cn3 = Conexion.conectar();
-            PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Ocupado', Placa='"+placaV+"',Propietario='"+dueñoV+"',Esta_en_parqueadero='Si' where Id_parqueadero ='"+ParqueaderoV+"'");
-
-            pst3.executeUpdate();
-            cn3.close();
-
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar estado del parqueadero!!, contacte al administrador.");
-            Limpiar();
-        }
-    }
-    
+     
     //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero en tiempo real    
     @Override
     public void run() {
@@ -1190,45 +916,7 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
             while(ct1 == hilo2){
                 
                 //Cargamos los datos de la tabla
-                try {
-                    modelo = new DefaultTableModel();
-                    table_operacionParqueadero.setModel(modelo);
-
-                    Connection cn = Conexion.conectar();
-                    PreparedStatement pst = cn.prepareStatement(
-                                "select Fac.Fecha_factura, Fac.Placa, Fac.Propietario, Fac.Hora_ingreso, Parq.Nombre_parqueadero from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero AND Estado_fctra ='Abierta'");
-                                 
-                    ResultSet rs = pst.executeQuery();
-
-                    ResultSetMetaData rsmd = rs.getMetaData();
-                    int cantidadColumnas = rsmd.getColumnCount();
-
-                    modelo.addColumn("Fecha");
-                    modelo.addColumn("Placa");
-                    modelo.addColumn("Propietario");
-                    modelo.addColumn("Hora de Ingreso");
-                    modelo.addColumn("Numero de Parquadero");
-
-                    int[] anchosTabla = {10,10,15,15,5};
-
-                    for(int x=0; x < cantidadColumnas; x++){
-                        table_operacionParqueadero.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
-                    }
-
-                    while (rs.next()) {
-
-                        Object[] filas = new Object[cantidadColumnas];
-
-                        for (int i = 0; i < cantidadColumnas; i++) {
-
-                                filas[i] = rs.getObject(i + 1); 
-                        }
-                        modelo.addRow(filas);
-                    }
-                    cn.close();                    
-                    } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "Error al mostrar operación del Parqueadero, ¡Contacte al administrador!");
-                    }
+                parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
                 
                 try{
                     ct1.sleep(10000);
@@ -1244,107 +932,13 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
         }else{
             hayVehiculoLiquidandose = true;
             new LiquidacionVehiculo().setVisible(true);
-            //Hace la consulta del codigo,tipo de vehiculo , Facturado por, a la base de datos
-            try {
-                Connection cn = Conexion.conectar();
-                PreparedStatement pst = cn.prepareStatement(
-                    "SELECT Fac.Id_factura, Fac.Codigo, Fac.Propietario, Fac.Tipo_vehiculo, Fac.Facturado_por, Fac.Estado_fctra, Fac.Hora_ingreso, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Fac.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Fac.Id_tarifa = Tar.Id_tarifa AND Fac.Placa = '" + placa + "' AND Fac.Estado_fctra = 'Abierta'");
-
-                ResultSet rs = pst.executeQuery();
-
-                if(rs.next()){
-                    LiquidacionVehiculo.ID = rs.getInt("Fac.Id_factura");
-                    LiquidacionVehiculo.lbl_codigo.setText(rs.getString("Fac.Codigo"));
-                    LiquidacionVehiculo.lbl_placa.setText(placa);
-                    LiquidacionVehiculo.lbl_propietario.setText(rs.getString("Fac.Propietario"));
-                    LiquidacionVehiculo.lbl_tipoVehiculo.setText(rs.getString("Fac.Tipo_vehiculo"));
-                    LiquidacionVehiculo.lbl_noParqueadero.setText(rs.getString("Parq.Nombre_parqueadero"));
-                    LiquidacionVehiculo.lbl_facturadoPor.setText(rs.getString("Fac.Facturado_por"));
-                    LiquidacionVehiculo.lbl_convenio.setText(rs.getString("Conv.Nombre_convenio"));
-                    LiquidacionVehiculo.lbl_tarifa.setText(rs.getString("Tar.Nombre_tarifa"));
-                    LiquidacionVehiculo.lbl_horaIngreso.setText(rs.getString("Fac.Hora_ingreso"));
-                }  
-                cn.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar liquidación de vehiculo!!, contacte al administrador.");
-            }
-
-            LiquidacionVehiculo.lbl_horaSalida.setText(LiquidacionVehiculo.fecha_Salidavehiculo());
-
+            facturaControla.liquidarVehiculo(placa);
+            
             String tarifa = lbl_tarifa.getText();
             String convenio = lbl_convenio.getText();
             LiquidacionVehiculo.calcularTarifa(convenio, tarifa);
         }    
-    }
-    
-    //Metodo que consulta el Id del parqueadero teniendo en cuenta su nombre
-    public int consultarIdParqueadero(String variable){
-        
-        //Traemos el id del parq 
-        try {
-           Connection cn4 = Conexion.conectar();
-           PreparedStatement pst4;
-           pst4 = cn4.prepareStatement(
-                       "select Id_parqueadero from convenios where Nombre_parqueadero = '"+variable+"'");
-
-           ResultSet rs4 = pst4.executeQuery();
-
-           if (rs4.next()) {
-                consultaIdParq = rs4.getInt("Id_parqueadero");
-              
-           }
-       }catch (SQLException e) {
-           JOptionPane.showMessageDialog(null, "Error al cargar el id del parqueadero. ");
-           
-       }
-         return consultaIdParq;
-    }
-    
-    //Metodo que consulta el Id del convenio teniendo en cuenta su nombre
-    public int consultarIdConvenio(String variable){
-        
-        //Traemos el id del convenio 
-        try {
-           Connection cn4 = Conexion.conectar();
-           PreparedStatement pst4;
-           pst4 = cn4.prepareStatement(
-                       "select Id_convenio from convenios where Nombre_convenio = '"+variable+"'");
-
-           ResultSet rs4 = pst4.executeQuery();
-
-           if (rs4.next()) {
-                consultaIdConvenio = rs4.getInt("Id_convenio");
-              
-           }
-       }catch (SQLException e) {
-          JOptionPane.showMessageDialog(null,"Error al cargar el id del convenio. ");
-           
-       }
-         return consultaIdConvenio;
-    }
-
-    //Metodo que consulta el Id de la tarifa teniendo en cuenta su nombre
-    public int consultarIdTarifa(String variable){
-        
-        //Traemos el id de la tarifa 
-        try {
-           Connection cn4 = Conexion.conectar();
-           PreparedStatement pst4;
-           pst4 = cn4.prepareStatement(
-                       "select Id_tarifa from tarifas where Nombre_tarifa = '"+variable+"'");
-
-           ResultSet rs4 = pst4.executeQuery();
-
-           if (rs4.next()) {
-                consultaIdTarifa = rs4.getInt("Id_tarifa");
-              
-           }
-       }catch (SQLException e) {
-           JOptionPane.showMessageDialog(null,"Error al cargar el id de la tarifa. ");
-           
-       }
-         return consultaIdTarifa;
-    }
+    } 
 }
 
 

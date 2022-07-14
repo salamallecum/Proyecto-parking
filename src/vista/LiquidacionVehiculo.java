@@ -2,6 +2,7 @@ package vista;
 
 import clasesDeApoyo.Conexion;
 import com.sun.glass.events.KeyEvent;
+import controlador.FacturaControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -11,23 +12,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import org.apache.log4j.Logger;
 
 /**
@@ -40,9 +32,11 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     String parqueadero_actualizado;
     public static int ID;
     javax.swing.JTable tablaOperacionParqueadero;
-    DefaultTableModel modelo;
+    DefaultTableModel modeloCaja;
     int Fila;
     public static String fecha_movVehiculo;
+    
+    FacturaControlador facturaControla = new FacturaControlador();
     
     public static Date hora_ingr;
     public static double montoDelaTarifa;
@@ -58,9 +52,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         usuario = Login.usuario;
         parqueadero_actualizado = PanelCaja.parqueadero_update;
         tablaOperacionParqueadero = PanelCaja.table_operacionParqueadero;
-        modelo = PanelCaja.modelo;
+        modeloCaja = PanelCaja.modeloCaja;
        
-        
         setSize(375,562);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -554,225 +547,154 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             lbl_dineroCambio.setText("0");
         }else if(variableConvenio.equals("NINGUNO") && !variableTarifa.equals("NINGUNA")){
             
-            //Hace la consulta de la tarifa asignada al vehiculo
-            try {
-                Connection cn2 = Conexion.conectar();
-                PreparedStatement pst2 = cn2.prepareStatement(
-                    "SELECT Monto from tarifas where Nombre_tarifa ='" + variableTarifa + "'");
-                ResultSet rs2 = pst2.executeQuery();
-
-                if(rs2.next()){
-                    String monto = rs2.getString("Monto");
-                    montoDelaTarifa = Double.parseDouble(monto);
-                }
-                cn2.close();
-            } catch (SQLException e) {
-               JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar tarifa de vehiculo!!, contacte al administrador.");
-            }
-            
-            try{
-                //Calculamos el valor a pagar por el vehiculo
-                double valorAPagar = 0.0;
-                long valorPagarDefinitivo;
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar cal  = Calendar.getInstance();
-                Date date = cal.getTime();
-                String fechaHora = dateFormat.format(date);
-
-                //Obtenemos la hora de ingreso y la convertimos a Date
-                String hora_entradaVehiculo = lbl_horaIngreso.getText();
-
-                hora_ingr = dateFormat.parse(hora_entradaVehiculo);
-
-                //Calculamos la diferencia de tiempos (tiempo de ingreso vs tiempo de salida)
-                int minutosACobrar = (int) (date.getTime()-hora_ingr.getTime())/60000;
-
-                //Aplicamos la tarifa al tiempo estimado
-                valorAPagar = minutosACobrar * montoDelaTarifa;
-                
-                
-                //Redondeamos el valor a pagar
-                valorPagarDefinitivo = Math.round(valorAPagar);
-                
-                String valor_Pagar = Long.toString(valorPagarDefinitivo);
-                lbl_totalAPagar.setText(valor_Pagar);
-                    
-                    
-            }catch (ParseException ex) {  
-                //Logger.getLogger(LiquidacionVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            //Hace la consulta de la tarifa asignada al vehiculo
+//            try {
+//                Connection cn2 = Conexion.conectar();
+//                PreparedStatement pst2 = cn2.prepareStatement(
+//                    "SELECT Monto from tarifas where Nombre_tarifa ='" + variableTarifa + "'");
+//                ResultSet rs2 = pst2.executeQuery();
+//
+//                if(rs2.next()){
+//                    String monto = rs2.getString("Monto");
+//                    montoDelaTarifa = Double.parseDouble(monto);
+//                }
+//                cn2.close();
+//            } catch (SQLException e) {
+//               JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar tarifa de vehiculo!!, contacte al administrador.");
+//            }
+//            
+//            try{
+//                //Calculamos el valor a pagar por el vehiculo
+//                double valorAPagar = 0.0;
+//                long valorPagarDefinitivo;
+//                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar cal  = Calendar.getInstance();
+//                Date date = cal.getTime();
+//                String fechaHora = dateFormat.format(date);
+//
+//                //Obtenemos la hora de ingreso y la convertimos a Date
+//                String hora_entradaVehiculo = lbl_horaIngreso.getText();
+//
+//                hora_ingr = dateFormat.parse(hora_entradaVehiculo);
+//
+//                //Calculamos la diferencia de tiempos (tiempo de ingreso vs tiempo de salida)
+//                int minutosACobrar = (int) (date.getTime()-hora_ingr.getTime())/60000;
+//
+//                //Aplicamos la tarifa al tiempo estimado
+//                valorAPagar = minutosACobrar * montoDelaTarifa;
+//                
+//                
+//                //Redondeamos el valor a pagar
+//                valorPagarDefinitivo = Math.round(valorAPagar);
+//                
+//                String valor_Pagar = Long.toString(valorPagarDefinitivo);
+//                lbl_totalAPagar.setText(valor_Pagar);
+//                    
+//                    
+//            }catch (ParseException ex) {  
+//                //Logger.getLogger(LiquidacionVehiculo.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             
         }else if(!variableConvenio.equals("NINGUNO") && !variableTarifa.equals("NINGUNA")){
             //En este caso, asi tenga un convenio aignado, si la tarifa no es ninguna, predominará la tarifa
             //Hace la consulta de la tarifa asignada al vehiculo
              //Hace la consulta de la tarifa asignada al vehiculo
-            try {
-                Connection cn2 = Conexion.conectar();
-                PreparedStatement pst2 = cn2.prepareStatement(
-                    "SELECT Monto from tarifas where Nombre_tarifa ='" + variableTarifa + "'");
-                ResultSet rs2 = pst2.executeQuery();
-
-                if(rs2.next()){
-                    String monto = rs2.getString("Monto");
-                    montoDelaTarifa = Integer.parseInt(monto);
-                }
-                cn2.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar tarifa de vehiculo!!, contacte al administrador.");
-            }
-            
-            try{
-                //Calculamos el valor a pagar por el vehiculo
-                double valorAPagar = 0.0;
-                long valorPagarDefinitivo;
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar cal  = Calendar.getInstance();
-                Date date = cal.getTime();
-                String fechaHora = dateFormat.format(date);
-
-                //Obtenemos la hora de ingreso y la convertimos a Date
-                String hora_entradaVehiculo = lbl_horaIngreso.getText();
-
-                hora_ingr = dateFormat.parse(hora_entradaVehiculo);
-
-                //Calculamos la diferencia de tiempos (tiempo de ingreso vs tiempo de salida)
-                int minutosACobrar = (int) (date.getTime()-hora_ingr.getTime())/60000;
-
-                //Aplicamos la tarifa al tiempo estimado
-                valorAPagar = minutosACobrar * montoDelaTarifa;
-                System.out.println("Valor original: " + valorAPagar);
-                
-                //Redondeamos el valor a pagar
-                valorPagarDefinitivo = Math.round(valorAPagar);
-                
-                String valor_Pagar = Long.toString(valorPagarDefinitivo);
-                lbl_totalAPagar.setText(valor_Pagar);
-                    
-                    
-            }catch (ParseException ex) {  
-                //Logger.getLogger(LiquidacionVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            try {
+//                Connection cn2 = Conexion.conectar();
+//                PreparedStatement pst2 = cn2.prepareStatement(
+//                    "SELECT Monto from tarifas where Nombre_tarifa ='" + variableTarifa + "'");
+//                ResultSet rs2 = pst2.executeQuery();
+//
+//                if(rs2.next()){
+//                    String monto = rs2.getString("Monto");
+//                    montoDelaTarifa = Integer.parseInt(monto);
+//                }
+//                cn2.close();
+//            } catch (SQLException e) {
+//                JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar tarifa de vehiculo!!, contacte al administrador.");
+//            }
+//            
+//            try{
+//                //Calculamos el valor a pagar por el vehiculo
+//                double valorAPagar = 0.0;
+//                long valorPagarDefinitivo;
+//                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar cal  = Calendar.getInstance();
+//                Date date = cal.getTime();
+//                String fechaHora = dateFormat.format(date);
+//
+//                //Obtenemos la hora de ingreso y la convertimos a Date
+//                String hora_entradaVehiculo = lbl_horaIngreso.getText();
+//
+//                hora_ingr = dateFormat.parse(hora_entradaVehiculo);
+//
+//                //Calculamos la diferencia de tiempos (tiempo de ingreso vs tiempo de salida)
+//                int minutosACobrar = (int) (date.getTime()-hora_ingr.getTime())/60000;
+//
+//                //Aplicamos la tarifa al tiempo estimado
+//                valorAPagar = minutosACobrar * montoDelaTarifa;
+//                System.out.println("Valor original: " + valorAPagar);
+//                
+//                //Redondeamos el valor a pagar
+//                valorPagarDefinitivo = Math.round(valorAPagar);
+//                
+//                String valor_Pagar = Long.toString(valorPagarDefinitivo);
+//                lbl_totalAPagar.setText(valor_Pagar);
+//                    
+//                    
+//            }catch (ParseException ex) {  
+//                //Logger.getLogger(LiquidacionVehiculo.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
         
     }
     
-    //Metodo que imprime el ticket de salida
-    public void generarTicketSalida(String placa_tick){
-        
-         try{
-            Connection cn3 = Conexion.conectar();
-
-            Map parametro = new HashMap();
-            parametro.clear();
-            parametro.put("placa", placa_tick);
-            
-            JasperReport reporte = null;
-            //String path = "src\\Reportes\\TicketSalida.jasper";
-
-            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketSalida.jasper"));
-
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
-            
-            //Da una vista previa del ticket
-            /*
-            JasperViewer view = new JasperViewer(jprint, false);
-            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            view.setTitle("Ticket de salida vehiculo " + placa_tick);
-            view.setVisible(true);
-            */
-            
-            //Hace que se imprima directamente
-            JasperPrintManager.printReport(jprint, false);
-
-        }catch(JRException ex){
-            //Logger.getLogger(PanelUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Salida, revise la conexión de la impresora o contacte al administrador!!");
-        }
-        
-    }
+  
     
-    //Metodo que cierra la factura
-    public void cerrarFactura(String placa){
-        try{
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update facturas set Estado_fctra = 'Cerrada' where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
-
-            pst.executeUpdate();
-            cn.close();
-
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar factura!!, contacte al administrador.");
-        } 
-    }
     
-    //Metodo que calcula las vueltas que hay que darle al cliente
-    public void calcularVueltas(){
-        
-        String efectivo = txt_dineroRecibido.getText();
-        if(efectivo.equals("")){
-            JOptionPane.showMessageDialog(null, "Ingrese el dinero recibido para calcular.");
-        }else{
-            String cuentaAPagar = lbl_totalAPagar.getText();
-            
-            int efectivo_int = Integer.parseInt(efectivo); 
-            int cuentaPagar_int = Integer.parseInt(cuentaAPagar);
-            int cambio = efectivo_int - cuentaPagar_int;
-            
-            if(cambio >= 0){
-                String cambio_str = String.valueOf(cambio);
-                lbl_dineroCambio.setForeground(Color.green);
-                lbl_dineroCambio.setText(cambio_str);
-            }else if(cambio < 0){
-                String cambio_str = String.valueOf(cambio);
-                lbl_dineroCambio.setForeground(Color.red);
-                lbl_dineroCambio.setText(cambio_str);
-            }
-        }
-        
-    }
-    
-    //Metodo que me libera el parqueadero
-    public void liberarParqueadero(String placa){
-        
-        //Verifica si el vehiculo esta registrado en el sistema
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select Placa from vehiculos where Placa = '" + placa + "'");
-            
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                
-               //Actualizamos el estado del parqueadero seleccionado de Ocupado a Disponible
-                try{
-                    Connection cn3 = Conexion.conectar();
-                    PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Esta_en_parqueadero='No' where Placa='"+placa+"'");
-
-                    pst3.executeUpdate();
-                    cn3.close();
-
-                }catch(SQLException e){
-                    JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar parqueadero!!, contacte al administrador.");
-                } 
-                
-            } else { 
-                //Aqui va el procedimiento si el vehiculo no esta registrado y se va a liberar el parqueadero
-                //Actualizamos el estado del parqueadero seleccionado de Ocupado a Disponible para vehiculo desconocido
-                try{
-                    Connection cn6 = Conexion.conectar();
-                    PreparedStatement pst6 = cn6.prepareStatement("update parqueaderos set Estado='Disponible', Placa='', Propietario='',  Esta_en_parqueadero='' where Placa='"+placa+"'");
-
-                    pst6.executeUpdate();
-                    cn6.close();
-
-                }catch(SQLException e){
-                    JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar parqueadero vno registrado!!, contacte al administrador.");
-                }
-            }
-        }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar placa en memoria!!, contacte al administrador.");
-        }
-    }
+//    
+//    //Metodo que me libera el parqueadero
+//    public void liberarParqueadero(String placa){
+//        
+//        //Verifica si el vehiculo esta registrado en el sistema
+//        try {
+//            Connection cn = Conexion.conectar();
+//            PreparedStatement pst;
+//            pst = cn.prepareStatement(
+//                        "select Placa from vehiculos where Placa = '" + placa + "'");
+//            
+//            ResultSet rs = pst.executeQuery();
+//            
+//            if (rs.next()) {
+//                
+//               //Actualizamos el estado del parqueadero seleccionado de Ocupado a Disponible
+//                try{
+//                    Connection cn3 = Conexion.conectar();
+//                    PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Esta_en_parqueadero='No' where Placa='"+placa+"'");
+//
+//                    pst3.executeUpdate();
+//                    cn3.close();
+//
+//                }catch(SQLException e){
+//                    JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar parqueadero!!, contacte al administrador.");
+//                } 
+//                
+//            } else { 
+//                //Aqui va el procedimiento si el vehiculo no esta registrado y se va a liberar el parqueadero
+//                //Actualizamos el estado del parqueadero seleccionado de Ocupado a Disponible para vehiculo desconocido
+//                try{
+//                    Connection cn6 = Conexion.conectar();
+//                    PreparedStatement pst6 = cn6.prepareStatement("update parqueaderos set Estado='Disponible', Placa='', Propietario='',  Esta_en_parqueadero='' where Placa='"+placa+"'");
+//
+//                    pst6.executeUpdate();
+//                    cn6.close();
+//
+//                }catch(SQLException e){
+//                    JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar parqueadero vno registrado!!, contacte al administrador.");
+//                }
+//            }
+//        }catch (SQLException ex) {
+//            JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar placa en memoria!!, contacte al administrador.");
+//        }
+//    }
 }

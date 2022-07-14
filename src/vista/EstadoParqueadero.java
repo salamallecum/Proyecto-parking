@@ -1,29 +1,9 @@
 package vista;
 
-import clasesDeApoyo.Conexion;
-import br.com.adilson.util.Extenso;
-import br.com.adilson.util.PrinterMatrix;
+import controlador.ParqueaderoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
-import static vista.PanelUsuarios.modelo;
 import java.net.URL;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -43,8 +23,11 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
     String placa;
     String ocupado;
     
+    
     private final Logger log = Logger.getLogger(EstadoParqueadero.class);
     private URL url = EstadoParqueadero.class.getResource("Log4j.properties");
+    
+    ParqueaderoControlador parqControla = new ParqueaderoControlador();
    
     /**
      * Creates new form EstadoParqueadero
@@ -168,7 +151,7 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btn_imprimir)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_cerrar)
                 .addGap(137, 137, 137))
         );
@@ -195,7 +178,7 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btn_cerrarActionPerformed
 
     private void btn_imprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirActionPerformed
-        generarEstadoParqueadero();
+        parqControla.generarReporteDeEstadoParqueadero();
     }//GEN-LAST:event_btn_imprimirActionPerformed
 
     /**
@@ -240,7 +223,7 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable Table_estado;
+    public static javax.swing.JTable Table_estado;
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_imprimir;
     private javax.swing.JLabel jLabel1;
@@ -253,117 +236,11 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
         Thread ct = Thread.currentThread();
             while(ct ==h1){
                 
-                //Consulta de datos a la BD
-                try {
-                    modelo = new DefaultTableModel();
-                    Table_estado.setModel(modelo);
-
-                    Connection cn = Conexion.conectar();
-                    PreparedStatement pst = cn.prepareStatement(
-                                "select  Estado, Nombre_parqueadero, Placa, Propietario, Esta_en_parqueadero from parqueaderos");
-
-                    ResultSet rs = pst.executeQuery();
-
-                    ResultSetMetaData rsmd = rs.getMetaData();
-                    int cantidadColumnas = rsmd.getColumnCount();
-
-                    modelo.addColumn("Estado");
-                    modelo.addColumn("N° Parq");
-                    modelo.addColumn("Placa");
-                    modelo.addColumn("Propietario");
-                    modelo.addColumn("Parqueado?");
-
-                    int[] anchosTabla = {15,5,20,60,10};
-
-                    for(int x=0; x < cantidadColumnas; x++){
-                        Table_estado.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
-                    }
-
-                    while (rs.next()) {
-
-                        Object[] filas = new Object[cantidadColumnas];
-
-                        for (int i = 0; i < cantidadColumnas; i++) {
-                            filas[i] = rs.getObject(i + 1);
-                        }
-                        modelo.addRow(filas);
-                    }
-                        cn.close();        
-
-                    } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "Error al mostrar información, ¡Contacte al administrador!");
-                    }
+                parqControla.mostrarTablaDeEstadoDelParqueaderoEnTiempoReal();
 
                 try{
                     Thread.sleep(10000);
                 }catch(InterruptedException e){}
             }
-    }
-    
-    //Metodo que imprime ticket de seguimiento parqueadero
-    public void generarEstadoParqueadero(){     
-                
-        PrinterMatrix printer = new PrinterMatrix();
-
-        Extenso e = new Extenso();
-
-        e.setNumber(101.85);
-        int filas = Table_estado.getRowCount();
-
-        //Definir el tamanho del papel para la impresion  aca 25 lineas y 80 columnas
-        printer.setOutSize(filas + 5, 46);
-        //Imprimir * 1ra linea de la columa de 1 a 80
-        printer.printCharAtCol(1, 1, 46, "=");
-        //Imprimir Encabezado nombre del La EMpresa
-       printer.printTextWrap(1, 2, 12, 46, "ESTADO DEL PARQUEADERO");
-       //printer.printTextWrap(linI, linE, colI, colE, null);
-       
-       printer.printTextWrap(3, 8, 1, 46, "Estado  |  No Parq  |  Placa   |  Parqueado?");
-       printer.printCharAtCol(5, 1, 46, "-");
-       
-       int pie = 0;
-       
-        for (int i = 0; i < filas; i++) { printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 4)); pie++; } if(filas > pie){
-        
-        printer.printTextWrap(filas + 1, filas + 2, 8, 46, "Todos los derechos reservados ");
-        
-        }else{
-            printer.printTextWrap(filas + 1, 26, 8, 46, "Todos los derechos reservados ");
-        
-        }
-        printer.toFile("impresion.txt");
-
-      FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream("impresion.txt");
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        if (inputStream == null) {
-            return;
-        }
-
-        DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
-        Doc document = new SimpleDoc(inputStream, docFormat, null);
-
-        PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
-
-        PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
-
-
-        if (defaultPrintService != null) {
-            DocPrintJob printJob = defaultPrintService.createPrintJob();
-            try {
-                printJob.print(document, attributeSet);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            System.err.println("Verifique la conexión de su impresora.");
-        }
-
-        //inputStream.close();
-       
     }
 }

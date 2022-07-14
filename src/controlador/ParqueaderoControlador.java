@@ -1,14 +1,26 @@
 package controlador;
 
+import br.com.adilson.util.Extenso;
+import br.com.adilson.util.PrinterMatrix;
 import clasesDeApoyo.Conexion;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -21,8 +33,12 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
+import static vista.EstadoParqueadero.Table_estado;
 import static vista.GestionarParqueaderos.modeloParq;
 import static vista.GestionarParqueaderos.table_listaParqueaderos;
+import static vista.PanelCaja.modeloCaja;
+import static vista.PanelCaja.table_operacionParqueadero;
+import static vista.PanelUsuarios.modelo;
 
 
 /**
@@ -63,7 +79,7 @@ public class ParqueaderoControlador {
         }
     }
 
-    //Metodo que actualiza el estado de unparqueadero ya sea disponible o ocupado
+    //Metodo que actualiza el estado de un parqueadero ya sea disponible o ocupado
     public void actualizarEstadoDeParqueadero(String placa, String dueño, int idParq, String estaEnParq){
                 
         //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado
@@ -347,24 +363,163 @@ public class ParqueaderoControlador {
         return nombreParqueadero;
     }
     
-    //Hace un analisi del parqueadero seleccionado y dependiendo del mismo recarga la información actualizada del vehiculo para salir de la edición del mismo
-    public void reocuparParqueadero(String placaVehiculo, String dueñoVehiculo, int idParqueaderoAntiguo, String estaEnParq){
-                             
-        //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado 
-        try{
-            Connection cn3 = Conexion.conectar();
-            PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Ocupado', Placa='"+placaVehiculo+"',Propietario='"+dueñoVehiculo+"', Esta_en_parqueadero='"+estaEnParq+"' where Id_parqueadero ='"+idParqueaderoAntiguo+"'");
+    //Metodo que imprime ticket de seguimiento parqueadero
+    public void generarReporteDeEstadoParqueadero(){     
+                
+        PrinterMatrix printer = new PrinterMatrix();
 
-            pst3.executeUpdate();
-            cn3.close();
+        Extenso e = new Extenso();
 
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al reocupar parqueadero!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar reocupar el parqueadero de un vehiculo que se intentó actualizar: " + e);
-        }  
+        e.setNumber(101.85);
+        int filas = Table_estado.getRowCount();
+
+        //Definir el tamanho del papel para la impresion  aca 25 lineas y 80 columnas
+        printer.setOutSize(filas + 5, 46);
+        //Imprimir * 1ra linea de la columa de 1 a 80
+        printer.printCharAtCol(1, 1, 46, "=");
+        //Imprimir Encabezado nombre del La EMpresa
+       printer.printTextWrap(1, 2, 12, 46, "ESTADO DEL PARQUEADERO");
+       //printer.printTextWrap(linI, linE, colI, colE, null);
+       
+       printer.printTextWrap(3, 8, 1, 46, "Estado  |  No Parq  |  Placa   |  Parqueado?");
+       printer.printCharAtCol(5, 1, 46, "-");
+       
+       int pie = 0;
+       
+        for (int i = 0; i < filas; i++) { printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 4)); pie++; } if(filas > pie){
+        
+        printer.printTextWrap(filas + 1, filas + 2, 8, 46, "Todos los derechos reservados ");
+        
+        }else{
+            printer.printTextWrap(filas + 1, 26, 8, 46, "Todos los derechos reservados ");
+        
+        }
+        printer.toFile("impresion.txt");
+
+      FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream("impresion.txt");
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        if (inputStream == null) {
+            return;
+        }
+
+        DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+        Doc document = new SimpleDoc(inputStream, docFormat, null);
+
+        PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
+
+        PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+
+
+        if (defaultPrintService != null) {
+            DocPrintJob printJob = defaultPrintService.createPrintJob();
+            try {
+                printJob.print(document, attributeSet);
+
+            } catch (Exception ex) {
+                log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero: " + ex);
+            }
+        } else {
+           log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero, verifique la conexión de su impresora");
+        }
+
+        //inputStream.close();
+       
     }
     
-    //
+    //Metodo que permite mostrar la tabla del estado de parqueadero en tiempo real (funcion del panel caja boton "Estado de parqueadero")
+    public void mostrarTablaDeEstadoDelParqueaderoEnTiempoReal(){
+        
+        //Consulta de datos a la BD
+        try {
+            modelo = new DefaultTableModel();
+            Table_estado.setModel(modelo);
 
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                        "select  Estado, Nombre_parqueadero, Placa, Propietario, Esta_en_parqueadero from parqueaderos");
 
+            ResultSet rs = pst.executeQuery();
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+
+            modelo.addColumn("Estado");
+            modelo.addColumn("N° Parq");
+            modelo.addColumn("Placa");
+            modelo.addColumn("Propietario");
+            modelo.addColumn("Parqueado?");
+
+            int[] anchosTabla = {15,5,20,60,10};
+
+            for(int x=0; x < cantidadColumnas; x++){
+                Table_estado.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+            }
+
+            while (rs.next()) {
+
+                Object[] filas = new Object[cantidadColumnas];
+
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(filas);
+            }
+                cn.close();        
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al mostrar información del parqueadero en tiempo real, ¡Contacte al administrador!");
+            log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos en el parqueadero en tiempo real: " + e);
+        }
+    }
+    
+    //Metodo que permite mosrar la tabla de vehiculos en facturación en tiempo real (tabla del panel caja)
+    public void mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja(){
+        
+        try {
+            modelo = new DefaultTableModel();
+            table_operacionParqueadero.setModel(modeloCaja);
+
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                        "select Fac.Fecha_factura, Fac.Placa, Fac.Propietario, Fac.Hora_ingreso, Parq.Nombre_parqueadero from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero AND Estado_fctra ='Abierta'");
+
+            ResultSet rs = pst.executeQuery();
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+
+            modeloCaja.addColumn("Fecha");
+            modeloCaja.addColumn("Placa");
+            modeloCaja.addColumn("Propietario");
+            modeloCaja.addColumn("Hora de Ingreso");
+            modeloCaja.addColumn("Numero de Parquadero");
+
+            int[] anchosTabla = {10,10,15,15,5};
+
+            for(int x=0; x < cantidadColumnas; x++){
+                table_operacionParqueadero.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+            }
+
+            while (rs.next()) {
+
+                Object[] filas = new Object[cantidadColumnas];
+
+                for (int i = 0; i < cantidadColumnas; i++) {
+
+                        filas[i] = rs.getObject(i + 1); 
+                }
+                modeloCaja.addRow(filas);
+            }
+            cn.close();                    
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al mostrar operación del Parqueadero, ¡Contacte al administrador!");
+            log.fatal("ERROR - Se ha producido un error al intentar visualizar la operación del Parqueadero: " + e); 
+        }
+    }
+    
 }

@@ -329,7 +329,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
     //Metodo del boton cancelar
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
                
-        parqControla.reocuparParqueadero(vehiculo_actualizado, propietariaBack, noParqueaderoBack, estaEnParqBack);
+        parqControla.actualizarEstadoDeParqueadero(vehiculo_actualizado, propietariaBack, noParqueaderoBack, estaEnParqBack);
         Limpiar();
         vehicontrolador.recargarVehiculo(ID, vehiculo_actualizado);
         PanelVehiculos.hayVehiculoEnEdicion = false;

@@ -1132,12 +1132,18 @@ public class GestionarTarifas extends javax.swing.JFrame {
                 if(laTarifaSeEstaImplementando){
                     JOptionPane.showMessageDialog(null, "La tarifa seleccionada se está implementando actualmente.");
                 }else{
-                    tarifaControla.eliminarTarifa(nombreTarifa);
-                    modeloTablaTarifas.removeRow(Fila);
-                    Limpiar();
-                    btn_editar.setEnabled(false);
-                    btn_eliminar.setEnabled(false);
-                    btn_ingresar.setEnabled(true);
+                    
+                    if(nombreTarifa.equals("TARIF_AUTOMOVIL") || nombreTarifa.equals("TARIF_MOTO")){
+                        JOptionPane.showMessageDialog(null, "No permitido.");
+                    }else{
+                        tarifaControla.eliminarTarifa(nombreTarifa);
+                        modeloTablaTarifas.removeRow(Fila);
+                        Limpiar();
+                        btn_editar.setEnabled(false);
+                        btn_eliminar.setEnabled(false);
+                        btn_ingresar.setEnabled(true);
+                        
+                    }  
                 }    
             }else if(decision == JOptionPane.NO_OPTION){
             }

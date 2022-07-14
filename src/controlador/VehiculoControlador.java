@@ -355,6 +355,31 @@ public class VehiculoControlador {
         
         return vehiculoTieneFacturas;
     }
+    
+    //Metodo que permite identificar si el vehiculo en cuestion esta involucrado en alguna factura
+    public boolean consultarSiVehiculoTieneFacturasAbiertas(String placa){
+
+        boolean vehiculoTieneFacturasAbiertas = false;
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            pst = cn.prepareStatement(
+                        "select * from facturas where Placa = '" + placa + "' and Estado_fctra = 'Abierta'");
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                vehiculoTieneFacturasAbiertas = true;
+            }else{
+                vehiculoTieneFacturasAbiertas = false;
+            }
+            
+        } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, "ERROR al revisar facturación abierta de vehiculo, contacte al administrador.");
+           log.fatal("ERROR - Se ha producido un error al intentar revisar facturación abierta de vehiculo: " + ex);
+        }
+        
+        return vehiculoTieneFacturasAbiertas;
+    }
 
     //Metodo que permite la edicion de un vehiculo en el sistema
     public void actualizarVehiculo(Vehiculo vehAActualizar){
@@ -371,7 +396,7 @@ public class VehiculoControlador {
         } 
     }
     
-    //Metodo que recarga el vehiculo
+    //Metodo que recarga el vehiculo al cerrar la ventana de edición del mismo 
     public void recargarVehiculo(int idDelVehiculo, String placa){
         
         try{
