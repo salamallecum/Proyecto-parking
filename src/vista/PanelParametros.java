@@ -37,8 +37,9 @@ public class PanelParametros extends javax.swing.JPanel {
         btn_parqueaderos = new javax.swing.JButton();
         btn_convenios = new javax.swing.JButton();
         btn_tarifas = new javax.swing.JButton();
-        btn_exportBackup = new javax.swing.JButton();
+        btn_masParametros = new javax.swing.JButton();
         JFC_exportarBackup = new javax.swing.JFileChooser();
+        btn_exportBackup1 = new javax.swing.JButton();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -66,18 +67,26 @@ public class PanelParametros extends javax.swing.JPanel {
             }
         });
 
-        btn_exportBackup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export.png"))); // NOI18N
-        btn_exportBackup.setText("Generar Copia de seguridad");
-        btn_exportBackup.setEnabled(false);
-        btn_exportBackup.addActionListener(new java.awt.event.ActionListener() {
+        btn_masParametros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/others.png"))); // NOI18N
+        btn_masParametros.setText("Otros parámetros");
+        btn_masParametros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_exportBackupActionPerformed(evt);
+                btn_masParametrosActionPerformed(evt);
             }
         });
 
         JFC_exportarBackup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JFC_exportarBackupActionPerformed(evt);
+            }
+        });
+
+        btn_exportBackup1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export.png"))); // NOI18N
+        btn_exportBackup1.setText("Generar Copia de seguridad");
+        btn_exportBackup1.setEnabled(false);
+        btn_exportBackup1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exportBackup1ActionPerformed(evt);
             }
         });
 
@@ -88,9 +97,11 @@ public class PanelParametros extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(223, 223, 223)
-                        .addComponent(btn_exportBackup)
-                        .addGap(40, 40, 40)
+                        .addGap(63, 63, 63)
+                        .addComponent(btn_masParametros)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_exportBackup1)
+                        .addGap(37, 37, 37)
                         .addComponent(JFC_exportarBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
@@ -111,11 +122,13 @@ public class PanelParametros extends javax.swing.JPanel {
                     .addComponent(btn_tarifas, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_exportBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(70, 70, 70)
-                        .addComponent(JFC_exportarBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(JFC_exportarBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_masParametros, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_exportBackup1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -138,18 +151,24 @@ public class PanelParametros extends javax.swing.JPanel {
         btn_tarifas.setEnabled(false);
     }//GEN-LAST:event_btn_tarifasActionPerformed
 
-    private void btn_exportBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportBackupActionPerformed
-        ExportarDB();    
-    }//GEN-LAST:event_btn_exportBackupActionPerformed
+    private void btn_masParametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_masParametrosActionPerformed
+        new OtrosParametros().setVisible(true);
+        btn_masParametros.setEnabled(false);    
+    }//GEN-LAST:event_btn_masParametrosActionPerformed
 
     private void JFC_exportarBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JFC_exportarBackupActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JFC_exportarBackupActionPerformed
 
+    private void btn_exportBackup1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportBackup1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_exportBackup1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser JFC_exportarBackup;
     public static javax.swing.JButton btn_convenios;
-    private javax.swing.JButton btn_exportBackup;
+    private javax.swing.JButton btn_exportBackup1;
+    public static javax.swing.JButton btn_masParametros;
     public static javax.swing.JButton btn_parqueaderos;
     public static javax.swing.JButton btn_tarifas;
     // End of variables declaration//GEN-END:variables

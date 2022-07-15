@@ -205,13 +205,28 @@ public class GestionarTarifas extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Descontar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         txt_menosMinutos.setEditable(false);
+        txt_menosMinutos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_menosMinutosKeyTyped(evt);
+            }
+        });
 
         txt_menosHoras.setEditable(false);
+        txt_menosHoras.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_menosHorasKeyTyped(evt);
+            }
+        });
 
         txt_menosDias.setEditable(false);
         txt_menosDias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_menosDiasActionPerformed(evt);
+            }
+        });
+        txt_menosDias.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_menosDiasKeyTyped(evt);
             }
         });
 
@@ -490,6 +505,16 @@ public class GestionarTarifas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Solo 20 caracteres");
             txt_subtarifaParaAplicar.setText("");
         }
+        
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_subtarifaParaAplicarKeyTyped
 
     private void check_aplicarDescuentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_check_aplicarDescuentoMouseClicked
@@ -564,7 +589,25 @@ public class GestionarTarifas extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void txt_montoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_montoKeyTyped
-        // TODO add your handling code here:
+        
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 20;
+        if(txt_monto.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Solo 20 caracteres");
+            txt_monto.setText("");
+        }
+        
     }//GEN-LAST:event_txt_montoKeyTyped
 
     private void cmb_frecuenciaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_frecuenciaItemStateChanged
@@ -672,6 +715,42 @@ public class GestionarTarifas extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         cerrarGestorTarifas();
     }//GEN-LAST:event_formWindowClosing
+
+    private void txt_menosMinutosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_menosMinutosKeyTyped
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
+    }//GEN-LAST:event_txt_menosMinutosKeyTyped
+
+    private void txt_menosHorasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_menosHorasKeyTyped
+       //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
+    }//GEN-LAST:event_txt_menosHorasKeyTyped
+
+    private void txt_menosDiasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_menosDiasKeyTyped
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
+    }//GEN-LAST:event_txt_menosDiasKeyTyped
 
     /**
      * @param args the command line arguments

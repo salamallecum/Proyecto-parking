@@ -1,9 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vista;
+
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +16,17 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
      */
     public ArqueoDeCaja() {
         initComponents();
+        
+        //Cargamos el valor de la base que debe tener la caja
+        String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
+        
+        //Damos formato de moneda al valor de la base de la caja
+        Double valorBase = new Double(baseDeCaja);
+        Locale region = Locale.getDefault();
+        Currency moneda = Currency.getInstance(region);
+        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
+        
+        lbl_baseDeCaja.setText(formatoMoneda.format(valorBase));
     }
 
     /**
@@ -458,7 +469,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numBilletes100milActionPerformed
 
     private void txt_numBilletes100milKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes100milKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numBilletes100milKeyTyped
 
     private void txt_numBilletes50milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes50milActionPerformed
@@ -466,7 +485,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numBilletes50milActionPerformed
 
     private void txt_numBilletes50milKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes50milKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numBilletes50milKeyTyped
 
     private void txt_numBilletes20milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes20milActionPerformed
@@ -474,7 +501,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numBilletes20milActionPerformed
 
     private void txt_numBilletes20milKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes20milKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numBilletes20milKeyTyped
 
     private void txt_numBilletes10milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes10milActionPerformed
@@ -482,7 +517,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numBilletes10milActionPerformed
 
     private void txt_numBilletes10milKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes10milKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numBilletes10milKeyTyped
 
     private void txt_numBilletes5milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes5milActionPerformed
@@ -490,7 +533,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numBilletes5milActionPerformed
 
     private void txt_numBilletes5milKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes5milKeyTyped
-        // TODO add your handling code here:
+       //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numBilletes5milKeyTyped
 
     private void txt_numBilletes2milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes2milActionPerformed
@@ -498,7 +549,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numBilletes2milActionPerformed
 
     private void txt_numBilletes2milKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes2milKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numBilletes2milKeyTyped
 
     private void txt_numBilletesOMonedasDeMilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilActionPerformed
@@ -506,7 +565,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numBilletesOMonedasDeMilActionPerformed
 
     private void txt_numBilletesOMonedasDeMilKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numBilletesOMonedasDeMilKeyTyped
 
     private void txt_numMonedas500pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosActionPerformed
@@ -514,7 +581,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numMonedas500pesosActionPerformed
 
     private void txt_numMonedas500pesosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numMonedas500pesosKeyTyped
 
     private void txt_numMonedas200pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosActionPerformed
@@ -522,7 +597,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numMonedas200pesosActionPerformed
 
     private void txt_numMonedas200pesosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numMonedas200pesosKeyTyped
 
     private void txt_numMonedas100pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosActionPerformed
@@ -530,7 +613,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numMonedas100pesosActionPerformed
 
     private void txt_numMonedas100pesosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numMonedas100pesosKeyTyped
 
     private void txt_numMonedas50pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosActionPerformed
@@ -538,7 +629,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numMonedas50pesosActionPerformed
 
     private void txt_numMonedas50pesosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosKeyTyped
-        // TODO add your handling code here:
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_numMonedas50pesosKeyTyped
 
     private void btn_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_finalizarActionPerformed

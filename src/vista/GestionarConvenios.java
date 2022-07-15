@@ -316,6 +316,16 @@ public class GestionarConvenios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Solo 20 caracteres");
             txt_monto.setText("");
         }
+        
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_montoKeyTyped
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed

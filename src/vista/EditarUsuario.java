@@ -36,7 +36,6 @@ public class EditarUsuario extends javax.swing.JFrame {
     private final Logger log = Logger.getLogger(EditarUsuario.class);
     private URL url = EditarUsuario.class.getResource("Log4j.properties");
     
-    
     /**
      * Creates new form nuevoUsuario
      */
@@ -445,6 +444,16 @@ public class EditarUsuario extends javax.swing.JFrame {
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");  
         }
+        
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
     }//GEN-LAST:event_txt_celularKeyTyped
 
     private void txt_telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_telefonoKeyTyped
@@ -453,6 +462,16 @@ public class EditarUsuario extends javax.swing.JFrame {
         if(txt_telefono.getText().length() > numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");  
+        }
+        
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
     }//GEN-LAST:event_txt_telefonoKeyTyped
 
