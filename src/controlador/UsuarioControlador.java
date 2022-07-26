@@ -232,15 +232,14 @@ public class UsuarioControlador {
     public boolean cerrarSesion(String usu){
         
         boolean cajaAbierta = false;
-        
+         
         if(PanelCaja.laCajaFueAbierta == true){
             cajaAbierta = true;
             JOptionPane.showMessageDialog(null, "La Caja se encuentra abierta, debe generar el cierre!!");
             log.warn("ADVERTENCIA - Se intentó cerrar sesión con la caja aún abierta con el usuario:" + usu);
+            
         }else if(PanelCaja.laCajaFueAbierta == false){
             cajaAbierta = false;        
-            new Login().setVisible(true);
-            log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
         }
         return cajaAbierta;
     }

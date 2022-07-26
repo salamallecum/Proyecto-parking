@@ -1,32 +1,116 @@
 package vista;
 
+import controlador.ArqueoControlador;
+import controlador.FacturaControlador;
+import controlador.ParqueaderoControlador;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.Locale;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import modelo.Arqueo;
+import modelo.Parqueadero;
+import static vista.PanelCaja.cmb_numParqueadero;
+import static vista.PanelCaja.contadorFacturas;
+import static vista.PanelCaja.hayVehiculoLiquidandose;
+import static vista.PanelCaja.laCajaFueAbierta;
+import static vista.PanelCaja.modeloCaja;
+import static vista.PanelCaja.parqueadero_update;
+import static vista.PanelCaja.table_operacionParqueadero;
 
 /**
  *
  * @author ALEJO
  */
-public class ArqueoDeCaja extends javax.swing.JFrame {
-
+public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
+    
+    int baseDeCajaInt = 0;
+    
+    String usuarioDelSistema = "";
+            
+    int dineroEnCaja = 0;
+    String dineroEnCajaString = "";
+    String montoTotalCaja = "";
+    
+    int diferenciaCalculo = 0;
+    String diferenciaString = "";
+    String diferenciaTotal = "";
+    
+    //Variables del numero de billetes y monedas de cada una de las denominaciones
+    String numBilletesDe100Mil = "";
+    String numBilletesDe50Mil = "";
+    String numBilletesDe20Mil = "";
+    String numBilletesDe10Mil = "";
+    String numBilletesDe5Mil = "";
+    String numBilletesDe2Mil = "";
+    String numBilletesOMonedasDeMil = "";
+    String numMonedasDe500 = "";
+    String numMonedasDe200 = "";
+    String numMonedasDe100 = "";
+    String numMonedasDe50 = "";
+    
+    //Variables de montos en cada una de las denominaciones
+    int montoEnBilletes100Mil = 0;
+    int montoEnBilletes50Mil = 0;
+    int montoEnBilletes20Mil = 0;
+    int montoEnBilletes10Mil = 0;
+    int montoEnBilletes5Mil = 0;
+    int montoEnBilletes2Mil = 0;
+    int montoEnBilletesOMonedasMil = 0;
+    int montoEnMonedasDe500 = 0;
+    int montoEnMonedasDe200 = 0;
+    int montoEnMonedasDe100 = 0;
+    int montoEnMonedasDe50 = 0; 
+      
+    Arqueo nuevoArqueo = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+    Parqueadero parq = new Parqueadero();
+    FacturaControlador facturaControla = new FacturaControlador();
+    ArqueoControlador arqueoControla = new ArqueoControlador();
+    ParqueaderoControlador parqControlador = new ParqueaderoControlador();
+    
+    //Hilos que mantienen el actualizadas las facturas y el estado del parqueadero en tiempo real
+    public static Thread hilo1;
+    public static Thread hilo2;
+    
     /**
      * Creates new form ArqueoDeCaja
      */
     public ArqueoDeCaja() {
         initComponents();
+        setSize(560, 385);
+        setResizable(false);
+        setTitle("Arqueo de caja");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        
+        usuarioDelSistema = Login.usuario;
         
         //Cargamos el valor de la base que debe tener la caja
         String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
         
+        //Guardamos el valor int de la base de caja para calculos futuros 
+        baseDeCajaInt = Integer.parseInt(baseDeCaja);
+        
         //Damos formato de moneda al valor de la base de la caja
         Double valorBase = new Double(baseDeCaja);
         Locale region = Locale.getDefault();
-        Currency moneda = Currency.getInstance(region);
+        //Currency moneda = Currency.getInstance(region);
         NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
         
         lbl_baseDeCaja.setText(formatoMoneda.format(valorBase));
+        
+    }
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/Caja.png"));
+        return retValue;
     }
 
     /**
@@ -88,9 +172,18 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Conteo de dinero"));
 
+        txt_numBilletes100mil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numBilletes100milFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numBilletes100milFocusLost(evt);
+            }
+        });
         txt_numBilletes100mil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numBilletes100milActionPerformed(evt);
@@ -105,6 +198,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("$ 100.000:");
 
+        txt_numBilletes50mil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numBilletes50milFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numBilletes50milFocusLost(evt);
+            }
+        });
         txt_numBilletes50mil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numBilletes50milActionPerformed(evt);
@@ -122,6 +223,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("$ 20.000:");
 
+        txt_numBilletes20mil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numBilletes20milFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numBilletes20milFocusLost(evt);
+            }
+        });
         txt_numBilletes20mil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numBilletes20milActionPerformed(evt);
@@ -136,6 +245,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("$ 10.000:");
 
+        txt_numBilletes10mil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numBilletes10milFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numBilletes10milFocusLost(evt);
+            }
+        });
         txt_numBilletes10mil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numBilletes10milActionPerformed(evt);
@@ -150,6 +267,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("$ 5.000:");
 
+        txt_numBilletes5mil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numBilletes5milFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numBilletes5milFocusLost(evt);
+            }
+        });
         txt_numBilletes5mil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numBilletes5milActionPerformed(evt);
@@ -161,6 +286,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
             }
         });
 
+        txt_numBilletes2mil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numBilletes2milFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numBilletes2milFocusLost(evt);
+            }
+        });
         txt_numBilletes2mil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numBilletes2milActionPerformed(evt);
@@ -178,6 +311,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("$ 1.000:");
 
+        txt_numBilletesOMonedasDeMil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numBilletesOMonedasDeMilFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numBilletesOMonedasDeMilFocusLost(evt);
+            }
+        });
         txt_numBilletesOMonedasDeMil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numBilletesOMonedasDeMilActionPerformed(evt);
@@ -192,6 +333,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("$ 500:");
 
+        txt_numMonedas500pesos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numMonedas500pesosFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numMonedas500pesosFocusLost(evt);
+            }
+        });
         txt_numMonedas500pesos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numMonedas500pesosActionPerformed(evt);
@@ -206,6 +355,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel14.setText("$ 200:");
 
+        txt_numMonedas200pesos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numMonedas200pesosFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numMonedas200pesosFocusLost(evt);
+            }
+        });
         txt_numMonedas200pesos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numMonedas200pesosActionPerformed(evt);
@@ -220,6 +377,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel15.setText("$ 100:");
 
+        txt_numMonedas100pesos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numMonedas100pesosFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numMonedas100pesosFocusLost(evt);
+            }
+        });
         txt_numMonedas100pesos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numMonedas100pesosActionPerformed(evt);
@@ -234,6 +399,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel16.setText("$ 50:");
 
+        txt_numMonedas50pesos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_numMonedas50pesosFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numMonedas50pesosFocusLost(evt);
+            }
+        });
         txt_numMonedas50pesos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numMonedas50pesosActionPerformed(evt);
@@ -340,35 +513,35 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(txt_numMonedas100pesos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(txt_numMonedas50pesos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Totales"));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel17.setText("Base ($):");
+        jLabel17.setText("Base:");
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel18.setText("Total ($):");
+        jLabel18.setText("Total:");
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel19.setText("Diferencia ($):");
+        jLabel19.setText("Diferencia:");
 
         lbl_baseDeCaja.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbl_baseDeCaja.setForeground(new java.awt.Color(0, 51, 255));
         lbl_baseDeCaja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_baseDeCaja.setText("0.0");
+        lbl_baseDeCaja.setText("0,00");
 
         lbl_totalEnCaja.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbl_totalEnCaja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_totalEnCaja.setText("0.0");
+        lbl_totalEnCaja.setText("0,00");
 
         lbl_diferencia.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbl_diferencia.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_diferencia.setText("0.0");
+        lbl_diferencia.setText("0,00");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -377,18 +550,18 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel19))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_diferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_totalEnCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addComponent(lbl_baseDeCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20))))
         );
@@ -407,7 +580,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(lbl_diferencia))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         btn_finalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_15107.png"))); // NOI18N
@@ -428,7 +601,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(10, 10, 10)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(108, 108, 108)
@@ -443,9 +616,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
+                        .addGap(57, 57, 57)
                         .addComponent(btn_finalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -641,8 +814,607 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_numMonedas50pesosKeyTyped
 
     private void btn_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_finalizarActionPerformed
-        // TODO add your handling code here:
+        
+        boolean ventanaEmergCopiaArqueo = false; 
+        
+        //Mientras los campos esten vacios el boton de finalizar permanecera inactivo
+        if(numBilletesDe100Mil.equals("") || numBilletesDe50Mil.equals("") || numBilletesDe20Mil.equals("") || 
+                numBilletesDe10Mil.equals("") || numBilletesDe5Mil.equals("") || numBilletesDe2Mil.equals("") || numBilletesOMonedasDeMil.equals("") ||
+                numMonedasDe500.equals("") || numMonedasDe200.equals("") || numMonedasDe100.equals("") || numMonedasDe50.equals("")){
+        
+            JOptionPane.showMessageDialog(null, "Por favor diligencie todos los campos.");
+        
+        }else{
+                      
+            String codigoArqueo = arqueoControla.codigosArqueo();
+
+            nuevoArqueo.setId(0);
+            nuevoArqueo.setCodigo(codigoArqueo);
+            nuevoArqueo.setFecha_arqueo(arqueoControla.fecha_Arqueo());
+            nuevoArqueo.setUsuario(usuarioDelSistema);
+            nuevoArqueo.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
+            nuevoArqueo.setNumBilletesDe100Mil(numBilletesDe100Mil);
+            nuevoArqueo.setNumBilletesDe50Mil(numBilletesDe50Mil);
+            nuevoArqueo.setNumBilletesDe20Mil(numBilletesDe20Mil);
+            nuevoArqueo.setNumBilletesDe10Mil(numBilletesDe10Mil);
+            nuevoArqueo.setNumBilletesDe5Mil(numBilletesDe5Mil);
+            nuevoArqueo.setNumBilletesDe2Mil(numBilletesDe2Mil);
+            nuevoArqueo.setNumBilletesOMonedasDeMil(numBilletesOMonedasDeMil);
+            nuevoArqueo.setNumMonedasDe500(numMonedasDe500);
+            nuevoArqueo.setNumMonedasDe200(numMonedasDe200);
+            nuevoArqueo.setNumMonedasDe100(numMonedasDe100);
+            nuevoArqueo.setNumMonedasDe50(numMonedasDe50);
+            nuevoArqueo.setMontoEnBilletes100Mil(montoEnBilletes100Mil);
+            nuevoArqueo.setMontoEnBilletes50Mil(montoEnBilletes50Mil);
+            nuevoArqueo.setMontoEnBilletes20Mil(montoEnBilletes20Mil);
+            nuevoArqueo.setMontoEnBilletes10Mil(montoEnBilletes10Mil);
+            nuevoArqueo.setMontoEnBilletes5Mil(montoEnBilletes5Mil);
+            nuevoArqueo.setMontoEnBilletes2Mil(montoEnBilletes2Mil);
+            nuevoArqueo.setMontoEnBilletesOMonedasMil(montoEnBilletesOMonedasMil);
+            nuevoArqueo.setMontoEnMonedasDe500(montoEnMonedasDe500);
+            nuevoArqueo.setMontoEnMonedasDe200(montoEnMonedasDe200);
+            nuevoArqueo.setMontoEnMonedasDe100(montoEnMonedasDe100);
+            nuevoArqueo.setMontoEnMonedasDe50(montoEnMonedasDe50);
+            nuevoArqueo.setMontoTotalCaja(montoTotalCaja);
+            nuevoArqueo.setDiferenciaTotal(diferenciaTotal);
+
+            //Registramos el arqueo en base de datos
+            arqueoControla.crearArqueo(nuevoArqueo);      
+
+            //Imprimimos el ticket de aruqeo de caja
+            arqueoControla.generarTicketArqueoDeCaja(codigoArqueo);
+
+            ventanaEmergCopiaArqueo = true;
+
+            while(ventanaEmergCopiaArqueo == true){
+               String botones[] = {"Imprimir copia", "Cerrar"};
+               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja finalizado satisfactoriamente.", "Arqueo de caja", 0, 0, null, botones, this);
+
+               if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
+                   arqueoControla.generarTicketArqueoDeCaja(codigoArqueo); 
+               }
+
+               if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+                   ventanaEmergCopiaArqueo = false;
+                   dispose();
+
+                   PanelCaja.desbloquearPanel();
+
+                   laCajaFueAbierta = true;
+                   contadorFacturas = 0;            
+
+                   hilo1.start();
+                   hilo2.start();            
+
+                   //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
+                   table_operacionParqueadero.addMouseListener(new MouseAdapter() {
+                       @Override
+                       public void mouseClicked(MouseEvent e){
+                           int fila_point = table_operacionParqueadero.rowAtPoint(e.getPoint());
+                           int columna_point = 1;
+
+                           if(fila_point > -1){
+                               parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
+
+                               if(hayVehiculoLiquidandose == true){
+                                   JOptionPane.showMessageDialog(null,"No permitido.");
+                               }else{
+                                  hayVehiculoLiquidandose = true;  
+                                  LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
+                                  liquidacion_vehiculo.setVisible(true);
+                               }
+
+                           }
+                       }
+                   });
+                } 
+            }         
+        }       
     }//GEN-LAST:event_btn_finalizarActionPerformed
+
+    private void txt_numBilletes100milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes100milFocusLost
+        
+        numBilletesDe100Mil = txt_numBilletes100mil.getText();
+                          
+        if(numBilletesDe100Mil.equals("")){
+            numBilletesDe100Mil = "0";
+            txt_numBilletes100mil.setText(numBilletesDe100Mil);
+            
+        }else{
+            int intNumBilletes100Mil = Integer.parseInt(numBilletesDe100Mil);
+
+            montoEnBilletes100Mil = 100000 * intNumBilletes100Mil;
+            dineroEnCaja = dineroEnCaja + montoEnBilletes100Mil;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+            
+        }
+    }//GEN-LAST:event_txt_numBilletes100milFocusLost
+
+    private void txt_numBilletes100milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes100milFocusGained
+        txt_numBilletes100mil.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnBilletes100Mil;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        
+        montoEnBilletes100Mil = 0;
+        
+    }//GEN-LAST:event_txt_numBilletes100milFocusGained
+
+    private void txt_numBilletes50milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes50milFocusGained
+        txt_numBilletes50mil.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnBilletes50Mil;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnBilletes50Mil = 0;
+    }//GEN-LAST:event_txt_numBilletes50milFocusGained
+
+    private void txt_numBilletes50milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes50milFocusLost
+        
+        numBilletesDe50Mil = txt_numBilletes50mil.getText();
+                  
+        if(numBilletesDe50Mil.equals("")){
+            numBilletesDe50Mil = "0";
+            txt_numBilletes50mil.setText(numBilletesDe50Mil);
+            
+        }else{
+            int intNumBilletes50Mil = Integer.parseInt(numBilletesDe50Mil);
+
+            montoEnBilletes50Mil = 50000 * intNumBilletes50Mil;
+            dineroEnCaja = dineroEnCaja + montoEnBilletes50Mil;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+        }
+    }//GEN-LAST:event_txt_numBilletes50milFocusLost
+
+    private void txt_numBilletes20milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes20milFocusLost
+        
+        numBilletesDe20Mil = txt_numBilletes20mil.getText();
+                   
+        if(numBilletesDe20Mil.equals("")){
+            numBilletesDe20Mil = "0";
+            txt_numBilletes20mil.setText(numBilletesDe20Mil);
+            
+        }else{
+            int intNumBilletes20Mil = Integer.parseInt(numBilletesDe20Mil);
+
+            montoEnBilletes20Mil = 20000 * intNumBilletes20Mil;
+            dineroEnCaja = dineroEnCaja + montoEnBilletes20Mil;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+        }
+    }//GEN-LAST:event_txt_numBilletes20milFocusLost
+
+    private void txt_numBilletes20milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes20milFocusGained
+        txt_numBilletes20mil.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnBilletes20Mil;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnBilletes20Mil = 0;
+    }//GEN-LAST:event_txt_numBilletes20milFocusGained
+
+    private void txt_numBilletes10milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes10milFocusLost
+        
+        numBilletesDe10Mil = txt_numBilletes10mil.getText();
+               
+        if(numBilletesDe10Mil.equals("")){
+            numBilletesDe10Mil = "0";
+            txt_numBilletes10mil.setText(numBilletesDe10Mil);
+            
+        }else{
+            int intNumBilletes10Mil = Integer.parseInt(numBilletesDe10Mil);
+
+            montoEnBilletes10Mil = 10000 * intNumBilletes10Mil;
+            dineroEnCaja = dineroEnCaja + montoEnBilletes10Mil;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+ 
+        }       
+    }//GEN-LAST:event_txt_numBilletes10milFocusLost
+
+    private void txt_numBilletes10milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes10milFocusGained
+       txt_numBilletes10mil.setText("");
+       dineroEnCaja = dineroEnCaja - montoEnBilletes10Mil;
+       
+       dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+       montoEnBilletes10Mil = 0;
+    }//GEN-LAST:event_txt_numBilletes10milFocusGained
+
+    private void txt_numBilletes5milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes5milFocusLost
+        
+        numBilletesDe5Mil = txt_numBilletes5mil.getText();
+               
+        if(numBilletesDe5Mil.equals("")){
+            numBilletesDe5Mil = "0";
+            txt_numBilletes5mil.setText(numBilletesDe5Mil);           
+
+        }else{
+            int intNumBilletes5Mil = Integer.parseInt(numBilletesDe5Mil);
+
+            montoEnBilletes5Mil = 5000 * intNumBilletes5Mil;
+            dineroEnCaja = dineroEnCaja + montoEnBilletes5Mil;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+
+        }
+    }//GEN-LAST:event_txt_numBilletes5milFocusLost
+
+    private void txt_numBilletes5milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes5milFocusGained
+        txt_numBilletes5mil.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnBilletes5Mil;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnBilletes5Mil = 0;
+    }//GEN-LAST:event_txt_numBilletes5milFocusGained
+
+    private void txt_numBilletes2milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes2milFocusLost
+        
+        numBilletesDe2Mil= txt_numBilletes2mil.getText();
+               
+        if(numBilletesDe2Mil.equals("")){
+            numBilletesDe2Mil = "0";
+            txt_numBilletes2mil.setText(numBilletesDe2Mil);
+
+        }else{
+            int intNumBilletes2Mil = Integer.parseInt(numBilletesDe2Mil);
+
+            montoEnBilletes2Mil = 2000 * intNumBilletes2Mil;
+            dineroEnCaja = dineroEnCaja + montoEnBilletes2Mil;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+
+        }    
+    }//GEN-LAST:event_txt_numBilletes2milFocusLost
+
+    private void txt_numBilletes2milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes2milFocusGained
+        txt_numBilletes2mil.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnBilletes2Mil;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnBilletes2Mil = 0;
+    }//GEN-LAST:event_txt_numBilletes2milFocusGained
+
+    private void txt_numBilletesOMonedasDeMilFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilFocusGained
+        txt_numBilletesOMonedasDeMil.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnBilletesOMonedasMil;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnBilletesOMonedasMil = 0;
+    }//GEN-LAST:event_txt_numBilletesOMonedasDeMilFocusGained
+
+    private void txt_numBilletesOMonedasDeMilFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilFocusLost
+      
+        numBilletesOMonedasDeMil = txt_numBilletesOMonedasDeMil.getText();
+               
+        if(numBilletesOMonedasDeMil.equals("")){
+            numBilletesOMonedasDeMil = "0";
+            txt_numBilletesOMonedasDeMil.setText(numBilletesOMonedasDeMil);
+
+        }else{
+            int intNumBilletesOMonedasDeMil = Integer.parseInt(numBilletesOMonedasDeMil);
+
+            montoEnBilletesOMonedasMil = 1000 * intNumBilletesOMonedasDeMil;
+            dineroEnCaja = dineroEnCaja + montoEnBilletesOMonedasMil;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();                
+        }
+    }//GEN-LAST:event_txt_numBilletesOMonedasDeMilFocusLost
+
+    private void txt_numMonedas500pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosFocusLost
+        
+        numMonedasDe500 = txt_numMonedas500pesos.getText();
+                
+        if(numMonedasDe500.equals("")){
+            numMonedasDe500 = "0";
+            txt_numMonedas500pesos.setText(numMonedasDe500);
+            
+        }else{
+            int intNumMonedasDe500 = Integer.parseInt(numMonedasDe500);
+
+            montoEnMonedasDe500 = 500 * intNumMonedasDe500;
+            dineroEnCaja = dineroEnCaja + montoEnMonedasDe500;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+
+        }
+    }//GEN-LAST:event_txt_numMonedas500pesosFocusLost
+
+    private void txt_numMonedas500pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosFocusGained
+        txt_numMonedas500pesos.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnMonedasDe500;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnMonedasDe500 = 0;
+    }//GEN-LAST:event_txt_numMonedas500pesosFocusGained
+
+    private void txt_numMonedas200pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosFocusLost
+       
+        numMonedasDe200 = txt_numMonedas200pesos.getText();
+                    
+        if(numMonedasDe200.equals("")){
+            numMonedasDe200 = "0";
+            txt_numMonedas200pesos.setText(numMonedasDe200);
+           
+        }else{
+            int intNumMonedasDe200 = Integer.parseInt(numMonedasDe200);
+
+            montoEnMonedasDe200 = 200 * intNumMonedasDe200;
+            dineroEnCaja = dineroEnCaja + montoEnMonedasDe200;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+
+        }
+    }//GEN-LAST:event_txt_numMonedas200pesosFocusLost
+
+    private void txt_numMonedas200pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosFocusGained
+        txt_numMonedas200pesos.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnMonedasDe200;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnMonedasDe200 = 0;
+    }//GEN-LAST:event_txt_numMonedas200pesosFocusGained
+
+    private void txt_numMonedas100pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosFocusLost
+        
+        numMonedasDe100 = txt_numMonedas100pesos.getText();      
+            
+        if(numMonedasDe100.equals("")){
+            numMonedasDe100 = "0";
+            txt_numMonedas100pesos.setText(numMonedasDe100);
+           
+        }else{
+            int intNumMonedasDe100 = Integer.parseInt(numMonedasDe100);
+
+            montoEnMonedasDe100 = 100 * intNumMonedasDe100;
+            dineroEnCaja = dineroEnCaja + montoEnMonedasDe100;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+        }
+    }//GEN-LAST:event_txt_numMonedas100pesosFocusLost
+
+    private void txt_numMonedas100pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosFocusGained
+        txt_numMonedas100pesos.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnMonedasDe100;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnMonedasDe100 = 0;
+    }//GEN-LAST:event_txt_numMonedas100pesosFocusGained
+
+    private void txt_numMonedas50pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosFocusLost
+        
+        numMonedasDe50 = txt_numMonedas50pesos.getText();
+                   
+        if(numMonedasDe50.equals("")){
+            numMonedasDe50 = "0";
+            txt_numMonedas50pesos.setText(numMonedasDe50);
+            
+        }else{
+            int intNumMonedasDe50 = Integer.parseInt(numMonedasDe50);
+
+            montoEnMonedasDe50 = 50 * intNumMonedasDe50;
+            dineroEnCaja = dineroEnCaja + montoEnMonedasDe50;
+            dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            lbl_totalEnCaja.setText(montoTotalCaja);
+
+            //Calculamos la diferencia respecto a la base en tiempo real
+            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaString = Integer.toString(diferenciaCalculo);
+            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+            muestreoDiferencia();
+            
+        }
+    }//GEN-LAST:event_txt_numMonedas50pesosFocusLost
+
+    private void txt_numMonedas50pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosFocusGained
+        txt_numMonedas50pesos.setText("");
+        dineroEnCaja = dineroEnCaja - montoEnMonedasDe50;
+        
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+        montoEnMonedasDe50 = 0;
+    }//GEN-LAST:event_txt_numMonedas50pesosFocusGained
 
     /**
      * @param args the command line arguments
@@ -674,7 +1446,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ArqueoDeCaja().setVisible(true);
+                try {
+                    //Esto cambia la apariencia de la app para que se acomode al Siste Operativo
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    new ArqueoDeCaja().setVisible(true);
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    //Logger.getLogger(GestionarFacturas.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -714,4 +1492,57 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     public static javax.swing.JTextField txt_numMonedas500pesos;
     public static javax.swing.JTextField txt_numMonedas50pesos;
     // End of variables declaration//GEN-END:variables
+
+    public void muestreoDiferencia(){
+        
+        if(diferenciaCalculo < 0){
+            lbl_diferencia.setText(diferenciaTotal);
+            lbl_diferencia.setForeground(Color.RED);
+        }
+        
+        if(diferenciaCalculo >= 0){
+            lbl_diferencia.setText(diferenciaTotal);
+            lbl_diferencia.setForeground(Color.GREEN);
+        }        
+    }    
+    
+    //Metodo que normaliza el formulario
+    public void Normalizar(){
+        txt_numBilletes100mil.setBackground(Color.WHITE);
+        txt_numBilletes50mil.setBackground(Color.WHITE);
+        txt_numBilletes20mil.setBackground(Color.WHITE);
+        txt_numBilletes10mil.setBackground(Color.WHITE);
+        txt_numBilletes5mil.setBackground(Color.WHITE);
+        txt_numBilletes2mil.setBackground(Color.WHITE);
+        txt_numBilletesOMonedasDeMil.setBackground(Color.WHITE);
+        txt_numMonedas500pesos.setBackground(Color.WHITE);
+        txt_numMonedas200pesos.setBackground(Color.WHITE);
+        txt_numMonedas100pesos.setBackground(Color.WHITE);
+        txt_numMonedas50pesos.setBackground(Color.WHITE);
+    }
+    
+    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero en tiempo real    
+    @Override
+    public void run() {
+        Thread ct = Thread.currentThread();
+        Thread ct1 = Thread.currentThread();
+        while(ct == hilo1){
+
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosDisponibles());
+            cmb_numParqueadero.setModel(modeloParq);
+
+            try{
+                ct.sleep(120000);
+            }catch(InterruptedException e){}
+        }
+        while(ct1 == hilo2){
+
+            //Cargamos los datos de la tabla
+            parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
+
+            try{
+                ct1.sleep(10000);
+            }catch(InterruptedException e){}
+        }
+    }
 }

@@ -399,8 +399,13 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
 
     //Metodo boton "Cerrar sesion"
     private void btn_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarSesionActionPerformed
-        usuControlador.cerrarSesion(user);
-        dispose();
+        boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
+        
+        if(sePuedeCerrarSesion == false){
+            dispose();
+            new Login().setVisible(true);
+            log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
+        }
     }//GEN-LAST:event_btn_cerrarSesionActionPerformed
 
     //Metodo boton modulo "Usuarios"

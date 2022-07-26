@@ -626,7 +626,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
         cmb_frecuencia.setBackground(Color.WHITE);
     }
     
-     //Metodo que se invoca al cerrar el jFrame
+    //Metodo que se invoca al cerrar el jFrame
     private void cerrarGestorConvenios(){
         
         String botones[] = {"Cerrar", "Cancelar"};

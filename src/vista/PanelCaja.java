@@ -26,7 +26,7 @@ import static vista.PanelUsuarios.modelo;
  *
  * @author ALEJO
  */
-public class PanelCaja extends javax.swing.JPanel implements Runnable {
+public class PanelCaja extends javax.swing.JPanel{
 
     Parqueadero nomParqueadero;
     Convenio nomConvenio;
@@ -69,9 +69,7 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
     //Declaramos un objeto tipo Parqueadero y se lo aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
     
-    //Hilos que mantienen el actualizadas las facturas y el estado del parqueadero en tiempo real
-    Thread hilo1;
-    Thread hilo2;
+    
         
     /**
      * Creates new form PanelCaja
@@ -494,42 +492,8 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
                 //Se abre el jFrame para realizar el arqueo de caja
                 new ArqueoDeCaja().setVisible(true);
             
-            }else if(decision_conteoDeCaja == JOptionPane.NO_OPTION){    
+            }else if(decision_conteoDeCaja == JOptionPane.NO_OPTION){}   
                 
-                desbloquearPanel();
-            
-                laCajaFueAbierta = true;
-                contadorFacturas = 0;            
-
-                hilo1 = new Thread(this);
-                hilo1.start();
-
-                hilo2 = new Thread(this);
-                hilo2.start();            
-
-                //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
-                table_operacionParqueadero.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e){
-                        int fila_point = table_operacionParqueadero.rowAtPoint(e.getPoint());
-                        int columna_point = 1;
-
-                        if(fila_point > -1){
-                            parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
-
-                            if(hayVehiculoLiquidandose == true){
-                                JOptionPane.showMessageDialog(null,"No permitido.");
-                            }else{
-                               hayVehiculoLiquidandose = true;  
-                               LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
-                               liquidacion_vehiculo.setVisible(true);
-                            }
-
-                        }
-                    }
-                });
-            }               
-           
         }else if(decision == JOptionPane.NO_OPTION){}                       
         
     }//GEN-LAST:event_btn_abrirCajaActionPerformed
@@ -884,7 +848,7 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
     }
      
     //Metodo que bloquea el panel
-    public void desbloquearPanel(){
+    public static void desbloquearPanel(){
         btn_abrirCaja.setEnabled(false);
         txt_Placa.setEnabled(true);
         txt_nombrePropietario.setEnabled(true);
@@ -899,30 +863,7 @@ public class PanelCaja extends javax.swing.JPanel implements Runnable {
 
     }
      
-    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero en tiempo real    
-    @Override
-    public void run() {
-        Thread ct = Thread.currentThread();
-        Thread ct1 = Thread.currentThread();
-            while(ct == hilo1){
-                
-                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosDisponibles());
-                cmb_numParqueadero.setModel(modeloParq);
-
-                try{
-                    ct.sleep(120000);
-                }catch(InterruptedException e){}
-            }
-            while(ct1 == hilo2){
-                
-                //Cargamos los datos de la tabla
-                parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
-                
-                try{
-                    ct1.sleep(10000);
-                }catch(InterruptedException e){}
-            }
-    }
+    
 
     //Metodo que genera la liquidacion de una vehiculo desde su busqueda en el panel de caja
     public void generarLiquidacion(String placa){

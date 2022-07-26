@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.0.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Arqueo" pageWidth="226" pageHeight="338" columnWidth="198" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" uuid="80d0115b-9bba-419b-980f-5a199aaea682">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SistemaParkingConexion.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="479"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="521"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="codigo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT codigo,
+	usuario,
+	base_caja,
+	numerobilletes100mil,
+	numerobilletes50mil,
+	numerobilletes20mil,
+	numerobilletes10mil,
+	numerobilletes5mil,
+	numerobilletes2mil,
+	`numerobilletesMil`,
+	numeromonedas500,
+	numeromonedas200,
+	numeromonedas100,
+	numeromonedas50,
+	montoen100mil,
+	montoen50mil,
+	montoen20mil,
+	montoen10mil,
+	montoen5mil,
+	montoen2mil,
+	montoenmil,
+	montoen500,
+	montoen200,
+	montoen100,
+	montoen50,
+	total_caja,
+	diferencia
+FROM bd_sistemaparking.arqueos
+WHERE codigo = $P{codigo} ]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="base_caja" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="base_caja"/>
+		<property name="com.jaspersoft.studio.field.label" value="base_caja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numerobilletes100mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes100mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes100mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numerobilletes50mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes50mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes50mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numerobilletes20mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes20mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes20mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numerobilletes10mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes10mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes10mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numerobilletes5mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes5mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes5mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numerobilletes2mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes2mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes2mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numerobilletesMil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletesMil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletesMil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numeromonedas500" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numeromonedas500"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeromonedas500"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numeromonedas200" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numeromonedas200"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeromonedas200"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numeromonedas100" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numeromonedas100"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeromonedas100"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="numeromonedas50" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numeromonedas50"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeromonedas50"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen100mil" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen100mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen100mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen50mil" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen50mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen50mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen20mil" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen20mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen20mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen10mil" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen10mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen10mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen5mil" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen5mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen5mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen2mil" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen2mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen2mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoenmil" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoenmil"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoenmil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen500" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen500"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen500"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen200" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen200"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen200"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen100" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen100"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen100"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="montoen50" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="montoen50"/>
+		<property name="com.jaspersoft.studio.field.label" value="montoen50"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="total_caja" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="total_caja"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_caja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<field name="diferencia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="diferencia"/>
+		<property name="com.jaspersoft.studio.field.label" value="diferencia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="50" y="20" width="148" height="20" uuid="0f0ce5ba-bc5d-4a99-ab2d-4ec8f468156b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sistema de parking]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="95" y="0" width="104" height="19" uuid="734d4a8e-3e7f-4e00-a51a-a00903922804"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="81" y="40" width="116" height="13" uuid="90bd4ad4-8b94-491f-955f-b65662ffe00f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Arqueo de caja]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="50" height="50" uuid="e356d741-8298-4c0c-94cc-14dbb3b843fa"/>
+				<imageExpression><![CDATA["/SistemaParking/icons/ImgTickets.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="255" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="14" uuid="76155584-917d-4315-9035-248ef9aacec3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="14" width="60" height="14" uuid="248265f2-a114-4d55-b0cf-e16f3d8711ac"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Base de caja:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="28" width="196" height="14" uuid="a615ed60-e72f-4d45-a8e9-a265aef460d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conteo de dinero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="42" width="50" height="14" uuid="ac271db6-8a34-4d61-ba72-0f697c47787e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 100.000:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="56" width="50" height="14" uuid="8a633a3f-41a7-4bc2-9bf3-bc408af54ba2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 50.000:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="50" height="14" uuid="51b7223b-5091-44b2-9200-a6c6b3fc256f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 20.000:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="84" width="50" height="14" uuid="a64375c3-1b9d-42f8-b43f-2ca043581d1f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 10.000:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="98" width="50" height="14" uuid="7f7d6f92-2e53-440a-90e1-05fd6122824c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 5.000:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="112" width="50" height="14" uuid="1da7ba0d-d6ce-4b5e-a9d8-bd625b0d931d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 2.000:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="126" width="50" height="14" uuid="432f8389-2b9d-4b90-a3ab-adbb7ca40272"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 1.000:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="140" width="50" height="14" uuid="b74610b5-d39b-417c-aa12-588b970fb189"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 500:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="154" width="50" height="14" uuid="4e0c86bc-1899-4b75-8dc8-0dff8747a3ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 200:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="168" width="50" height="14" uuid="4d59c7c8-3657-472c-bd01-1e5aa2890329"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 100:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="239" width="198" height="14" uuid="e2d029e7-d629-438d-a6a3-d0b83dc04aaa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Todos los derechos reservados ©.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="182" width="50" height="14" uuid="f53a6e61-3977-40e6-bffc-698606511bde"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$ 50:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="202" width="50" height="14" uuid="908e5536-07c8-493c-9988-14929908b228"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total caja:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="216" width="50" height="14" uuid="0ebd01dc-811f-48fa-8378-e26f8d5afa44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="0" width="100" height="14" uuid="00aa10f2-4b69-45bc-a773-16ca1ff81fbf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="14" width="100" height="14" uuid="7ba8a1ad-edc6-4f33-95eb-9bbeb32d438b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{base_caja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="42" width="40" height="14" uuid="5cc1df57-588e-49fe-b2e8-31d45713a00f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerobilletes100mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="56" width="40" height="14" uuid="875ca838-aa24-4819-8f63-01ce34aeb250"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerobilletes50mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="70" width="40" height="14" uuid="ea45a2a7-241c-4758-b9d2-442eb5aece15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerobilletes20mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="84" width="40" height="14" uuid="c7d42723-8edd-44db-aac6-bac84385b161"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerobilletes10mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="98" width="40" height="14" uuid="236ab0e1-a25f-47f1-97e5-cf6e9ae9cec6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerobilletes5mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="112" width="40" height="14" uuid="22ef767b-3cd3-4d30-ab77-7cba6e7978d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerobilletes2mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="126" width="40" height="14" uuid="29a6c407-e52f-4cbf-b857-e0f2539025ee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerobilletesMil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="140" width="40" height="14" uuid="a316d673-c452-48a6-b426-29703631d7fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeromonedas500}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="154" width="40" height="14" uuid="75286509-1cf1-4f12-97aa-71a0c8328fc1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeromonedas200}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="168" width="40" height="14" uuid="cfe793e7-ad65-4376-9a54-79e2ee5c14d0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeromonedas100}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="182" width="40" height="14" uuid="5b368666-ba40-414e-b258-3f0b0561efe8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeromonedas50}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="202" width="100" height="14" uuid="162bbb61-9650-4963-aa31-3ca4c34a28dc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_caja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="216" width="100" height="14" uuid="9cf48e30-79eb-41a1-99a4-ee55a7e5fb3f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="42" width="106" height="14" uuid="7aa7daf4-4978-4d9f-8b98-c06679cb35d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoen100mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="140" width="106" height="14" uuid="cc420e41-2285-45f1-a22c-1afa69776863"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numeromonedas500}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="56" width="106" height="14" uuid="8a613015-7749-4bec-919c-1c82bd3ed701"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoen50mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="70" width="106" height="14" uuid="51e21f09-db05-447c-82b7-2bcfa019b7db"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{montoen20mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="84" width="106" height="14" uuid="1fb35f01-c0aa-4d60-ac9c-4d84f2f18ca2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoen10mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="98" width="106" height="14" uuid="1e5e2946-490d-43b8-80d2-8598442e6dfb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numerobilletes5mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="111" width="106" height="14" uuid="37ba6df5-949c-44f0-9b66-9af9deed130b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoen2mil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="126" width="106" height="14" uuid="9d121c39-b040-4805-ab6d-a6a61832f77b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoenmil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="154" width="106" height="14" uuid="68c23d30-b9b3-44a7-9c45-fdde284b9f79"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoen200}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="168" width="106" height="14" uuid="14a9eca1-a0b8-45c7-9382-81fcde64531e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{montoen100}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="182" width="106" height="14" uuid="5da2db85-cb07-4ae4-8e79-724e9da8ef35"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{montoen50}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

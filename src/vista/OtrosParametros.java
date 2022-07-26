@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  */
 public class OtrosParametros extends javax.swing.JFrame {
     
-    private final Logger log = Logger.getLogger(OtrosParametros.class);
+    private static final Logger log = Logger.getLogger(OtrosParametros.class);
     private URL url = OtrosParametros.class.getResource("Log4j.properties");
 
     /**

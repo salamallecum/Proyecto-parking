@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
@@ -394,13 +395,13 @@ public class ParqueaderoControlador {
             printer.printTextWrap(filas + 1, 26, 8, 46, "Todos los derechos reservados ");
         
         }
-        printer.toFile("impresion.txt");
+        printer.toFile("src\\clasesDeApoyo\\impresion.txt");
 
       FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("impresion.txt");
+            inputStream = new FileInputStream("src\\clasesDeApoyo\\impresion.txt");
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            log.fatal("ERROR - Se ha producido un error de localizacion del archivo impresion.txt: " + ex);
         }
         if (inputStream == null) {
             return;
@@ -419,7 +420,7 @@ public class ParqueaderoControlador {
             try {
                 printJob.print(document, attributeSet);
 
-            } catch (Exception ex) {
+            } catch (PrintException ex) {
                 log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero: " + ex);
             }
         } else {
@@ -480,7 +481,7 @@ public class ParqueaderoControlador {
     public void mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja(){
         
         try {
-            modelo = new DefaultTableModel();
+            modeloCaja = new DefaultTableModel();
             table_operacionParqueadero.setModel(modeloCaja);
 
             Connection cn = Conexion.conectar();

@@ -7,13 +7,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import modelo.Factura;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -21,9 +24,11 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import vista.LiquidacionVehiculo;
 import static vista.LiquidacionVehiculo.fecha_movVehiculo;
+import vista.OtrosParametros;
 
 /**
  *
@@ -255,6 +260,19 @@ public class FacturaControlador {
         }
         return cambio_str;
     }
+    
+    //Arroja en formato de moneda la cantidad de dinero que se le indique
+    public String darFormatoMoneda(String montoAConvertir){
+        
+        //Damos formato de moneda al monto
+        Double valorBase = new Double(montoAConvertir);
+        Locale region = Locale.getDefault();
+        //Currency moneda = Currency.getInstance(region);
+        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
+        
+        return formatoMoneda.format(valorBase);
+    }
+    
     
 
 
