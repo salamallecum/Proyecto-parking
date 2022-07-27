@@ -630,7 +630,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
     private void cerrarGestorConvenios(){
         
         String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de convenios", 0, 0, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de convenios", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

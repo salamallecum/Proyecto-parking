@@ -157,8 +157,6 @@ public class CuadreCaja extends javax.swing.JFrame {
         btn_imprimirCierre = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
         btn_calcular = new javax.swing.JButton();
-        table_listaFacturas = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -239,39 +237,6 @@ public class CuadreCaja extends javax.swing.JFrame {
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Codigo", "Placa", "Valor", "Efectivo", "Cambio"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        table_listaFacturas.setViewportView(jTable2);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -302,16 +267,11 @@ public class CuadreCaja extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(table_listaFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(table_listaFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lbl_producido))
@@ -485,12 +445,10 @@ public class CuadreCaja extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea_observaciones;
     private javax.swing.JLabel lbl_diferencia;
     private javax.swing.JLabel lbl_noFacturas;
     private javax.swing.JLabel lbl_producido;
-    private javax.swing.JScrollPane table_listaFacturas;
     private javax.swing.JTextField txt_dineroDeCaja;
     // End of variables declaration//GEN-END:variables
 
@@ -761,7 +719,7 @@ public class CuadreCaja extends javax.swing.JFrame {
         PanelCaja.txt_tarifa.setEnabled(false);
         PanelCaja.table_operacionParqueadero.setEnabled(false);
         PanelCaja.btn_estadoParqueadero.setEnabled(false);
-        PanelCaja.btn_cierrePDF.setEnabled(false);
+        PanelCaja.btn_generarCierreDeCaja.setEnabled(false);
         PanelCaja.btn_ingresar.setEnabled(false);
         PanelCaja.cmb_numParqueadero.setEnabled(false);
 

@@ -68,6 +68,9 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -268,6 +271,10 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         cerrarGestorParqueaderos();
     }//GEN-LAST:event_formWindowClosing
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowActivated
+
     /**
      * @param args the command line arguments
      */
@@ -396,7 +403,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     private void cerrarGestorParqueaderos(){
         
         String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parqueaderos", 0, 0, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parqueaderos", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

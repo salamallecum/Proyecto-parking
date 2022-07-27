@@ -100,7 +100,7 @@ public class PanelCaja extends javax.swing.JPanel{
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_operacionParqueadero = new javax.swing.JTable();
-        btn_cierrePDF = new javax.swing.JButton();
+        btn_generarCierreDeCaja = new javax.swing.JButton();
         btn_estadoParqueadero = new javax.swing.JButton();
         cmb_clase = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -218,13 +218,13 @@ public class PanelCaja extends javax.swing.JPanel{
         table_operacionParqueadero.setEnabled(false);
         jScrollPane1.setViewportView(table_operacionParqueadero);
 
-        btn_cierrePDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
-        btn_cierrePDF.setText("Generar Cierre PDF");
-        btn_cierrePDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_cierrePDF.setEnabled(false);
-        btn_cierrePDF.addActionListener(new java.awt.event.ActionListener() {
+        btn_generarCierreDeCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generarCierreDeCaja.setText("Generar Cierre PDF");
+        btn_generarCierreDeCaja.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generarCierreDeCaja.setEnabled(false);
+        btn_generarCierreDeCaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cierrePDFActionPerformed(evt);
+                btn_generarCierreDeCajaActionPerformed(evt);
             }
         });
 
@@ -326,7 +326,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(451, 451, 451)
-                .addComponent(btn_cierrePDF)
+                .addComponent(btn_generarCierreDeCaja)
                 .addGap(18, 18, 18)
                 .addComponent(btn_estadoParqueadero)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -362,7 +362,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_estadoParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_cierrePDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btn_generarCierreDeCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -399,9 +399,9 @@ public class PanelCaja extends javax.swing.JPanel{
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_PlacaActionPerformed
 
-    private void btn_cierrePDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cierrePDFActionPerformed
+    private void btn_generarCierreDeCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarCierreDeCajaActionPerformed
         new CuadreCaja().setVisible(true);
-    }//GEN-LAST:event_btn_cierrePDFActionPerformed
+    }//GEN-LAST:event_btn_generarCierreDeCajaActionPerformed
 
     //Metodo al presionar tecla esc en el campo placa
     private void txt_PlacaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_PlacaKeyPressed
@@ -501,8 +501,8 @@ public class PanelCaja extends javax.swing.JPanel{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btn_abrirCaja;
-    public static javax.swing.JButton btn_cierrePDF;
     public static javax.swing.JButton btn_estadoParqueadero;
+    public static javax.swing.JButton btn_generarCierreDeCaja;
     public static javax.swing.JButton btn_ingresar;
     private javax.swing.ButtonGroup buttonGroup1;
     public static javax.swing.JComboBox<String> cmb_clase;
@@ -857,7 +857,7 @@ public class PanelCaja extends javax.swing.JPanel{
         txt_tarifa.setEnabled(true);
         table_operacionParqueadero.setEnabled(true);
         btn_estadoParqueadero.setEnabled(true);
-        btn_cierrePDF.setEnabled(true);
+        btn_generarCierreDeCaja.setEnabled(true);
         btn_ingresar.setEnabled(true);
         cmb_numParqueadero.setEnabled(true);
 

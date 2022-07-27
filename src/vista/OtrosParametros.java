@@ -264,6 +264,9 @@ public class OtrosParametros extends javax.swing.JFrame {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
+            public void windowDeactivated(java.awt.event.WindowEvent evt) {
+                formWindowDeactivated(evt);
+            }
         });
 
         lbl_Titulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -405,6 +408,10 @@ public class OtrosParametros extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_actualizarParametrosActionPerformed
 
+    private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowDeactivated
+
     /**
      * @param args the command line arguments
      */
@@ -472,7 +479,7 @@ public class OtrosParametros extends javax.swing.JFrame {
     private void cerrarOtrosParametros(){
         
         String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parámetros", 0, 0, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parámetros", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

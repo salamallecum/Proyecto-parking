@@ -80,7 +80,7 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="451" max="-2" attributes="0"/>
-              <Component id="btn_cierrePDF" min="-2" max="-2" attributes="0"/>
+              <Component id="btn_generarCierreDeCaja" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btn_estadoParqueadero" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
@@ -122,7 +122,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btn_estadoParqueadero" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="btn_cierrePDF" alignment="3" max="32767" attributes="0"/>
+                  <Component id="btn_generarCierreDeCaja" alignment="3" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="18" max="32767" attributes="0"/>
           </Group>
@@ -243,7 +243,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btn_cierrePDF">
+    <Component class="javax.swing.JButton" name="btn_generarCierreDeCaja">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/icons/generarPDF.png"/>
@@ -255,7 +255,7 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_cierrePDFActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_generarCierreDeCajaActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>

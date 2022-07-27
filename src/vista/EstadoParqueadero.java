@@ -239,7 +239,7 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
     private void cerrarEstadoDeParqueadero(){
         
         String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Estado de parqueadero", 0, 0, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Estado de parqueadero", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

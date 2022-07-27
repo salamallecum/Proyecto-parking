@@ -1263,7 +1263,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
     private void cerrarGestorTarifas(){
         
         String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de tarifas", 0, 0, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de tarifas", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

@@ -868,7 +868,8 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
             while(ventanaEmergCopiaArqueo == true){
                String botones[] = {"Imprimir copia", "Cerrar"};
-               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja finalizado satisfactoriamente.", "Arqueo de caja", 0, 0, null, botones, this);
+               //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
+               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja finalizado satisfactoriamente.", "Arqueo de caja", 0, 1, null, botones, this);
 
                if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                    arqueoControla.generarTicketArqueoDeCaja(codigoArqueo); 
