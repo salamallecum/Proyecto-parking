@@ -25,6 +25,9 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import modelo.Parqueadero;
 import modelo.Vehiculo;
 import net.sf.jasperreports.engine.JRException;
@@ -387,14 +390,14 @@ public class ParqueaderoControlador {
        
        int pie = 0;
        
-        for (int i = 0; i < filas; i++) { printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 4)); pie++; } if(filas > pie){
+        for (int i = 0; i < filas; i++) { printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 4)); pie++; } if(filas >= pie){
         
         printer.printTextWrap(filas + 1, filas + 2, 8, 46, "Todos los derechos reservados ");
         
         }else{
             printer.printTextWrap(filas + 1, 26, 8, 46, "Todos los derechos reservados ");
-        
         }
+        
         printer.toFile("src\\clasesDeApoyo\\impresion.txt");
 
       FileInputStream inputStream = null;
@@ -436,7 +439,7 @@ public class ParqueaderoControlador {
         
         //Consulta de datos a la BD
         try {
-            modelo = new DefaultTableModel();
+            modelo = new DefaultTableModel(0, 5);
             Table_estado.setModel(modelo);
 
             Connection cn = Conexion.conectar();
@@ -447,13 +450,30 @@ public class ParqueaderoControlador {
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
-
-            modelo.addColumn("Estado");
-            modelo.addColumn("N° Parq");
-            modelo.addColumn("Placa");
-            modelo.addColumn("Propietario");
-            modelo.addColumn("Parqueado?");
-
+            
+           
+            //Aqui colocamos las etiquetas de la tabla
+            JTableHeader tableHeader = Table_estado.getTableHeader();
+            TableColumnModel tableColumnModel = tableHeader.getColumnModel();
+            
+            TableColumn tableColumn0 = tableColumnModel.getColumn(0);
+            tableColumn0.setHeaderValue( "Estado" );
+            
+            TableColumn tableColumn1 = tableColumnModel.getColumn(1);
+            tableColumn1.setHeaderValue( "N° parq" );
+            
+            TableColumn tableColumn2 = tableColumnModel.getColumn(2);
+            tableColumn2.setHeaderValue( "Placa" );
+            
+            TableColumn tableColumn3 = tableColumnModel.getColumn(3);
+            tableColumn3.setHeaderValue( "Propietario" );
+            
+            TableColumn tableColumn4 = tableColumnModel.getColumn(4);
+            tableColumn4.setHeaderValue( "Parqueado?" );
+                       
+            tableHeader.repaint();
+            
+    
             int[] anchosTabla = {15,5,20,60,10};
 
             for(int x=0; x < cantidadColumnas; x++){

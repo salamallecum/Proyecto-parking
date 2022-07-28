@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 public class Factura {
     
     private int id;
-    private int codigo;
+    private String codigo;
     private String fechaDeFactura;
     private String placa;
     private String propietario;
@@ -28,7 +28,7 @@ public class Factura {
     private URL url = Factura.class.getResource("Log4j.properties");
     
     //Constructor
-    public Factura(int id, int codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, String facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre) {
+    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, String facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre) {
         this.id = id;
         this.codigo = codigo;
         this.fechaDeFactura = fechaDeFactura;
@@ -54,11 +54,11 @@ public class Factura {
         this.id = id;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 

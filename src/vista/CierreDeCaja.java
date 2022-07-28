@@ -83,9 +83,9 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
      */
     public CierreDeCaja() {
         initComponents();
-        setSize(560, 385);
+        setSize(580, 470);
         setResizable(false);
-        setTitle("Arqueo de caja");
+        setTitle("Cierre de caja");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
@@ -109,7 +109,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
     
     @Override
     public Image getIconImage() {
-        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/Caja.png"));
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/IconoFactura.png"));
         return retValue;
     }
 
@@ -159,6 +159,9 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         jLabel21 = new javax.swing.JLabel();
         lbl_diferencia1 = new javax.swing.JLabel();
         btn_generarCierreCaja = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea_observaciones = new javax.swing.JTextArea();
+        jLabel22 = new javax.swing.JLabel();
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Clase:");
@@ -622,19 +625,40 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        jTextArea_observaciones.setColumns(20);
+        jTextArea_observaciones.setLineWrap(true);
+        jTextArea_observaciones.setRows(5);
+        jTextArea_observaciones.setWrapStyleWord(true);
+        jTextArea_observaciones.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextArea_observacionesKeyTyped(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTextArea_observaciones);
+
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel22.setText("Observaciones:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel22)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
+                        .addGap(200, 200, 200)
                         .addComponent(btn_generarCierreCaja)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -646,9 +670,13 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_generarCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(btn_generarCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
         );
 
         pack();
@@ -1451,6 +1479,15 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         cerrarCierreDeCaja();
     }//GEN-LAST:event_formWindowClosing
 
+    private void jTextArea_observacionesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_observacionesKeyTyped
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 250;
+        if(jTextArea_observaciones.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+        }
+    }//GEN-LAST:event_jTextArea_observacionesKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -1507,6 +1544,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1514,6 +1552,8 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea_observaciones;
     private javax.swing.JLabel lbl_baseDeCaja;
     private javax.swing.JLabel lbl_diferencia;
     private javax.swing.JLabel lbl_diferencia1;

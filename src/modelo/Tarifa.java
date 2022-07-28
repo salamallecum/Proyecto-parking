@@ -30,6 +30,22 @@ public class Tarifa {
     
     private final Logger log = Logger.getLogger(Tarifa.class);
     private URL url = Tarifa.class.getResource("Log4j.properties");
+
+    public Tarifa(int id, String nombreTarifa, String montoTarifa, String frecuenciaTarifa, String tarifaAnulada, String tarifaTieneDescuento, String tiempoDelDescuento, String unidadDelDescuento, String tarifaCobraTiempoAdicional, String montoTiempoAdicional, String unidadDelTiempoAdicional) {
+        this.id = id;
+        this.nombreTarifa = nombreTarifa;
+        this.montoTarifa = montoTarifa;
+        this.frecuenciaTarifa = frecuenciaTarifa;
+        this.tarifaAnulada = tarifaAnulada;
+        this.tarifaTieneDescuento = tarifaTieneDescuento;
+        this.tiempoDelDescuento = tiempoDelDescuento;
+        this.unidadDelDescuento = unidadDelDescuento;
+        this.tarifaCobraTiempoAdicional = tarifaCobraTiempoAdicional;
+        this.montoTiempoAdicional = montoTiempoAdicional;
+        this.unidadDelTiempoAdicional = unidadDelTiempoAdicional;
+    }
+    
+    
     
     public int getId() {
         return id;
@@ -140,14 +156,14 @@ public class Tarifa {
            pst3 = cn3.prepareStatement("select Id_tarifa, Nombre_tarifa from tarifas "); 
            rs3 = pst3.executeQuery();
            
-           dat = new Tarifa();
+           dat = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
            dat.setId(0);
            dat.setNombreTarifa("Seleccione");
            datos.add(dat);
            
                      
            while(rs3.next()){
-               dat = new Tarifa();
+               dat = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
                dat.setId(rs3.getInt("Id_tarifa"));
                dat.setNombreTarifa(rs3.getString("Nombre_tarifa"));
                datos.add(dat);

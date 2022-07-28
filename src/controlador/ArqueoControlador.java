@@ -84,15 +84,7 @@ public class ArqueoControlador {
             log.fatal("ERROR - Se ha producido un error al crear un arqueo de caja en el sistema: " + e);
         } 
     }
-    
-    //Metodo que genera los codigos de los arqueos
-    public String codigosArqueo(){
-        Random miAleatorio = new Random();
-        int N = miAleatorio.nextInt(1000000000);
-        String n = Integer.toString(N);
-        return n;
-    }
-    
+        
     //Metodo que genera la fecha en la quese realizo el arqueo de caja       
     public String fecha_Arqueo(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -120,13 +112,13 @@ public class ArqueoControlador {
            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
 
            //Da una vista previa del ticket
-//         JasperViewer view = new JasperViewer(jprint, false);
-//         view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//         view.setTitle("Ticket de arqueo de caja");
-//         view.setVisible(true);
+         JasperViewer view = new JasperViewer(jprint, false);
+         view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+         view.setTitle("Ticket de arqueo de caja");
+         view.setVisible(true);
            
            //Hace que se imprima directamente
-           JasperPrintManager.printReport(jprint, false);
+           //JasperPrintManager.printReport(jprint, false);
 
        }catch(JRException ex){
            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Arqueo de Caja, revise la conexión de la impresora o contacte al administrador!!");

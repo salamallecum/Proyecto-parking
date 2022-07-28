@@ -25,6 +25,15 @@ public class Convenio{
     private final Logger log = Logger.getLogger(Convenio.class);
     private URL url = Convenio.class.getResource("Log4j.properties");
 
+    //Constructor
+    public Convenio(int id, String nombre, String monto, String frecuencia) {
+        this.id = id;
+        this.nombre = nombre;
+        this.monto = monto;
+        this.frecuencia = frecuencia;
+    }
+    
+    
     public int getId() {
         return id;
     }
@@ -78,14 +87,14 @@ public class Convenio{
            pst3 = cn3.prepareStatement("select Id_convenio, Nombre_convenio from convenios "); 
            rs3 = pst3.executeQuery();
            
-           dat = new Convenio();
+           dat = new Convenio(0, "", "", "");
            dat.setId(0);
            dat.setNombre("Seleccione");
            datos.add(dat);
            
                      
            while(rs3.next()){
-               dat = new Convenio();
+               dat = new Convenio(0, "", "", "");
                dat.setId(rs3.getInt("Id_convenio"));
                dat.setNombre(rs3.getString("Nombre_convenio"));
                datos.add(dat);

@@ -236,7 +236,7 @@ public class UsuarioControlador {
         if(PanelCaja.laCajaFueAbierta == true){
             cajaAbierta = true;
             JOptionPane.showMessageDialog(null, "La Caja se encuentra abierta, debe generar el cierre!!");
-            log.warn("ADVERTENCIA - Se intentó cerrar sesión con la caja aún abierta con el usuario:" + usu);
+            log.warn("ADVERTENCIA - El usuario " + usu +" intentó cerrar la caja estando esta aún abierta");
             
         }else if(PanelCaja.laCajaFueAbierta == false){
             cajaAbierta = false;        

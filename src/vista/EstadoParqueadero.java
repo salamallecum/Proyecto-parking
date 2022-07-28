@@ -124,7 +124,7 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
         jScrollPane1.setViewportView(Table_estado);
 
         btn_imprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_15107.png"))); // NOI18N
-        btn_imprimir.setText("Imprimir tabla");
+        btn_imprimir.setText("Imprimir reporte");
         btn_imprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_imprimirActionPerformed(evt);

@@ -113,7 +113,7 @@ public class Parqueadero {
 
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error al cargar listado de parqueaderos disponibles, ¡Contacte al administrador!");
-            log.fatal("ERROR - Se ha producido un error al al cargar listado de parqueaderos disponibles: " + ex.toString());
+            log.fatal("ERROR - Se ha producido un error al cargar listado de parqueaderos disponibles en Panel Caja: " + ex.toString());
         }
         return datos;
     }  

@@ -57,8 +57,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
         
     //Declaramos los objetos  y se los aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
-    Convenio conv = new Convenio();
-    Tarifa tarif = new Tarifa();
+    Convenio conv = new Convenio(0, "", "", "");
+    Tarifa tarif = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
       
     private final Logger log = Logger.getLogger(EditarVehiculo.class);
     private URL url = EditarVehiculo.class.getResource("Log4j.properties");

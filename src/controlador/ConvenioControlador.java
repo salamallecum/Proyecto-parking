@@ -1,4 +1,3 @@
-
 package controlador;
 
 import clasesDeApoyo.Conexion;
@@ -21,6 +20,8 @@ import static vista.GestionarConvenios.table_listaConvenios;
  * @author ALEJO
  */
 public class ConvenioControlador {
+    
+   Convenio convenioConsultado = new Convenio(0, "", "", ""); 
     
    private final Logger log = Logger.getLogger(ConvenioControlador.class);
    private URL url = ConvenioControlador.class.getResource("Log4j.properties");
@@ -221,7 +222,7 @@ public class ConvenioControlador {
     //Metodo que trae un objeto de tipo convenio con los atributos para su edición o eliminacion
     public Convenio traerUnConvenioAlFormulario(String nomConv){
               
-        Convenio convenioRescatado = new Convenio();
+        Convenio convenioRescatado = new Convenio(0, "", "", "");
         PreparedStatement ps1 = null;
         try{
             Connection cn1 = Conexion.conectar();          
@@ -265,5 +266,29 @@ public class ConvenioControlador {
             log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de un convenio utilizando su ID: " + e);
         } 
         return nombreConvenio;
+    }
+    
+    //Metodo que permite consultar la informacion de un convenio en general
+    public Convenio consultarUnConvenioMedianteID(int idConv){
+                              
+        //Consulta el nombre de la tarifa utilizando su id
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select * from convenios where Id_convenio = " + idConv);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                convenioConsultado.setId(rs.getInt("Id_convenio"));
+                convenioConsultado.setNombre(rs.getString("Nombre_convenio"));
+                convenioConsultado.setMonto(rs.getString("Monto"));
+                convenioConsultado.setFrecuencia(rs.getString("Frecuencia"));              
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar tarifa!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar la informacion total de un convenio utilizando su ID: " + e);
+        } 
+        return convenioConsultado;
     }
 }

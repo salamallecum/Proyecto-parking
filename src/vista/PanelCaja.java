@@ -1,5 +1,6 @@
 package vista;
 
+import clasesDeApoyo.generadorClavesYCodigos;
 import com.sun.glass.events.KeyEvent;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
@@ -7,11 +8,7 @@ import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import controlador.VehiculoControlador;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import modelo.Convenio;
 import modelo.Parqueadero;
 import static vista.LiquidacionVehiculo.lbl_convenio;
 import static vista.LiquidacionVehiculo.lbl_tarifa;
@@ -29,8 +26,7 @@ import static vista.PanelUsuarios.modelo;
 public class PanelCaja extends javax.swing.JPanel{
 
     Parqueadero nomParqueadero;
-    Convenio nomConvenio;
-      
+          
     String fecha_movVehiculo;
     String user;
     String convenioParaTicket;
@@ -64,7 +60,7 @@ public class PanelCaja extends javax.swing.JPanel{
     
     public static DefaultTableModel modeloCaja;
     
-    Factura nuevaFactura = new Factura(0, 0, "", "", "", "", 0, "", "", "", 0, 0, "", 0);
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
     
     //Declaramos un objeto tipo Parqueadero y se lo aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
@@ -218,7 +214,7 @@ public class PanelCaja extends javax.swing.JPanel{
         table_operacionParqueadero.setEnabled(false);
         jScrollPane1.setViewportView(table_operacionParqueadero);
 
-        btn_generarCierreDeCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generarCierreDeCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/IconoFactura.png"))); // NOI18N
         btn_generarCierreDeCaja.setText("Generar Cierre PDF");
         btn_generarCierreDeCaja.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_generarCierreDeCaja.setEnabled(false);
@@ -400,7 +396,8 @@ public class PanelCaja extends javax.swing.JPanel{
     }//GEN-LAST:event_txt_PlacaActionPerformed
 
     private void btn_generarCierreDeCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarCierreDeCajaActionPerformed
-        new CuadreCaja().setVisible(true);
+        new CierreDeCaja().setVisible(true);
+        btn_generarCierreDeCaja.setEnabled(false);        
     }//GEN-LAST:event_btn_generarCierreDeCajaActionPerformed
 
     //Metodo al presionar tecla esc en el campo placa
@@ -484,7 +481,7 @@ public class PanelCaja extends javax.swing.JPanel{
                             
         //Aperturamos la caja
         if(decision == JOptionPane.YES_OPTION){
-            
+        
             int decision_conteoDeCaja = JOptionPane.showConfirmDialog(this, "¿Desea realizar un arqueo de caja?.", "Arqueo de caja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             
             if(decision_conteoDeCaja == JOptionPane.YES_OPTION){
@@ -494,8 +491,8 @@ public class PanelCaja extends javax.swing.JPanel{
             
             }else if(decision_conteoDeCaja == JOptionPane.NO_OPTION){}   
                 
-        }else if(decision == JOptionPane.NO_OPTION){}                       
-        
+       }else if(decision == JOptionPane.NO_OPTION){}                       
+           
     }//GEN-LAST:event_btn_abrirCajaActionPerformed
 
 
@@ -583,9 +580,9 @@ public class PanelCaja extends javax.swing.JPanel{
                         usoIngresoRegistrado = true;
                         usoIngresoDesconocido = false;
 
-                        parqControlador.consultarNombreDeParqueaderoMedianteID(idParq);
-                        convControla.consultarNombreDeConvenioMedianteID(idConvenio);
-                        tarifaControlador.consultarNombreDeTarifaMedianteID(idTarifa);
+                        lbl_parqueadero.setText(parqControlador.consultarNombreDeParqueaderoMedianteID(idParq));
+                        txt_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(idConvenio));
+                        txt_tarifa.setText(tarifaControlador.consultarNombreDeTarifaMedianteID(idTarifa));
 
                     }else if(decision == JOptionPane.NO_OPTION){
                         Limpiar();
@@ -611,6 +608,8 @@ public class PanelCaja extends javax.swing.JPanel{
     //Metodo que ingresa vehiculos no registrados en el sistema al parqueadero
     public void ingresarVehiculoDesconocido(){
         
+        boolean ventanaEmergCopiaIngresoVehiculoDesconocido = false; 
+        
         int clase_cmb,  validacion = 0;
         String placa, dueño = "";
         String clase_string = "";
@@ -620,9 +619,13 @@ public class PanelCaja extends javax.swing.JPanel{
         String convenioAAplicar = txt_convenio.getText().trim();
         String tarifaAAplicar = txt_tarifa.getText().trim();
         clase_cmb = cmb_clase.getSelectedIndex();
-        int noParq = cmb_numParqueadero.getSelectedIndex();
+        
+        //Creamos un objeto de la clase modelo Parqueadero con lo seleccionado en el combobox de n° parqueadero
+        nomParqueadero = (Parqueadero)cmb_numParqueadero.getSelectedItem(); 
 
+        int validoParqueadero = nomParqueadero.getId();
         int minimoCaracteres = 6;
+        
 
         if(placa.equals("")){
             txt_Placa.setBackground(Color.red);
@@ -643,7 +646,7 @@ public class PanelCaja extends javax.swing.JPanel{
             clase_string = "MOTO";
         }
 
-        if(noParq==0){
+        if(validoParqueadero==0){
             cmb_numParqueadero.setBackground(Color.red);
             validacion++;
         }
@@ -656,7 +659,7 @@ public class PanelCaja extends javax.swing.JPanel{
             validacion++;
         }   
         
-        boolean elParqSeleccionadoEstaOcupado = parqControlador.consultarDisponibilidadDeParqueaderoMedianteID(noParq);
+        boolean elParqSeleccionadoEstaOcupado = parqControlador.consultarDisponibilidadDeParqueaderoMedianteID(validoParqueadero);
         
         if(elParqSeleccionadoEstaOcupado ==  true){
             cmb_numParqueadero.setBackground(Color.red);
@@ -668,12 +671,12 @@ public class PanelCaja extends javax.swing.JPanel{
             if(validacion == 0){
                 
                 nuevaFactura.setId(0);
-                nuevaFactura.setCodigo(facturaControla.codigosFactura());
+                nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
                 nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                 nuevaFactura.setPlaca(placa);
                 nuevaFactura.setPropietario(dueño);
                 nuevaFactura.setClaseDeVehiculo(clase_string);
-                nuevaFactura.setId_parqueadero(noParq);
+                nuevaFactura.setId_parqueadero(validoParqueadero);
                 nuevaFactura.setFacturadoPor(user);
                 nuevaFactura.setEstadoDeFactura("Abierta");
                 nuevaFactura.setEstaContabilizada("No");
@@ -693,7 +696,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 fila[1] = placa;
                 fila[2] = dueño;
                 fila[3] = facturaControla.fecha_Ingresovehiculo();
-                fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(noParq);
+                fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(validoParqueadero);
 
                 modelo.addRow(fila);
 
@@ -703,9 +706,25 @@ public class PanelCaja extends javax.swing.JPanel{
                 cmb_numParqueadero.setBackground(Color.green);
                 txt_convenio.setBackground(Color.green);
                 txt_tarifa.setBackground(Color.green);
-
-                JOptionPane.showMessageDialog(null, "Vehiculo ingresado satisfactoriamente.");              
+            
                 facturaControla.generarTicketIngreso(placa);
+                
+                ventanaEmergCopiaIngresoVehiculoDesconocido = true;
+
+                while(ventanaEmergCopiaIngresoVehiculoDesconocido == true){
+                   String botones[] = {"Imprimir copia", "Cerrar"};
+                   //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
+                   int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo ingresado satisfactoriamente.", "Ingreso de vehiculo", 0, 1, null, botones, this);
+
+                   if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
+                       facturaControla.generarTicketIngreso(placa); 
+                   }
+
+                   if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+                       ventanaEmergCopiaIngresoVehiculoDesconocido = false;
+                   }
+                }
+                            
                 Normalizar();
                 Limpiar();
                 
@@ -717,6 +736,8 @@ public class PanelCaja extends javax.swing.JPanel{
     }
     
     public void ingresarVehiculoRegistrado(){
+        
+        boolean ventanaEmergCopiaIngresoVehiculoRegistrado = false;
         
         int parqueaderos_cmb, clase_cmb,  validacion = 0;
         String placa, dueño, clase_string = "";
@@ -767,7 +788,7 @@ public class PanelCaja extends javax.swing.JPanel{
             if(validacion == 0){
                 
                 nuevaFactura.setId(0);
-                nuevaFactura.setCodigo(facturaControla.codigosFactura());
+                nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
                 nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                 nuevaFactura.setPlaca(placa);
                 nuevaFactura.setPropietario(dueño);
@@ -801,9 +822,25 @@ public class PanelCaja extends javax.swing.JPanel{
                 cmb_clase.setBackground(Color.green);
                 txt_convenio.setBackground(Color.green);
                 txt_tarifa.setBackground(Color.green);
-
-                JOptionPane.showMessageDialog(null, "Vehiculo ingresado satisfactoriamente.");              
+            
                 facturaControla.generarTicketIngreso(placa);
+                
+                ventanaEmergCopiaIngresoVehiculoRegistrado = true;
+
+                while(ventanaEmergCopiaIngresoVehiculoRegistrado == true){
+                    String botones[] = {"Imprimir copia", "Cerrar"};
+                    //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
+                    int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo ingresado satisfactoriamente.", "Ingreso de vehiculo", 0, 1, null, botones, this);
+
+                    if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
+                        facturaControla.generarTicketIngreso(placa); 
+                    }
+
+                    if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+                        ventanaEmergCopiaIngresoVehiculoRegistrado = false;
+                    }
+                }              
+                                
                 cmb_numParqueadero.setVisible(true);
                 cmb_numParqueadero.setEnabled(true);
                 cmb_clase.setEnabled(true);
@@ -862,9 +899,7 @@ public class PanelCaja extends javax.swing.JPanel{
         cmb_numParqueadero.setEnabled(true);
 
     }
-     
-    
-
+        
     //Metodo que genera la liquidacion de una vehiculo desde su busqueda en el panel de caja
     public void generarLiquidacion(String placa){
 
@@ -874,10 +909,6 @@ public class PanelCaja extends javax.swing.JPanel{
             hayVehiculoLiquidandose = true;
             new LiquidacionVehiculo().setVisible(true);
             facturaControla.liquidarVehiculo(placa);
-            
-            String tarifa = lbl_tarifa.getText();
-            String convenio = lbl_convenio.getText();
-            LiquidacionVehiculo.calcularTarifa(convenio, tarifa);
         }    
     } 
 }

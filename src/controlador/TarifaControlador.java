@@ -21,6 +21,8 @@ import static vista.GestionarTarifas.table_listaTarifas;
  */
 public class TarifaControlador {
     
+    Tarifa tarifaConsultada = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
+    
     private final Logger log = Logger.getLogger(TarifaControlador.class);
     private URL url = TarifaControlador.class.getResource("Log4j.properties");
     
@@ -142,7 +144,7 @@ public class TarifaControlador {
      //Metodo que trae un objeto de tipo tarifa con los atributos para su edición o eliminacion
     public Tarifa traerUnaTarifaAlFormulario(String nomTarifa){
         
-        Tarifa tarifaRescatada = new Tarifa();
+        Tarifa tarifaRescatada = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
         PreparedStatement ps1 = null;
         try{
             Connection cn1 = Conexion.conectar();          
@@ -296,5 +298,37 @@ public class TarifaControlador {
             log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de una tarifa utilizando su ID: " + e);
         } 
         return nombreTarifa;
+    }
+    
+    //Metodo que permite consultar la informacion de una tarifa en general
+    public Tarifa consultarUnaTarifaMedianteID(int idTarif){
+                              
+        //Consulta el nombre de la tarifa utilizando su id
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select * from tarifas where Id_tarifa = " + idTarif);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                tarifaConsultada.setId(rs.getInt("Id_tarifa"));
+                tarifaConsultada.setNombreTarifa(rs.getString("Nombre_tarifa"));
+                tarifaConsultada.setMontoTarifa(rs.getString("Monto_tarifa"));
+                tarifaConsultada.setFrecuenciaTarifa(rs.getString("Frecuencia_tarifa"));
+                tarifaConsultada.setTarifaAnulada(rs.getString("Tarifa_anulada"));
+                tarifaConsultada.setTarifaTieneDescuento(rs.getString("Tiene_descuento"));
+                tarifaConsultada.setTiempoDelDescuento(rs.getString("Tiempo_descuento"));
+                tarifaConsultada.setUnidadDelDescuento(rs.getString("Unidad_descuento"));
+                tarifaConsultada.setTarifaCobraTiempoAdicional(rs.getString("Cobrar_Tiempo_Ad"));
+                tarifaConsultada.setMontoTiempoAdicional(rs.getString("Monto_Tiempo_Ad"));
+                tarifaConsultada.setUnidadDelTiempoAdicional(rs.getString("Unidad_Tiempo_Ad"));
+                
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar tarifa!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar la informacion total de una tarifa utilizando su ID: " + e);
+        } 
+        return tarifaConsultada;
     }
 }

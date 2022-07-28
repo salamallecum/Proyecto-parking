@@ -211,7 +211,7 @@ public class AcercaDe extends javax.swing.JFrame {
     private void cerrarAcercaDe(){
         
         String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Acerca de", 0, 0, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Acerca de", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             boolean desdeMenAdministrador = MenuAdministrador.acercaDeDesdeMenuAdministradorAbierto;

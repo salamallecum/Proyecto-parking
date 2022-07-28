@@ -50,8 +50,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     
     //Declaramos los objetos  y se los aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
-    Convenio conv = new Convenio();
-    Tarifa tarif = new Tarifa();
+    Convenio conv = new Convenio(0, "", "", "");
+    Tarifa tarif = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
     
     //Variables boton editar
     String parqueaderoActual;

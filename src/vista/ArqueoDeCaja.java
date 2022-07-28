@@ -1,5 +1,6 @@
 package vista;
 
+import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.ArqueoControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
@@ -8,6 +9,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
@@ -16,6 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import modelo.Arqueo;
 import modelo.Parqueadero;
+import org.apache.log4j.Logger;
 import static vista.PanelCaja.cmb_numParqueadero;
 import static vista.PanelCaja.contadorFacturas;
 import static vista.PanelCaja.hayVehiculoLiquidandose;
@@ -75,8 +78,11 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
     
     //Hilos que mantienen el actualizadas las facturas y el estado del parqueadero en tiempo real
-    public static Thread hilo1;
-    public static Thread hilo2;
+    Thread hilo1 = new Thread(this);
+    Thread hilo2 = new Thread(this);
+    
+    private final Logger log = Logger.getLogger(ArqueoDeCaja.class);
+    private URL url = ArqueoDeCaja.class.getResource("Log4j.properties");
     
     /**
      * Creates new form ArqueoDeCaja
@@ -826,7 +832,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         }else{
                       
-            String codigoArqueo = arqueoControla.codigosArqueo();
+            String codigoArqueo = generadorClavesYCodigos.generarRandomString(10);
 
             nuevoArqueo.setId(0);
             nuevoArqueo.setCodigo(codigoArqueo);
@@ -1534,7 +1540,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
             try{
                 ct.sleep(120000);
-            }catch(InterruptedException e){}
+            }catch(InterruptedException e){
+                log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos disponibles en combobox panelCaja: " + e); 
+            }
         }
         while(ct1 == hilo2){
 
@@ -1543,7 +1551,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
             try{
                 ct1.sleep(10000);
-            }catch(InterruptedException e){}
+            }catch(InterruptedException e){
+                log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos ingresados al parqueadero del panelCaja: " + e); 
+            }
         }
     }
 }
