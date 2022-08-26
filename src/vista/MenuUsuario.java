@@ -343,8 +343,13 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_jMenuItem_cerrarSesionMouseClicked
 
     private void jMenuItem_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_cerrarSesionActionPerformed
-        usuControlador.cerrarSesion(user);
-        dispose();
+        boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
+        
+        if(sePuedeCerrarSesion == false){
+            dispose();
+            new Login().setVisible(true);
+            log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
+        }
     }//GEN-LAST:event_jMenuItem_cerrarSesionActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed

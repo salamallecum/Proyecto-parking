@@ -8,15 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import modelo.Factura;
+import modelo.Tarifa;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -26,6 +29,9 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import vista.LiquidacionVehiculo;
+import static vista.LiquidacionVehiculo.lbl_totalAPagar;
+import static vista.LiquidacionVehiculo.lbl_diferencia;
+import vista.PanelCaja;
 
 
 /**
@@ -120,6 +126,116 @@ public class FacturaControlador {
         return fecha_movVehiculo;
     }
     
+    //Metodo que se encarga de convertir las fechas de ingreso y salida de vehiculos de String a Date
+    public Date convertidorDeFechasADate(String fechaAConvertir){
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date fechaConvertida = new Date();
+        
+        try {
+            fechaConvertida = dateFormat.parse(fechaAConvertir);
+
+        } catch (ParseException ex) {
+            log.fatal("ERROR - Se ha producido un error al intentar convertir una fecha de String a Date: " + ex); 
+        }
+        
+        return fechaConvertida;
+        
+    }
+    
+    //Metodo que calcula la diferencia que existe entre dos fechas en milisegundos
+    public long calcularDiferenciaDeFechasEnMilisegundos(Calendar fechaDeIngreso, Date fechaDeSalida){
+        long resultado = Math.abs(fechaDeIngreso.getTimeInMillis() - fechaDeSalida.getTime());
+        return resultado;        
+    }
+    
+    //Metodo que le aplica el descuento ala diferencia de tiempo obtenida y hace el calculo correspondiente 
+    public long calcularDiferenciaConDescuento(long dif, long desc) {
+        long diferenciaFinal = dif - desc;
+        return diferenciaFinal;
+    }   
+    
+    //Metodo que calcula el monto a pagar
+    public String calcularPago(long mon, long dif){
+        long total_a_pagar = mon * dif;      
+        String total_pagar_str = Long.toString(total_a_pagar);
+        return total_pagar_str;
+    }
+    
+    public Calendar convertidorDeFechasDeDateACalendar(Date fechaAConvertir){ 
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaAConvertir);
+        return cal;
+    } 
+    
+    //Metodo que calcula el monto a pagar con minutos adicionales (PARA EL COBRO POR HORAS)
+    public String calcularPagoTeniendoEnCuentaMinutosUtilizados(long mon, long dif, Tarifa tarifaInvolucrada, long diferenciaEnMilisegundos){
+        
+        //Hacemos el calculo de pago teniendo en cuenta la diferencia en horas
+        long total_a_pagar_en_horas = mon * dif;
+        String diferenciaAdicional = "";
+               
+        //Leemos la tarifa del campo txt de minutos adicionales
+        String tarifaMinAdicionales_str = tarifaInvolucrada.getMontoTiempoAdicional();
+        long tarifaMinAdicionales = Long.parseLong(tarifaMinAdicionales_str);
+                
+        //Obtenemos la diferencia en minutos total
+        long diferenciaTotalEnMinutos = TimeUnit.MILLISECONDS.toMinutes(diferenciaEnMilisegundos);
+        long tiempoADescontar = 60 * dif;
+        long minutosExtra = diferenciaTotalEnMinutos - tiempoADescontar;
+        long totalAPagarMinutosExtra = minutosExtra * tarifaMinAdicionales;
+        
+        //Calculamos el total a pagar neto (en horas + minutos adicionales)
+        long totalAPagarNeto = total_a_pagar_en_horas + totalAPagarMinutosExtra;
+        
+        //Convertimos los datos para mostrar en pantalla
+        String minutosExtra_str = Long.toString(minutosExtra);
+        String totalAPagarNeto_str = darFormatoMoneda(Long.toString(totalAPagarNeto));
+        
+        //Mostramos los datos en pantalla
+        lbl_totalAPagar.setText(totalAPagarNeto_str);
+        lbl_totalAPagar.setVisible(true);
+        
+        diferenciaAdicional = " y " + minutosExtra_str + " minutos";
+        
+        return diferenciaAdicional;
+            
+    }
+    
+    //Metodo que calcula el monto a pagar con minutos adicionales (PARA EL COBRO POR DIAS)
+    private String calcularPagoTeniendoEnCuentaHorasUtilizadas(long mon, long dif, Tarifa tarifaInvolucrada, long diferenciaEnMilisegundos) {
+        
+        //Hacemos el calculo de pago teniendo en cuenta la diferencia en dias
+        long total_a_pagar_en_dias = mon * dif;
+        String diferenciaAdicional = "";
+               
+        //Leemos la tarifa del campo txt de horas adicionales
+        String tarifaHorasAdicionales_str = tarifaInvolucrada.getMontoTiempoAdicional();;
+        long tarifaHorasAdicionales = Long.parseLong(tarifaHorasAdicionales_str);
+                
+        //Obtenemos la diferencia en horas total
+        long diferenciaTotalEnHoras = TimeUnit.MILLISECONDS.toHours(diferenciaEnMilisegundos);
+        long tiempoADescontar = 24 * dif;
+        long horasExtra = diferenciaTotalEnHoras - tiempoADescontar;
+        long totalAPagarHorasExtra = horasExtra * tarifaHorasAdicionales;
+        
+        //Calculamos el total a pagar neto (en dias + horas adicionales)
+        long totalAPagarNeto = total_a_pagar_en_dias + totalAPagarHorasExtra;
+        
+        //Convertimos los datos para mostrar en pantalla
+        String horasExtra_str = Long.toString(horasExtra);
+        String totalAPagarNeto_str = darFormatoMoneda(Long.toString(totalAPagarNeto));
+        
+        //Mostramos los datos en pantalla
+        lbl_totalAPagar.setText(totalAPagarNeto_str);
+        lbl_totalAPagar.setVisible(true);
+        
+        diferenciaAdicional = " y " + horasExtra_str + " horas";
+        
+        return diferenciaAdicional;
+    
+    }   
+    
     //Metodo que crea facturas
     public void crearFactura (Factura nvaFactura){
         
@@ -203,15 +319,13 @@ public class FacturaControlador {
            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
 
            //Da una vista previa del ticket
-           /*
            JasperViewer view = new JasperViewer(jprint, false);
            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
            view.setTitle("Ticket de salida vehiculo " + placa_tick);
            view.setVisible(true);
-           */
-
+          
            //Hace que se imprima directamente
-           JasperPrintManager.printReport(jprint, false);
+           //JasperPrintManager.printReport(jprint, false);
 
        }catch(JRException ex){
            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Salida, revise la conexión de la impresora o contacte al administrador!!");
@@ -296,125 +410,25 @@ public class FacturaControlador {
         return facturaConsultada;        
     }
     
-    
-    //Metodo que calcula la tarifa a pagar de parqueadero
-//    public static void calcularTarifa(String variableConvenio, String variableTarifa){
-//        
-//        if(variableConvenio.equals("NINGUNO") && variableTarifa.equals("NINGUNA")){
-//            lbl_totalAPagar.setText("0");
-//            txt_dineroRecibido.setEnabled(false);
-//            txt_dineroRecibido.setText("0");
-//            btn_calcular.setEnabled(false);
-//            lbl_dineroCambio.setText("0");
-//        }else if(!variableConvenio.equals("NINGUNO") && variableTarifa.equals("NINGUNA")){
-//            lbl_totalAPagar.setText("0");
-//            txt_dineroRecibido.setEnabled(false);
-//            txt_dineroRecibido.setText("0");
-//            btn_calcular.setEnabled(false);
-//            lbl_dineroCambio.setText("0");
-//        }else if(variableConvenio.equals("NINGUNO") && !variableTarifa.equals("NINGUNA")){
-            
-//            //Hace la consulta de la tarifa asignada al vehiculo
-//            try {
-//                Connection cn2 = Conexion.conectar();
-//                PreparedStatement pst2 = cn2.prepareStatement(
-//                    "SELECT Monto from tarifas where Nombre_tarifa ='" + variableTarifa + "'");
-//                ResultSet rs2 = pst2.executeQuery();
-//
-//                if(rs2.next()){
-//                    String monto = rs2.getString("Monto");
-//                    montoDelaTarifa = Double.parseDouble(monto);
-//                }
-//                cn2.close();
-//            } catch (SQLException e) {
-//               JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar tarifa de vehiculo!!, contacte al administrador.");
-//            }
-//            
-//            try{
-//                //Calculamos el valor a pagar por el vehiculo
-//                double valorAPagar = 0.0;
-//                long valorPagarDefinitivo;
-//                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                Calendar cal  = Calendar.getInstance();
-//                Date date = cal.getTime();
-//                String fechaHora = dateFormat.format(date);
-//
-//                //Obtenemos la hora de ingreso y la convertimos a Date
-//                String hora_entradaVehiculo = lbl_horaIngreso.getText();
-//
-//                hora_ingr = dateFormat.parse(hora_entradaVehiculo);
-//
-//                //Calculamos la diferencia de tiempos (tiempo de ingreso vs tiempo de salida)
-//                int minutosACobrar = (int) (date.getTime()-hora_ingr.getTime())/60000;
-//
-//                //Aplicamos la tarifa al tiempo estimado
-//                valorAPagar = minutosACobrar * montoDelaTarifa;
-//                
-//                
-//                //Redondeamos el valor a pagar
-//                valorPagarDefinitivo = Math.round(valorAPagar);
-//                
-//                String valor_Pagar = Long.toString(valorPagarDefinitivo);
-//                lbl_totalAPagar.setText(valor_Pagar);
-//                    
-//                    
-//            }catch (ParseException ex) {  
-//                //Logger.getLogger(LiquidacionVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-            
-//        }else if(!variableConvenio.equals("NINGUNO") && !variableTarifa.equals("NINGUNA")){
-            //En este caso, asi tenga un convenio aignado, si la tarifa no es ninguna, predominará la tarifa
-            //Hace la consulta de la tarifa asignada al vehiculo
-             //Hace la consulta de la tarifa asignada al vehiculo
-//            try {
-//                Connection cn2 = Conexion.conectar();
-//                PreparedStatement pst2 = cn2.prepareStatement(
-//                    "SELECT Monto from tarifas where Nombre_tarifa ='" + variableTarifa + "'");
-//                ResultSet rs2 = pst2.executeQuery();
-//
-//                if(rs2.next()){
-//                    String monto = rs2.getString("Monto");
-//                    montoDelaTarifa = Integer.parseInt(monto);
-//                }
-//                cn2.close();
-//            } catch (SQLException e) {
-//                JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar tarifa de vehiculo!!, contacte al administrador.");
-//            }
-//            
-//            try{
-//                //Calculamos el valor a pagar por el vehiculo
-//                double valorAPagar = 0.0;
-//                long valorPagarDefinitivo;
-//                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                Calendar cal  = Calendar.getInstance();
-//                Date date = cal.getTime();
-//                String fechaHora = dateFormat.format(date);
-//
-//                //Obtenemos la hora de ingreso y la convertimos a Date
-//                String hora_entradaVehiculo = lbl_horaIngreso.getText();
-//
-//                hora_ingr = dateFormat.parse(hora_entradaVehiculo);
-//
-//                //Calculamos la diferencia de tiempos (tiempo de ingreso vs tiempo de salida)
-//                int minutosACobrar = (int) (date.getTime()-hora_ingr.getTime())/60000;
-//
-//                //Aplicamos la tarifa al tiempo estimado
-//                valorAPagar = minutosACobrar * montoDelaTarifa;
-//                System.out.println("Valor original: " + valorAPagar);
-//                
-//                //Redondeamos el valor a pagar
-//                valorPagarDefinitivo = Math.round(valorAPagar);
-//                
-//                String valor_Pagar = Long.toString(valorPagarDefinitivo);
-//                lbl_totalAPagar.setText(valor_Pagar);
-//                    
-//                    
-//            }catch (ParseException ex) {  
-//                //Logger.getLogger(LiquidacionVehiculo.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//    }    
+    //Metodo que permite liquidar una factura una vez el vehiculo sale del parqueadero
+    public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String dineroRecibido, String cambio){
+        
+        try{
+            int valor_pagar_int = Integer.parseInt(valor_a_pagar);
+            int efectivo_int = Integer.parseInt(dineroRecibido);
+            int cambio_int = Integer.parseInt(cambio);
 
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"',Valor_a_pagar='"+valor_pagar_int+"',Efectivo='"+efectivo_int+"',Cambio='"+cambio_int+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
+
+            pst.executeUpdate();
+            cn.close();
+
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al ingresar liquidación de vehiculo!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar registrar la liquidación de un vehiculo: " + e);
+        }
+    }
 
 
 }
