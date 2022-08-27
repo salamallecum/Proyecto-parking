@@ -679,6 +679,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
         
+        boolean ventanaEmergenteCopiaTicketSalida = false;
+        
         String dineroRecibido = txt_dineroRecibido.getText();
         
         if(dineroRecibido.equals("")){
@@ -695,12 +697,28 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             String cambio = lbl_dineroCambio.getText();
             
             facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, dineroRecibMoney, cambio);
-            JOptionPane.showMessageDialog(null, "Vehiculo liquidado satisfactoriamente");
             dispose();
             parqControla.liberarParqueadero(placa);
             facturaControla.cerrarFactura(placa);
             facturaControla.generarTicketSalida(placa);
-            PanelCaja.hayVehiculoLiquidandose = false;
+            
+            ventanaEmergenteCopiaTicketSalida = true;
+            
+            while(ventanaEmergenteCopiaTicketSalida == true){
+               String botones[] = {"Imprimir copia", "Cerrar"};
+               //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
+               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
+
+               if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
+                   facturaControla.generarTicketSalida(placa); 
+               }
+
+               if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+                   ventanaEmergenteCopiaTicketSalida = false;
+                   dispose();
+                   PanelCaja.hayVehiculoLiquidandose = false;
+               }
+            }         
         }    
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
 

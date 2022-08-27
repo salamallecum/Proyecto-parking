@@ -3667,3 +3667,463 @@ DEBUG 2022-08-26 20:11:38,556 net.sf.jasperreports.engine.fill.DelayedFillAction
 DEBUG 2022-08-26 20:11:38,556 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: MASTER, group: null, band: 0}
 DEBUG 2022-08-26 20:11:38,556 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:550) - Fill 1: ended
 DEBUG 2022-08-26 20:11:38,556 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:closeQueryExecuter:1193) - Fill 1: closing query executer
+ INFO 2022-08-27 12:16:32,656 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-27 12:16:33,329 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-27 12:16:40,551 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+DEBUG 2022-08-27 12:17:04,929 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:146) - Fill 1: created for Arqueo
+DEBUG 2022-08-27 12:17:04,987 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:185) - created delayed actions 1 for filler 1
+DEBUG 2022-08-27 12:17:04,990 net.sf.jasperreports.extensions.ExtensionsEnvironment (ExtensionsEnvironment.java:createDefaultRegistry:78) - Instantiating extensions registry class net.sf.jasperreports.extensions.DefaultExtensionsRegistry
+DEBUG 2022-08-27 12:17:04,991 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:getRegistries:130) - Loading registries for cache key sun.misc.Launcher$AppClassLoader@7f31245a
+DEBUG 2022-08-27 12:17:04,992 net.sf.jasperreports.engine.util.JRLoader (JRLoader.java:collectResources:724) - Found resource jasperreports_extension.properties at jar:file:/E:/MIS%20PROYECTOS/Java/proyectos%20netbeans%20Java/ProyectoParking/librerias/libReports/jasperreports-6.0.0.jar!/jasperreports_extension.properties in classloader sun.misc.Launcher$AppClassLoader@7f31245a
+DEBUG 2022-08-27 12:17:04,995 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:158) - Loading JasperReports extension properties resource jar:file:/E:/MIS%20PROYECTOS/Java/proyectos%20netbeans%20Java/ProyectoParking/librerias/libReports/jasperreports-6.0.0.jar!/jasperreports_extension.properties
+DEBUG 2022-08-27 12:17:04,997 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.components.headertoolbar.HeaderToolbarParameterContributorExtensionFactory for property net.sf.jasperreports.extension.registry.factory.header.toolbar.parameter.contributor
+DEBUG 2022-08-27 12:17:04,997 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for header.toolbar.parameter.contributor using factory class net.sf.jasperreports.components.headertoolbar.HeaderToolbarParameterContributorExtensionFactory
+DEBUG 2022-08-27 12:17:04,999 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.types.date.DateRangeQueryClauseExtensions for property net.sf.jasperreports.extension.registry.factory.date.range.clause.functions
+DEBUG 2022-08-27 12:17:05,000 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for date.range.clause.functions using factory class net.sf.jasperreports.types.date.DateRangeQueryClauseExtensions
+DEBUG 2022-08-27 12:17:05,005 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.repo.DefaultRepositoryExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.repository
+DEBUG 2022-08-27 12:17:05,005 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for repository using factory class net.sf.jasperreports.repo.DefaultRepositoryExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,006 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.parts.PartComponentsExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.parts
+DEBUG 2022-08-27 12:17:05,008 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for parts using factory class net.sf.jasperreports.parts.PartComponentsExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,016 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.ContentTypeMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.content.type.mapping
+DEBUG 2022-08-27 12:17:05,016 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for content.type.mapping using factory class net.sf.jasperreports.web.util.ContentTypeMappingExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,724 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.simple.font.families
+DEBUG 2022-08-27 12:17:05,725 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for simple.font.families using factory class net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,727 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.data.DefaultDataAdapterServiceExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.data.adapter.services
+DEBUG 2022-08-27 12:17:05,728 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for data.adapter.services using factory class net.sf.jasperreports.data.DefaultDataAdapterServiceExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,731 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.WebResourceHandlersExtensionRegistryFactory for property net.sf.jasperreports.extension.registry.factory.jive.web.resource.handlers
+DEBUG 2022-08-27 12:17:05,732 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for jive.web.resource.handlers using factory class net.sf.jasperreports.web.util.WebResourceHandlersExtensionRegistryFactory
+DEBUG 2022-08-27 12:17:05,733 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.util.CastorMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.castor.mapping
+DEBUG 2022-08-27 12:17:05,734 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for castor.mapping using factory class net.sf.jasperreports.util.CastorMappingExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,737 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.export.MatcherExportFilterMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.matcher.exporter.filter.mapping
+DEBUG 2022-08-27 12:17:05,737 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for matcher.exporter.filter.mapping using factory class net.sf.jasperreports.engine.export.MatcherExportFilterMappingExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,740 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.governors.GovernorExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.governor
+DEBUG 2022-08-27 12:17:05,741 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for governor using factory class net.sf.jasperreports.governors.GovernorExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,745 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.RequirejsModuleMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.requirejs.module.mapping
+DEBUG 2022-08-27 12:17:05,746 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for requirejs.module.mapping using factory class net.sf.jasperreports.web.util.RequirejsModuleMappingExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,749 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.query.SQLQueryClauseFunctionsExtensions for property net.sf.jasperreports.extension.registry.factory.sql.clause.functions
+DEBUG 2022-08-27 12:17:05,750 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for sql.clause.functions using factory class net.sf.jasperreports.engine.query.SQLQueryClauseFunctionsExtensions
+DEBUG 2022-08-27 12:17:05,759 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.engine.style.PropertyStyleProviderExtensionFactory for property net.sf.jasperreports.extension.registry.factory.property.style.provider
+DEBUG 2022-08-27 12:17:05,760 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for property.style.provider using factory class net.sf.jasperreports.engine.style.PropertyStyleProviderExtensionFactory
+DEBUG 2022-08-27 12:17:05,761 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.web.util.JacksonMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.jackson.mapping
+DEBUG 2022-08-27 12:17:05,762 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for jackson.mapping using factory class net.sf.jasperreports.web.util.JacksonMappingExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,763 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.extensions.DefaultExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.default
+DEBUG 2022-08-27 12:17:05,763 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for default using factory class net.sf.jasperreports.extensions.DefaultExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,765 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.components.ComponentsExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.components
+DEBUG 2022-08-27 12:17:05,766 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for components using factory class net.sf.jasperreports.components.ComponentsExtensionsRegistryFactory
+DEBUG 2022-08-27 12:17:05,782 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:loadRegistries:208) - Instantiating registry of type net.sf.jasperreports.components.headertoolbar.HeaderToolbarConditionalStyleProviderExtensionFactory for property net.sf.jasperreports.extension.registry.factory.header.toolbar.style.provider
+DEBUG 2022-08-27 12:17:05,783 net.sf.jasperreports.extensions.DefaultExtensionsRegistry (DefaultExtensionsRegistry.java:instantiateRegistry:233) - Instantiating extensions registry for header.toolbar.style.provider using factory class net.sf.jasperreports.components.headertoolbar.HeaderToolbarConditionalStyleProviderExtensionFactory
+DEBUG 2022-08-27 12:17:05,865 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: BACKGROUND} for band 1137218356
+DEBUG 2022-08-27 12:17:05,890 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: TITLE} for band 1999931823
+DEBUG 2022-08-27 12:17:05,890 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_HEADER} for band 879620767
+DEBUG 2022-08-27 12:17:05,890 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_HEADER} for band 567169658
+DEBUG 2022-08-27 12:17:05,893 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: DETAIL} for band 425830146
+DEBUG 2022-08-27 12:17:05,894 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_FOOTER} for band 600148002
+DEBUG 2022-08-27 12:17:05,894 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_FOOTER} for band 1050147548
+DEBUG 2022-08-27 12:17:05,894 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: SUMMARY} for band 817617169
+DEBUG 2022-08-27 12:17:05,896 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:setPageHeight:108) - Filler 1 - pageHeight: 338, columnFooterOffsetY: 324, lastPageColumnFooterOffsetY: 324
+DEBUG 2022-08-27 12:17:05,897 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:488) - Fill 1: filling report
+DEBUG 2022-08-27 12:17:05,904 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:createQueryDatasource:1112) - Fill 1: Creating sql query executer
+DEBUG 2022-08-27 12:17:05,910 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:createStatement:254) - SQL query string: SELECT codigo,
+	usuario,
+	base_caja,
+	numerobilletes100mil,
+	numerobilletes50mil,
+	numerobilletes20mil,
+	numerobilletes10mil,
+	numerobilletes5mil,
+	numerobilletes2mil,
+	`numerobilletesMil`,
+	numeromonedas500,
+	numeromonedas200,
+	numeromonedas100,
+	numeromonedas50,
+	montoen100mil,
+	montoen50mil,
+	montoen20mil,
+	montoen10mil,
+	montoen5mil,
+	montoen2mil,
+	montoenmil,
+	montoen500,
+	montoen200,
+	montoen100,
+	montoen50,
+	total_caja,
+	diferencia
+FROM bd_sistemaparking.arqueos
+WHERE codigo = ?
+DEBUG 2022-08-27 12:17:05,911 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:setStatementParameter:396) - Parameter #1 (codigo of type java.lang.String): Pg9IH1AXol
+DEBUG 2022-08-27 12:17:05,934 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:addPage:1138) - Fill 1: adding page 1
+DEBUG 2022-08-27 12:17:05,935 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillTitle:306) - Fill 1: title at 14
+DEBUG 2022-08-27 12:17:05,955 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateImage@76bc505
+DEBUG 2022-08-27 12:17:05,980 net.sf.jasperreports.engine.fill.SimpleTextLineWrapper (SimpleTextLineWrapper.java:createElementFontInfosFillCache:303) - creating element font infos cache of size 2000
+DEBUG 2022-08-27 12:17:06,049 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@119a2b4e
+DEBUG 2022-08-27 12:17:06,050 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@66d8af9f
+DEBUG 2022-08-27 12:17:06,051 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@66d8af9f for (null, {java.util.Date, dd/MM/yyyy,null,null,null})
+DEBUG 2022-08-27 12:17:06,051 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@11c084a1
+DEBUG 2022-08-27 12:17:06,052 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1999931823}
+DEBUG 2022-08-27 12:17:06,052 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 879620767}
+DEBUG 2022-08-27 12:17:06,052 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 567169658}
+DEBUG 2022-08-27 12:17:06,053 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 68
+DEBUG 2022-08-27 12:17:06,070 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@7998f7d6
+DEBUG 2022-08-27 12:17:06,070 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7998f7d6 for object net.sf.jasperreports.engine.fill.JRTemplateText@6e0a7599
+DEBUG 2022-08-27 12:17:06,071 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@5e743024
+DEBUG 2022-08-27 12:17:06,071 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@245fb709
+DEBUG 2022-08-27 12:17:06,071 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@1ac7c213
+DEBUG 2022-08-27 12:17:06,072 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@275cda6f
+DEBUG 2022-08-27 12:17:06,072 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@58d63bb0
+DEBUG 2022-08-27 12:17:06,072 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@168285c
+DEBUG 2022-08-27 12:17:06,073 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@259ba538
+DEBUG 2022-08-27 12:17:06,073 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@64d58c46
+DEBUG 2022-08-27 12:17:06,074 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@d3720d7
+DEBUG 2022-08-27 12:17:06,074 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@4d5dc3e5
+DEBUG 2022-08-27 12:17:06,074 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@35171d13
+DEBUG 2022-08-27 12:17:06,075 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@7de8004b
+DEBUG 2022-08-27 12:17:06,075 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@496db6b9
+DEBUG 2022-08-27 12:17:06,075 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@6a8c169a
+DEBUG 2022-08-27 12:17:06,076 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5e743024 for object net.sf.jasperreports.engine.fill.JRTemplateText@677e715d
+DEBUG 2022-08-27 12:17:06,076 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@5a29dfa1
+DEBUG 2022-08-27 12:17:06,076 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@5a29dfa1 for (null, null)
+DEBUG 2022-08-27 12:17:06,077 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5a29dfa1 for object net.sf.jasperreports.engine.fill.JRTemplateText@7ed57223
+DEBUG 2022-08-27 12:17:06,077 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@5a29dfa1 for (null, null)
+DEBUG 2022-08-27 12:17:06,077 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@746783a5
+DEBUG 2022-08-27 12:17:06,083 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,084 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@6087f0ed
+DEBUG 2022-08-27 12:17:06,084 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,085 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@7447ef8b
+DEBUG 2022-08-27 12:17:06,085 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,085 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@21d6df4a
+DEBUG 2022-08-27 12:17:06,085 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,086 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@69640a7e
+DEBUG 2022-08-27 12:17:06,086 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,086 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@36bb8f27
+DEBUG 2022-08-27 12:17:06,086 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,087 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@7d4b05cc
+DEBUG 2022-08-27 12:17:06,087 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,087 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@6af0b9a0
+DEBUG 2022-08-27 12:17:06,087 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,088 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@230e797a
+DEBUG 2022-08-27 12:17:06,088 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,117 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@4926188b
+DEBUG 2022-08-27 12:17:06,117 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,118 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for object net.sf.jasperreports.engine.fill.JRTemplateText@6ce61106
+DEBUG 2022-08-27 12:17:06,118 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@746783a5 for (null, null)
+DEBUG 2022-08-27 12:17:06,118 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@3348883
+DEBUG 2022-08-27 12:17:06,118 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@3348883 for (null, null)
+DEBUG 2022-08-27 12:17:06,119 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@3348883 for object net.sf.jasperreports.engine.fill.JRTemplateText@5321e436
+DEBUG 2022-08-27 12:17:06,119 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@3348883 for (null, null)
+DEBUG 2022-08-27 12:17:06,119 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99
+DEBUG 2022-08-27 12:17:06,120 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,120 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@760806e9
+DEBUG 2022-08-27 12:17:06,120 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,121 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@51dfe83b
+DEBUG 2022-08-27 12:17:06,121 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@51dfe83b for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,121 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@75256dcf
+DEBUG 2022-08-27 12:17:06,121 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,121 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@432c12cc
+DEBUG 2022-08-27 12:17:06,142 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,142 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@6d9cb4a2
+DEBUG 2022-08-27 12:17:06,143 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,143 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@7dbc3fc5
+DEBUG 2022-08-27 12:17:06,144 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,144 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@23a96ea8
+DEBUG 2022-08-27 12:17:06,144 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,144 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@30a263
+DEBUG 2022-08-27 12:17:06,145 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@30a263 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,145 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@8813f63
+DEBUG 2022-08-27 12:17:06,145 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,146 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for object net.sf.jasperreports.engine.fill.JRTemplateText@145f7ba1
+DEBUG 2022-08-27 12:17:06,146 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@2aba5c99 for (null, {java.lang.Integer, null,null,null,null})
+DEBUG 2022-08-27 12:17:06,148 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 425830146}
+DEBUG 2022-08-27 12:17:06,148 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 600148002}
+DEBUG 2022-08-27 12:17:06,148 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1050147548}
+DEBUG 2022-08-27 12:17:06,149 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: COLUMN, group: null, band: 0}
+DEBUG 2022-08-27 12:17:06,189 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: PAGE, group: null, band: 0}
+DEBUG 2022-08-27 12:17:06,189 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: REPORT, group: null, band: 0}
+DEBUG 2022-08-27 12:17:06,189 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: MASTER, group: null, band: 0}
+DEBUG 2022-08-27 12:17:06,190 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:550) - Fill 1: ended
+DEBUG 2022-08-27 12:17:06,190 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:closeQueryExecuter:1193) - Fill 1: closing query executer
+DEBUG 2022-08-27 12:17:42,652 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:146) - Fill 1: created for report name
+DEBUG 2022-08-27 12:17:42,655 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:185) - created delayed actions 1 for filler 1
+DEBUG 2022-08-27 12:17:42,655 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: BACKGROUND} for band 662026380
+DEBUG 2022-08-27 12:17:42,656 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: TITLE} for band 1375632081
+DEBUG 2022-08-27 12:17:42,656 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_HEADER} for band 2243616
+DEBUG 2022-08-27 12:17:42,656 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_HEADER} for band 356340393
+DEBUG 2022-08-27 12:17:42,658 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: DETAIL} for band 1268187023
+DEBUG 2022-08-27 12:17:42,659 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_FOOTER} for band 271838315
+DEBUG 2022-08-27 12:17:42,659 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_FOOTER} for band 1640794737
+DEBUG 2022-08-27 12:17:42,659 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: SUMMARY} for band 59440612
+DEBUG 2022-08-27 12:17:42,660 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:setPageHeight:108) - Filler 1 - pageHeight: 425, columnFooterOffsetY: 383, lastPageColumnFooterOffsetY: 405
+DEBUG 2022-08-27 12:17:42,660 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:488) - Fill 1: filling report
+DEBUG 2022-08-27 12:17:42,660 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:createQueryDatasource:1112) - Fill 1: Creating sql query executer
+DEBUG 2022-08-27 12:17:42,661 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:createStatement:254) - SQL query string: SELECT
+     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
+     facturas.`Codigo` AS facturas_Codigo,
+     facturas.`Placa` AS facturas_Placa,
+     facturas.`Propietario` AS facturas_Propietario,
+     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,
+     facturas.`Facturado_por` AS facturas_Facturado_por,
+     facturas.`Estado_fctra` AS facturas_Estado_fctra,
+     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,
+     facturas.`Hora_salida` AS facturas_Hora_salida,
+     facturas.`Valor_a_pagar` AS facturas_Valor_a_pagar,
+     facturas.`Efectivo` AS facturas_Efectivo,
+     facturas.`Cambio` AS facturas_Cambio,
+     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,
+     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
+     facturas.`Contabilizada` AS facturas_Contabilizada
+FROM
+     `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`
+     INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`
+     INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`
+WHERE
+     facturas.`Placa` = ?
+ AND facturas.`Estado_fctra` = 'Cerrada'
+ AND facturas.`Contabilizada` = 'No'
+DEBUG 2022-08-27 12:17:42,661 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:setStatementParameter:396) - Parameter #1 (placa of type java.lang.String): COC231
+DEBUG 2022-08-27 12:17:42,668 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:addPage:1138) - Fill 1: adding page 1
+DEBUG 2022-08-27 12:17:42,668 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillTitle:306) - Fill 1: title at 20
+DEBUG 2022-08-27 12:17:42,670 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateImage@180be6c
+DEBUG 2022-08-27 12:17:42,670 net.sf.jasperreports.engine.fill.SimpleTextLineWrapper (SimpleTextLineWrapper.java:createElementFontInfosFillCache:303) - creating element font infos cache of size 2000
+DEBUG 2022-08-27 12:17:42,675 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@6e55b81e
+DEBUG 2022-08-27 12:17:42,675 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@5005ae87
+DEBUG 2022-08-27 12:17:42,676 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@d0ee660
+DEBUG 2022-08-27 12:17:42,676 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@d0ee660 for (null, {java.util.Date, dd/MM/yyyy,null,null,null})
+DEBUG 2022-08-27 12:17:42,676 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1375632081}
+DEBUG 2022-08-27 12:17:42,677 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 2243616}
+DEBUG 2022-08-27 12:17:42,677 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 356340393}
+DEBUG 2022-08-27 12:17:42,677 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 78
+DEBUG 2022-08-27 12:17:42,688 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73
+DEBUG 2022-08-27 12:17:42,688 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@4aaf861a
+DEBUG 2022-08-27 12:17:42,689 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@3723785e
+DEBUG 2022-08-27 12:17:42,689 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@4de4a53c
+DEBUG 2022-08-27 12:17:42,690 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@e0d5431
+DEBUG 2022-08-27 12:17:42,690 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@38249cbc
+DEBUG 2022-08-27 12:17:42,690 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@14e9e26e
+DEBUG 2022-08-27 12:17:42,690 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@7ccc788a
+DEBUG 2022-08-27 12:17:42,691 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@180407fe
+DEBUG 2022-08-27 12:17:42,691 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@459b93e
+DEBUG 2022-08-27 12:17:42,691 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@5f78c149
+DEBUG 2022-08-27 12:17:42,692 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@406fea04
+DEBUG 2022-08-27 12:17:42,692 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@9f95a73 for object net.sf.jasperreports.engine.fill.JRTemplateText@786c2e00
+DEBUG 2022-08-27 12:17:42,692 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a
+DEBUG 2022-08-27 12:17:42,692 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,709 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@285e058c
+DEBUG 2022-08-27 12:17:42,709 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,710 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@175ee549
+DEBUG 2022-08-27 12:17:42,710 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,710 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@e5bc58c
+DEBUG 2022-08-27 12:17:42,710 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,711 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@10b38a15
+DEBUG 2022-08-27 12:17:42,711 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,711 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@48999fea
+DEBUG 2022-08-27 12:17:42,711 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,712 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@288d4f1d
+DEBUG 2022-08-27 12:17:42,712 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,712 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@78aa9825
+DEBUG 2022-08-27 12:17:42,712 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,713 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@74c55607
+DEBUG 2022-08-27 12:17:42,713 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@74c55607 for (null, {java.sql.Timestamp, d/MM/yy hh:mm a,null,null,null})
+DEBUG 2022-08-27 12:17:42,713 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@74c55607 for object net.sf.jasperreports.engine.fill.JRTemplateText@7027e1ba
+DEBUG 2022-08-27 12:17:42,739 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@74c55607 for (null, {java.sql.Timestamp, d/MM/yy hh:mm a,null,null,null})
+DEBUG 2022-08-27 12:17:42,740 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@3290bd04
+DEBUG 2022-08-27 12:17:42,740 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,740 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@1ed760c3
+DEBUG 2022-08-27 12:17:42,740 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,741 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for object net.sf.jasperreports.engine.fill.JRTemplateText@407c7870
+DEBUG 2022-08-27 12:17:42,741 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@31b5f87a for (null, null)
+DEBUG 2022-08-27 12:17:42,741 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1268187023}
+DEBUG 2022-08-27 12:17:42,741 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 271838315}
+DEBUG 2022-08-27 12:17:42,742 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillPageFooter:992) - Fill 1: page footer at 383
+DEBUG 2022-08-27 12:17:42,742 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@f197bf4
+DEBUG 2022-08-27 12:17:42,743 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1640794737}
+DEBUG 2022-08-27 12:17:42,743 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: COLUMN, group: null, band: 0}
+DEBUG 2022-08-27 12:17:42,743 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: PAGE, group: null, band: 0}
+DEBUG 2022-08-27 12:17:42,743 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: REPORT, group: null, band: 0}
+DEBUG 2022-08-27 12:17:42,744 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: MASTER, group: null, band: 0}
+DEBUG 2022-08-27 12:17:42,744 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:550) - Fill 1: ended
+DEBUG 2022-08-27 12:17:42,744 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:closeQueryExecuter:1193) - Fill 1: closing query executer
+DEBUG 2022-08-27 12:17:50,990 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:146) - Fill 1: created for report name
+DEBUG 2022-08-27 12:17:50,991 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:185) - created delayed actions 1 for filler 1
+DEBUG 2022-08-27 12:17:50,991 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: BACKGROUND} for band 1052951582
+DEBUG 2022-08-27 12:17:50,991 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: TITLE} for band 1836831631
+DEBUG 2022-08-27 12:17:50,992 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_HEADER} for band 321847237
+DEBUG 2022-08-27 12:17:50,992 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_HEADER} for band 1226739325
+DEBUG 2022-08-27 12:17:50,994 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: DETAIL} for band 1247721445
+DEBUG 2022-08-27 12:17:50,994 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_FOOTER} for band 1644463556
+DEBUG 2022-08-27 12:17:50,995 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_FOOTER} for band 1453216897
+DEBUG 2022-08-27 12:17:50,995 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: SUMMARY} for band 470456593
+DEBUG 2022-08-27 12:17:50,995 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:setPageHeight:108) - Filler 1 - pageHeight: 425, columnFooterOffsetY: 383, lastPageColumnFooterOffsetY: 405
+DEBUG 2022-08-27 12:17:50,995 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:488) - Fill 1: filling report
+DEBUG 2022-08-27 12:17:50,996 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:createQueryDatasource:1112) - Fill 1: Creating sql query executer
+DEBUG 2022-08-27 12:17:50,996 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:createStatement:254) - SQL query string: SELECT
+     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
+     facturas.`Codigo` AS facturas_Codigo,
+     facturas.`Placa` AS facturas_Placa,
+     facturas.`Propietario` AS facturas_Propietario,
+     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,
+     facturas.`Facturado_por` AS facturas_Facturado_por,
+     facturas.`Estado_fctra` AS facturas_Estado_fctra,
+     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,
+     facturas.`Hora_salida` AS facturas_Hora_salida,
+     facturas.`Valor_a_pagar` AS facturas_Valor_a_pagar,
+     facturas.`Efectivo` AS facturas_Efectivo,
+     facturas.`Cambio` AS facturas_Cambio,
+     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,
+     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
+     facturas.`Contabilizada` AS facturas_Contabilizada
+FROM
+     `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`
+     INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`
+     INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`
+WHERE
+     facturas.`Placa` = ?
+ AND facturas.`Estado_fctra` = 'Cerrada'
+ AND facturas.`Contabilizada` = 'No'
+DEBUG 2022-08-27 12:17:50,997 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:setStatementParameter:396) - Parameter #1 (placa of type java.lang.String): COC231
+DEBUG 2022-08-27 12:17:51,005 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:addPage:1138) - Fill 1: adding page 1
+DEBUG 2022-08-27 12:17:51,005 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillTitle:306) - Fill 1: title at 20
+DEBUG 2022-08-27 12:17:51,007 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateImage@36f3c7b2
+DEBUG 2022-08-27 12:17:51,007 net.sf.jasperreports.engine.fill.SimpleTextLineWrapper (SimpleTextLineWrapper.java:createElementFontInfosFillCache:303) - creating element font infos cache of size 2000
+DEBUG 2022-08-27 12:17:51,010 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@383d02b6
+DEBUG 2022-08-27 12:17:51,011 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@61503fa8
+DEBUG 2022-08-27 12:17:51,011 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@57c4e28c
+DEBUG 2022-08-27 12:17:51,011 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@57c4e28c for (null, {java.util.Date, dd/MM/yyyy,null,null,null})
+DEBUG 2022-08-27 12:17:51,011 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1836831631}
+DEBUG 2022-08-27 12:17:51,012 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 321847237}
+DEBUG 2022-08-27 12:17:51,012 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1226739325}
+DEBUG 2022-08-27 12:17:51,012 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 78
+DEBUG 2022-08-27 12:17:51,018 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191
+DEBUG 2022-08-27 12:17:51,019 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@2fdaf461
+DEBUG 2022-08-27 12:17:51,019 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@4f17234d
+DEBUG 2022-08-27 12:17:51,019 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@3f3778a1
+DEBUG 2022-08-27 12:17:51,020 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@53f5283f
+DEBUG 2022-08-27 12:17:51,020 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@2b74b7dc
+DEBUG 2022-08-27 12:17:51,020 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@5d8ff4b4
+DEBUG 2022-08-27 12:17:51,021 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@59796dd4
+DEBUG 2022-08-27 12:17:51,021 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@23b71214
+DEBUG 2022-08-27 12:17:51,021 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@2df39be9
+DEBUG 2022-08-27 12:17:51,021 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@f7be0b7
+DEBUG 2022-08-27 12:17:51,022 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@1d7e2b41
+DEBUG 2022-08-27 12:17:51,022 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@7fa26191 for object net.sf.jasperreports.engine.fill.JRTemplateText@642ad48
+DEBUG 2022-08-27 12:17:51,022 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba
+DEBUG 2022-08-27 12:17:51,022 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,031 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@67f162ae
+DEBUG 2022-08-27 12:17:51,031 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,031 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@bb96932
+DEBUG 2022-08-27 12:17:51,032 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,032 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@1802ade0
+DEBUG 2022-08-27 12:17:51,032 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,032 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@5505e6c8
+DEBUG 2022-08-27 12:17:51,033 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,033 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@390d1ad4
+DEBUG 2022-08-27 12:17:51,033 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,033 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@793d043e
+DEBUG 2022-08-27 12:17:51,034 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,034 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@74ddcb54
+DEBUG 2022-08-27 12:17:51,034 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,034 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@e9440a1
+DEBUG 2022-08-27 12:17:51,034 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@e9440a1 for (null, {java.sql.Timestamp, d/MM/yy hh:mm a,null,null,null})
+DEBUG 2022-08-27 12:17:51,035 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@e9440a1 for object net.sf.jasperreports.engine.fill.JRTemplateText@5f9e301d
+DEBUG 2022-08-27 12:17:51,062 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@e9440a1 for (null, {java.sql.Timestamp, d/MM/yy hh:mm a,null,null,null})
+DEBUG 2022-08-27 12:17:51,063 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@4e13d324
+DEBUG 2022-08-27 12:17:51,063 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,063 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@548e26d9
+DEBUG 2022-08-27 12:17:51,064 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,064 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for object net.sf.jasperreports.engine.fill.JRTemplateText@7833e5a1
+DEBUG 2022-08-27 12:17:51,064 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@37df42ba for (null, null)
+DEBUG 2022-08-27 12:17:51,065 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1247721445}
+DEBUG 2022-08-27 12:17:51,065 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1644463556}
+DEBUG 2022-08-27 12:17:51,065 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillPageFooter:992) - Fill 1: page footer at 383
+DEBUG 2022-08-27 12:17:51,066 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@56833c62
+DEBUG 2022-08-27 12:17:51,066 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1453216897}
+DEBUG 2022-08-27 12:17:51,067 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: COLUMN, group: null, band: 0}
+DEBUG 2022-08-27 12:17:51,067 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: PAGE, group: null, band: 0}
+DEBUG 2022-08-27 12:17:51,067 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: REPORT, group: null, band: 0}
+DEBUG 2022-08-27 12:17:51,067 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: MASTER, group: null, band: 0}
+DEBUG 2022-08-27 12:17:51,067 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:550) - Fill 1: ended
+DEBUG 2022-08-27 12:17:51,068 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:closeQueryExecuter:1193) - Fill 1: closing query executer
+DEBUG 2022-08-27 12:18:25,644 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:146) - Fill 1: created for ListadoVehiculos
+DEBUG 2022-08-27 12:18:25,873 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:<init>:185) - created delayed actions 1 for filler 1
+DEBUG 2022-08-27 12:18:25,873 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: BACKGROUND} for band 742356936
+DEBUG 2022-08-27 12:18:25,874 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: TITLE} for band 1788483786
+DEBUG 2022-08-27 12:18:25,874 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_HEADER} for band 148125961
+DEBUG 2022-08-27 12:18:25,875 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_HEADER} for band 679985330
+DEBUG 2022-08-27 12:18:25,875 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: DETAIL} for band 1518981380
+DEBUG 2022-08-27 12:18:25,876 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: COLUMN_FOOTER} for band 304595642
+DEBUG 2022-08-27 12:18:25,876 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: PAGE_FOOTER} for band 72629886
+DEBUG 2022-08-27 12:18:25,876 net.sf.jasperreports.engine.fill.JRFillBand (JRFillBand.java:setOrigin:154) - Origin {reportName: null, groupName: null,bandType: SUMMARY} for band 1063308643
+DEBUG 2022-08-27 12:18:25,965 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:setPageHeight:108) - Filler 1 - pageHeight: 792, columnFooterOffsetY: 748, lastPageColumnFooterOffsetY: 772
+DEBUG 2022-08-27 12:18:25,965 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:488) - Fill 1: filling report
+DEBUG 2022-08-27 12:18:25,966 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:createQueryDatasource:1112) - Fill 1: Creating sql query executer
+DEBUG 2022-08-27 12:18:25,966 net.sf.jasperreports.engine.query.JRJdbcQueryExecuter (JRJdbcQueryExecuter.java:createStatement:254) - SQL query string: SELECT
+     vehiculos.`Id_parqueadero` AS vehiculos_Id_parqueadero,
+     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,
+     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
+     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
+     vehiculos.`Placa` AS vehiculos_Placa,
+     vehiculos.`Propietario` AS vehiculos_Propietario,
+     vehiculos.`Clase` AS vehiculos_Clase
+FROM
+     `tarifas` tarifas INNER JOIN `vehiculos` vehiculos ON tarifas.`Id_tarifa` = vehiculos.`Id_tarifa`
+     INNER JOIN `convenios` convenios ON vehiculos.`Id_convenio` = convenios.`Id_convenio`
+     INNER JOIN `parqueaderos` parqueaderos ON vehiculos.`Id_parqueadero` = parqueaderos.`Id_parqueadero`
+DEBUG 2022-08-27 12:18:25,981 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:addPage:1138) - Fill 1: adding page 1
+DEBUG 2022-08-27 12:18:25,982 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillTitle:306) - Fill 1: title at 20
+DEBUG 2022-08-27 12:18:25,997 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateImage@77932ba8
+DEBUG 2022-08-27 12:18:25,997 net.sf.jasperreports.engine.fill.SimpleTextLineWrapper (SimpleTextLineWrapper.java:createElementFontInfosFillCache:303) - creating element font infos cache of size 2000
+DEBUG 2022-08-27 12:18:26,004 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@827597c
+DEBUG 2022-08-27 12:18:26,004 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@989f5f4
+DEBUG 2022-08-27 12:18:26,004 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@686fd162
+DEBUG 2022-08-27 12:18:26,004 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@686fd162 for (null, {java.util.Date, EEEEE dd MMMMM yyyy,null,null,null})
+DEBUG 2022-08-27 12:18:26,005 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1788483786}
+DEBUG 2022-08-27 12:18:26,005 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 148125961}
+DEBUG 2022-08-27 12:18:26,005 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillColumnHeader:461) - Fill 1: column header at 112
+DEBUG 2022-08-27 12:18:26,008 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@5db95d70
+DEBUG 2022-08-27 12:18:26,008 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5db95d70 for object net.sf.jasperreports.engine.fill.JRTemplateText@6f670302
+DEBUG 2022-08-27 12:18:26,008 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5db95d70 for object net.sf.jasperreports.engine.fill.JRTemplateText@29077d4f
+DEBUG 2022-08-27 12:18:26,009 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5db95d70 for object net.sf.jasperreports.engine.fill.JRTemplateText@3ff55dcc
+DEBUG 2022-08-27 12:18:26,009 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5db95d70 for object net.sf.jasperreports.engine.fill.JRTemplateText@2830d59f
+DEBUG 2022-08-27 12:18:26,009 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@5db95d70 for object net.sf.jasperreports.engine.fill.JRTemplateText@7f18ac88
+DEBUG 2022-08-27 12:18:26,009 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 679985330}
+DEBUG 2022-08-27 12:18:26,009 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 132
+DEBUG 2022-08-27 12:18:26,016 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946
+DEBUG 2022-08-27 12:18:26,016 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for (null, null)
+DEBUG 2022-08-27 12:18:26,017 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for object net.sf.jasperreports.engine.fill.JRTemplateText@1cfab551
+DEBUG 2022-08-27 12:18:26,017 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for (null, null)
+DEBUG 2022-08-27 12:18:26,017 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for object net.sf.jasperreports.engine.fill.JRTemplateText@7ef96660
+DEBUG 2022-08-27 12:18:26,017 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for (null, null)
+DEBUG 2022-08-27 12:18:26,018 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for object net.sf.jasperreports.engine.fill.JRTemplateText@3f28227b
+DEBUG 2022-08-27 12:18:26,018 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for (null, null)
+DEBUG 2022-08-27 12:18:26,018 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:92) - Found existing instance net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for object net.sf.jasperreports.engine.fill.JRTemplateText@3c51d651
+DEBUG 2022-08-27 12:18:26,018 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@6b0b946 for (null, null)
+DEBUG 2022-08-27 12:18:26,018 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@7548bcb7
+DEBUG 2022-08-27 12:18:26,019 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@7548bcb7 for (null, null)
+DEBUG 2022-08-27 12:18:26,019 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1518981380}
+DEBUG 2022-08-27 12:18:26,019 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 152
+DEBUG 2022-08-27 12:18:26,021 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1518981380}
+DEBUG 2022-08-27 12:18:26,022 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 172
+DEBUG 2022-08-27 12:18:26,023 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1518981380}
+DEBUG 2022-08-27 12:18:26,024 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillDetail:707) - Fill 1: detail at 192
+DEBUG 2022-08-27 12:18:26,025 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1518981380}
+DEBUG 2022-08-27 12:18:26,026 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillSummary:1018) - Fill 1: summary at 212
+DEBUG 2022-08-27 12:18:26,027 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 304595642}
+DEBUG 2022-08-27 12:18:26,027 net.sf.jasperreports.engine.fill.JRVerticalFiller (JRVerticalFiller.java:fillPageFooter:992) - Fill 1: page footer at 748
+DEBUG 2022-08-27 12:18:26,042 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@6f8dcbfe
+DEBUG 2022-08-27 12:18:26,043 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@6f8dcbfe for (null, null)
+DEBUG 2022-08-27 12:18:26,043 net.sf.jasperreports.engine.util.DeduplicableRegistry$DeduplicableMap (DeduplicableRegistry.java:deduplicate:85) - Added object net.sf.jasperreports.engine.fill.JRTemplateText@122d3d42
+DEBUG 2022-08-27 12:18:26,043 net.sf.jasperreports.engine.fill.JRFillTextField (JRFillTextField.java:registerTemplate:507) - created net.sf.jasperreports.engine.fill.JRTemplateText@122d3d42 for (null, null)
+DEBUG 2022-08-27 12:18:26,044 net.sf.jasperreports.engine.fill.BaseReportFiller (BaseReportFiller.java:addBoundElement:752) - Adding evaluation of net.sf.jasperreports.engine.fill.JRTemplatePrintText@7496ee82 by net.sf.jasperreports.engine.fill.JRFillTextField@faa0a7f for evaluation {type: REPORT, group: null, band: 0}
+DEBUG 2022-08-27 12:18:26,045 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:addDelayedAction:185) - 1 adding delayed action delayed evaluation {element: net.sf.jasperreports.engine.fill.JRFillTextField@faa0a7f, printElement: net.sf.jasperreports.engine.fill.JRTemplatePrintText@7496ee82} at {type: REPORT, group: null, band: 0}, key page net.sf.jasperreports.engine.base.JRBasePrintPage@529ce897, index 0
+DEBUG 2022-08-27 12:18:26,047 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 72629886}
+DEBUG 2022-08-27 12:18:26,047 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: BAND, group: null, band: 1063308643}
+DEBUG 2022-08-27 12:18:26,047 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: COLUMN, group: null, band: 0}
+DEBUG 2022-08-27 12:18:26,048 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: PAGE, group: null, band: 0}
+DEBUG 2022-08-27 12:18:26,048 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: REPORT, group: null, band: 0}
+DEBUG 2022-08-27 12:18:26,048 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:254) - 1 running actions for page net.sf.jasperreports.engine.base.JRBasePrintPage@529ce897 at 0
+DEBUG 2022-08-27 12:18:26,049 net.sf.jasperreports.engine.fill.ElementEvaluationAction (ElementEvaluationAction.java:execute:57) - resolving element net.sf.jasperreports.engine.fill.JRTemplatePrintText@7496ee82 by net.sf.jasperreports.engine.fill.JRFillTextField@faa0a7f on {type: REPORT, group: null, band: 0}
+DEBUG 2022-08-27 12:18:26,050 net.sf.jasperreports.engine.fill.DelayedFillActions (DelayedFillActions.java:runActions:227) - 1 running delayed actions on {type: MASTER, group: null, band: 0}
+DEBUG 2022-08-27 12:18:26,050 net.sf.jasperreports.engine.fill.JRBaseFiller (JRBaseFiller.java:fill:550) - Fill 1: ended
+DEBUG 2022-08-27 12:18:26,050 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:closeQueryExecuter:1193) - Fill 1: closing query executer
+ INFO 2022-08-27 12:18:26,078 controlador.VehiculoControlador (VehiculoControlador.java:generarReportePDFdeVehiculosRegistrados:112) - INFO - Reporte de vehiculos registrados generado satisfactoriamente.
+ WARN 2022-08-27 12:18:44,676 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:239) - ADVERTENCIA - El usuario Alejo97 intentó cerrar la caja estando esta aún abierta
