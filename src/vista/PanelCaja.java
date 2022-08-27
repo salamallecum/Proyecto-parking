@@ -10,14 +10,12 @@ import controlador.VehiculoControlador;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import modelo.Parqueadero;
-import static vista.LiquidacionVehiculo.lbl_convenio;
-import static vista.LiquidacionVehiculo.lbl_tarifa;
 import java.net.URL;
 import javax.swing.table.DefaultTableModel;
 import modelo.Factura;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
-import static vista.PanelUsuarios.modelo;
+
 
 /**
  *
@@ -51,7 +49,7 @@ public class PanelCaja extends javax.swing.JPanel{
     
     private final Logger log = Logger.getLogger(PanelCaja.class);
     private URL url = PanelCaja.class.getResource("Log4j.properties");
-    
+        
     FacturaControlador facturaControla = new FacturaControlador();    
     ConvenioControlador convControla = new ConvenioControlador();
     TarifaControlador tarifaControlador = new TarifaControlador();
@@ -698,7 +696,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 fila[3] = facturaControla.fecha_Ingresovehiculo();
                 fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(validoParqueadero);
 
-                modelo.addRow(fila);
+                modeloCaja.addRow(fila);
 
                 txt_Placa.setBackground(Color.green);
                 txt_nombrePropietario.setBackground(Color.green);
@@ -815,7 +813,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 fila[3] = facturaControla.fecha_Ingresovehiculo();
                 fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(idParq);
 
-                modelo.addRow(fila);
+                modeloCaja.addRow(fila);
                 
                 txt_Placa.setBackground(Color.green);
                 txt_nombrePropietario.setBackground(Color.green);

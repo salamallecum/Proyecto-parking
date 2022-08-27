@@ -39,6 +39,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     Tarifa tarifaACobrar = new Tarifa(0, "", "", "", "", "", "", "", "", "", ""); 
     Convenio convenioAAplicar = new Convenio(0, "", "", "");
     String montoAPagarParaCalculoPago = "";
+    String vueltas = "";
     
     FacturaControlador facturaControla = new FacturaControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -360,7 +361,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                         lbl_diferencia.setVisible(true);
                                                       
                         if(aplicarCostoAdicional.equals("Si")){
-                           difConDescuento_str = difConDescuento_str + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferenciaConDescuento, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
+                           difConDescuento_str = difConDescuento_str + facturaControla.calcularPagoTeniendoEnCuentaHorasUtilizadas(long_montoTarifa, diferenciaConDescuento, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
                            lbl_diferencia.setText(difConDescuento_str);   
                            lbl_diferencia.setVisible(true);
                         
@@ -378,7 +379,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                         lbl_diferencia.setVisible(true);
                         
                         if(aplicarCostoAdicional.equals("Si")){
-                           dif_str = dif_str + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
+                           dif_str = dif_str + facturaControla.calcularPagoTeniendoEnCuentaHorasUtilizadas(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
                            lbl_diferencia.setText(dif_str);
                            lbl_diferencia.setVisible(true);
                         }else{
@@ -480,6 +481,9 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         jLabel9.setText("Cambio:");
 
         txt_dineroRecibido.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_dineroRecibidoFocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_dineroRecibidoFocusLost(evt);
             }
@@ -670,7 +674,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
     //Metodo del boton calcular
     private void btn_calcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calcularActionPerformed
-        calcularMontoAPagar();
+        calcularVueltas();
     }//GEN-LAST:event_btn_calcularActionPerformed
 
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
@@ -683,20 +687,19 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             txt_dineroRecibido.setBackground(Color.white);
                         
         }else{
-            calcularMontoAPagar();
-            
-            //Generamos el dinero a dar de cambio al cliente     
+            calcularVueltas();
+            String monto_a_pagar = lbl_totalAPagar.getText();
             String horaSalida = lbl_horaSalida.getText();
+            String dineroRecibMoney = facturaControla.darFormatoMoneda(dineroRecibido);
             String placa = lbl_placa.getText();
-            String valor_a_pagar = lbl_totalAPagar.getText();
             String cambio = lbl_dineroCambio.getText();
             
-            facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, valor_a_pagar, dineroRecibido, cambio);
+            facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, dineroRecibMoney, cambio);
             JOptionPane.showMessageDialog(null, "Vehiculo liquidado satisfactoriamente");
             dispose();
             parqControla.liberarParqueadero(placa);
-            facturaControla.generarTicketSalida(placa);
             facturaControla.cerrarFactura(placa);
+            facturaControla.generarTicketSalida(placa);
             PanelCaja.hayVehiculoLiquidandose = false;
         }    
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
@@ -705,7 +708,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             String dineroRecibido = txt_dineroRecibido.getText();
-            lbl_dineroCambio.setText(facturaControla.darFormatoMoneda(facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido)));
+            String vueltas = facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido);
+            lbl_dineroCambio.setText(facturaControla.darFormatoMoneda(vueltas));
             lbl_dineroCambio.setVisible(true);
         }
     }//GEN-LAST:event_txt_dineroRecibidoKeyPressed
@@ -737,6 +741,12 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     private void txt_dineroRecibidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_dineroRecibidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_dineroRecibidoActionPerformed
+
+    private void txt_dineroRecibidoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_dineroRecibidoFocusGained
+       txt_dineroRecibido.setText("");
+       lbl_dineroCambio.setText("0");
+       lbl_dineroCambio.setVisible(false);
+    }//GEN-LAST:event_txt_dineroRecibidoFocusGained
 
     /**
      * @param args the command line arguments
@@ -825,10 +835,11 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         }
     }
     
-    //Metodo que hace el calculo del monto a pagar a nivel de presentacion del frame
-    public void calcularMontoAPagar(){
+    //Metodo que hace el calculo del monto de vueltas a nivel de presentacion del frame
+    public void calcularVueltas(){
         String dineroRecibido = txt_dineroRecibido.getText();
-        lbl_dineroCambio.setText(facturaControla.darFormatoMoneda(facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido))); 
+        vueltas = facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido);
+        lbl_dineroCambio.setText(facturaControla.darFormatoMoneda(vueltas)); 
         lbl_dineroCambio.setVisible(true);
     }
 }

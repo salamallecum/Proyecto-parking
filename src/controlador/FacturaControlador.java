@@ -30,8 +30,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import vista.LiquidacionVehiculo;
 import static vista.LiquidacionVehiculo.lbl_totalAPagar;
-import static vista.LiquidacionVehiculo.lbl_diferencia;
-import vista.PanelCaja;
+
 
 
 /**
@@ -83,20 +82,53 @@ public class FacturaControlador {
             JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, cn3);
 
             //Da una vista previa del ticket
-//            JasperViewer view = new JasperViewer(jprint, false);
-//            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//            view.setVisible(true);
-//            view.setTitle("Ticket de ingreso vehiculo " + placaVehiculo);
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            view.setVisible(true);
+            view.setTitle("Ticket de ingreso vehiculo " + placaVehiculo);
             
             
             //Hace que se imprima directamente
-            JasperPrintManager.printReport(jprint, false);
+            //JasperPrintManager.printReport(jprint, false);
             
 
         }catch(JRException ex){
             JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de ingreso, contacte al administrador!!");
             log.fatal("ERROR - Se ha producido un error al intentar generar el ticket de ingreso de un vehiculo: " + ex); 
         }
+    }
+    
+           
+    //Metodo que imprime el ticket de salida de un vehiculo
+    public void generarTicketSalida(String placa_tick){
+        
+        try{
+           Connection cn3 = Conexion.conectar();
+
+           Map parametro = new HashMap();
+           parametro.clear();
+           parametro.put("placa", placa_tick);
+
+           JasperReport reporte = null;
+           //String path = "src\\Reportes\\TicketSalida.jasper";
+
+           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketSalida.jasper"));
+
+           JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
+
+           //Da una vista previa del ticket
+           JasperViewer view = new JasperViewer(jprint, false);
+           view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+           view.setTitle("Ticket de salida vehiculo " + placa_tick);
+           view.setVisible(true);
+          
+           //Hace que se imprima directamente
+           //JasperPrintManager.printReport(jprint, false);
+
+       }catch(JRException ex){
+           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Salida, revise la conexión de la impresora o contacte al administrador!!");
+           log.fatal("ERROR - Se ha producido un error al intentar generar ticket de salida para un vehiculo: " + ex);
+       }
     }
     
     //Metodo que genera la fecha en que fue generada la factura
@@ -203,7 +235,7 @@ public class FacturaControlador {
     }
     
     //Metodo que calcula el monto a pagar con minutos adicionales (PARA EL COBRO POR DIAS)
-    private String calcularPagoTeniendoEnCuentaHorasUtilizadas(long mon, long dif, Tarifa tarifaInvolucrada, long diferenciaEnMilisegundos) {
+    public String calcularPagoTeniendoEnCuentaHorasUtilizadas(long mon, long dif, Tarifa tarifaInvolucrada, long diferenciaEnMilisegundos) {
         
         //Hacemos el calculo de pago teniendo en cuenta la diferencia en dias
         long total_a_pagar_en_dias = mon * dif;
@@ -300,39 +332,7 @@ public class FacturaControlador {
             log.fatal("ERROR - Se ha producido un error al intentar generar liquidación de un vehiculo en el sistema: " + e);
         }
     }
-        
-    //Metodo que imprime el ticket de salida de un vehiculo
-    public void generarTicketSalida(String placa_tick){
-        
-        try{
-           Connection cn3 = Conexion.conectar();
-
-           Map parametro = new HashMap();
-           parametro.clear();
-           parametro.put("placa", placa_tick);
-
-           JasperReport reporte = null;
-           //String path = "src\\Reportes\\TicketSalida.jasper";
-
-           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketSalida.jasper"));
-
-           JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
-
-           //Da una vista previa del ticket
-           JasperViewer view = new JasperViewer(jprint, false);
-           view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-           view.setTitle("Ticket de salida vehiculo " + placa_tick);
-           view.setVisible(true);
-          
-           //Hace que se imprima directamente
-           //JasperPrintManager.printReport(jprint, false);
-
-       }catch(JRException ex){
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Salida, revise la conexión de la impresora o contacte al administrador!!");
-           log.fatal("ERROR - Se ha producido un error al intentar generar ticket de salida para un vehiculo: " + ex);
-       }
-    }
-    
+     
     //Metodo que cierra la factura de un vehiculo unavez este ha salido del parqueadero
     public void cerrarFactura(String placa){
         try{
@@ -414,12 +414,8 @@ public class FacturaControlador {
     public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String dineroRecibido, String cambio){
         
         try{
-            int valor_pagar_int = Integer.parseInt(valor_a_pagar);
-            int efectivo_int = Integer.parseInt(dineroRecibido);
-            int cambio_int = Integer.parseInt(cambio);
-
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"',Valor_a_pagar='"+valor_pagar_int+"',Efectivo='"+efectivo_int+"',Cambio='"+cambio_int+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
+            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"',Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
 
             pst.executeUpdate();
             cn.close();

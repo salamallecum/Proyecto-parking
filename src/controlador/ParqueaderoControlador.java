@@ -42,7 +42,7 @@ import static vista.GestionarParqueaderos.modeloParq;
 import static vista.GestionarParqueaderos.table_listaParqueaderos;
 import static vista.PanelCaja.modeloCaja;
 import static vista.PanelCaja.table_operacionParqueadero;
-import static vista.PanelUsuarios.modelo;
+
 
 
 /**
@@ -52,6 +52,7 @@ import static vista.PanelUsuarios.modelo;
 public class ParqueaderoControlador {
     
    VehiculoControlador vehiControlador = new VehiculoControlador();
+   DefaultTableModel modeloEstadoParq;
       
    private final Logger log = Logger.getLogger(ParqueaderoControlador.class);
    private URL url = ParqueaderoControlador.class.getResource("Log4j.properties");
@@ -439,8 +440,8 @@ public class ParqueaderoControlador {
         
         //Consulta de datos a la BD
         try {
-            modelo = new DefaultTableModel(0, 5);
-            Table_estado.setModel(modelo);
+            modeloEstadoParq = new DefaultTableModel(0, 5);
+            Table_estado.setModel(modeloEstadoParq);
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
@@ -487,7 +488,7 @@ public class ParqueaderoControlador {
                 for (int i = 0; i < cantidadColumnas; i++) {
                     filas[i] = rs.getObject(i + 1);
                 }
-                modelo.addRow(filas);
+                modeloEstadoParq.addRow(filas);
             }
                 cn.close();        
 
