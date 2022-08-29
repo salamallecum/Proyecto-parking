@@ -32,7 +32,6 @@ import vista.LiquidacionVehiculo;
 import static vista.LiquidacionVehiculo.lbl_totalAPagar;
 
 
-
 /**
  *
  * @author ALEJO
@@ -268,7 +267,7 @@ public class FacturaControlador {
     
     }   
     
-    //Metodo que crea facturas
+    //Metodo que crea facturas que se cobran con normalidad
     public void crearFactura (Factura nvaFactura){
         
         //Inserta el registro en la base de datos
@@ -297,11 +296,11 @@ public class FacturaControlador {
             cn2.close();
         
         }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al ingresar vehiculo desconocido!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al crear una factura de un vehiculo desconocido en el sistema: " + e);
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al ingresar factura en el sistema!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al crear una factura en el sistema: " + e);
         }
     }
-
+    
     //Metodo que genera la liquidación de un vehiculo en el jframe de liquidacion de vehiculo
     public void liquidarVehiculo(String placa){
         
@@ -425,6 +424,65 @@ public class FacturaControlador {
             log.fatal("ERROR - Se ha producido un error al intentar registrar la liquidación de un vehiculo: " + e);
         }
     }
+    
+    //Metodo que permite identificar si el vehiculo en cuestion esta involucrado en alguna factura de primer ingreso
+    public boolean consultarSiVehiculoTieneFacturaDePrimerIngreso(String placa){
 
+        boolean vehiculoTieneFacturaDePrimerIngreso = false;
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            pst = cn.prepareStatement(
+                        "select * from facturas where Placa = '" + placa + "' and Hora_ingreso = '1990-01-01 23:59:00'");
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                vehiculoTieneFacturaDePrimerIngreso = true;
+            }else{
+                vehiculoTieneFacturaDePrimerIngreso = false;
+            }
+            
+        } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, "ERROR al revisar facturación de registro o edición de vehiculo, contacte al administrador.");
+           log.fatal("ERROR - Se ha producido un error al intentar revisar facturación de registro o edicion de un vehiculo: " + ex);
+        }
+        
+        return vehiculoTieneFacturaDePrimerIngreso;
+    }
+    
+    //Metodo para eliminar la factura de primer ingreso generada para un vehiculo que es registrado en el sistema
+    public void eliminarFacturaDePrimerIngresoDeUnVehiculo(String placa){
+        
+        PreparedStatement ps1 = null;
+        try{
+            Connection cn1 = Conexion.conectar();          
+            
+            ps1 = cn1.prepareStatement("delete from facturas where Placa=? and Hora_ingreso='1990-01-01 23:59:00'");
+            ps1.setString(1, placa);
+            ps1.execute();
+            cn1.close();
+            
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar factura de primer ingreso!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar eliminar la factura de primer ingreso del vehiculo: "+ placa + e);
+        }   
+    }
+    
+    //Metodo que permite actualizar las facturas que se encuentren abiertas con la información actualizada de un vehiculo    
+    public void actualizarFactura1erIngreso(String placa, Factura facturaEdit){
+        
+        try{
+            Connection cn9 = Conexion.conectar();
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+placa+"', Propietario='"+facturaEdit.getPropietario()+"', Tipo_vehiculo='"+facturaEdit.getClaseDeVehiculo()+"', No_parqueadero='"+facturaEdit.getId_parqueadero()+"', Id_convenio='"+facturaEdit.getId_convenio()+"', Id_tarifa='"+facturaEdit.getId_tarifa()+"' where Placa ='"+placa+"' and Estado_fctra='Abierta' and Hora_ingreso = null");
+
+            pst9.executeUpdate();
+            cn9.close();
+
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al actualizar facturas, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);
+            
+        } 
+    }
 
 }

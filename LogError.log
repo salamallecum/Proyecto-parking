@@ -4127,3 +4127,85 @@ DEBUG 2022-08-27 12:18:26,050 net.sf.jasperreports.engine.fill.JRBaseFiller (JRB
 DEBUG 2022-08-27 12:18:26,050 net.sf.jasperreports.engine.fill.JRFillDataset (JRFillDataset.java:closeQueryExecuter:1193) - Fill 1: closing query executer
  INFO 2022-08-27 12:18:26,078 controlador.VehiculoControlador (VehiculoControlador.java:generarReportePDFdeVehiculosRegistrados:112) - INFO - Reporte de vehiculos registrados generado satisfactoriamente.
  WARN 2022-08-27 12:18:44,676 controlador.UsuarioControlador (UsuarioControlador.java:cerrarSesion:239) - ADVERTENCIA - El usuario Alejo97 intentó cerrar la caja estando esta aún abierta
+ INFO 2022-08-27 12:51:04,400 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-27 12:51:04,409 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-27 12:51:11,390 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-27 12:51:51,869 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:689) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+FATAL 2022-08-27 12:53:06,096 controlador.FacturaControlador (FacturaControlador.java:crearFactura:300) - ERROR - Se ha producido un error al crear una factura en el sistema: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Incorrect datetime value: '' for column 'Hora_ingreso' at row 1
+ INFO 2022-08-27 12:53:09,345 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:689) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-27 12:57:13,006 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-27 12:57:13,680 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-27 12:57:20,822 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-27 12:58:03,866 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:689) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 16:17:05,379 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 16:17:05,396 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 16:17:21,812 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 16:18:11,094 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:689) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 16:18:29,550 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:520) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 16:19:00,240 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:520) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 16:21:34,710 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:520) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 16:22:42,501 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:689) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 16:23:13,639 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:520) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 16:24:14,115 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 16:24:14,125 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 16:24:22,900 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 16:24:37,447 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:520) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 16:27:05,275 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 16:27:05,276 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 16:27:05,300 vista.MenuAdministrador (MenuAdministrador.java:btn_cerrarSesionActionPerformed:407) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-08-29 16:52:06,120 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 16:52:06,128 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 16:52:59,621 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 16:58:37,604 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 16:58:37,614 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 16:58:43,452 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 17:10:23,977 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:10:23,977 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:10:23,985 vista.MenuAdministrador (MenuAdministrador.java:btn_cerrarSesionActionPerformed:407) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-08-29 17:11:01,848 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:11:02,527 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:11:08,818 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+FATAL 2022-08-29 17:11:45,163 controlador.FacturaControlador (FacturaControlador.java:crearFactura:300) - ERROR - Se ha producido un error al crear una factura en el sistema: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Incorrect datetime value: '0000-00-00 00:00:00' for column 'Hora_ingreso' at row 1
+ INFO 2022-08-29 17:11:47,212 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:13:01,698 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:13:01,698 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:13:01,707 vista.MenuAdministrador (MenuAdministrador.java:btn_cerrarSesionActionPerformed:407) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-08-29 17:13:48,778 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:13:49,473 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:14:57,305 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 17:15:18,502 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:18:41,901 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:18:41,901 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:18:41,909 vista.MenuAdministrador (MenuAdministrador.java:btn_cerrarSesionActionPerformed:407) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-08-29 17:18:51,192 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:18:51,201 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:19:03,785 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 17:19:38,252 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:19:38,252 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:19:38,260 vista.MenuAdministrador (MenuAdministrador.java:btn_cerrarSesionActionPerformed:407) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-08-29 17:20:00,189 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:20:00,199 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:20:07,133 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 17:21:08,369 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:22:55,295 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:24:09,975 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:515) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 17:27:52,608 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:515) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 17:29:53,431 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:29:53,432 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:29:53,451 vista.MenuAdministrador (MenuAdministrador.java:btn_cerrarSesionActionPerformed:407) - INFO - El usuario ha cerrado sesión satisfactoriamente
+ INFO 2022-08-29 17:32:43,354 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 17:32:43,364 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 17:32:58,350 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 17:33:49,943 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:34:54,519 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:35:27,394 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:35:49,701 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 17:41:07,737 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:515) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 17:41:53,493 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:515) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 17:44:27,965 vista.EditarVehiculo (EditarVehiculo.java:btn_actualizarActionPerformed:515) - INFO - Se ha actualizado un vehiculo en el sistema.
+ INFO 2022-08-29 18:00:10,123 vista.Login (Login.java:sincronizarLog:285) - INFO - Se ha sincronizado el log con el sistema satisfactoriamente.
+ INFO 2022-08-29 18:00:11,480 vista.Login (Login.java:<init>:43) - INFO - Se inicia aplicación satisfactoriamente
+ INFO 2022-08-29 18:00:20,650 controlador.UsuarioControlador (UsuarioControlador.java:logueo:187) - INFO - El usuario Administrador: Alejo97 se ha logueado satisfactoriamente.
+ INFO 2022-08-29 18:01:45,233 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 18:02:16,545 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.
+ INFO 2022-08-29 18:02:42,130 vista.PanelVehiculos (PanelVehiculos.java:btn_ingresarActionPerformed:690) - INFO - Se ha registrado un nuevo vehiculo en el sistema.

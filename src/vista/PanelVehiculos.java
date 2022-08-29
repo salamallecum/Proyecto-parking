@@ -1,7 +1,9 @@
 package vista;
 
+import clasesDeApoyo.generadorClavesYCodigos;
 import modelo.Parqueadero;
 import controlador.ConvenioControlador;
+import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import controlador.VehiculoControlador;
@@ -15,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.table.DefaultTableModel;
 import modelo.Convenio;
+import modelo.Factura;
 import modelo.Tarifa;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
@@ -37,16 +40,21 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     public static String vehiculo_update;
     public static boolean hayVehiculoEnEdicion = false;
     public static boolean vehiculoEnParqueadero = false;
+    String user = "";
     
-    VehiculoControlador vehicontrolador = new VehiculoControlador();
+    VehiculoControlador vehicontrolador;
     Vehiculo nuevoVehiculo = new Vehiculo(0, "", "", "", 0, 0, 0);
     
-    ParqueaderoControlador parqControla = new ParqueaderoControlador();
-    TarifaControlador tarifaControla = new TarifaControlador();
-    ConvenioControlador convenioControla = new ConvenioControlador();
+    ParqueaderoControlador parqControla;
+    TarifaControlador tarifaControla;
+    ConvenioControlador convenioControla;
+    FacturaControlador facturaControla;
+    
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
     
     boolean usoIngresarVehiculoConConvenio = false;
     boolean usoIngresarVehiculoSinConvenio = false;
+    boolean elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = true;
     
     //Declaramos los objetos  y se los aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
@@ -79,9 +87,13 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
      */
     public PanelVehiculos() {
         initComponents();    
+        user = Login.usuario;
         
         vehicontrolador = new VehiculoControlador();
         parqControla = new ParqueaderoControlador();
+        convenioControla = new ConvenioControlador();
+        tarifaControla = new TarifaControlador();
+        facturaControla = new FacturaControlador();
         
         hilo1.start();
         
@@ -551,7 +563,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 
         placa = txt_placa.getText().trim();
         dueño = txt_propietario.getText().trim();
-        clase_cmb = cmb_clase.getSelectedIndex() + 1;
+        clase_cmb = cmb_clase.getSelectedIndex();
         parqueadero_cmb = cmb_parqueaderos.getSelectedIndex();
         convenio_cmb = cmb_convenios.getSelectedIndex();
         tarifa_cmb = cmb_tarifa.getSelectedIndex();
@@ -639,6 +651,28 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             vehicontrolador.crearVehiculo(nuevoVehiculo);
             parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqueadero_cmb, vehiculoEstaEnParqueo);
             
+            //Generamos el ingreso del vehiculo en caja dependiendo de si esta o no en parqueadero
+            if(vehiculoEstaEnParqueo.equals("Si")){
+                
+                nuevaFactura.setId(0);
+                nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
+                nuevaFactura.setPlaca(placa);
+                nuevaFactura.setPropietario(dueño);
+                nuevaFactura.setClaseDeVehiculo(clase_string);
+                nuevaFactura.setId_parqueadero(parqueadero_cmb);
+                nuevaFactura.setFacturadoPor(user);
+                nuevaFactura.setEstadoDeFactura("Abierta");
+                nuevaFactura.setEstaContabilizada("No");
+                nuevaFactura.setId_convenio(convenio_cmb);
+                nuevaFactura.setId_tarifa(tarifa_cmb);
+                nuevaFactura.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
+                nuevaFactura.setId_cierre(1);
+                
+                //Creamos el objeto Factura
+                facturaControla.crearFactura(nuevaFactura);                
+            }        
+            
             //Agregamos el objeto vehiculo a la tabla de vehiculos
             Object[] fila = new Object[6];
             fila[0] = placa;
@@ -672,28 +706,25 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         }else{    
             String placa = Table_listaVehiculos.getValueAt(Fila, 0).toString();
             int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if(decision == JOptionPane.YES_OPTION){
+            if(decision == JOptionPane.YES_OPTION){               
                 
-                //Verifica que el vehiculo no se encuentre en parqueadero
-                boolean vehiEstaEnparqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(placa);
-                
-                if(vehiEstaEnparqueadero == true){
-                    JOptionPane.showMessageDialog(null, "El vehiculo indicado se encuentra en parqueadero.");
-                    Normalizar();
-                
-                }else{
-                    vehicontrolador.eliminarVehiculo(placa);
-                    JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado"); 
-                    modelo.removeRow(Fila);
-                    parqControla.darDisponibilidadAUnParqueaderoTeniendoElVehiculoQueLoUsaba(placa);
-                    Limpiar();   
-                }            
+                vehicontrolador.eliminarVehiculo(placa);
+
+                elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = facturaControla.consultarSiVehiculoTieneFacturaDePrimerIngreso(placa);
+
+                if(elvehiculoTieneFacturaPrimerIngresoPrevRegistrada == true){
+                    facturaControla.eliminarFacturaDePrimerIngresoDeUnVehiculo(placa);
+                } 
+
+                JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado"); 
+                modelo.removeRow(Fila);
+                parqControla.darDisponibilidadAUnParqueaderoTeniendoElVehiculoQueLoUsaba(placa);
+                Limpiar();                              
                 
             }else if(decision == JOptionPane.NO_OPTION){
                 btn_ingresar.setEnabled(true);
             }
         }
-    
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     

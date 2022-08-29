@@ -1,5 +1,6 @@
 package vista;
 
+import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
@@ -16,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import controlador.VehiculoControlador;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Convenio;
+import modelo.Factura;
 import modelo.Parqueadero;
 import modelo.Tarifa;
 import modelo.Vehiculo;
@@ -36,9 +38,11 @@ public class EditarVehiculo extends javax.swing.JFrame{
     int convenioBack;
     int tarifaBack;
     String estaEnParqBack;
+    String user;
     
     boolean elVehiculoTieneFacturas = false;
     boolean elVehiculoEstaEnParqueadero = false;
+    boolean elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = false;
     
     int ID;
     javax.swing.JTable tablaVehi;
@@ -48,6 +52,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
    
     Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", 0, 0, 0);
     Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", 0, 0, 0);
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
+    Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
     
     VehiculoControlador vehicontrolador = new VehiculoControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -70,6 +76,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         initComponents();
         vehiculo_actualizado = PanelVehiculos.vehiculo_update;
         tablaVehi = PanelVehiculos.Table_listaVehiculos;
+        user = Login.usuario;
         modelo = PanelVehiculos.modelo;
         
         setSize(630,375);
@@ -401,8 +408,56 @@ public class EditarVehiculo extends javax.swing.JFrame{
         
         if(vehiculoEnParqueadero){
             vehiculoEstaEnParqueo = "Si";
+            
+            elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = facturaControla.consultarSiVehiculoTieneFacturaDePrimerIngreso(placa);
+                
+            if(elvehiculoTieneFacturaPrimerIngresoPrevRegistrada == true){
+
+                facturaEditada.setId(0);
+                facturaEditada.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                facturaEditada.setFechaDeFactura(facturaControla.fecha_de_factura());
+                facturaEditada.setPlaca(placa);
+                facturaEditada.setPropietario(dueño);
+                facturaEditada.setClaseDeVehiculo(tipoVehi_string);
+                facturaEditada.setId_parqueadero(parqueadero_cmb);
+                facturaEditada.setFacturadoPor(user);
+                facturaEditada.setEstadoDeFactura("Abierta");
+                facturaEditada.setEstaContabilizada("No");
+                facturaEditada.setId_convenio(convenio_cmb);
+                facturaEditada.setId_tarifa(tarifa_cmb);
+                facturaEditada.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
+                facturaEditada.setId_cierre(1);
+
+                //Creamos el objeto Factura
+                facturaControla.actualizarFactura1erIngreso(placa, facturaEditada); 
+
+            }else{                    
+                nuevaFactura.setId(0);
+                nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
+                nuevaFactura.setPlaca(placa);
+                nuevaFactura.setPropietario(dueño);
+                nuevaFactura.setClaseDeVehiculo(tipoVehi_string);
+                nuevaFactura.setId_parqueadero(parqueadero_cmb);
+                nuevaFactura.setFacturadoPor(user);
+                nuevaFactura.setEstadoDeFactura("Abierta");
+                nuevaFactura.setEstaContabilizada("No");
+                nuevaFactura.setId_convenio(convenio_cmb);
+                nuevaFactura.setId_tarifa(tarifa_cmb);
+                nuevaFactura.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
+                nuevaFactura.setId_cierre(1);
+
+                //Creamos el objeto Factura
+                facturaControla.crearFactura(nuevaFactura);   
+            }
         }else{
             vehiculoEstaEnParqueo = "No";
+            
+            elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = facturaControla.consultarSiVehiculoTieneFacturaDePrimerIngreso(placa);
+                
+            if(elvehiculoTieneFacturaPrimerIngresoPrevRegistrada == true){
+                facturaControla.eliminarFacturaDePrimerIngresoDeUnVehiculo(placa);
+            } 
         }
         
         boolean vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(placa);
@@ -440,7 +495,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             if(elVehiculoTieneFacturas == true){
                 facturaControla.actualizarFacturas(placa, dueño, tipoVehi_string, parqueadero_cmb, convenio_cmb, tarifa_cmb);
             }
-            
+                        
             //Agregamos el objeto vehiculo a la tabla de vehiculos
             Object[] fila = new Object[6];
             fila[0] = placa;
