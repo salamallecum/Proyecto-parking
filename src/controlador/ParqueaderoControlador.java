@@ -281,25 +281,8 @@ public class ParqueaderoControlador {
         }
         return propietarioEstaEnParqueadero;    
     }
-    
-    //Metodo para dar disponibilidad a unparqueadero cuando el vehiculo que lo utlizaes eliminado
-    public void darDisponibilidadAUnParqueaderoTeniendoElVehiculoQueLoUsaba(String placaVehiculo){
-        
-        //Actualizamos el estado del parqueadero seleccionado de Ocupado a Disponible
-        try{
-            Connection cn3 = Conexion.conectar();
-            PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Disponible', Placa='',Propietario='', Esta_en_parqueadero='' where Placa='"+placaVehiculo+"'");
-
-            pst3.executeUpdate();
-            cn3.close();
-
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar estado de parqueadero!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al dar disponibilidad al parqueadero que utilizaba el vehiculo: "+ placaVehiculo + e);
-        }
-    }
-    
-    //Metodo que libera el parqueadero del vehiculo a editar para que pueda ser reelegido
+       
+    //Metodo que libera el parqueadero del vehiculo
     public void liberarParqueadero(String placaL){
         
         //Actualizamos el estado del parqueadero seleccionado de Ocupado a Disponible 
@@ -312,9 +295,10 @@ public class ParqueaderoControlador {
 
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error al liberar parqueadero, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al dar disponibilidad al parqueadero que utilizaba el vehiculo: "+ placaL + e);
         }
     }
-    
+        
     //Metodo que consulta el estado de disponibilidad de un parqueadero mediante su id
     public boolean consultarDisponibilidadDeParqueaderoMedianteID(int idParq){
         
@@ -507,7 +491,7 @@ public class ParqueaderoControlador {
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Fac.Fecha_factura, Fac.Placa, Fac.Propietario, Fac.Hora_ingreso, Parq.Nombre_parqueadero from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero AND Estado_fctra ='Abierta'");
+                        "select Fac.Fecha_factura, Fac.Placa, Fac.Propietario, Parq.Nombre_parqueadero from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero AND Estado_fctra ='Abierta'");
 
             ResultSet rs = pst.executeQuery();
 
@@ -517,10 +501,9 @@ public class ParqueaderoControlador {
             modeloCaja.addColumn("Fecha");
             modeloCaja.addColumn("Placa");
             modeloCaja.addColumn("Propietario");
-            modeloCaja.addColumn("Hora de Ingreso");
             modeloCaja.addColumn("Numero de Parquadero");
 
-            int[] anchosTabla = {10,10,15,15,5};
+            int[] anchosTabla = {10,10,15,5};
 
             for(int x=0; x < cantidadColumnas; x++){
                 table_operacionParqueadero.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
@@ -532,7 +515,7 @@ public class ParqueaderoControlador {
 
                 for (int i = 0; i < cantidadColumnas; i++) {
 
-                        filas[i] = rs.getObject(i + 1); 
+                    filas[i] = rs.getObject(i + 1); 
                 }
                 modeloCaja.addRow(filas);
             }
@@ -542,6 +525,30 @@ public class ParqueaderoControlador {
             JOptionPane.showMessageDialog(null, "Error al mostrar operación del Parqueadero, ¡Contacte al administrador!");
             log.fatal("ERROR - Se ha producido un error al intentar visualizar la operación del Parqueadero: " + e); 
         }
+    }
+    
+    //Metodo que permite consultar el id de un parqueadero utilizando su nombre
+    public int consultarIdParqueadero(String nombreParq){
+        
+        int idParqueadero = 0;
+                
+        //Consulta el id del parqueadero utilizando su id
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select Id_parqueadero from parqueaderos where Nombre_parqueadero = '" + nombreParq + "'");
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                idParqueadero = rs.getInt("Id_parqueadero");   
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar parqueadero!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar el id de un parquadero utilizando su nombre: " + e);
+        } 
+        return idParqueadero;
+        
     }
     
 }

@@ -382,7 +382,7 @@ public class FacturaControlador {
         try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                "select * from facturas where Placa = '" + placaDelVehiculo + "'");
+                "select * from facturas where Placa = '" + placaDelVehiculo + "' and Estado_fctra='Abierta'");
             ResultSet rs = pst.executeQuery();
             
             if(rs.next()){

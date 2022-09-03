@@ -718,7 +718,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
                 JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado"); 
                 modelo.removeRow(Fila);
-                parqControla.darDisponibilidadAUnParqueaderoTeniendoElVehiculoQueLoUsaba(placa);
+                parqControla.liberarParqueadero(placa);
                 Limpiar();                              
                 
             }else if(decision == JOptionPane.NO_OPTION){
