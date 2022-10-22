@@ -480,9 +480,54 @@ public class FacturaControlador {
 
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error al actualizar facturas, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);
-            
+            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);  
         } 
+    }
+    
+    //Metodo que cuenta la cantidad de facturas generadas y por contabilizar
+    public String contarFacturas(){
+        
+        String cantidadFacturas = "";
+        try {
+            Connection cn3 = Conexion.conectar();
+            PreparedStatement pst3 = cn3.prepareStatement(
+                "select count(*) from facturas where Estado_fctra='Cerrada' AND Contabilizada='No'");
+            ResultSet rs3 = pst3.executeQuery();
+
+            if(rs3.next()){
+                int cant_facturas = rs3.getInt("count(*)");
+                cantidadFacturas = Integer.toString(cant_facturas);
+            }
+            cn3.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al contar facturas generadas en el turno, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al contar las facturas generadas en el turno: " + e);
+        }
+        return cantidadFacturas;
+    }
+    
+    //Metodo que calcula el producido en caja a lo largo del turno del parqueadero
+    public String calcularProducido(){
+        
+        int producido = 0;
+        String producido_str = "";
+        
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                "SELECT SUM(Valor_a_pagar) FROM facturas WHERE Contabilizada = 'No'");
+            ResultSet rs2 = pst2.executeQuery();
+
+            if(rs2.next()){
+                producido = rs2.getInt("SUM(Valor_a_pagar)");
+                producido_str = Integer.toString(producido);
+            }
+            cn2.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al calcular producido del turno, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar calcular el dinero producido a lo largo del turno: " + e);
+        }
+        return producido_str;
     }
 
 }

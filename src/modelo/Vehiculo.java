@@ -1,5 +1,8 @@
 package modelo;
 
+import java.net.URL;
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author ALEJO
@@ -15,6 +18,9 @@ public class Vehiculo {
     private int id_tarifa = 0;
     private String estaEnParqueadero = "";
     
+    private final Logger log = Logger.getLogger(Vehiculo.class);
+    private URL url = Vehiculo.class.getResource("Log4j.properties");
+    
     //Constructor
     public Vehiculo(int id, String placa, String propietario, String clase, int id_parqueadero, int id_convenio, int id_tarifa) {
         this.id = id;
@@ -24,12 +30,7 @@ public class Vehiculo {
         this.id_parqueadero = id_parqueadero;
         this.id_convenio = id_convenio;
         this.id_tarifa = id_tarifa;
-    }
-
-    
-
-    
-    
+    } 
         
     //Metodos
     public int getId() {

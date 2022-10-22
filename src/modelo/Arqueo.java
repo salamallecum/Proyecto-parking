@@ -1,5 +1,8 @@
 package modelo;
 
+import java.net.URL;
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author ALEJO
@@ -38,6 +41,9 @@ public class Arqueo {
 
     private String montoTotalCaja;
     private String diferenciaTotal;
+    
+    private final Logger log = Logger.getLogger(Arqueo.class);
+    private URL url = Arqueo.class.getResource("Log4j.properties");
     
     //Constructor
     public Arqueo(int Id, String codigo, String usuario, String fecha_arqueo, String base_caja, String numBilletesDe100Mil, String numBilletesDe50Mil, String numBilletesDe20Mil, String numBilletesDe10Mil, String numBilletesDe5Mil, String numBilletesDe2Mil, String numBilletesOMonedasDeMil, String numMonedasDe500, String numMonedasDe200, String numMonedasDe100, String numMonedasDe50, int montoEnBilletes100Mil, int montoEnBilletes50Mil, int montoEnBilletes20Mil, int montoEnBilletes10Mil, int montoEnBilletes5Mil, int montoEnBilletes2Mil, int montoEnBilletesOMonedasMil, int montoEnMonedasDe500, int montoEnMonedasDe200, int montoEnMonedasDe100, int montoEnMonedasDe50, String montoTotalCaja, String diferenciaTotal) {
@@ -304,32 +310,4 @@ public class Arqueo {
     public void setDiferenciaTotal(String diferenciaTotal) {
         this.diferenciaTotal = diferenciaTotal;
     }
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
 }

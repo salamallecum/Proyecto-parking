@@ -45,8 +45,6 @@ public class Tarifa {
         this.unidadDelTiempoAdicional = unidadDelTiempoAdicional;
     }
     
-    
-    
     public int getId() {
         return id;
     }

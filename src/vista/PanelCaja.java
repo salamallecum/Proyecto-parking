@@ -45,7 +45,6 @@ public class PanelCaja extends javax.swing.JPanel{
     public static boolean laCajaFueAbierta = false;
     public static boolean hayVehiculoLiquidandose = false;
     public static String parqueadero_update;
-    public static int contadorFacturas;
     
     private final Logger log = Logger.getLogger(PanelCaja.class);
     private URL url = PanelCaja.class.getResource("Log4j.properties");

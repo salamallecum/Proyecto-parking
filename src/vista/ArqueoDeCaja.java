@@ -20,7 +20,6 @@ import modelo.Arqueo;
 import modelo.Parqueadero;
 import org.apache.log4j.Logger;
 import static vista.PanelCaja.cmb_numParqueadero;
-import static vista.PanelCaja.contadorFacturas;
 import static vista.PanelCaja.hayVehiculoLiquidandose;
 import static vista.PanelCaja.laCajaFueAbierta;
 import static vista.PanelCaja.modeloCaja;
@@ -887,8 +886,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
                    PanelCaja.desbloquearPanel();
 
-                   laCajaFueAbierta = true;
-                   contadorFacturas = 0;            
+                   laCajaFueAbierta = true;          
 
                    hilo1.start();
                    hilo2.start();            

@@ -1,5 +1,8 @@
 package modelo;
 
+import java.net.URL;
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author ALEJO
@@ -16,8 +19,10 @@ public class Usuario {
     private String rol;
     private String activo;
     
-    //Constructor    
-
+    private final Logger log = Logger.getLogger(Usuario.class);
+    private URL url = Usuario.class.getResource("Log4j.properties");
+    
+    //Constructor   
     public Usuario(int id, String nombres, String apellidos, String celular, String telefono, String usuario, String clave, String rol, String activo) {
         this.id = id;
         this.nombres = nombres;
@@ -28,8 +33,7 @@ public class Usuario {
         this.clave = clave;
         this.rol = rol;
         this.activo = activo;
-    }
-    
+    }    
     
     //Metodos
     public int getId() {

@@ -1,36 +1,28 @@
 package vista;
 
-import controlador.ArqueoControlador;
+import clasesDeApoyo.generadorClavesYCodigos;
+import controlador.CierreControlador;
 import controlador.FacturaControlador;
-import controlador.ParqueaderoControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.Locale;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import modelo.Arqueo;
-import modelo.Parqueadero;
-import static vista.PanelCaja.cmb_numParqueadero;
-import static vista.PanelCaja.contadorFacturas;
-import static vista.PanelCaja.hayVehiculoLiquidandose;
+import modelo.Cierre;
 import static vista.PanelCaja.laCajaFueAbierta;
-import static vista.PanelCaja.modeloCaja;
-import static vista.PanelCaja.parqueadero_update;
-import static vista.PanelCaja.table_operacionParqueadero;
+
 
 /**
  *
  * @author ALEJO
  */
-public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
+public class CierreDeCaja extends javax.swing.JFrame{
     
     int baseDeCajaInt = 0;
+    int producidoInt = 0;
     
     String usuarioDelSistema = "";
             
@@ -68,42 +60,48 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
     int montoEnMonedasDe100 = 0;
     int montoEnMonedasDe50 = 0; 
       
-    Arqueo nuevoArqueo = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
-    Parqueadero parq = new Parqueadero();
+    Cierre nuevoCierre = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", 0, "");
     FacturaControlador facturaControla = new FacturaControlador();
-    ArqueoControlador arqueoControla = new ArqueoControlador();
-    ParqueaderoControlador parqControlador = new ParqueaderoControlador();
-    
-    //Hilos que mantienen el actualizadas las facturas y el estado del parqueadero en tiempo real
-    public static Thread hilo1;
-    public static Thread hilo2;
-    
+    CierreControlador cierreControla = new CierreControlador();
+            
     /**
      * Creates new form ArqueoDeCaja
      */
     public CierreDeCaja() {
         initComponents();
-        setSize(580, 470);
+        setSize(583, 508);
         setResizable(false);
         setTitle("Cierre de caja");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
         usuarioDelSistema = Login.usuario;
-        
-        //Cargamos el valor de la base que debe tener la caja
+                
         String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
+        String contadorFacturas = facturaControla.contarFacturas();
+        String producido = facturaControla.calcularProducido();
         
-        //Guardamos el valor int de la base de caja para calculos futuros 
         baseDeCajaInt = Integer.parseInt(baseDeCaja);
+        producidoInt = Integer.parseInt(producido);
         
         //Damos formato de moneda al valor de la base de la caja
         Double valorBase = new Double(baseDeCaja);
         Locale region = Locale.getDefault();
         //Currency moneda = Currency.getInstance(region);
         NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
-        
         lbl_baseDeCaja.setText(formatoMoneda.format(valorBase));
+        
+        //Calculamos el dinero total que debe haber en caja (base + producido)
+        int totalCajaInt = producidoInt + baseDeCajaInt;
+        String totalCaja = Integer.toString(totalCajaInt);
+        Double totalEnCaja = new Double(totalCaja);
+        lbl_totalEnCaja.setText(formatoMoneda.format(totalEnCaja));             
+        
+        //Damos formato de moneda al valor del producido
+        Double valorProducido = new Double(producido);
+        lbl_producido.setText(formatoMoneda.format(valorProducido));
+     
+        lbl_numFacturas.setText(contadorFacturas);
         
     }
     
@@ -155,9 +153,11 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         lbl_totalEnCaja = new javax.swing.JLabel();
         lbl_diferencia = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        lbl_totalEnCaja1 = new javax.swing.JLabel();
+        lbl_producido = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        lbl_diferencia1 = new javax.swing.JLabel();
+        lbl_numFacturas = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        lbl_dineroEnCaja = new javax.swing.JLabel();
         btn_generarCierreCaja = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea_observaciones = new javax.swing.JTextArea();
@@ -537,7 +537,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         jLabel17.setText("Base:");
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel18.setText("Total:");
+        jLabel18.setText("Total esperado:");
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel19.setText("Diferencia:");
@@ -558,16 +558,23 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel20.setText("Producido:");
 
-        lbl_totalEnCaja1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lbl_totalEnCaja1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_totalEnCaja1.setText("0,00");
+        lbl_producido.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_producido.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_producido.setText("0,00");
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel21.setText("N° de facturas:");
 
-        lbl_diferencia1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lbl_diferencia1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_diferencia1.setText("0,00");
+        lbl_numFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_numFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_numFacturas.setText("0,00");
+
+        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel23.setText("Dinero en caja:");
+
+        lbl_dineroEnCaja.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_dineroEnCaja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_dineroEnCaja.setText("0,00");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -576,19 +583,22 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_diferencia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_baseDeCaja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_totalEnCaja1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_totalEnCaja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_diferencia1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lbl_diferencia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_baseDeCaja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_producido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_totalEnCaja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_numFacturas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_dineroEnCaja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -600,20 +610,24 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
-                    .addComponent(lbl_totalEnCaja1))
+                    .addComponent(lbl_producido))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_totalEnCaja)
                     .addComponent(jLabel18))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(lbl_dineroEnCaja))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(lbl_diferencia))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
-                    .addComponent(lbl_diferencia1))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addComponent(lbl_numFacturas))
+                .addGap(22, 22, 22))
         );
 
         btn_generarCierreCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_15107.png"))); // NOI18N
@@ -655,26 +669,28 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel22)))))
+                                    .addComponent(jLabel22)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(200, 200, 200)
                         .addComponent(btn_generarCierreCaja)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel22)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addComponent(btn_generarCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
@@ -873,99 +889,72 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
 
     private void btn_generarCierreCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarCierreCajaActionPerformed
         
-        boolean ventanaEmergCopiaArqueo = false; 
+        boolean ventanaEmergCopiaCierre = false; 
+        String nota = jTextArea_observaciones.getText();
         
         //Mientras los campos esten vacios el boton de finalizar permanecera inactivo
         if(numBilletesDe100Mil.equals("") || numBilletesDe50Mil.equals("") || numBilletesDe20Mil.equals("") || 
                 numBilletesDe10Mil.equals("") || numBilletesDe5Mil.equals("") || numBilletesDe2Mil.equals("") || numBilletesOMonedasDeMil.equals("") ||
-                numMonedasDe500.equals("") || numMonedasDe200.equals("") || numMonedasDe100.equals("") || numMonedasDe50.equals("")){
+                numMonedasDe500.equals("") || numMonedasDe200.equals("") || numMonedasDe100.equals("") || numMonedasDe50.equals("") || nota.equals("")){
         
             JOptionPane.showMessageDialog(null, "Por favor diligencie todos los campos.");
         
         }else{
                       
-            String codigoArqueo = arqueoControla.codigosArqueo();
+            String codigoCierre = generadorClavesYCodigos.generarRandomString(10);
 
-            nuevoArqueo.setId(0);
-            nuevoArqueo.setCodigo(codigoArqueo);
-            nuevoArqueo.setFecha_arqueo(arqueoControla.fecha_Arqueo());
-            nuevoArqueo.setUsuario(usuarioDelSistema);
-            nuevoArqueo.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
-            nuevoArqueo.setNumBilletesDe100Mil(numBilletesDe100Mil);
-            nuevoArqueo.setNumBilletesDe50Mil(numBilletesDe50Mil);
-            nuevoArqueo.setNumBilletesDe20Mil(numBilletesDe20Mil);
-            nuevoArqueo.setNumBilletesDe10Mil(numBilletesDe10Mil);
-            nuevoArqueo.setNumBilletesDe5Mil(numBilletesDe5Mil);
-            nuevoArqueo.setNumBilletesDe2Mil(numBilletesDe2Mil);
-            nuevoArqueo.setNumBilletesOMonedasDeMil(numBilletesOMonedasDeMil);
-            nuevoArqueo.setNumMonedasDe500(numMonedasDe500);
-            nuevoArqueo.setNumMonedasDe200(numMonedasDe200);
-            nuevoArqueo.setNumMonedasDe100(numMonedasDe100);
-            nuevoArqueo.setNumMonedasDe50(numMonedasDe50);
-            nuevoArqueo.setMontoEnBilletes100Mil(montoEnBilletes100Mil);
-            nuevoArqueo.setMontoEnBilletes50Mil(montoEnBilletes50Mil);
-            nuevoArqueo.setMontoEnBilletes20Mil(montoEnBilletes20Mil);
-            nuevoArqueo.setMontoEnBilletes10Mil(montoEnBilletes10Mil);
-            nuevoArqueo.setMontoEnBilletes5Mil(montoEnBilletes5Mil);
-            nuevoArqueo.setMontoEnBilletes2Mil(montoEnBilletes2Mil);
-            nuevoArqueo.setMontoEnBilletesOMonedasMil(montoEnBilletesOMonedasMil);
-            nuevoArqueo.setMontoEnMonedasDe500(montoEnMonedasDe500);
-            nuevoArqueo.setMontoEnMonedasDe200(montoEnMonedasDe200);
-            nuevoArqueo.setMontoEnMonedasDe100(montoEnMonedasDe100);
-            nuevoArqueo.setMontoEnMonedasDe50(montoEnMonedasDe50);
-            nuevoArqueo.setMontoTotalCaja(montoTotalCaja);
-            nuevoArqueo.setDiferenciaTotal(diferenciaTotal);
+            nuevoCierre.setId(0);
+            nuevoCierre.setCodigo(codigoCierre);
+            nuevoCierre.setFecha_cierre(cierreControla.fecha_Cierre());
+            nuevoCierre.setUsuario(usuarioDelSistema);
+            nuevoCierre.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
+            nuevoCierre.setNumBilletesDe100Mil(numBilletesDe100Mil);
+            nuevoCierre.setNumBilletesDe50Mil(numBilletesDe50Mil);
+            nuevoCierre.setNumBilletesDe20Mil(numBilletesDe20Mil);
+            nuevoCierre.setNumBilletesDe10Mil(numBilletesDe10Mil);
+            nuevoCierre.setNumBilletesDe5Mil(numBilletesDe5Mil);
+            nuevoCierre.setNumBilletesDe2Mil(numBilletesDe2Mil);
+            nuevoCierre.setNumBilletesOMonedasDeMil(numBilletesOMonedasDeMil);
+            nuevoCierre.setNumMonedasDe500(numMonedasDe500);
+            nuevoCierre.setNumMonedasDe200(numMonedasDe200);
+            nuevoCierre.setNumMonedasDe100(numMonedasDe100);
+            nuevoCierre.setNumMonedasDe50(numMonedasDe50);
+            nuevoCierre.setMontoEnBilletes100Mil(montoEnBilletes100Mil);
+            nuevoCierre.setMontoEnBilletes50Mil(montoEnBilletes50Mil);
+            nuevoCierre.setMontoEnBilletes20Mil(montoEnBilletes20Mil);
+            nuevoCierre.setMontoEnBilletes10Mil(montoEnBilletes10Mil);
+            nuevoCierre.setMontoEnBilletes5Mil(montoEnBilletes5Mil);
+            nuevoCierre.setMontoEnBilletes2Mil(montoEnBilletes2Mil);
+            nuevoCierre.setMontoEnBilletesOMonedasMil(montoEnBilletesOMonedasMil);
+            nuevoCierre.setMontoEnMonedasDe500(montoEnMonedasDe500);
+            nuevoCierre.setMontoEnMonedasDe200(montoEnMonedasDe200);
+            nuevoCierre.setMontoEnMonedasDe100(montoEnMonedasDe100);
+            nuevoCierre.setMontoEnMonedasDe50(montoEnMonedasDe50);
+            nuevoCierre.setObservaciones(nota);            
 
-            //Registramos el arqueo en base de datos
-            arqueoControla.crearArqueo(nuevoArqueo);      
+            //Registramos el cierre en base de datos
+            cierreControla.crearCierreDeCaja(nuevoCierre);      
 
-            //Imprimimos el ticket de aruqeo de caja
-            arqueoControla.generarTicketArqueoDeCaja(codigoArqueo);
+            //Imprimimos el ticket de cierre de caja
+            cierreControla.generarTicketCierreDeCaja(codigoCierre);
 
-            ventanaEmergCopiaArqueo = true;
+            ventanaEmergCopiaCierre = true;
 
-            while(ventanaEmergCopiaArqueo == true){
+            while(ventanaEmergCopiaCierre == true){
                String botones[] = {"Imprimir copia", "Cerrar"};
                //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja finalizado satisfactoriamente.", "Arqueo de caja", 0, 1, null, botones, this);
+               int eleccionFinalizarCierre = JOptionPane.showOptionDialog(this, "Cierre de caja finalizado satisfactoriamente.", "Cierre de caja", 0, 1, null, botones, this);
 
-               if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                   arqueoControla.generarTicketArqueoDeCaja(codigoArqueo); 
+               if(eleccionFinalizarCierre == JOptionPane.YES_OPTION){
+                   cierreControla.generarTicketCierreDeCaja(codigoCierre); 
                }
 
-               if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
-                   ventanaEmergCopiaArqueo = false;
+               if(eleccionFinalizarCierre == JOptionPane.NO_OPTION){
+                   ventanaEmergCopiaCierre = false;
                    dispose();
 
-                   PanelCaja.desbloquearPanel();
-
-                   laCajaFueAbierta = true;
-                   contadorFacturas = 0;            
-
-                   hilo1.start();
-                   hilo2.start();            
-
-                   //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
-                   table_operacionParqueadero.addMouseListener(new MouseAdapter() {
-                       @Override
-                       public void mouseClicked(MouseEvent e){
-                           int fila_point = table_operacionParqueadero.rowAtPoint(e.getPoint());
-                           int columna_point = 1;
-
-                           if(fila_point > -1){
-                               parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
-
-                               if(hayVehiculoLiquidandose == true){
-                                   JOptionPane.showMessageDialog(null,"No permitido.");
-                               }else{
-                                  hayVehiculoLiquidandose = true;  
-                                  LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
-                                  liquidacion_vehiculo.setVisible(true);
-                               }
-
-                           }
-                       }
-                   });
+                   laCajaFueAbierta = false;
+                   cierreControla.bloquearCaja();
                 } 
             }         
         }       
@@ -987,7 +976,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -995,7 +984,6 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
-            
         }
     }//GEN-LAST:event_txt_numBilletes100milFocusLost
 
@@ -1006,7 +994,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1026,7 +1014,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1053,7 +1041,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1080,7 +1068,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1098,7 +1086,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1125,7 +1113,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1144,7 +1132,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1171,7 +1159,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1190,7 +1178,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1217,7 +1205,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1236,7 +1224,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1254,7 +1242,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1281,7 +1269,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1308,7 +1296,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1327,7 +1315,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1354,7 +1342,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1373,7 +1361,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1400,7 +1388,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1418,7 +1406,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1445,7 +1433,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
+            lbl_dineroEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
             diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1464,7 +1452,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
+        lbl_dineroEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
@@ -1545,6 +1533,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1556,9 +1545,10 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTextArea jTextArea_observaciones;
     private javax.swing.JLabel lbl_baseDeCaja;
     private javax.swing.JLabel lbl_diferencia;
-    private javax.swing.JLabel lbl_diferencia1;
+    private javax.swing.JLabel lbl_dineroEnCaja;
+    private javax.swing.JLabel lbl_numFacturas;
+    private javax.swing.JLabel lbl_producido;
     private javax.swing.JLabel lbl_totalEnCaja;
-    private javax.swing.JLabel lbl_totalEnCaja1;
     public static javax.swing.JTextField txt_nombrePropietario;
     public static javax.swing.JTextField txt_numBilletes100mil;
     public static javax.swing.JTextField txt_numBilletes10mil;
@@ -1600,32 +1590,7 @@ public class CierreDeCaja extends javax.swing.JFrame implements Runnable {
         txt_numMonedas100pesos.setBackground(Color.WHITE);
         txt_numMonedas50pesos.setBackground(Color.WHITE);
     }
-    
-    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero en tiempo real    
-    @Override
-    public void run() {
-        Thread ct = Thread.currentThread();
-        Thread ct1 = Thread.currentThread();
-        while(ct == hilo1){
-
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosDisponibles());
-            cmb_numParqueadero.setModel(modeloParq);
-
-            try{
-                ct.sleep(120000);
-            }catch(InterruptedException e){}
-        }
-        while(ct1 == hilo2){
-
-            //Cargamos los datos de la tabla
-            parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
-
-            try{
-                ct1.sleep(10000);
-            }catch(InterruptedException e){}
-        }
-    }
-    
+       
     //Metodo que se invoca al cerrar el gestor de cierre de caja
     private void cerrarCierreDeCaja(){
         

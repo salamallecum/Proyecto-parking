@@ -708,22 +708,7 @@ public class CuadreCaja extends javax.swing.JFrame {
         
     }
     
-    //Metodo que bloquea la caja una vez hecho el cierre
-    public void bloquearCaja(){
-        
-        PanelCaja.btn_abrirCaja.setEnabled(true);
-        PanelCaja.txt_Placa.setEnabled(false);
-        PanelCaja.txt_nombrePropietario.setEnabled(false);
-        PanelCaja.cmb_clase.setEnabled(false);
-        PanelCaja.txt_convenio.setEnabled(false);
-        PanelCaja.txt_tarifa.setEnabled(false);
-        PanelCaja.table_operacionParqueadero.setEnabled(false);
-        PanelCaja.btn_estadoParqueadero.setEnabled(false);
-        PanelCaja.btn_generarCierreDeCaja.setEnabled(false);
-        PanelCaja.btn_ingresar.setEnabled(false);
-        PanelCaja.cmb_numParqueadero.setEnabled(false);
-
-    }
+    
     
     //Metodo que genera la fecha en que fue generada la factura
     public String fecha_de_cierre(){

@@ -709,7 +709,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
             facturaControla.cerrarFactura(placa);
             facturaControla.generarTicketSalida(placa);
-            
+                        
             ventanaEmergenteCopiaTicketSalida = true;
             
             while(ventanaEmergenteCopiaTicketSalida == true){
