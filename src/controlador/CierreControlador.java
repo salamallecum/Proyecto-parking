@@ -4,6 +4,7 @@ import clasesDeApoyo.Conexion;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ import vista.PanelCaja;
  */
 public class CierreControlador {
     
-    private final Logger log = Logger.getLogger(CierreControlador.class);
+   private final Logger log = Logger.getLogger(CierreControlador.class);
    private URL url = CierreControlador.class.getResource("Log4j.properties");
    
    //Constructor
@@ -68,7 +69,7 @@ public class CierreControlador {
         try {
             Connection cn3 = Conexion.conectar();
             PreparedStatement pst3 = cn3.prepareStatement(
-                "insert into cierres values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                "insert into cierres values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             pst3.setInt(1, cier.getId());
             pst3.setString(2, cier.getCodigo());
@@ -97,9 +98,13 @@ public class CierreControlador {
             pst3.setInt(25, cier.getMontoEnMonedasDe200());
             pst3.setInt(26, cier.getMontoEnMonedasDe100());
             pst3.setInt(27, cier.getMontoEnMonedasDe50());
-            //pst3.setString(28, cier.getMontoTotalCaja());
-            //pst3.setString(29, cier.getDiferenciaTotal());            
-
+            pst3.setString(28, cier.getProducido());
+            pst3.setString(29, cier.getTotal_esperado());  
+            pst3.setString(30, cier.getDinero_caja()); 
+            pst3.setString(31, cier.getDiferencia()); 
+            pst3.setString(32, cier.getNo_facturas()); 
+            pst3.setString(33, cier.getObservaciones());
+            
             pst3.executeUpdate();
             cn3.close();
         
@@ -122,15 +127,15 @@ public class CierreControlador {
            
            JasperReport reporte = null;
            
-           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/Arqueo.jasper"));
+           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/Cierre.jasper"));
 
            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
 
            //Da una vista previa del ticket
-         JasperViewer view = new JasperViewer(jprint, false);
-         view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-         view.setTitle("Ticket de cierre de caja");
-         view.setVisible(true);
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            view.setTitle("Ticket de cierre de caja");
+            view.setVisible(true);
            
            //Hace que se imprima directamente
            //JasperPrintManager.printReport(jprint, false);
@@ -139,6 +144,43 @@ public class CierreControlador {
            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Cierre de Caja, revise la conexión de la impresora o contacte al administrador!!");
            log.fatal("ERROR - Se ha producido un error al intentar generar ticket de cierre de caja de final de turno: " + ex);
        }
+    }
+    
+    //Metodo que le aprovisiona el id de cierre a las facturas que han sido contabilizadas en un cierre
+    public void asignarCierreAFacturasContabilizadas(int idCierre){
+        
+        try{
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement("update facturas set Contabilizada='Si', Id_cierre ='"+idCierre+"' where Estado_fctra = 'Cerrada' and Contabilizada='No'");
+
+            pst.executeUpdate();
+            cn.close();
+
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al contabilizar facturas, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar asginar un cierreafacturas contabilizadas: " + e);
+        }
+    }
+    
+    //Metodo que obtiene el id del cierre creado
+    public int obtenerIdCierreConCodigo(String codigoDelCierre){
+        
+        int idDelCierre = 0;
+        try {
+            Connection cn8 = Conexion.conectar();
+            PreparedStatement pst8 = cn8.prepareStatement(
+                "SELECT Id_cierre FROM cierres WHERE Codigo = '"+codigoDelCierre+"'");
+            ResultSet rs8 = pst8.executeQuery();
+
+            if(rs8.next()){
+                idDelCierre = rs8.getInt("Id_cierre");
+            }
+            cn8.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al seleccionar cierre!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar consultar el id de un cierre: " + e);
+        }
+        return idDelCierre;
     }
     
 }

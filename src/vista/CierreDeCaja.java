@@ -6,12 +6,15 @@ import controlador.FacturaControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.net.URL;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import modelo.Cierre;
+import org.apache.log4j.Logger;
 import static vista.PanelCaja.laCajaFueAbierta;
 
 
@@ -29,6 +32,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
     int dineroEnCaja = 0;
     String dineroEnCajaString = "";
     String montoTotalCaja = "";
+    
+    int totalCajaInt = 0;
     
     int diferenciaCalculo = 0;
     String diferenciaString = "";
@@ -59,17 +64,21 @@ public class CierreDeCaja extends javax.swing.JFrame{
     int montoEnMonedasDe200 = 0;
     int montoEnMonedasDe100 = 0;
     int montoEnMonedasDe50 = 0; 
+    String numFacturasGeneradas;
       
-    Cierre nuevoCierre = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", 0, "");
+    Cierre nuevoCierre = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "");
     FacturaControlador facturaControla = new FacturaControlador();
     CierreControlador cierreControla = new CierreControlador();
             
+    private final Logger log = Logger.getLogger(CierreDeCaja.class);
+    private URL url = CierreDeCaja.class.getResource("Log4j.properties");
+    
     /**
      * Creates new form ArqueoDeCaja
      */
     public CierreDeCaja() {
         initComponents();
-        setSize(583, 508);
+        setSize(583, 515);
         setResizable(false);
         setTitle("Cierre de caja");
         setLocationRelativeTo(null);
@@ -78,9 +87,14 @@ public class CierreDeCaja extends javax.swing.JFrame{
         usuarioDelSistema = Login.usuario;
                 
         String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
-        String contadorFacturas = facturaControla.contarFacturas();
-        String producido = facturaControla.calcularProducido();
-        
+        numFacturasGeneradas = facturaControla.contarFacturas();
+                
+        //Obtenemos los valores a pagar de las facturas para hacer calculo del producido en el turno
+        ArrayList valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturas();
+                
+        //Calculamos el producido teniendo en cuenta los valores de pagar de las facturas obtenidas
+        String producido = facturaControla.calcularProducido(valoresAPagarDeFacturas);
+                
         baseDeCajaInt = Integer.parseInt(baseDeCaja);
         producidoInt = Integer.parseInt(producido);
         
@@ -92,7 +106,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
         lbl_baseDeCaja.setText(formatoMoneda.format(valorBase));
         
         //Calculamos el dinero total que debe haber en caja (base + producido)
-        int totalCajaInt = producidoInt + baseDeCajaInt;
+        totalCajaInt = producidoInt + baseDeCajaInt;
         String totalCaja = Integer.toString(totalCajaInt);
         Double totalEnCaja = new Double(totalCaja);
         lbl_totalEnCaja.setText(formatoMoneda.format(totalEnCaja));             
@@ -101,7 +115,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
         Double valorProducido = new Double(producido);
         lbl_producido.setText(formatoMoneda.format(valorProducido));
      
-        lbl_numFacturas.setText(contadorFacturas);
+        lbl_numFacturas.setText(numFacturasGeneradas);
         
     }
     
@@ -615,7 +629,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_totalEnCaja)
                     .addComponent(jLabel18))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
                     .addComponent(lbl_dineroEnCaja))
@@ -682,17 +696,15 @@ public class CierreDeCaja extends javax.swing.JFrame{
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel22)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_generarCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addContainerGap())
         );
 
         pack();
@@ -930,13 +942,22 @@ public class CierreDeCaja extends javax.swing.JFrame{
             nuevoCierre.setMontoEnMonedasDe200(montoEnMonedasDe200);
             nuevoCierre.setMontoEnMonedasDe100(montoEnMonedasDe100);
             nuevoCierre.setMontoEnMonedasDe50(montoEnMonedasDe50);
-            nuevoCierre.setObservaciones(nota);            
+            nuevoCierre.setProducido(lbl_producido.getText());
+            nuevoCierre.setTotal_esperado(lbl_totalEnCaja.getText());
+            nuevoCierre.setDinero_caja(lbl_dineroEnCaja.getText());
+            nuevoCierre.setDiferencia(lbl_diferencia.getText());
+            nuevoCierre.setNo_facturas(numFacturasGeneradas);
+            nuevoCierre.setObservaciones(nota); 
 
             //Registramos el cierre en base de datos
-            cierreControla.crearCierreDeCaja(nuevoCierre);      
+            cierreControla.crearCierreDeCaja(nuevoCierre); 
+            
+            //Obtenemos el id del cierre para contabilizar sus facturas
+            int idCierreDef = cierreControla.obtenerIdCierreConCodigo(codigoCierre);
+            cierreControla.asignarCierreAFacturasContabilizadas(idCierreDef);
 
             //Imprimimos el ticket de cierre de caja
-            cierreControla.generarTicketCierreDeCaja(codigoCierre);
+            cierreControla.generarTicketCierreDeCaja(codigoCierre);           
 
             ventanaEmergCopiaCierre = true;
 
@@ -978,8 +999,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -996,8 +1017,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1016,8 +1037,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1043,8 +1064,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1070,8 +1091,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1088,8 +1109,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1115,8 +1136,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1134,8 +1155,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1161,8 +1182,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1180,8 +1201,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1207,8 +1228,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1226,8 +1247,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1244,8 +1265,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1271,8 +1292,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1298,8 +1319,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1317,8 +1338,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1344,8 +1365,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1363,8 +1384,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1390,8 +1411,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1408,8 +1429,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1435,8 +1456,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
             montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
             lbl_dineroEnCaja.setText(montoTotalCaja);
 
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            //Calculamos la diferencia respecto al total esperado en caja en tiempo real
+            diferenciaCalculo = dineroEnCaja - totalCajaInt;
             diferenciaString = Integer.toString(diferenciaCalculo);
             diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1454,8 +1475,8 @@ public class CierreDeCaja extends javax.swing.JFrame{
         montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
         lbl_dineroEnCaja.setText(montoTotalCaja);
         
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        //Calculamos la diferencia respecto al totalesperado en caja en tiempo real
+        diferenciaCalculo = dineroEnCaja - totalCajaInt;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
 
@@ -1469,10 +1490,10 @@ public class CierreDeCaja extends javax.swing.JFrame{
 
     private void jTextArea_observacionesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_observacionesKeyTyped
         //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 250;
+        int numeroCaracteres = 40;
         if(jTextArea_observaciones.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 40 caracteres");
         }
     }//GEN-LAST:event_jTextArea_observacionesKeyTyped
 

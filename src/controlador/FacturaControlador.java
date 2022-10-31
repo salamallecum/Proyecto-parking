@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -506,28 +507,59 @@ public class FacturaControlador {
         return cantidadFacturas;
     }
     
-    //Metodo que calcula el producido en caja a lo largo del turno del parqueadero
-    public String calcularProducido(){
+    //Metodo que consulta los valores a pagar de las facturas pendientes por contabilizar
+    public ArrayList obtenerValoresAPagarFacturas(){
         
-        int producido = 0;
-        String producido_str = "";
+        ArrayList totalesAPagar = new ArrayList();
         
         try {
             Connection cn2 = Conexion.conectar();
             PreparedStatement pst2 = cn2.prepareStatement(
-                "SELECT SUM(Valor_a_pagar) FROM facturas WHERE Contabilizada = 'No'");
+                "SELECT Valor_a_pagar FROM facturas WHERE Contabilizada = 'No'");
             ResultSet rs2 = pst2.executeQuery();
 
-            if(rs2.next()){
-                producido = rs2.getInt("SUM(Valor_a_pagar)");
-                producido_str = Integer.toString(producido);
+            while(rs2.next()){
+                
+                String valor = rs2.getString("Valor_a_pagar");
+                String charsToRemove = "$.";
+                
+                for (char c : charsToRemove.toCharArray()) {
+                    valor = valor.replace(String.valueOf(c), "");
+                }
+                
+                valor = valor.replaceAll(",", ".");
+                
+                if(valor.contains(".")){
+                    valor = valor.substring(0,valor.indexOf("."));
+                }               
+                
+                totalesAPagar.add(valor);
             }
             cn2.close();
+        
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al calcular producido del turno, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar calcular el dinero producido a lo largo del turno: " + e);
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener totales a pagar de facturas, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar obenter los totales a pagar de las facturas generadas en el turno. " + e);
         }
-        return producido_str;
+        return totalesAPagar;
+    }
+    
+    //Metodo que calcula el valor del producido teniendo en cuenta un arreglo de totales a pagar
+    public String calcularProducido(ArrayList valoresAPagar){
+        
+        String prod = "";
+        int resultado = 0;
+        
+        for(int i = 0; i < valoresAPagar.size(); i++){
+            
+            String valorPagar = String.valueOf(valoresAPagar.get(i));
+            int valorAPagar = Integer.parseInt(valorPagar);
+            resultado = resultado + valorAPagar;
+        }
+        
+        prod = Integer.toString(resultado);      
+        
+        return prod;
     }
 
 }
