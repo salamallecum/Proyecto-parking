@@ -12,7 +12,7 @@ public class generadorClavesYCodigos {
     public static String generarRandomString(int length) {
         // Puede personalizar los personajes que desea agregar a
         // las cadenas al azar
-        String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+        String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz#&/)(¿*?~}{[]><-+$^";
         String CHAR_UPPER = CHAR_LOWER.toUpperCase();
         String NUMBER = "0123456789";
 
