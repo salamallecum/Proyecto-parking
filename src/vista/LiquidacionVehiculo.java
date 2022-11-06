@@ -695,58 +695,23 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
         
-        boolean ventanaEmergenteCopiaTicketSalida = false;
-        
-        String ingreso = lbl_horaIngreso.getText();
-        String placa = lbl_placa.getText();
-        String parqueadero = lbl_noParqueadero.getText();
-        String dueño = lbl_propietario.getText();
-        
-        if(ingreso.equals("Registro 1er vez en sistema.")){
-            
-            facturaControla.liquidarFacturaDeVehiculo("1990-01-01 23:59:00.0", placa, "0", "0", "0");
-            dispose();
-            parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
-            facturaControla.cerrarFactura(placa);
-            facturaControla.generarTicketSalida(placa);
-                        
-            ventanaEmergenteCopiaTicketSalida = true;
-            
-            while(ventanaEmergenteCopiaTicketSalida == true){
-               String botones[] = {"Imprimir copia", "Cerrar"};
-               //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
-
-               if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                   facturaControla.generarTicketSalida(placa); 
-               }
-
-               if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
-                   ventanaEmergenteCopiaTicketSalida = false;
-                   dispose();
-                   PanelCaja.hayVehiculoLiquidandose = false;
-               }
-            }  
-            
+        if(PanelCaja.laCajaFueAbierta == false){
+            JOptionPane.showMessageDialog(null, "No Permitido");
+            txt_dineroRecibido.setText("");
         }else{
             
-            String dineroRecibido = txt_dineroRecibido.getText();
-                
-            if(dineroRecibido.equals("")){
-                txt_dineroRecibido.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "Digite el efectivo recibido para hacer el calculo correspondiente.");
-                txt_dineroRecibido.setBackground(Color.white);
+            boolean ventanaEmergenteCopiaTicketSalida = false;
+        
+            String ingreso = lbl_horaIngreso.getText();
+            String placa = lbl_placa.getText();
+            String parqueadero = lbl_noParqueadero.getText();
+            String dueño = lbl_propietario.getText();
+        
+            if(ingreso.equals("Registro 1er vez en sistema.")){
 
-            }else{
-                calcularVueltas();
-                String monto_a_pagar = lbl_totalAPagar.getText();
-                String horaSalida = lbl_horaSalida.getText();
-                String dineroRecibMoney = facturaControla.darFormatoMoneda(dineroRecibido);
-                String cambio = lbl_dineroCambio.getText();
-
-                facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, dineroRecibMoney, cambio);
+                facturaControla.liquidarFacturaDeVehiculo("1990-01-01 23:59:00.0", placa, "0", "0", "0");
                 dispose();
-                parqControla.liberarParqueadero(placa);
+                parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
                 facturaControla.cerrarFactura(placa);
                 facturaControla.generarTicketSalida(placa);
 
@@ -766,8 +731,49 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                        dispose();
                        PanelCaja.hayVehiculoLiquidandose = false;
                    }
-                }         
-            }  
+                }  
+
+            }else{
+
+                String dineroRecibido = txt_dineroRecibido.getText();
+
+                if(dineroRecibido.equals("")){
+                    txt_dineroRecibido.setBackground(Color.red);
+                    JOptionPane.showMessageDialog(null, "Digite el efectivo recibido para hacer el calculo correspondiente.");
+                    txt_dineroRecibido.setBackground(Color.white);
+
+                }else{
+                    calcularVueltas();
+                    String monto_a_pagar = lbl_totalAPagar.getText();
+                    String horaSalida = lbl_horaSalida.getText();
+                    String dineroRecibMoney = facturaControla.darFormatoMoneda(dineroRecibido);
+                    String cambio = lbl_dineroCambio.getText();
+
+                    facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, dineroRecibMoney, cambio);
+                    dispose();
+                    parqControla.liberarParqueadero(placa);
+                    facturaControla.cerrarFactura(placa);
+                    facturaControla.generarTicketSalida(placa);
+
+                    ventanaEmergenteCopiaTicketSalida = true;
+
+                    while(ventanaEmergenteCopiaTicketSalida == true){
+                       String botones[] = {"Imprimir copia", "Cerrar"};
+                       //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
+                       int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
+
+                       if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
+                           facturaControla.generarTicketSalida(placa); 
+                       }
+
+                       if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+                           ventanaEmergenteCopiaTicketSalida = false;
+                           dispose();
+                           PanelCaja.hayVehiculoLiquidandose = false;
+                       }
+                    }         
+                }  
+            }
         }          
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
 

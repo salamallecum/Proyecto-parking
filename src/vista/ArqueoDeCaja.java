@@ -57,6 +57,8 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     String numMonedasDe100 = "";
     String numMonedasDe50 = "";
     
+    public static String codigoArqueo = "";
+    
     //Variables de montos en cada una de las denominaciones
     int montoEnBilletes100Mil = 0;
     int montoEnBilletes50Mil = 0;
@@ -831,7 +833,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         }else{
                       
-            String codigoArqueo = generadorClavesYCodigos.generarRandomString(10);
+            codigoArqueo = generadorClavesYCodigos.generarRandomString(10);
 
             nuevoArqueo.setId(0);
             nuevoArqueo.setCodigo(codigoArqueo);

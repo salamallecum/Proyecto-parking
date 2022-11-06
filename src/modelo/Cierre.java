@@ -11,6 +11,7 @@ public class Cierre {
     
     private int Id;
     private String codigo;
+    private String codigo_arqueo;
     private String usuario;
     private String fecha_cierre;
     private String base_caja;
@@ -43,6 +44,7 @@ public class Cierre {
     private String total_esperado;
     private String dinero_caja;
     private String diferencia;
+    private String dinero_a_consignar;
     private String no_facturas;
     private String observaciones;  
        
@@ -50,9 +52,10 @@ public class Cierre {
     private URL url = Cierre.class.getResource("Log4j.properties");
     
     //Constructor
-    public Cierre(int Id, String codigo, String usuario, String fecha_cierre, String base_caja, String numBilletesDe100Mil, String numBilletesDe50Mil, String numBilletesDe20Mil, String numBilletesDe10Mil, String numBilletesDe5Mil, String numBilletesDe2Mil, String numBilletesOMonedasDeMil, String numMonedasDe500, String numMonedasDe200, String numMonedasDe100, String numMonedasDe50, int montoEnBilletes100Mil, int montoEnBilletes50Mil, int montoEnBilletes20Mil, int montoEnBilletes10Mil, int montoEnBilletes5Mil, int montoEnBilletes2Mil, int montoEnBilletesOMonedasMil, int montoEnMonedasDe500, int montoEnMonedasDe200, int montoEnMonedasDe100, int montoEnMonedasDe50, String producido, String total_esperado, String dinero_caja, String diferencia, String no_facturas, String observaciones) {
+    public Cierre(int Id, String codigo, String codigo_arqueo, String usuario, String fecha_cierre, String base_caja, String numBilletesDe100Mil, String numBilletesDe50Mil, String numBilletesDe20Mil, String numBilletesDe10Mil, String numBilletesDe5Mil, String numBilletesDe2Mil, String numBilletesOMonedasDeMil, String numMonedasDe500, String numMonedasDe200, String numMonedasDe100, String numMonedasDe50, int montoEnBilletes100Mil, int montoEnBilletes50Mil, int montoEnBilletes20Mil, int montoEnBilletes10Mil, int montoEnBilletes5Mil, int montoEnBilletes2Mil, int montoEnBilletesOMonedasMil, int montoEnMonedasDe500, int montoEnMonedasDe200, int montoEnMonedasDe100, int montoEnMonedasDe50, String producido, String total_esperado, String dinero_caja, String diferencia, String dinero_a_consignar, String no_facturas, String observaciones) {
         this.Id = Id;
         this.codigo = codigo;
+        this.codigo_arqueo = codigo_arqueo;
         this.usuario = usuario;
         this.fecha_cierre = fecha_cierre;
         this.base_caja = base_caja;
@@ -82,6 +85,7 @@ public class Cierre {
         this.total_esperado = total_esperado;
         this.dinero_caja = dinero_caja;
         this.diferencia = diferencia;
+        this.dinero_a_consignar = dinero_a_consignar;
         this.no_facturas = no_facturas;
         this.observaciones = observaciones;
     }    
@@ -349,6 +353,22 @@ public class Cierre {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+    
+    public String getCodigoArqueo() {
+        return codigo_arqueo;
+    }
+
+    public void setCodigoArqueo(String codArq) {
+        this.codigo_arqueo = codArq;
+    }
+    
+    public String getDineroAConsignar() {
+        return dinero_a_consignar;
+    }
+
+    public void setDineroAConsignar(String dineroConsig) {
+        this.dinero_a_consignar = dineroConsig;
     }
  
 }

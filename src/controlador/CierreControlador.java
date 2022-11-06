@@ -7,10 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -69,41 +71,43 @@ public class CierreControlador {
         try {
             Connection cn3 = Conexion.conectar();
             PreparedStatement pst3 = cn3.prepareStatement(
-                "insert into cierres values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                "insert into cierres values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             pst3.setInt(1, cier.getId());
             pst3.setString(2, cier.getCodigo());
-            pst3.setString(3, cier.getFecha_cierre());
-            pst3.setString(4, cier.getUsuario());
-            pst3.setString(5, cier.getBase_caja());
-            pst3.setString(6, cier.getNumBilletesDe100Mil());
-            pst3.setString(7, cier.getNumBilletesDe50Mil());
-            pst3.setString(8, cier.getNumBilletesDe20Mil());
-            pst3.setString(9, cier.getNumBilletesDe10Mil());
-            pst3.setString(10, cier.getNumBilletesDe5Mil());
-            pst3.setString(11, cier.getNumBilletesDe2Mil());
-            pst3.setString(12, cier.getNumBilletesOMonedasDeMil());
-            pst3.setString(13, cier.getNumMonedasDe500());
-            pst3.setString(14, cier.getNumMonedasDe200());
-            pst3.setString(15, cier.getNumMonedasDe100());
-            pst3.setString(16, cier.getNumMonedasDe50());
-            pst3.setInt(17, cier.getMontoEnBilletes100Mil());
-            pst3.setInt(18, cier.getMontoEnBilletes50Mil()); 
-            pst3.setInt(19, cier.getMontoEnBilletes20Mil());
-            pst3.setInt(20, cier.getMontoEnBilletes10Mil());
-            pst3.setInt(21, cier.getMontoEnBilletes5Mil());
-            pst3.setInt(22, cier.getMontoEnBilletes2Mil());
-            pst3.setInt(23, cier.getMontoEnBilletesOMonedasMil());
-            pst3.setInt(24, cier.getMontoEnMonedasDe500());
-            pst3.setInt(25, cier.getMontoEnMonedasDe200());
-            pst3.setInt(26, cier.getMontoEnMonedasDe100());
-            pst3.setInt(27, cier.getMontoEnMonedasDe50());
-            pst3.setString(28, cier.getProducido());
-            pst3.setString(29, cier.getTotal_esperado());  
-            pst3.setString(30, cier.getDinero_caja()); 
-            pst3.setString(31, cier.getDiferencia()); 
-            pst3.setString(32, cier.getNo_facturas()); 
-            pst3.setString(33, cier.getObservaciones());
+            pst3.setString(3, cier.getCodigoArqueo()); 
+            pst3.setString(4, cier.getFecha_cierre());
+            pst3.setString(5, cier.getUsuario());
+            pst3.setString(6, cier.getBase_caja());
+            pst3.setString(7, cier.getNumBilletesDe100Mil());
+            pst3.setString(8, cier.getNumBilletesDe50Mil());
+            pst3.setString(9, cier.getNumBilletesDe20Mil());
+            pst3.setString(10, cier.getNumBilletesDe10Mil());
+            pst3.setString(11, cier.getNumBilletesDe5Mil());
+            pst3.setString(12, cier.getNumBilletesDe2Mil());
+            pst3.setString(13, cier.getNumBilletesOMonedasDeMil());
+            pst3.setString(14, cier.getNumMonedasDe500());
+            pst3.setString(15, cier.getNumMonedasDe200());
+            pst3.setString(16, cier.getNumMonedasDe100());
+            pst3.setString(17, cier.getNumMonedasDe50());
+            pst3.setInt(18, cier.getMontoEnBilletes100Mil());
+            pst3.setInt(19, cier.getMontoEnBilletes50Mil()); 
+            pst3.setInt(20, cier.getMontoEnBilletes20Mil());
+            pst3.setInt(21, cier.getMontoEnBilletes10Mil());
+            pst3.setInt(22, cier.getMontoEnBilletes5Mil());
+            pst3.setInt(23, cier.getMontoEnBilletes2Mil());
+            pst3.setInt(24, cier.getMontoEnBilletesOMonedasMil());
+            pst3.setInt(25, cier.getMontoEnMonedasDe500());
+            pst3.setInt(26, cier.getMontoEnMonedasDe200());
+            pst3.setInt(27, cier.getMontoEnMonedasDe100());
+            pst3.setInt(28, cier.getMontoEnMonedasDe50());
+            pst3.setString(29, cier.getProducido());
+            pst3.setString(30, cier.getTotal_esperado());  
+            pst3.setString(31, cier.getDinero_caja()); 
+            pst3.setString(32, cier.getDiferencia()); 
+            pst3.setString(33, cier.getDineroAConsignar()); 
+            pst3.setString(34, cier.getNo_facturas()); 
+            pst3.setString(35, cier.getObservaciones());
             
             pst3.executeUpdate();
             cn3.close();
@@ -182,5 +186,48 @@ public class CierreControlador {
         }
         return idDelCierre;
     }
+    
+    //Metodo que calcula el dinero que se debe consignar para conservar solo la base en caja
+    public String calcularDineroAConsignar(String dineroEnCaja, String base){
+        
+        String dineroAConsignar = "";
+        
+        System.out.println("Dinero en caja recibido: "+dineroEnCaja);
+        System.out.println("Base recibida: "+base);                
+        
+        //Le quitamos el formato de moneda al dinero de caja
+        String charsToRemove = "$.";
+                
+        for (char c : charsToRemove.toCharArray()) {
+            dineroEnCaja = dineroEnCaja.replace(String.valueOf(c), "");
+        }
+
+        dineroEnCaja = dineroEnCaja.replaceAll(",", ".");
+
+        if(dineroEnCaja.contains(".")){
+            dineroEnCaja = dineroEnCaja.substring(0,dineroEnCaja.indexOf("."));
+        }       
+                  
+        //Convertimos las cantidades a enteros para el calculo correspondiente
+        int baseInt = Integer.parseInt(base);
+        int dineroCajaInt = Integer.parseInt(dineroEnCaja);
+        dineroCajaInt = Integer.parseInt(dineroEnCaja);
+        
+        System.out.println("Dinero de caja convertido a int: "+ dineroCajaInt);
+
+        int dineroAConsig = dineroCajaInt - baseInt;
+        System.out.println("Dinero a consignar: "+dineroAConsig);
+        
+        //Damos formato de moneda al dinero a consignar
+        dineroAConsignar = Integer.toString(dineroAConsig);
+        Double consignacion = new Double(dineroAConsignar);
+        Locale region = Locale.getDefault();
+        //Currency moneda = Currency.getInstance(region);
+        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
+        dineroAConsignar = formatoMoneda.format(consignacion);
+        
+        return dineroAConsignar;
+    }
+
     
 }

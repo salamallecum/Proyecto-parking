@@ -3,8 +3,10 @@
                                               
  Estado  |  No Parq  |  Placa   |  Parqueado? 
 ----------------------------------------------
- Ocupado  |  1A  |  CSA503  |  Si             
- Ocupado  |  2A  |  BJG978  |  No             
- Ocupado  |  3A  |  ASD56H  |  No             
+ Disponible  |  1A  |    |                    
+ Disponible  |  2A  |    |                    
+ Ocupado  |  3A  |  VBY78I  |  No             
  Disponible  |  4A  |    |                    
- Ocupado  |  5A  |  ERF897  |  Si             
+ Ocupado  |  5A  |  QSD567  |  No             
+ Disponible  |  6A  |    |                    
+ Disponible  |  7A  |    |                    

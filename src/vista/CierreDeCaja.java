@@ -66,7 +66,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
     int montoEnMonedasDe50 = 0; 
     String numFacturasGeneradas;
       
-    Cierre nuevoCierre = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "");
+    Cierre nuevoCierre = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
     FacturaControlador facturaControla = new FacturaControlador();
     CierreControlador cierreControla = new CierreControlador();
             
@@ -85,7 +85,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
         usuarioDelSistema = Login.usuario;
-                
+                        
         String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
         numFacturasGeneradas = facturaControla.contarFacturas();
                 
@@ -917,6 +917,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
 
             nuevoCierre.setId(0);
             nuevoCierre.setCodigo(codigoCierre);
+            nuevoCierre.setCodigoArqueo(ArqueoDeCaja.codigoArqueo);
             nuevoCierre.setFecha_cierre(cierreControla.fecha_Cierre());
             nuevoCierre.setUsuario(usuarioDelSistema);
             nuevoCierre.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
@@ -946,6 +947,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
             nuevoCierre.setTotal_esperado(lbl_totalEnCaja.getText());
             nuevoCierre.setDinero_caja(lbl_dineroEnCaja.getText());
             nuevoCierre.setDiferencia(lbl_diferencia.getText());
+            nuevoCierre.setDineroAConsignar(cierreControla.calcularDineroAConsignar(lbl_dineroEnCaja.getText(), OtrosParametros.consultarValorDeUnParametro("BASE_CAJA")));
             nuevoCierre.setNo_facturas(numFacturasGeneradas);
             nuevoCierre.setObservaciones(nota); 
 
