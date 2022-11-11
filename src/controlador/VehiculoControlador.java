@@ -128,7 +128,7 @@ public class VehiculoControlador {
         
         try{
             String [] titulos = {"Placa", "Propietario", "Clase", "N° Parq", "Convenio", "Tarifa"};
-            String filtro = ""+text+"_%";
+            String filtro = "%"+text+"%";
             String SQL = "SELECT Ve.Placa, Ve.Propietario, Ve.Clase, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa AND Ve.Placa like "+'"'+filtro+'"';
             modelo = new DefaultTableModel(null, titulos);
             
@@ -162,7 +162,7 @@ public class VehiculoControlador {
         
         try{
             String [] titulos = {"Placa", "Propietario", "Clase", "N° Parq", "Convenio", "Tarifa"};
-            String filtro = ""+text+"_%";
+            String filtro = "%"+text+"%";
             String SQL = "SELECT Ve.Placa, Ve.Propietario, Ve.Clase, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa AND Ve.Propietario like "+'"'+filtro+'"';
             modelo = new DefaultTableModel(null, titulos);
             

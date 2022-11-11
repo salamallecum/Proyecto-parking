@@ -280,7 +280,7 @@ public class UsuarioControlador {
     public void busquedaUsuario(String texto){
         try{
             String [] titulos = {"Nombres", "Apellidos", "Celular", "Telefono", "Usuario", "Rol"};
-            String filtro = ""+texto+"_%";
+            String filtro = "%"+texto+"%";
             String SQL = "select Nombres, Apellidos, Celular, Telefono, Usuario, Rol from usuarios where Nombres like "+'"'+filtro+'"';
             modelo = new DefaultTableModel(null, titulos);
             
