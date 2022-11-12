@@ -31,9 +31,12 @@ import vista.PanelCaja;
  * @author ALEJO
  */
 public class CierreControlador {
-    
+          
    private final Logger log = Logger.getLogger(CierreControlador.class);
    private URL url = CierreControlador.class.getResource("Log4j.properties");
+   
+   Cierre cierreConsultado = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
+   
    
    //Constructor
    public CierreControlador() {}  
@@ -186,37 +189,23 @@ public class CierreControlador {
         }
         return idDelCierre;
     }
-    
+        
     //Metodo que calcula el dinero que se debe consignar para conservar solo la base en caja
     public String calcularDineroAConsignar(String dineroEnCaja, String base){
         
         String dineroAConsignar = "";
         
-        System.out.println("Dinero en caja recibido: "+dineroEnCaja);
-        System.out.println("Base recibida: "+base);                
+        //Se cre un objeto de tipo FacturaControlador
+        FacturaControlador facturaControla = new FacturaControlador();
         
-        //Le quitamos el formato de moneda al dinero de caja
-        String charsToRemove = "$.";
-                
-        for (char c : charsToRemove.toCharArray()) {
-            dineroEnCaja = dineroEnCaja.replace(String.valueOf(c), "");
-        }
-
-        dineroEnCaja = dineroEnCaja.replaceAll(",", ".");
-
-        if(dineroEnCaja.contains(".")){
-            dineroEnCaja = dineroEnCaja.substring(0,dineroEnCaja.indexOf("."));
-        }       
+        String dineroCaja = facturaControla.quitarFormatoMoneda(dineroEnCaja);              
                   
         //Convertimos las cantidades a enteros para el calculo correspondiente
         int baseInt = Integer.parseInt(base);
-        int dineroCajaInt = Integer.parseInt(dineroEnCaja);
+        int dineroCajaInt = Integer.parseInt(dineroCaja);
         dineroCajaInt = Integer.parseInt(dineroEnCaja);
-        
-        System.out.println("Dinero de caja convertido a int: "+ dineroCajaInt);
-
+       
         int dineroAConsig = dineroCajaInt - baseInt;
-        System.out.println("Dinero a consignar: "+dineroAConsig);
         
         //Damos formato de moneda al dinero a consignar
         dineroAConsignar = Integer.toString(dineroAConsig);
@@ -229,5 +218,79 @@ public class CierreControlador {
         return dineroAConsignar;
     }
 
+    //Metodo que permite consultarla informacion de un cierre
+    public Cierre consultarInformacionDeUnCierre(int idDelCierre, String codigoCierre){
+               
+        //Hace la consulta de registros a la base de datos
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select * from cierres where Id_cierre = " + idDelCierre + " or Codigo='"+codigoCierre+"'");
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                cierreConsultado.setId(rs.getInt("Id_cierre"));
+                cierreConsultado.setCodigo(rs.getString("Codigo"));
+                cierreConsultado.setCodigoArqueo(rs.getString("Codigo_arqueo"));
+                cierreConsultado.setFecha_cierre(rs.getString("Fecha_cierre"));
+                cierreConsultado.setUsuario(rs.getString("Nombre_usuario"));
+                cierreConsultado.setBase_caja(rs.getString("Base_caja"));
+                cierreConsultado.setNumBilletesDe100Mil(rs.getString("numerobilletes100mil"));
+                cierreConsultado.setNumBilletesDe50Mil(rs.getString("numerobilletes50mil"));
+                cierreConsultado.setNumBilletesDe20Mil(rs.getString("numerobilletes20mil"));
+                cierreConsultado.setNumBilletesDe10Mil(rs.getString("numerobilletes10mil"));
+                cierreConsultado.setNumBilletesDe5Mil(rs.getString("numerobilletes5mil"));
+                cierreConsultado.setNumBilletesDe2Mil(rs.getString("numerobilletes2mil"));
+                cierreConsultado.setNumBilletesOMonedasDeMil(rs.getString("numerobilletesMil"));
+                cierreConsultado.setNumMonedasDe500(rs.getString("numeromonedas500"));
+                cierreConsultado.setNumMonedasDe200(rs.getString("numeromonedas200"));
+                cierreConsultado.setNumMonedasDe100(rs.getString("numeromonedas100"));
+                cierreConsultado.setNumMonedasDe50(rs.getString("numeromonedas50"));
+                cierreConsultado.setMontoEnBilletes100Mil(rs.getInt("montoen100mil"));
+                cierreConsultado.setMontoEnBilletes50Mil(rs.getInt("montoen50mil"));
+                cierreConsultado.setMontoEnBilletes20Mil(rs.getInt("montoen20mil"));
+                cierreConsultado.setMontoEnBilletes10Mil(rs.getInt("montoen10mil"));
+                cierreConsultado.setMontoEnBilletes5Mil(rs.getInt("montoen5mil"));
+                cierreConsultado.setMontoEnBilletes2Mil(rs.getInt("montoen2mil"));
+                cierreConsultado.setMontoEnBilletesOMonedasMil(rs.getInt("montoenmil"));
+                cierreConsultado.setMontoEnMonedasDe500(rs.getInt("montoen500"));
+                cierreConsultado.setMontoEnMonedasDe200(rs.getInt("montoen200"));
+                cierreConsultado.setMontoEnMonedasDe100(rs.getInt("montoen100"));
+                cierreConsultado.setMontoEnMonedasDe50(rs.getInt("montoen50"));
+                cierreConsultado.setProducido(rs.getString("Producido"));
+                cierreConsultado.setTotal_esperado(rs.getString("Total_esperado"));
+                cierreConsultado.setDinero_caja(rs.getString("Dinero_en_caja"));
+                cierreConsultado.setDiferencia(rs.getString("Diferencia"));
+                cierreConsultado.setDineroAConsignar(rs.getString("Dinero_a_consignar"));
+                cierreConsultado.setNo_facturas(rs.getString("No_facturas"));
+                cierreConsultado.setObservaciones(rs.getString("Observaciones")); 
+                
+                cn.close();              
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de un cierre!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de un cierre: " + e);
+        }
+        return cierreConsultado;        
+    }
+    
+    //Metodo paraactualizar montos finales de un cierre
+    public void actualizarMontosFinalesDeUnCierre(int idCierre, String producido, String totalEsperado, String dineroEnCaja, String diferencia, String dineroAConsignar, String noFacturas){
+        
+        //Actualizamos el cierre implicado con los nuevos datos
+        try{
+            Connection cn6 = Conexion.conectar();
+            PreparedStatement pst6 = cn6.prepareStatement("update cierres set Producido='"+producido+"', Total_esperado='"+totalEsperado+"', Dinero_en_caja='"+dineroEnCaja+"', Diferencia ='"+diferencia+"', Dinero_a_consignar='"+dineroAConsignar+"', No_facturas='"+noFacturas+"' where Id_cierre="+idCierre);
+
+            pst6.executeUpdate();
+            cn6.close();
+            
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar montos finales de un cierre!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar actualizar los montos finales de un cierre: " + e);
+        }
+    }
+    
     
 }

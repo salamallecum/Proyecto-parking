@@ -50,25 +50,25 @@
                           <Component id="jLabel9" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="lbl_codigo" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lbl_placa" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lbl_propietario" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lbl_tipoVehiculo" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbl_noParqueadero" alignment="0" min="-2" pref="149" max="-2" attributes="0"/>
                           <Component id="lbl_facturadoPor" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbl_convenio" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbl_tarifa" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbl_horaIngreso" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbl_horaSalida" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbl_totalAPagar" alignment="0" min="-2" pref="125" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="txt_dineroRecibido" min="-2" pref="104" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btn_calcular" min="-2" pref="39" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="lbl_dineroCambio" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbl_diferencia" alignment="0" min="-2" pref="216" max="-2" attributes="0"/>
+                          <Component id="lbl_diferencia" alignment="0" pref="216" max="32767" attributes="0"/>
+                          <Component id="lbl_noParqueadero" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lbl_tarifa" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lbl_convenio" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lbl_horaSalida" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lbl_horaIngreso" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lbl_totalAPagar" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lbl_dineroCambio" alignment="0" min="-2" pref="197" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">

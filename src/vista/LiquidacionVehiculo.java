@@ -35,7 +35,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     DefaultTableModel modeloCaja;
     int Fila;
     
-    Factura facturaALiquidar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
+    Factura facturaALiquidar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
     Tarifa tarifaACobrar = new Tarifa(0, "", "", "", "", "", "", "", "", "", ""); 
     Convenio convenioAAplicar = new Convenio(0, "", "", "");
     String montoAPagarParaCalculoPago = "";
@@ -58,9 +58,9 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         initComponents();
         usuario = Login.usuario;
         parqueadero_actualizado = PanelCaja.parqueadero_update;
-        tablaOperacionParqueadero = PanelCaja.table_operacionParqueadero;
+        tablaOperacionParqueadero = PanelCaja.table_operacionParqueadero;        
+
         modeloCaja = PanelCaja.modeloCaja;
-        
         lbl_diferencia.setVisible(false);
         lbl_totalAPagar.setVisible(false);
         lbl_dineroCambio.setVisible(false);
@@ -169,7 +169,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                             //Damos formato de moneda al monto a pagar
                             montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                            montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                            montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                             lbl_totalAPagar.setText(montoAPagar);
                             lbl_totalAPagar.setVisible(true);   
 
@@ -180,7 +180,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                            //Damos formato de moneda al monto a pagar
                            montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                            montoAPagar = facturaControla.darFormatoMoneda(facturaControla.calcularPago(long_montoTarifa, diferencia));
+                            montoAPagar = facturaControla.agregarFormatoMoneda(facturaControla.calcularPago(long_montoTarifa, diferencia));
                             lbl_totalAPagar.setText(montoAPagar);
                             lbl_totalAPagar.setVisible(true); 
 
@@ -206,7 +206,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -223,7 +223,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -249,7 +249,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -266,7 +266,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -303,7 +303,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                             //Damos formato de moneda al monto a pagar
                             montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                            montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                            montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                             lbl_totalAPagar.setText(montoAPagar);
                             lbl_totalAPagar.setVisible(true);   
 
@@ -314,7 +314,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                            //Damos formato de moneda al monto a pagar
                            montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                            montoAPagar = facturaControla.darFormatoMoneda(facturaControla.calcularPago(long_montoTarifa, diferencia));
+                            montoAPagar = facturaControla.agregarFormatoMoneda(facturaControla.calcularPago(long_montoTarifa, diferencia));
                             lbl_totalAPagar.setText(montoAPagar);
                             lbl_totalAPagar.setVisible(true); 
 
@@ -340,7 +340,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -357,7 +357,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -383,7 +383,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -400,7 +400,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             }else{
                                 //Damos formato de moneda al monto a pagar
                                 montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                montoAPagar = facturaControla.darFormatoMoneda(montoAPagarParaCalculoPago);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true); 
                             }
@@ -463,6 +463,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
         btn_imprimirFactura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_15107.png"))); // NOI18N
         btn_imprimirFactura.setText("Imprimir Comprobante");
+        btn_imprimirFactura.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_imprimirFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_imprimirFacturaActionPerformed(evt);
@@ -554,6 +555,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         lbl_convenio.setText("convenioDelVehiculo");
 
         btn_calcular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/calculator-icon_34473.png"))); // NOI18N
+        btn_calcular.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_calcular.setName(""); // NOI18N
         btn_calcular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -597,24 +599,24 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lbl_codigo)
                             .addComponent(lbl_placa)
                             .addComponent(lbl_propietario)
                             .addComponent(lbl_tipoVehiculo)
-                            .addComponent(lbl_noParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_facturadoPor)
-                            .addComponent(lbl_convenio)
-                            .addComponent(lbl_tarifa)
-                            .addComponent(lbl_horaIngreso)
-                            .addComponent(lbl_horaSalida)
-                            .addComponent(lbl_totalAPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txt_dineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btn_calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lbl_dineroCambio)
-                            .addComponent(lbl_diferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lbl_diferencia, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                            .addComponent(lbl_noParqueadero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_tarifa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_convenio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_horaSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_horaIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_totalAPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_dineroCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_imprimirFactura)
                         .addGap(112, 112, 112)))
@@ -702,18 +704,18 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             
             boolean ventanaEmergenteCopiaTicketSalida = false;
         
-            String ingreso = lbl_horaIngreso.getText();
             String placa = lbl_placa.getText();
             String parqueadero = lbl_noParqueadero.getText();
             String dueño = lbl_propietario.getText();
-        
+            String ingreso = lbl_horaIngreso.getText();
+
             if(ingreso.equals("Registro 1er vez en sistema.")){
 
-                facturaControla.liquidarFacturaDeVehiculo("1990-01-01 23:59:00.0", placa, "0", "0", "0");
+                facturaControla.liquidarFacturaDeVehiculo("1990-01-01 23:59:00.0", placa, "0", "N/A", "0", "0");
                 dispose();
                 parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
                 facturaControla.cerrarFactura(placa);
-                facturaControla.generarTicketSalida(placa);
+                facturaControla.generarTicketSalida(placa, false);
 
                 ventanaEmergenteCopiaTicketSalida = true;
 
@@ -723,7 +725,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                    int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
 
                    if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                       facturaControla.generarTicketSalida(placa); 
+                       facturaControla.generarTicketSalida(placa, false); 
                    }
 
                    if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
@@ -746,14 +748,15 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                     calcularVueltas();
                     String monto_a_pagar = lbl_totalAPagar.getText();
                     String horaSalida = lbl_horaSalida.getText();
-                    String dineroRecibMoney = facturaControla.darFormatoMoneda(dineroRecibido);
-                    String cambio = lbl_dineroCambio.getText();
+                    String diferencia = lbl_diferencia.getText();
+                    String dineroRecibMoney = facturaControla.agregarFormatoMoneda(dineroRecibido);
+                    String cambio = lbl_dineroCambio.getText();                    
 
-                    facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, dineroRecibMoney, cambio);
+                    facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, diferencia, dineroRecibMoney, cambio);
                     dispose();
                     parqControla.liberarParqueadero(placa);
                     facturaControla.cerrarFactura(placa);
-                    facturaControla.generarTicketSalida(placa);
+                    facturaControla.generarTicketSalida(placa, false);
 
                     ventanaEmergenteCopiaTicketSalida = true;
 
@@ -763,7 +766,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                        int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
 
                        if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                           facturaControla.generarTicketSalida(placa); 
+                           facturaControla.generarTicketSalida(placa, false); 
                        }
 
                        if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
@@ -782,7 +785,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             String dineroRecibido = txt_dineroRecibido.getText();
             String vueltas = facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido);
-            lbl_dineroCambio.setText(facturaControla.darFormatoMoneda(vueltas));
+            lbl_dineroCambio.setText(facturaControla.agregarFormatoMoneda(vueltas));
             lbl_dineroCambio.setVisible(true);
         }
     }//GEN-LAST:event_txt_dineroRecibidoKeyPressed
@@ -879,18 +882,18 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    public static javax.swing.JLabel lbl_codigo;
-    public static javax.swing.JLabel lbl_convenio;
-    public static javax.swing.JLabel lbl_diferencia;
-    public static javax.swing.JLabel lbl_dineroCambio;
-    public static javax.swing.JLabel lbl_facturadoPor;
-    public static javax.swing.JLabel lbl_horaIngreso;
-    public static javax.swing.JLabel lbl_horaSalida;
-    public static javax.swing.JLabel lbl_noParqueadero;
-    public static javax.swing.JLabel lbl_placa;
-    public static javax.swing.JLabel lbl_propietario;
-    public static javax.swing.JLabel lbl_tarifa;
-    public static javax.swing.JLabel lbl_tipoVehiculo;
+    private javax.swing.JLabel lbl_codigo;
+    private javax.swing.JLabel lbl_convenio;
+    private javax.swing.JLabel lbl_diferencia;
+    private javax.swing.JLabel lbl_dineroCambio;
+    private javax.swing.JLabel lbl_facturadoPor;
+    private javax.swing.JLabel lbl_horaIngreso;
+    private javax.swing.JLabel lbl_horaSalida;
+    private javax.swing.JLabel lbl_noParqueadero;
+    private javax.swing.JLabel lbl_placa;
+    private javax.swing.JLabel lbl_propietario;
+    private javax.swing.JLabel lbl_tarifa;
+    private javax.swing.JLabel lbl_tipoVehiculo;
     public static javax.swing.JLabel lbl_totalAPagar;
     public static javax.swing.JTextField txt_dineroRecibido;
     // End of variables declaration//GEN-END:variables
@@ -912,7 +915,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     public void calcularVueltas(){
         String dineroRecibido = txt_dineroRecibido.getText();
         vueltas = facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido);
-        lbl_dineroCambio.setText(facturaControla.darFormatoMoneda(vueltas)); 
+        lbl_dineroCambio.setText(facturaControla.agregarFormatoMoneda(vueltas)); 
         lbl_dineroCambio.setVisible(true);
     }
 }

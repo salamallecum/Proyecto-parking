@@ -52,8 +52,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
    
     Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", 0, 0, 0);
     Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", 0, 0, 0);
-    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
-    Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
     
     VehiculoControlador vehicontrolador = new VehiculoControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -267,10 +267,10 @@ public class EditarVehiculo extends javax.swing.JFrame{
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_dueño, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmb_clase, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmb_noParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cmb_convenios, javax.swing.GroupLayout.Alignment.LEADING, 0, 163, Short.MAX_VALUE)
-                                .addComponent(cmb_tarifas, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(cmb_tarifas, javax.swing.GroupLayout.Alignment.LEADING, 0, 240, Short.MAX_VALUE)
+                                .addComponent(cmb_convenios, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmb_noParqueadero, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addComponent(lbl_imgEditUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(24, Short.MAX_VALUE))

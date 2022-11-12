@@ -1,18 +1,10 @@
 package vista;
 
-import clasesDeApoyo.Conexion;
 import com.sun.glass.events.KeyEvent;
-import java.awt.Color;
+import controlador.FacturaControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -30,8 +22,11 @@ public class GestionarFacturas extends javax.swing.JFrame {
     public static DefaultTableModel modelo;
     int Fila;
     public static String codigoFactura_update;
-    boolean estadoFactura;
-    public static boolean hayFacturaAbierta = false;
+    
+    public static boolean esFacturaAbierta = false;
+    public static boolean hayFacturaVisualizandose = false;
+    
+    FacturaControlador facturaControla = new FacturaControlador();
     
     private final Logger log = Logger.getLogger(GestionarFacturas.class);
     private URL url = GestionarFacturas.class.getResource("Log4j.properties");
@@ -41,83 +36,12 @@ public class GestionarFacturas extends javax.swing.JFrame {
      */
     public GestionarFacturas() {       
         initComponents();
-        setSize(691, 525);
+        setSize(667, 500);
         setResizable(false);
         setTitle("Gestionar facturas");
         setLocationRelativeTo(null);
         
-        //Cargamos los datos de la tabla
-        try {
-            modelo = new DefaultTableModel();
-            table_listaFacturas.setModel(modelo);
-
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                        "select Codigo, Fecha_Factura,  Facturado_por, Valor_a_pagar from facturas");
-
-            ResultSet rs = pst.executeQuery();
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int cantidadColumnas = rsmd.getColumnCount();
-
-            modelo.addColumn("Codigo");
-            modelo.addColumn("Fecha");
-            modelo.addColumn("Usuario");
-            modelo.addColumn("Valor ($)");
-
-            int[] anchosTabla = {10,10,5,10};
-
-            for(int x=0; x < cantidadColumnas; x++){
-                table_listaFacturas.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
-            }
-
-            while (rs.next()) {
-
-                Object[] filas = new Object[cantidadColumnas];
-
-                for (int i = 0; i < cantidadColumnas; i++) {
-
-                        filas[i] = rs.getObject(i + 1); 
-                }
-                modelo.addRow(filas);
-            }
-            cn.close();                    
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error alllenar tabla de facturas, ¡Contacte al administrador!");
-            }
-            
-        //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
-        table_listaFacturas.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e){
-            int fila_point = table_listaFacturas.rowAtPoint(e.getPoint());
-            int columna_point = 0;
-
-            if(fila_point > -1){
-                codigoFactura_update = (String) modelo.getValueAt(fila_point, columna_point);
-                validarEstadoFactura();
-                
-                if(estadoFactura == true){
-                    
-                    if(hayFacturaAbierta==true){  
-                    }else{
-                        hayFacturaAbierta = true;
-                        InformacionFacturaIngreso infofactIngr = new InformacionFacturaIngreso();
-                        infofactIngr.setVisible(true);
-                    }
-                    
-                }else if(estadoFactura == false){
-                    
-                    if(hayFacturaAbierta==true){
-                    }else{
-                        hayFacturaAbierta = true;
-                        InformacionFacturaFinal infofactFnl = new InformacionFacturaFinal();
-                        infofactFnl.setVisible(true);
-                    }
-                }
-            }
-        }
-    });
+        facturaControla.cargarTablaAdministradorDeFacturas();
                     
     }
     
@@ -136,29 +60,20 @@ public class GestionarFacturas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-        txt_usuario = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_listaFacturas = new javax.swing.JTable();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         txt_codigoFactura = new javax.swing.JTextField();
-        jSeparator1 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        txt_usuario = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Usuario:");
-
-        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyTyped(evt);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -206,6 +121,8 @@ public class GestionarFacturas extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table_listaFacturas);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar por"));
+
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Codigo:");
 
@@ -221,45 +138,80 @@ public class GestionarFacturas extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Usuario:");
+
+        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_usuarioKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_usuarioKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_usuarioKeyTyped(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                    .addComponent(txt_codigoFactura))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_codigoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 631, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_codigoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(29, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1)
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 631, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_codigoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -268,7 +220,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private void txt_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyTyped
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 10;
-        if(txt_usuario.getText().length()== numeroCaracteres){
+        if(txt_usuario.getText().length() > numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
             txt_usuario.setText("");
@@ -278,7 +230,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private void txt_codigoFacturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyTyped
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 10;
-        if(txt_codigoFactura.getText().length()== numeroCaracteres){
+        if(txt_codigoFactura.getText().length() > numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
             txt_codigoFactura.setText("");
@@ -287,19 +239,18 @@ public class GestionarFacturas extends javax.swing.JFrame {
 
     private void txt_codigoFacturaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyReleased
         String buscar = txt_codigoFactura.getText();
-        busquedaFacturaPorCodigo(buscar);
+        facturaControla.busquedaFacturaPorCodigo(buscar);
     }//GEN-LAST:event_txt_codigoFacturaKeyReleased
 
     private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
         String buscar = txt_usuario.getText();
-        busquedaFacturaPorUsuario(buscar);
+        facturaControla.busquedaFacturaPorUsuario(buscar);
     }//GEN-LAST:event_txt_usuarioKeyReleased
 
     private void txt_codigoFacturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
             Limpiar();                       
         }
-        
     }//GEN-LAST:event_txt_codigoFacturaKeyPressed
 
     private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
@@ -307,6 +258,10 @@ public class GestionarFacturas extends javax.swing.JFrame {
             Limpiar();                       
         }
     }//GEN-LAST:event_txt_usuarioKeyPressed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cerrarGestorFacturas();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -383,6 +338,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     public static javax.swing.JTable table_listaFacturas;
@@ -390,113 +346,24 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
 
-    public void busquedaFacturaPorCodigo(String texto){
-       
-        try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = ""+texto+"_%";
-            String SQL = "select Codigo, Fecha_factura,  Facturado_por, Valor_a_pagar from facturas where Codigo like "+'"'+filtro+'"';
-            modelo = new DefaultTableModel(null, titulos);
-            
-            Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
-            
-            String[] fila = new String[4];
-            
-            while(rs6.next()){
-                String codigo = Integer.toString(rs6.getInt("Codigo"));
-                String valor_pagar = Integer.toString(rs6.getInt("Valor_a_pagar"));
-                
-                fila[0]= codigo;
-                fila[1]=rs6.getString("Fecha_factura");
-                fila[2]=rs6.getString("Facturado_por");
-                fila[3]= valor_pagar;
-                modelo.addRow(fila);
-            }
-            table_listaFacturas.setModel(modelo);
-            rs6.close();
-            cn6.close();
-            
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de factura!!, contacte al administrador.");
-        }
-                  
-    }   
-    
-    public void busquedaFacturaPorUsuario(String texto){
+    //Metodo que se invoca al cerrar el jFrame
+    private void cerrarGestorFacturas(){
         
-        try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = ""+texto+"_%";
-            String SQL = "select Codigo, Fecha_factura,  Facturado_por, Valor_a_pagar from facturas where Facturado_por like "+'"'+filtro+'"';
-            modelo = new DefaultTableModel(null, titulos);
-            
-            Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
-            
-            String[] fila = new String[4];
-            
-            while(rs6.next()){
-                String codigo = Integer.toString(rs6.getInt("Codigo"));
-                String valor_pagar = Integer.toString(rs6.getInt("Valor_a_pagar"));
-                
-                fila[0]= codigo;
-                fila[1]=rs6.getString("Fecha_factura");
-                fila[2]=rs6.getString("Facturado_por");
-                fila[3]= valor_pagar;
-                modelo.addRow(fila);
-            }
-            table_listaFacturas.setModel(modelo);
-            rs6.close();
-            cn6.close();
-            
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de factura por usuario!!, contacte al administrador.");
+        String botones[] = {"Cerrar", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
+        
+        if(eleccion == JOptionPane.YES_OPTION){
+            dispose();
+            PanelReportes.btn_facturas.setEnabled(true);
         }
     }
-  
+     
     //Metodo que limpia el formulario en caso de ingresar tablero principal
     public void Limpiar(){
         txt_codigoFactura.setText("");
         txt_usuario.setText("");
-    }  
+    } 
     
-    //Metodo que valida el estado de la factura
-    public void validarEstadoFactura(){
-            
-        try {
-            Connection cn7 = Conexion.conectar();
-            PreparedStatement pst7;
-            pst7 = cn7.prepareStatement(
-                        "select Estado_fctra from facturas where Codigo = '"+codigoFactura_update+"' AND Estado_fctra= 'Abierta'");
-
-            ResultSet rs7 = pst7.executeQuery();
-           
-            if (rs7.next()) {
-                estadoFactura = true;
-            }else{
-
-                try {
-                    Connection cn8 = Conexion.conectar();
-                    PreparedStatement pst8;
-                    pst8 = cn8.prepareStatement(
-                                "select Estado_fctra from facturas where Codigo = '"+codigoFactura_update+"' AND Estado_fctra= 'Cerrada'");
-
-                    ResultSet rs8 = pst8.executeQuery();
-
-                    if (rs8.next()) {
-                        estadoFactura = false;
-                    }
-                }catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "¡¡ERROR al validar estado de Factura!!, contacte al administrador.");
-                }
-            }        
-        }catch (SQLException e) {
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al validar estado de Factura!!, contacte al administrador.");
-        }
-    }
 }
 
 

@@ -934,13 +934,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnBilletes100Mil;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
             
@@ -953,13 +953,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         
@@ -973,13 +973,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnBilletes50Mil = 0;
@@ -1000,13 +1000,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnBilletes50Mil;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
         }
@@ -1027,13 +1027,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnBilletes20Mil;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
         }
@@ -1045,13 +1045,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnBilletes20Mil = 0;
@@ -1072,13 +1072,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnBilletes10Mil;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
  
@@ -1091,13 +1091,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
        
        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
        montoEnBilletes10Mil = 0;
@@ -1118,13 +1118,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnBilletes5Mil;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
 
@@ -1137,13 +1137,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnBilletes5Mil = 0;
@@ -1164,13 +1164,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnBilletes2Mil;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
 
@@ -1183,13 +1183,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnBilletes2Mil = 0;
@@ -1201,13 +1201,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnBilletesOMonedasMil = 0;
@@ -1228,13 +1228,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnBilletesOMonedasMil;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();                
         }
@@ -1255,13 +1255,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnMonedasDe500;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
 
@@ -1274,13 +1274,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnMonedasDe500 = 0;
@@ -1301,13 +1301,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnMonedasDe200;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
 
@@ -1320,13 +1320,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnMonedasDe200 = 0;
@@ -1347,13 +1347,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnMonedasDe100;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
         }
@@ -1365,13 +1365,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnMonedasDe100 = 0;
@@ -1392,13 +1392,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             dineroEnCaja = dineroEnCaja + montoEnMonedasDe50;
             dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-            montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
             lbl_totalEnCaja.setText(montoTotalCaja);
 
             //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
             diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
             muestreoDiferencia();
             
@@ -1411,13 +1411,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.darFormatoMoneda(dineroEnCajaString);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
         
         //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = dineroEnCaja - baseDeCajaInt;
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.darFormatoMoneda(diferenciaString);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
         montoEnMonedasDe50 = 0;
@@ -1502,14 +1502,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
     public void muestreoDiferencia(){
         
-        if(diferenciaCalculo < 0){
-            lbl_diferencia.setText(diferenciaTotal);
-            lbl_diferencia.setForeground(Color.RED);
-        }
-        
-        if(diferenciaCalculo >= 0){
+        if(diferenciaCalculo <= 0){
             lbl_diferencia.setText(diferenciaTotal);
             lbl_diferencia.setForeground(Color.GREEN);
+        }
+        
+        if(diferenciaCalculo > 0){
+            lbl_diferencia.setText(diferenciaTotal);
+            lbl_diferencia.setForeground(Color.RED);
         }        
     }    
     

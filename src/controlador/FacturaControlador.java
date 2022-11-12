@@ -1,10 +1,15 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -19,6 +24,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
+import modelo.Cierre;
 import modelo.Factura;
 import modelo.Tarifa;
 import net.sf.jasperreports.engine.JRException;
@@ -29,7 +36,13 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
-import vista.LiquidacionVehiculo;
+import static vista.GestionarFacturas.codigoFactura_update;
+import static vista.GestionarFacturas.esFacturaAbierta;
+import static vista.GestionarFacturas.hayFacturaVisualizandose;
+import static vista.GestionarFacturas.modelo;
+import static vista.GestionarFacturas.table_listaFacturas;
+import vista.InformacionFacturaFinal;
+import vista.InformacionFacturaIngreso;
 import static vista.LiquidacionVehiculo.lbl_totalAPagar;
 
 
@@ -39,11 +52,11 @@ import static vista.LiquidacionVehiculo.lbl_totalAPagar;
  */
 public class FacturaControlador {
     
-    Factura facturaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0);
-    
     private final Logger log = Logger.getLogger(FacturaControlador.class);
     private URL url = FacturaControlador.class.getResource("Log4j.properties");
-       
+    
+    Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+           
     //Constructor
     public FacturaControlador() {}
     
@@ -65,7 +78,7 @@ public class FacturaControlador {
     }
        
     //Metodo que genera el ticket de ingreso de un vehiculo
-    public void generarTicketIngreso(String placaVehiculo){
+    public void generarTicketIngreso(String placaVehiculo, boolean vistaPrevia){
         
         try{
             Connection cn3 = Conexion.conectar();
@@ -80,27 +93,28 @@ public class FacturaControlador {
             reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketIngreso.jasper"));
 
             JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, cn3);
-
-            //Da una vista previa del ticket
-            JasperViewer view = new JasperViewer(jprint, false);
-            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            view.setVisible(true);
-            view.setTitle("Ticket de ingreso vehiculo " + placaVehiculo);
             
-            
-            //Hace que se imprima directamente
-            //JasperPrintManager.printReport(jprint, false);
-            
+            if(vistaPrevia == true){
+               //Da una vista previa del ticket
+                JasperViewer view = new JasperViewer(jprint, false);
+                view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                view.setTitle("Ticket de ingreso vehiculo " + placaVehiculo);
+                view.setVisible(true);
+                view.setIconImage(getIconImageTicket());
+           
+           }else{
+               //Hace que se imprima directamente
+               JasperPrintManager.printReport(jprint, false);
+           }          
 
         }catch(JRException ex){
             JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de ingreso, contacte al administrador!!");
             log.fatal("ERROR - Se ha producido un error al intentar generar el ticket de ingreso de un vehiculo: " + ex); 
         }
     }
-    
-           
+       
     //Metodo que imprime el ticket de salida de un vehiculo
-    public void generarTicketSalida(String placa_tick){
+    public void generarTicketSalida(String placa_tick, boolean vistaPrevia){
         
         try{
            Connection cn3 = Conexion.conectar();
@@ -115,20 +129,30 @@ public class FacturaControlador {
            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketSalida.jasper"));
 
            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
-
-           //Da una vista previa del ticket
-           JasperViewer view = new JasperViewer(jprint, false);
-           view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-           view.setTitle("Ticket de salida vehiculo " + placa_tick);
-           view.setVisible(true);
-          
-           //Hace que se imprima directamente
-           //JasperPrintManager.printReport(jprint, false);
+           
+           if(vistaPrevia == true){
+               //Da una vista previa del ticket
+                JasperViewer view = new JasperViewer(jprint, false);
+                view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                view.setTitle("Ticket de salida vehiculo " + placa_tick);
+                view.setVisible(true);
+                view.setIconImage(getIconImageTicket());
+           
+           }else{
+               //Hace que se imprima directamente
+               JasperPrintManager.printReport(jprint, false);
+           }
 
        }catch(JRException ex){
            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Salida, revise la conexión de la impresora o contacte al administrador!!");
            log.fatal("ERROR - Se ha producido un error al intentar generar ticket de salida para un vehiculo: " + ex);
        }
+    }
+    
+    //Metodo que trae la img de la vista previa del ticket sea ingreso o salida
+    public Image getIconImageTicket() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/bill_icon.png"));
+        return retValue;
     }
     
     //Metodo que genera la fecha en que fue generada la factura
@@ -222,7 +246,7 @@ public class FacturaControlador {
         
         //Convertimos los datos para mostrar en pantalla
         String minutosExtra_str = Long.toString(minutosExtra);
-        String totalAPagarNeto_str = darFormatoMoneda(Long.toString(totalAPagarNeto));
+        String totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
         
         //Mostramos los datos en pantalla
         lbl_totalAPagar.setText(totalAPagarNeto_str);
@@ -256,7 +280,7 @@ public class FacturaControlador {
         
         //Convertimos los datos para mostrar en pantalla
         String horasExtra_str = Long.toString(horasExtra);
-        String totalAPagarNeto_str = darFormatoMoneda(Long.toString(totalAPagarNeto));
+        String totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
         
         //Mostramos los datos en pantalla
         lbl_totalAPagar.setText(totalAPagarNeto_str);
@@ -301,38 +325,7 @@ public class FacturaControlador {
             log.fatal("ERROR - Se ha producido un error al crear una factura en el sistema: " + e);
         }
     }
-    
-    //Metodo que genera la liquidación de un vehiculo en el jframe de liquidacion de vehiculo
-    public void liquidarVehiculo(String placa){
-        
-        //Hace la consulta del codigo,tipo de vehiculo , Facturado por, a la base de datos
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                "SELECT Fac.Id_factura, Fac.Codigo, Fac.Propietario, Fac.Tipo_vehiculo, Fac.Facturado_por, Fac.Estado_fctra, Fac.Hora_ingreso, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Fac.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Fac.Id_tarifa = Tar.Id_tarifa AND Fac.Placa = '" + placa + "' AND Fac.Estado_fctra = 'Abierta'");
-
-            ResultSet rs = pst.executeQuery();
-
-            if(rs.next()){
-                LiquidacionVehiculo.ID = rs.getInt("Fac.Id_factura");
-                LiquidacionVehiculo.lbl_codigo.setText(rs.getString("Fac.Codigo"));
-                LiquidacionVehiculo.lbl_placa.setText(placa);
-                LiquidacionVehiculo.lbl_propietario.setText(rs.getString("Fac.Propietario"));
-                LiquidacionVehiculo.lbl_tipoVehiculo.setText(rs.getString("Fac.Tipo_vehiculo"));
-                LiquidacionVehiculo.lbl_noParqueadero.setText(rs.getString("Parq.Nombre_parqueadero"));
-                LiquidacionVehiculo.lbl_facturadoPor.setText(rs.getString("Fac.Facturado_por"));
-                LiquidacionVehiculo.lbl_convenio.setText(rs.getString("Conv.Nombre_convenio"));
-                LiquidacionVehiculo.lbl_tarifa.setText(rs.getString("Tar.Nombre_tarifa"));
-                LiquidacionVehiculo.lbl_horaIngreso.setText(rs.getString("Fac.Hora_ingreso"));
-                LiquidacionVehiculo.lbl_horaSalida.setText(fecha_Salidavehiculo());                    
-            }  
-            cn.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar liquidación de vehiculo!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar generar liquidación de un vehiculo en el sistema: " + e);
-        }
-    }
-     
+         
     //Metodo que cierra la factura de un vehiculo unavez este ha salido del parqueadero
     public void cerrarFactura(String placa){
         try{
@@ -363,20 +356,8 @@ public class FacturaControlador {
         }
         return cambio_str;
     }
-    
-    //Arroja en formato de moneda la cantidad de dinero que se le indique
-    public String darFormatoMoneda(String montoAConvertir){
         
-        //Damos formato de moneda al monto
-        Double valorBase = new Double(montoAConvertir);
-        Locale region = Locale.getDefault();
-        //Currency moneda = Currency.getInstance(region);
-        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
-        
-        return formatoMoneda.format(valorBase);
-    }
-    
-    //Metodo que consulta la información de una factura abierta para la liquidación de un vehiculo
+    //Metodo que consulta la información de una factura abierta para la liquidación de un vehiculo o visualizacion de la misma
     public Factura consultarInformacionDeUnaFacturaAbierta(String placaDelVehiculo){
                
         //Hace la consulta de registros a la base de datos
@@ -404,18 +385,57 @@ public class FacturaControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de la liquidación del vehiculo seleccionado!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de una factura abierta para su liquidación: " + e);
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de una factura abierta!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de una factura abierta: " + e);
+        }
+        return facturaConsultada;        
+    }
+    
+    //Metodo que consulta la información de una factura cerrada para la liquidación de un vehiculo o su visualizacion
+    public Factura consultarInformacionDeUnaFacturaCerrada(String codigoFactura){
+               
+        //Hace la consulta de registros a la base de datos
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select * from facturas where Codigo = '" + codigoFactura + "' and Estado_fctra='Cerrada'");
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                facturaConsultada.setId(rs.getInt("Id_factura"));
+                facturaConsultada.setCodigo(rs.getString("Codigo"));
+                facturaConsultada.setId_cierre(rs.getInt("Id_cierre"));
+                facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
+                facturaConsultada.setPlaca(rs.getString("Placa"));
+                facturaConsultada.setPropietario(rs.getString("Propietario"));
+                facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
+                facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
+                facturaConsultada.setFacturadoPor(rs.getString("Facturado_por"));
+                facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
+                facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa")); 
+                facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
+                facturaConsultada.setFechaDeSalidaVehiculo(rs.getString("Hora_salida"));
+                facturaConsultada.setDiferencia(rs.getString("Diferencia"));
+                facturaConsultada.setValorAPagar(rs.getString("Valor_a_pagar"));
+                facturaConsultada.setEfectivo(rs.getString("Efectivo"));
+                facturaConsultada.setCambio(rs.getString("Cambio"));
+                
+                cn.close();              
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de una factura cerrada!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de una factura cerrada: " + e);
         }
         return facturaConsultada;        
     }
     
     //Metodo que permite liquidar una factura una vez el vehiculo sale del parqueadero
-    public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String dineroRecibido, String cambio){
+    public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio){
         
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"',Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
+            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"', Diferencia ='"+diferencia+"', Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
 
             pst.executeUpdate();
             cn.close();
@@ -561,5 +581,362 @@ public class FacturaControlador {
         
         return prod;
     }
+    
+    //Metodo que carga el contenido de la tabla del Administrador de facturas
+    public void cargarTablaAdministradorDeFacturas(){
+        
+        //Cargamos los datos de la tabla
+        try {
+            modelo = new DefaultTableModel();
+            table_listaFacturas.setModel(modelo);
 
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                        "select Codigo, Fecha_Factura,  Facturado_por, Valor_a_pagar from facturas");
+
+            ResultSet rs = pst.executeQuery();
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Fecha");
+            modelo.addColumn("Usuario");
+            modelo.addColumn("Valor ($)");
+
+            int[] anchosTabla = {10,10,5,10};
+
+            for(int x=0; x < cantidadColumnas; x++){
+                table_listaFacturas.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+            }
+
+            while (rs.next()) {
+
+                Object[] filas = new Object[cantidadColumnas];
+
+                for (int i = 0; i < cantidadColumnas; i++) {
+
+                        filas[i] = rs.getObject(i + 1); 
+                }
+                modelo.addRow(filas);
+            }
+            cn.close();                    
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al llenar tabla de facturas, ¡Contacte al administrador!");
+                log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de facturas del Administrador de facturas. " + e);
+            }
+            
+        //Agregamos la funcion de ver informacion de factura al hacer click sobre el registro de la tabla
+        table_listaFacturas.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e){
+            int fila_point = table_listaFacturas.rowAtPoint(e.getPoint());
+            int columna_point = 0;
+
+            if(fila_point > -1){
+                codigoFactura_update = (String) modelo.getValueAt(fila_point, columna_point);
+                boolean estFctra = validarEstadoFactura(codigoFactura_update);
+                
+                if(estFctra == true){
+                    esFacturaAbierta = true;
+                    generarInformacionDeFacturaEnFrame();
+                    
+                }else{
+                    esFacturaAbierta = false;
+                    generarInformacionDeFacturaEnFrame();                    
+                }
+            }
+        }
+    });
+    }    
+
+    //Metodo que genera la informacion de una factura en el jframe, sea abierta o cerrada
+    public void generarInformacionDeFacturaEnFrame(){
+
+        if(hayFacturaVisualizandose == true){
+            JOptionPane.showMessageDialog(null,"No permitido.");
+        }else{
+            hayFacturaVisualizandose = true;
+            
+            if(esFacturaAbierta == true){
+                new InformacionFacturaIngreso().setVisible(true);
+            }else{
+               new InformacionFacturaFinal().setVisible(true); 
+            } 
+        }    
+    } 
+    
+    //Metodo que busca una factura teniendo en cuenta su usuario
+    public void busquedaFacturaPorUsuario(String texto){
+        
+        try{
+            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
+            String filtro = "%"+texto+"%";
+            String SQL = "select Codigo, Fecha_factura,  Facturado_por, Valor_a_pagar from facturas where Facturado_por like "+'"'+filtro+'"';
+            modelo = new DefaultTableModel(null, titulos);
+            
+            Connection cn6 = Conexion.conectar();
+            PreparedStatement pst6 = cn6.prepareStatement(SQL);
+            ResultSet rs6 = pst6.executeQuery(SQL);
+            
+            String[] fila = new String[4];
+            
+            while(rs6.next()){
+                fila[0] = rs6.getString("Codigo");
+                fila[1] = rs6.getString("Fecha_factura");
+                fila[2] = rs6.getString("Facturado_por");
+                fila[3] = rs6.getString("Valor_a_pagar");
+                modelo.addRow(fila);
+            }
+            table_listaFacturas.setModel(modelo);
+            rs6.close();
+            cn6.close();
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de factura por usuario!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar buscar una factura por medio de su usuario. " + ex);
+        }
+    }
+    
+    //Metodo que busca una factura teniendo en cuenta su codigo
+    public void busquedaFacturaPorCodigo(String texto){
+       
+        try{
+            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
+            String filtro = "%"+texto+"%";
+            String SQL = "select Codigo, Fecha_factura,  Facturado_por, Valor_a_pagar from facturas where Codigo like "+'"'+filtro+'"';
+            modelo = new DefaultTableModel(null, titulos);
+            
+            Connection cn6 = Conexion.conectar();
+            PreparedStatement pst6 = cn6.prepareStatement(SQL);
+            ResultSet rs6 = pst6.executeQuery(SQL);
+            
+            String[] fila = new String[4];
+            
+            while(rs6.next()){               
+                fila[0]= rs6.getString("Codigo");
+                fila[1]=rs6.getString("Fecha_factura");
+                fila[2]=rs6.getString("Facturado_por");
+                fila[3]= rs6.getString("Valor_a_pagar");
+                modelo.addRow(fila);
+            }
+            table_listaFacturas.setModel(modelo);
+            rs6.close();
+            cn6.close();
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de factura!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar buscar una factura por medio de su codigo. " + ex);
+        }                
+    } 
+    
+    //Metodo que valida el estado de la factura
+    public boolean validarEstadoFactura(String codigo){
+        
+        boolean estadoFactura = false;
+            
+        try {
+            Connection cn7 = Conexion.conectar();
+            PreparedStatement pst7;
+            pst7 = cn7.prepareStatement(
+                        "select Estado_fctra from facturas where Codigo = '"+codigo+"'");
+
+            ResultSet rs7 = pst7.executeQuery();
+           
+            if (rs7.next()) {
+                String valor = rs7.getString("Estado_fctra");
+                
+                if(valor.equals("Abierta")){
+                    estadoFactura = true;
+                }else{
+                    estadoFactura = false;
+                }
+            }       
+        }catch (SQLException e) {
+           JOptionPane.showMessageDialog(null, "¡¡ERROR al validar estado de Factura!!, contacte al administrador.");
+           log.fatal("ERROR - Se ha producido un error al intentar validar el estado de una factura. " + e);
+        }
+        return estadoFactura;
+    }
+    
+    //Metodo que averigua si la factura indicada fue contabilizada
+    public boolean verificarSifacturaFueContabilizada(String cod_factura){
+        
+        boolean facturaContabilizada= true;
+        
+        try {
+            Connection cn3 = Conexion.conectar();
+            PreparedStatement pst3 = cn3.prepareStatement(
+                "SELECT Contabilizada from facturas where Codigo='"+ cod_factura + "' AND Estado_fctra = 'Cerrada' AND Contabilizada='Si'");
+
+            ResultSet rs3 = pst3.executeQuery();
+
+            if(rs3.next()){
+                String valor = rs3.getString("Contabilizada");
+                
+                if(valor.equals("Si")){
+                    facturaContabilizada = true;
+                }else{
+                    facturaContabilizada = false;
+                }   
+            }
+            cn3.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al validar contabilidad de factura!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar si una factura ya esta contabilizada. " + e);
+        }
+        return facturaContabilizada;
+    }
+    
+    //Metodo que borra una factura
+    public void borrarFactura(String cod_factura){
+
+        //Eliminamos la factura
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement("delete from facturas where Codigo= '"+ cod_factura + "'");
+            pst.executeUpdate(); 
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar eliminar una factura. " + e);
+        }
+    }
+    
+    //Metodo que descuenta la factura del cierre donde esta involucrada
+    public void descontarFacturaDeUnCierre(String codigoFactura){
+        
+        int idCierreImplicado = obtenerIdCierreConCodigoFactura(codigoFactura);
+        
+        //Creamos un objeto de tipo CierreControlador
+        CierreControlador cierreControla = new CierreControlador();
+        
+        String totalAPagarDeFactura = obtenerTotalAPagarDeUnaFacturaMedianteElCodigo(codigoFactura);
+        Cierre cierreInvolucrado = cierreControla.consultarInformacionDeUnCierre(idCierreImplicado, "");
+                  
+        //Hacemos el calculo correspondiente (restamos el valor de la factura al total esperado del cierre y restamos 1a factura al total de facturas)
+        String totalEsperado = cierreInvolucrado.getTotal_esperado();
+        String cantFacturas = cierreInvolucrado.getNo_facturas();
+        String dineroEnCaja = cierreInvolucrado.getDinero_caja();
+        String producido = cierreInvolucrado.getProducido();
+        String dineroAConsignar = cierreInvolucrado.getDineroAConsignar();
+        
+        //Quitamos el formato moneda a las cifras del cierre para su modificacion
+        totalEsperado = quitarFormatoMoneda(totalEsperado);
+        dineroEnCaja = quitarFormatoMoneda(dineroEnCaja);
+        totalAPagarDeFactura = quitarFormatoMoneda(totalAPagarDeFactura);
+        producido = quitarFormatoMoneda(producido);
+        dineroAConsignar = quitarFormatoMoneda(dineroAConsignar);
+       
+        int totalEsp_int = Integer.parseInt(totalEsperado);
+        int valorAPagarFactura = Integer.parseInt(totalAPagarDeFactura);
+        int dineroEnCaja_int = Integer.parseInt(dineroEnCaja);
+        int noFacturas_impl = Integer.parseInt(cantFacturas);
+        int producido_int = Integer.parseInt(producido);
+        int dineroAConsignar_int = Integer.parseInt(dineroAConsignar);
+        
+        //Descontamos el valor a pagar de la factura del dinero esperado, al dinero total existente en caja, al producido y al dinero a consignar
+        int nuevoTotalEsperado = totalEsp_int - valorAPagarFactura;
+        int nuevoDineroEnCaja = dineroEnCaja_int - valorAPagarFactura;
+        int nuevoProducido = producido_int - valorAPagarFactura;
+        int nuevoDineroAConsignar = dineroAConsignar_int - valorAPagarFactura;
+        
+        //Calculamos la nueva diferencia y restamos una factura al cierre
+        int nuevaDiferencia = nuevoTotalEsperado - nuevoDineroEnCaja;
+        int nuevaCantFacturas = noFacturas_impl - 1;
+                        
+        //Convertimos a string los nuevos resultados para el cierre
+        totalEsperado = Integer.toString(nuevoTotalEsperado);
+        dineroEnCaja = Integer.toString(nuevoDineroEnCaja);
+        String diferencia = Integer.toString(nuevaDiferencia);
+        cantFacturas = Integer.toString(nuevaCantFacturas);
+        producido = Integer.toString(nuevoProducido);
+        dineroAConsignar = Integer.toString(nuevoDineroAConsignar);
+        
+        //Aplicamos el formato moneda a los nuevos resultados para el cierre
+        totalEsperado = agregarFormatoMoneda(totalEsperado);
+        dineroEnCaja = agregarFormatoMoneda(dineroEnCaja);
+        diferencia = agregarFormatoMoneda(diferencia);
+        producido = agregarFormatoMoneda(producido);
+        dineroAConsignar = agregarFormatoMoneda(dineroAConsignar);
+        
+        //Actualizamos el cierre 
+        cierreControla.actualizarMontosFinalesDeUnCierre(idCierreImplicado, producido, totalEsperado, dineroEnCaja, diferencia, dineroAConsignar, cantFacturas);
+                                        
+    }
+    
+    //Metodo que total a pagar de unafactura usando su codigo
+    public String obtenerTotalAPagarDeUnaFacturaMedianteElCodigo(String codigoDeFactura){
+        
+        String valorPag = "";
+        try {
+            Connection cn8 = Conexion.conectar();
+            PreparedStatement pst8 = cn8.prepareStatement(
+                "SELECT Valor_a_pagar FROM facturas WHERE Codigo = '"+codigoDeFactura+"'");
+            ResultSet rs8 = pst8.executeQuery();
+
+            if(rs8.next()){
+                valorPag = rs8.getString("Valor_a_pagar");
+            }
+            cn8.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar total a pagar!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar consultar el total a pagar de una factura usando un codigo de factura: " + e);
+        }
+        return valorPag;
+    }
+    
+    //Metodo que obtiene el id del cierre mediante el codigo de una factura que este tenga
+    public int obtenerIdCierreConCodigoFactura (String codigoDeFactura){
+        
+        int idDelCierre = 0;
+        try {
+            Connection cn8 = Conexion.conectar();
+            PreparedStatement pst8 = cn8.prepareStatement(
+                "SELECT Id_cierre FROM facturas WHERE Codigo = '"+codigoDeFactura+"'");
+            ResultSet rs8 = pst8.executeQuery();
+
+            if(rs8.next()){
+                idDelCierre = rs8.getInt("Id_cierre");
+            }
+            cn8.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al seleccionar cierre!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar consultar el id de un cierre usando un codigo de factura: " + e);
+        }
+        return idDelCierre;
+    }
+    
+    public String quitarFormatoMoneda(String monto){
+        
+        String montoConvertido = "";
+        
+        //Le quitamos el formato de moneda al monto dado
+        String charsToRemove = "$.";
+                
+        for (char c : charsToRemove.toCharArray()) {
+            monto = monto.replace(String.valueOf(c), "");
+        }
+        monto = monto.replaceAll(",", ".");
+
+        if(monto.contains(".")){
+            monto = monto.substring(0,monto.indexOf("."));
+        }
+        
+        montoConvertido = monto;
+        
+        return montoConvertido;
+    }
+    
+    //Arroja en formato de moneda la cantidad de dinero que se le indique
+    public String agregarFormatoMoneda(String montoAConvertir){
+        
+        //Damos formato de moneda al monto
+        Double valorBase = new Double(montoAConvertir);
+        Locale region = Locale.getDefault();
+        //Currency moneda = Currency.getInstance(region);
+        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
+        
+        return formatoMoneda.format(valorBase);
+    }
 }

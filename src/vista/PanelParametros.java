@@ -173,7 +173,7 @@ public class PanelParametros extends javax.swing.JPanel {
     public static javax.swing.JButton btn_tarifas;
     // End of variables declaration//GEN-END:variables
 
-    //Metodo del boton exportar Backup
+    //Metodo del boton exportar Backup (Para proximas actualizaciones de sistema)
     public void ExportarDB(){
         
         try {

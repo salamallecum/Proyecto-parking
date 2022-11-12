@@ -28,24 +28,34 @@ public class PanelReportes extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btn_recaudo = new javax.swing.JButton();
-        btn_tarifas = new javax.swing.JButton();
+        btn_cierres = new javax.swing.JButton();
+        btn_facturas = new javax.swing.JButton();
+        btn_arqueos = new javax.swing.JButton();
 
-        btn_recaudo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/money.png"))); // NOI18N
-        btn_recaudo.setText("Recaudo");
-        btn_recaudo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_recaudo.addActionListener(new java.awt.event.ActionListener() {
+        btn_cierres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/money.png"))); // NOI18N
+        btn_cierres.setText("Cierres");
+        btn_cierres.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_cierres.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_recaudoActionPerformed(evt);
+                btn_cierresActionPerformed(evt);
             }
         });
 
-        btn_tarifas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Bill.png"))); // NOI18N
-        btn_tarifas.setText("Facturas");
-        btn_tarifas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_tarifas.addActionListener(new java.awt.event.ActionListener() {
+        btn_facturas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Bill.png"))); // NOI18N
+        btn_facturas.setText("Facturas");
+        btn_facturas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_facturas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_tarifasActionPerformed(evt);
+                btn_facturasActionPerformed(evt);
+            }
+        });
+
+        btn_arqueos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Arqueos.png"))); // NOI18N
+        btn_arqueos.setText("Arqueos");
+        btn_arqueos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_arqueos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_arqueosActionPerformed(evt);
             }
         });
 
@@ -54,36 +64,47 @@ public class PanelReportes extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(btn_recaudo, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(btn_tarifas, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(154, 154, 154))
+                .addGap(44, 44, 44)
+                .addComponent(btn_facturas, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_cierres, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_arqueos, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_recaudo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_tarifas, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_cierres, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_facturas, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_arqueos, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    //Metodo boton Convenios
-    private void btn_recaudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recaudoActionPerformed
+    //Metodo boton Cierres
+    private void btn_cierresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cierresActionPerformed
         new GestionarCierres().setVisible(true);
-    }//GEN-LAST:event_btn_recaudoActionPerformed
+        btn_cierres.setEnabled(false);
+    }//GEN-LAST:event_btn_cierresActionPerformed
 
-    //Metodo del boton Tarifas
-    private void btn_tarifasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tarifasActionPerformed
-        new GestionarFacturas().setVisible(true);    
-    }//GEN-LAST:event_btn_tarifasActionPerformed
+    //Metodo del boton Facturas
+    private void btn_facturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_facturasActionPerformed
+        new GestionarFacturas().setVisible(true); 
+        btn_facturas.setEnabled(false);
+    }//GEN-LAST:event_btn_facturasActionPerformed
+
+    //Metodo boton Arqueos
+    private void btn_arqueosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_arqueosActionPerformed
+        btn_arqueos.setEnabled(false);
+    }//GEN-LAST:event_btn_arqueosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_recaudo;
-    public static javax.swing.JButton btn_tarifas;
+    private javax.swing.JButton btn_arqueos;
+    private javax.swing.JButton btn_cierres;
+    public static javax.swing.JButton btn_facturas;
     // End of variables declaration//GEN-END:variables
 }

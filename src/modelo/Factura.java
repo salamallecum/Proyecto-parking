@@ -22,13 +22,18 @@ public class Factura {
     private int id_convenio;
     private int id_tarifa;
     private String fechaDeIngresoVehiculo;
-    private int id_cierre;   
+    private int id_cierre;
+    private String fechaDeSalidaVehiculo;
+    private String diferencia;
+    private String valorAPagar;
+    private String efectivo;
+    private String cambio;    
         
     private final Logger log = Logger.getLogger(Factura.class);
-    private URL url = Factura.class.getResource("Log4j.properties");
+    private final URL url = Factura.class.getResource("Log4j.properties");
     
     //Constructor
-    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, String facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre) {
+    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, String facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String valorAPagar, String efectivo, String cambio) {
         this.id = id;
         this.codigo = codigo;
         this.fechaDeFactura = fechaDeFactura;
@@ -43,6 +48,11 @@ public class Factura {
         this.id_tarifa = id_tarifa;
         this.fechaDeIngresoVehiculo = fechaDeIngresoVehiculo;
         this.id_cierre = id_cierre;
+        this.fechaDeSalidaVehiculo = fechaDeSalidaVehiculo;
+        this.diferencia = diferencia;
+        this.valorAPagar = valorAPagar;
+        this.efectivo = efectivo;
+        this.cambio = cambio;
     }
     
     //getter y setter
@@ -157,4 +167,45 @@ public class Factura {
     public void setId_cierre(int id_cierre) {
         this.id_cierre = id_cierre;
     }
+    
+    public String getFechaDeSalidaVehiculo() {
+        return fechaDeSalidaVehiculo;
+    }
+
+    public void setFechaDeSalidaVehiculo(String fechaSalidaVehiculo) {
+        this.fechaDeSalidaVehiculo = fechaSalidaVehiculo;
+    }
+
+    public String getValorAPagar() {
+        return valorAPagar;
+    }
+
+    public void setValorAPagar(String valorAPagar) {
+        this.valorAPagar = valorAPagar;
+    }
+
+    public String getEfectivo() {
+        return efectivo;
+    }
+
+    public void setEfectivo(String efectivo) {
+        this.efectivo = efectivo;
+    }
+
+    public String getCambio() {
+        return cambio;
+    }
+
+    public void setCambio(String cambio) {
+        this.cambio = cambio;
+    }
+
+    public String getDiferencia() {
+        return diferencia;
+    }
+
+    public void setDiferencia(String diferencia) {
+        this.diferencia = diferencia;
+    }
+ 
 }

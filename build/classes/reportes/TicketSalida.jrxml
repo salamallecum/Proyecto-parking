@@ -29,8 +29,7 @@ FROM
      INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`
 WHERE
      facturas.`Placa` = $P{placa}
- AND facturas.`Estado_fctra` = 'Cerrada'
- AND facturas.`Contabilizada` = 'No']]>
+ AND facturas.`Estado_fctra` = 'Cerrada']]>
 	</queryString>
 	<field name="convenios_Nombre_convenio" class="java.lang.String"/>
 	<field name="facturas_Codigo" class="java.lang.String"/>

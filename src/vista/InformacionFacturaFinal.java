@@ -1,27 +1,19 @@
 package vista;
 
-import clasesDeApoyo.Conexion;
+import controlador.ConvenioControlador;
+import controlador.FacturaControlador;
+import controlador.ParqueaderoControlador;
+import controlador.TarifaControlador;
+import controlador.VehiculoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
+import modelo.Factura;
 import org.apache.log4j.Logger;
 
 /**
@@ -35,10 +27,16 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     public static int ID;
     javax.swing.JTable tablaOperacionFacturas;
     DefaultTableModel modelo;
-    int Fila;
+    int Fila;    
+        
+    FacturaControlador facturaControla = new FacturaControlador();
+    ParqueaderoControlador parqControla = new ParqueaderoControlador();
+    TarifaControlador tarifaControla = new TarifaControlador();
+    ConvenioControlador convControla = new ConvenioControlador();
+    VehiculoControlador vehiControlador = new VehiculoControlador();
     
-    boolean facturaCont;
-    
+    Factura facturaCerradaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+        
     private final Logger log = Logger.getLogger(InformacionFacturaFinal.class);
     private URL url = InformacionFacturaFinal.class.getResource("Log4j.properties");
           
@@ -52,48 +50,59 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         tablaOperacionFacturas = GestionarFacturas.table_listaFacturas;
         modelo = GestionarFacturas.modelo;
         
-        setSize(400,595);
+        setSize(417,495);
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Información de factura");
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         
-        Fila = tablaOperacionFacturas.getSelectedRow();      
+        Fila = tablaOperacionFacturas.getSelectedRow(); 
         
-        //Hace la consulta de los datos de la factura a la base de datos
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                "SELECT Fac.Id_factura, Fac.Placa, Fac.Propietario, Fac.Tipo_vehiculo, Fac.Estado_fctra, Fac.Hora_ingreso, Fac.hora_salida, Fac.Efectivo, Fac.Cambio, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Fac.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Fac.Id_tarifa = Tar.Id_tarifa AND Fac.Codigo = '" + factura_actualizada + "' AND Fac.Estado_fctra = 'Cerrada'");
-
-            
-            ResultSet rs = pst.executeQuery();
-
-            if(rs.next()){
-                ID = rs.getInt("Fac.Id_factura");
-                lbl_placa.setText(rs.getString("Fac.Placa"));
-                lbl_propietario.setText(rs.getString("Fac.Propietario"));
-                lbl_tipoVehiculo.setText(rs.getString("Fac.Tipo_vehiculo"));
-                lbl_noParqueadero.setText(rs.getString("Parq.Nombre_parqueadero"));
-                lbl_horaIngreso.setText(rs.getString("Fac.Hora_ingreso"));
-                lbl_horaSalida.setText(rs.getString("Fac.Hora_salida"));
-                lbl_efectivo.setText(rs.getString("Fac.Efectivo"));
-                lbl_dineroCambio.setText(rs.getString("Fac.Cambio"));
-                lbl_convenio.setText(rs.getString("Conv.Nombre_convenio"));
-                lbl_tarifa.setText(rs.getString("Tar.Nombre_tarifa"));
-                
-                //Verifica si el vehiculo en cuestion esta registrado para asi bloquear btn editar
-                validarSiEsVehiculoRegistrado();
-            }  
-            cn.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar factura!!, contacte al administrador.");
+        //Cargamos la informacion de la facturacerrada en el frame
+        facturaCerradaConsultada = facturaControla.consultarInformacionDeUnaFacturaCerrada(factura_actualizada);
+        
+        ID = facturaCerradaConsultada.getId();
+        lbl_codigo.setText(facturaCerradaConsultada.getCodigo());
+        lbl_placa.setText(facturaCerradaConsultada.getPlaca());
+        lbl_propietario.setText(facturaCerradaConsultada.getPropietario());
+        lbl_tipoVehiculo.setText(facturaCerradaConsultada.getClaseDeVehiculo());
+        lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaCerradaConsultada.getId_parqueadero()));
+        lbl_facturadoPor.setText(facturaCerradaConsultada.getFacturadoPor());
+        lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaCerradaConsultada.getId_convenio()));
+        lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaCerradaConsultada.getId_tarifa()));
+        
+        String fecha_ingreso = facturaCerradaConsultada.getFechaDeIngresoVehiculo();
+        
+        if(fecha_ingreso.equals("1990-01-01 23:59:00.0")){
+            lbl_horaIngreso.setText("Registro 1er vez en sistema.");
+            lbl_horaSalida.setText("N/A");
+            lbl_diferencia.setText("N/A");
+            lbl_totalAPagar.setText("0");
+            lbl_efectivo.setText("0");
+            lbl_dineroCambio.setText("0");
+        }else{       
+            lbl_horaIngreso.setText(facturaCerradaConsultada.getFechaDeIngresoVehiculo());
+            lbl_horaSalida.setText(facturaCerradaConsultada.getFechaDeSalidaVehiculo());
+            lbl_diferencia.setText(facturaCerradaConsultada.getDiferencia());
+            lbl_totalAPagar.setText(facturaCerradaConsultada.getValorAPagar());
+            lbl_efectivo.setText(facturaCerradaConsultada.getEfectivo());
+            lbl_dineroCambio.setText(facturaCerradaConsultada.getCambio());
         }
-
-        //Traemos los datos del Jtable del gestionar facturas
-        lbl_codigo.setText(tablaOperacionFacturas.getValueAt(Fila, 0).toString());
-        lbl_facturadoPor.setText(tablaOperacionFacturas.getValueAt(Fila, 2).toString());
-        lbl_totalAPagar.setText(tablaOperacionFacturas.getValueAt(Fila, 3).toString());
+        
+        //Consultamos el propietario con el fin de ver si se encuentra registrado, de ser asi, deshabilitamos el boton de edición de factura
+        boolean vehiculoRegistradoEnSistema = vehiControlador.evaluarExistenciaDelVehiculo(lbl_placa.getText());
+        
+        if(vehiculoRegistradoEnSistema == true){
+            btn_editar.setEnabled(false);
+        }else{
+            btn_editar.setEnabled(true);
+        }
+        
+        if(lbl_horaIngreso.getText().equals("Registro 1er vez en sistema.")){
+            btn_eliminar.setEnabled(false);
+        }else{
+            btn_eliminar.setEnabled(true);
+        }
     }
     
     @Override
@@ -133,18 +142,23 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         lbl_convenio = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         lbl_tarifa = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         lbl_efectivo = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
         btn_editar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
-        btn_cancelar = new javax.swing.JButton();
+        lbl_diferencia = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         btn_imprimirFactura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
         btn_imprimirFactura.setText("Vista Previa");
+        btn_imprimirFactura.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_imprimirFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_imprimirFacturaActionPerformed(evt);
@@ -170,13 +184,13 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         jLabel6.setText("Numero de Parqueadero:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Valor a pagar ($):");
+        jLabel7.setText("Valor a pagar:");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel8.setText("Efectivo ($):");
+        jLabel8.setText("Efectivo:");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel9.setText("Cambio ($):");
+        jLabel9.setText("Cambio:");
 
         lbl_codigo.setText("codigo_factura");
 
@@ -192,7 +206,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
         lbl_totalAPagar.setText("valor_a_pagar");
 
-        lbl_dineroCambio.setText("0");
+        lbl_dineroCambio.setText("cambio");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Propietario:");
@@ -214,14 +228,11 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
         lbl_tarifa.setText("tarifaDelVehiculo");
 
-        jLabel14.setText("pesos");
-
-        lbl_efectivo.setText("0");
-
-        jLabel16.setText("pesos");
+        lbl_efectivo.setText("efectivo");
 
         btn_editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-validated_40458.png"))); // NOI18N
         btn_editar.setText("Editar");
+        btn_editar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_editar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_editarActionPerformed(evt);
@@ -230,108 +241,67 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
+        btn_eliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_eliminarActionPerformed(evt);
             }
         });
 
-        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Cancelar.png"))); // NOI18N
-        btn_cancelar.setText("Cancelar");
-        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancelarActionPerformed(evt);
-            }
-        });
+        lbl_diferencia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbl_diferencia.setForeground(new java.awt.Color(0, 0, 255));
+        lbl_diferencia.setText("diferencia");
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel15.setText("Tiempo total:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lbl_horaSalida))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lbl_horaIngreso))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbl_totalAPagar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel14))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lbl_dineroCambio))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lbl_efectivo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel16))))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(lbl_placa))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(lbl_codigo)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_tipoVehiculo)
-                                    .addComponent(lbl_propietario)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbl_noParqueadero))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jLabel11))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_facturadoPor)
-                                    .addComponent(lbl_convenio)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbl_tarifa))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbl_codigo)
+                            .addComponent(lbl_placa)
+                            .addComponent(lbl_propietario)
+                            .addComponent(lbl_tipoVehiculo)
+                            .addComponent(lbl_facturadoPor)
+                            .addComponent(lbl_horaIngreso)
+                            .addComponent(lbl_horaSalida)
+                            .addComponent(lbl_diferencia, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                            .addComponent(lbl_totalAPagar)
+                            .addComponent(lbl_efectivo)
+                            .addComponent(lbl_dineroCambio)
+                            .addComponent(lbl_noParqueadero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_convenio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_tarifa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(23, 23, 23))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btn_imprimirFactura)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_editar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn_eliminar))
-                            .addComponent(btn_cancelar))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btn_editar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_eliminar)
+                        .addGap(33, 33, 33))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,10 +310,10 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lbl_codigo))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(lbl_placa))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_placa)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -376,28 +346,28 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lbl_horaSalida))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(lbl_diferencia))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(lbl_totalAPagar)
-                    .addComponent(jLabel14))
-                .addGap(18, 18, 18)
+                    .addComponent(lbl_totalAPagar))
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
                     .addComponent(lbl_efectivo)
-                    .addComponent(jLabel16))
-                .addGap(11, 11, 11)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lbl_dineroCambio))
-                .addGap(26, 26, 26)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_imprimirFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
@@ -405,7 +375,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
         String placa = lbl_placa.getText();
-        generarDuplicadoFactura(placa);       
+        facturaControla.generarTicketSalida(placa, true);       
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
@@ -419,20 +389,26 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         
         if(decision == JOptionPane.YES_OPTION){    
             
-            verificarSifacturaFueContabilizada();
-            if(facturaCont == true){
-                descontarFacturaDelCierre();
-                borrarFactura();
-            }else if(facturaCont == false){
-                borrarFactura();
+            boolean factContabilizada = facturaControla.verificarSifacturaFueContabilizada(factura_actualizada);
+            if(factContabilizada == true){
+                facturaControla.descontarFacturaDeUnCierre(factura_actualizada);
+                facturaControla.borrarFactura(factura_actualizada);
+          
+            }else if(factContabilizada == false){
+                facturaControla.borrarFactura(factura_actualizada);
             }
+            
+            int filaSelec = tablaOperacionFacturas.getSelectedRow();
+            modelo.removeRow(filaSelec);
+            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.");
+            dispose();
+            GestionarFacturas.hayFacturaVisualizandose = false;
         }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
-    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
-        GestionarFacturas.hayFacturaAbierta = false;
-        dispose();
-    }//GEN-LAST:event_btn_cancelarActionPerformed
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cerrarInformacionFactura();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -479,7 +455,6 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_imprimirFactura;
@@ -488,8 +463,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -500,8 +474,9 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     public static javax.swing.JLabel lbl_codigo;
     public static javax.swing.JLabel lbl_convenio;
+    public static javax.swing.JLabel lbl_diferencia;
     public static javax.swing.JLabel lbl_dineroCambio;
-    private javax.swing.JLabel lbl_efectivo;
+    public static javax.swing.JLabel lbl_efectivo;
     public static javax.swing.JLabel lbl_facturadoPor;
     public static javax.swing.JLabel lbl_horaIngreso;
     public static javax.swing.JLabel lbl_horaSalida;
@@ -513,203 +488,15 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     public static javax.swing.JLabel lbl_totalAPagar;
     // End of variables declaration//GEN-END:variables
 
-    
-    //Metodo que imprime el ticket de salida
-    public void generarDuplicadoFactura(String placa_tick){
+    //Metodo que se invoca al cerrar el jFrame
+    private void cerrarInformacionFactura(){
         
-         try{
-            Connection cn3 = Conexion.conectar();
-
-            Map parametro = new HashMap();
-            parametro.clear();
-            parametro.put("placa", placa_tick);
-            
-            JasperReport reporte = null;
-            //String path = "src\\Reportes\\DuplicadoFacturaFinal.jasper";
-
-            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/DuplicadoFacturaFinal.jasper"));
-
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
-
-            //Da una vista previa del ticket
-            JasperViewer view = new JasperViewer(jprint, false);
-            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            view.setVisible(true);
-            view.setIconImage(obtenerIconoReporte());
-            view.setTitle("Duplicado de factura");
-            
-        }catch(JRException ex){
-            //Logger.getLogger(InformacionFacturaFinal.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar duplicado de Factura, contacte al administrador!!");
-        }
-    }
-    
-    //Metodo que averigua si la factura indicada fue contabilizada
-    public boolean verificarSifacturaFueContabilizada(){
+        String botones[] = {"Cerrar", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
         
-        try {
-            Connection cn3 = Conexion.conectar();
-            PreparedStatement pst3 = cn3.prepareStatement(
-                "SELECT Contabilizada from facturas where Codigo='"+ factura_actualizada + "' AND Estado_fctra = 'Cerrada' AND Contabilizada='Si'");
-
-            ResultSet rs3 = pst3.executeQuery();
-
-            if(rs3.next()){
-                facturaCont = true;
-               
-            }else{
-                facturaCont = false;
-            }
-            cn3.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al validar contabilidad de factura!!, contacte al administrador.");
-        }
-        return facturaCont;
-    }
-
-    //Metodo que borra la factura
-    public void borrarFactura(){
-
-        //Eliminamos la factura
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("delete from facturas where Codigo= '"+ factura_actualizada + "'");
-            pst.executeUpdate(); 
-
-            int filaSelec = tablaOperacionFacturas.getSelectedRow();
-
-            modelo.removeRow(filaSelec);
-
-            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.");            
-
+        if(eleccion == JOptionPane.YES_OPTION){
+            GestionarFacturas.hayFacturaVisualizandose = false;
             dispose();
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar!!, contacte al administrador.");
         }
-    }
-    
-    //Metodo que descuenta la factura del cierre donde esta involucrada
-    public void descontarFacturaDelCierre(){
-        
-        //Averiguamos el id del cierre al cual está registrado la factura
-        try {
-            Connection cn4 = Conexion.conectar();
-            PreparedStatement pst4 = cn4.prepareStatement(
-                "SELECT Id_cierre, Valor_a_pagar from facturas where Codigo='"+ factura_actualizada + "'");
-
-            ResultSet rs4 = pst4.executeQuery();
-
-            if(rs4.next()){
-                int cierreImplicado = rs4.getInt("Id_cierre");
-                int valorAPagarFactura = rs4.getInt("Valor_a_pagar");
-               
-                //Traemos los datos del cierre implicado(codigo, producido, dinero en caja y no de facturas)
-                try {
-                    Connection cn5 = Conexion.conectar();
-                    PreparedStatement pst5 = cn5.prepareStatement(
-                        "SELECT Codigo, Producido, Dinero_en_caja, No_facturas from cierres where Id_cierre='"+ cierreImplicado + "'");
-
-                    ResultSet rs5 = pst5.executeQuery();
-
-                    if(rs5.next()){
-                        int codCierreImpl = rs5.getInt("Codigo");
-                        int producidoImpl = rs5.getInt("Producido");
-                        int dinCaja_Impl = rs5.getInt("Dinero_en_caja");
-                        int noFacturas_impl = rs5.getInt("No_facturas");
-                        
-                        //Hacemos el calculo correspondiente (restamos el valor de la factura al producido del cierre y restamos 1a factura al total de facturas)
-                        int nuevoProducido = producidoImpl - valorAPagarFactura;
-                        int nuevaDiferencia = nuevoProducido - dinCaja_Impl;
-                        int nuevaCantFacturas = noFacturas_impl - 1;
-                        
-                        //Actualizamos el cierre implicado con los nuevos datos
-                        try{
-                            Connection cn6 = Conexion.conectar();
-                            PreparedStatement pst6 = cn6.prepareStatement("update cierres set Producido='"+nuevoProducido+"',Diferencia ='"+nuevaDiferencia+"',No_facturas='"+nuevaCantFacturas+"'where Id_cierre ='"+cierreImplicado+"'");
-
-                            pst6.executeUpdate();
-                            cn6.close();
-                            
-                            int infoAcercaCierre = JOptionPane.showConfirmDialog(this, "El cierre de codigo "+codCierreImpl+" fue actualizado satisfactoriamente, ¿desea un duplicado?" , "Duplicado cierre", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            
-                            if(infoAcercaCierre == JOptionPane.YES_OPTION){
-                                generarDuplicadoCierre(nuevoProducido);
-                            
-                            }else if(infoAcercaCierre == JOptionPane.NO_OPTION){
-                                this.dispose();
-                            }
-                            
-                        }catch(SQLException e){
-                            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar!!, contacte al administrador.");
-                        }
-                    }
-                    cn5.close();
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "¡¡ERROR al validar datos de cierre!!, contacte al administrador.");
-                }
-            }
-            cn4.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar!!, contacte al administrador.");
-        }   
-    }
-    
-    public void generarDuplicadoCierre(int producidoEsp){
-        
-        try{
-            Connection cn3 = Conexion.conectar();
-
-            Map parametro = new HashMap();
-            parametro.clear();
-            parametro.put("producido", producidoEsp);
-            
-            JasperReport reporte = null;
-            String path = "src\\Reportes\\DuplicadoCierreDeCaja.jasper";
-
-            reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
-
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
-
-            JasperViewer view = new JasperViewer(jprint, false);
-            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            view.setVisible(true);
-            view.setIconImage(obtenerIconoReporte());
-            view.setTitle("Duplicado de factura");
-
-        }catch(JRException ex){
-            //Logger.getLogger(PanelUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Duplicado de cierre, contacte al administrador!!");
-        }
-    }
-    
-    //Metodo que valida si el vehiculo esta registrado y bloquea el boton editar
-    public void validarSiEsVehiculoRegistrado(){
-        
-         //Valida si el vehiculo esta registrado
-        try {
-            String placa_im = lbl_placa.getText();
-            
-            Connection cn1 = Conexion.conectar();
-            PreparedStatement pst1;
-            pst1 = cn1.prepareStatement(
-                       "SELECT Ve.Propietario, Ve.Clase, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa AND Ve.Placa='"+placa_im+"'");
-
-            ResultSet rs1 = pst1.executeQuery();
-
-            if (rs1.next()) {
-                btn_editar.setEnabled(false);
-            }else{
-                btn_editar.setEnabled(true);
-            }
-        
-        }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al validar!!, contacte al administrador.");
-        }
-    }
-    
-    public Image obtenerIconoReporte() {
-        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/bill_icon.png"));
-        return retValue;
     }
 }
