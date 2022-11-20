@@ -547,8 +547,23 @@ public class ParqueaderoControlador {
             JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar parqueadero!!, contacte al administrador.");
             log.fatal("ERROR - Se ha producido un error al intentar validar el id de un parquadero utilizando su nombre: " + e);
         } 
-        return idParqueadero;
-        
+        return idParqueadero;   
+    }
+    
+    //Metodo que actualiza la informacion de un propietario en un parqueadero
+    public void actualizarInfoDePropietarioEnParqueadero(String placa, String dueño, String noParq){
+                
+        try{
+            Connection cn3 = Conexion.conectar();
+            PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Placa='"+placa+"', Propietario='"+dueño+"' where Nombre_parqueadero='"+noParq+"'");
+
+            pst3.executeUpdate();
+            cn3.close();
+           
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar informacion en parqueadero!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al actualizar info del propietario de un parqueadero" + ex);
+        } 
     }
     
 }

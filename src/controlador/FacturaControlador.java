@@ -54,6 +54,7 @@ public class FacturaControlador {
     
     private final Logger log = Logger.getLogger(FacturaControlador.class);
     private URL url = FacturaControlador.class.getResource("Log4j.properties");
+    private String valorAPagarPorDiferenciaAdicional = "";
     
     Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
            
@@ -248,15 +249,19 @@ public class FacturaControlador {
         String minutosExtra_str = Long.toString(minutosExtra);
         String totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
         
-        //Mostramos los datos en pantalla
-        lbl_totalAPagar.setText(totalAPagarNeto_str);
-        lbl_totalAPagar.setVisible(true);
+        valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
         
         diferenciaAdicional = " y " + minutosExtra_str + " minutos";
         
         return diferenciaAdicional;
             
     }
+    
+    //Metodo que retorna el valor a pagar para los metodos con diferencia adicional
+    public String obtenervalorAPagarPorDiferenciaAdicional(){
+        return valorAPagarPorDiferenciaAdicional;
+    } 
+    
     
     //Metodo que calcula el monto a pagar con minutos adicionales (PARA EL COBRO POR DIAS)
     public String calcularPagoTeniendoEnCuentaHorasUtilizadas(long mon, long dif, Tarifa tarifaInvolucrada, long diferenciaEnMilisegundos) {
@@ -282,9 +287,7 @@ public class FacturaControlador {
         String horasExtra_str = Long.toString(horasExtra);
         String totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
         
-        //Mostramos los datos en pantalla
-        lbl_totalAPagar.setText(totalAPagarNeto_str);
-        lbl_totalAPagar.setVisible(true);
+        valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
         
         diferenciaAdicional = " y " + horasExtra_str + " horas";
         
@@ -502,6 +505,23 @@ public class FacturaControlador {
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error al actualizar facturas, contacte al administrador.");
             log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);  
+        } 
+    }
+    
+    //Metodo que permite actualizar las facturas finales    
+    public void actualizarFacturaFinal(Factura facturaAActualizar){
+        
+        try{
+            Connection cn9 = Conexion.conectar();
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getClaseDeVehiculo()+"', Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+", Diferencia='"+facturaAActualizar.getDiferencia()+"', Valor_a_pagar='"+facturaAActualizar.getValorAPagar()+"', Efectivo='"+facturaAActualizar.getEfectivo()+"', Cambio='"+facturaAActualizar.getCambio()+"' where Id_factura ="+facturaAActualizar.getId());
+
+            pst9.executeUpdate();
+            cn9.close();
+
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al actualizar factura final, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura final de un vehiculo: " + e);  
+            e.printStackTrace();
         } 
     }
     

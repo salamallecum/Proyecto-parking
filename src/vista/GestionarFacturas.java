@@ -20,7 +20,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
       
    
     public static DefaultTableModel modelo;
-    int Fila;
+    public static int Filas;
     public static String codigoFactura_update;
     
     public static boolean esFacturaAbierta = false;
@@ -117,6 +117,11 @@ public class GestionarFacturas extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        table_listaFacturas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_listaFacturasMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(table_listaFacturas);
@@ -262,6 +267,11 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         cerrarGestorFacturas();
     }//GEN-LAST:event_formWindowClosing
+
+    private void table_listaFacturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_listaFacturasMouseClicked
+        int seleccion = table_listaFacturas.getSelectedRow();
+        Filas = seleccion;
+    }//GEN-LAST:event_table_listaFacturasMouseClicked
 
     /**
      * @param args the command line arguments

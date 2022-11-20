@@ -27,14 +27,14 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     public static int ID;
     javax.swing.JTable tablaOperacionFacturas;
     DefaultTableModel modelo;
-    int Fila;    
+    public static int Fila;    
         
     FacturaControlador facturaControla = new FacturaControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControlador = new VehiculoControlador();
-    
+       
     Factura facturaCerradaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
         
     private final Logger log = Logger.getLogger(InformacionFacturaFinal.class);
@@ -379,7 +379,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
-        dispose();
+        dispose();        
         new EditarFacturaFinal().setVisible(true);
     }//GEN-LAST:event_btn_editarActionPerformed
 
@@ -472,20 +472,20 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    public static javax.swing.JLabel lbl_codigo;
-    public static javax.swing.JLabel lbl_convenio;
-    public static javax.swing.JLabel lbl_diferencia;
-    public static javax.swing.JLabel lbl_dineroCambio;
-    public static javax.swing.JLabel lbl_efectivo;
-    public static javax.swing.JLabel lbl_facturadoPor;
-    public static javax.swing.JLabel lbl_horaIngreso;
-    public static javax.swing.JLabel lbl_horaSalida;
-    public static javax.swing.JLabel lbl_noParqueadero;
-    public static javax.swing.JLabel lbl_placa;
-    public static javax.swing.JLabel lbl_propietario;
-    public static javax.swing.JLabel lbl_tarifa;
-    public static javax.swing.JLabel lbl_tipoVehiculo;
-    public static javax.swing.JLabel lbl_totalAPagar;
+    private javax.swing.JLabel lbl_codigo;
+    private javax.swing.JLabel lbl_convenio;
+    private javax.swing.JLabel lbl_diferencia;
+    private javax.swing.JLabel lbl_dineroCambio;
+    private javax.swing.JLabel lbl_efectivo;
+    private javax.swing.JLabel lbl_facturadoPor;
+    private javax.swing.JLabel lbl_horaIngreso;
+    private javax.swing.JLabel lbl_horaSalida;
+    private javax.swing.JLabel lbl_noParqueadero;
+    private javax.swing.JLabel lbl_placa;
+    private javax.swing.JLabel lbl_propietario;
+    private javax.swing.JLabel lbl_tarifa;
+    private javax.swing.JLabel lbl_tipoVehiculo;
+    private javax.swing.JLabel lbl_totalAPagar;
     // End of variables declaration//GEN-END:variables
 
     //Metodo que se invoca al cerrar el jFrame
