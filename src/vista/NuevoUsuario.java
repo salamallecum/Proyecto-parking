@@ -30,6 +30,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
         setResizable(false);
         setTitle("Nuevo usuario");
         setLocationRelativeTo(null);
+        
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
     }
     
     @Override
@@ -244,7 +247,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
     //Metodo del boton cancelar
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         PanelUsuarios.btn_nuevoUsuario.setEnabled(true);
-        dispose();    
+        dispose(); 
+        //Avisamos que esta ventana se encuentra cerrada 
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     //Metodo boton Guardar

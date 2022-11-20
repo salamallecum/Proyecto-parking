@@ -41,6 +41,9 @@ public class GestionarFacturas extends javax.swing.JFrame {
         setTitle("Gestionar facturas");
         setLocationRelativeTo(null);
         
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        
         facturaControla.cargarTablaAdministradorDeFacturas();
                     
     }
@@ -364,6 +367,8 @@ public class GestionarFacturas extends javax.swing.JFrame {
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
+            //Avisamos que esta ventana se encuentra cerrada 
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
             PanelReportes.btn_facturas.setEnabled(true);
         }
     }

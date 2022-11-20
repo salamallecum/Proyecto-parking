@@ -45,6 +45,9 @@ public class GestionarCierres extends javax.swing.JFrame implements Runnable {
         setTitle("Gestionar cierres");
         setLocationRelativeTo(null);
         
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        
         hiloTablaCierres = new Thread(this);
             hiloTablaCierres.start();
             

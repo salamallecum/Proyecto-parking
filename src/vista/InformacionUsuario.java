@@ -46,6 +46,9 @@ public class InformacionUsuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        
         Fila = tablaUsuarios.getSelectedRow();
         
         //Consultamos la info del usuario en la BD
@@ -274,6 +277,8 @@ public class InformacionUsuario extends javax.swing.JFrame {
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         PanelUsuarios.hayUsuarioAbierto = false;
         dispose();
+        //Avisamos que esta ventana se encuentra cerrada 
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     //Metodo boton Eliminar

@@ -56,6 +56,9 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         setTitle("Información de factura");
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        
         Fila = tablaOperacionFacturas.getSelectedRow(); 
         
         //Cargamos la informacion de la facturacerrada en el frame

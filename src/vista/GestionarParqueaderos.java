@@ -39,6 +39,9 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        
         parqControla.cargarTablaDeParqueaderos();
     }
     
@@ -407,6 +410,8 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
+            //Avisamos que esta ventana se encuentra cerrada 
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
             PanelParametros.btn_parqueaderos.setEnabled(true);
         }
     }

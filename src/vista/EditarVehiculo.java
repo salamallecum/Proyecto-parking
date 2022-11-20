@@ -85,6 +85,9 @@ public class EditarVehiculo extends javax.swing.JFrame{
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        
         DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderos());
         cmb_noParqueadero.setModel(modeloParq);
         
@@ -340,7 +343,9 @@ public class EditarVehiculo extends javax.swing.JFrame{
         Limpiar();
         vehicontrolador.recargarVehiculo(ID, vehiculo_actualizado);
         PanelVehiculos.hayVehiculoEnEdicion = false;
-        dispose();    
+        dispose();  
+        //Avisamos que esta ventana se encuentra cerrada 
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     //Metodo boton Actualizar

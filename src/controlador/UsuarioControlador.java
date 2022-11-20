@@ -231,17 +231,33 @@ public class UsuarioControlador {
     //Metodo que cierra la sesión del usuario
     public boolean cerrarSesion(String usu){
         
-        boolean cajaAbierta = false;
+        boolean sePuedeCerrarSesion = false;
          
+        //Evaluamos si la caja se encuentra abierta
         if(PanelCaja.laCajaFueAbierta == true){
-            cajaAbierta = true;
+            sePuedeCerrarSesion = false;
             JOptionPane.showMessageDialog(null, "La Caja se encuentra abierta, debe generar el cierre!!");
             log.warn("ADVERTENCIA - El usuario " + usu +" intentó cerrar la caja estando esta aún abierta");
             
-        }else if(PanelCaja.laCajaFueAbierta == false){
-            cajaAbierta = false;        
+        }else{
+           sePuedeCerrarSesion = true;        
         }
-        return cajaAbierta;
+        
+        //Evaluamos si la ventana de acerca del sistemase encuentra abierta
+        if(MenuAdministrador.acercaDeDesdeMenuAdministradorAbierto == true){
+            sePuedeCerrarSesion = false;
+        }else{
+            sePuedeCerrarSesion = true;
+        }
+        
+        //Evaluamos si hay alguna ventana abierta del sistema para el rol administrador
+        if(MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema == true){
+            sePuedeCerrarSesion = false;
+        }else{
+            sePuedeCerrarSesion = true;
+        }
+                
+        return sePuedeCerrarSesion;
     }
 
     //Metodo que genera el reporte PDF del listado de los usuarios registrados

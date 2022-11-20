@@ -45,13 +45,15 @@ public class EditarUsuario extends javax.swing.JFrame {
         usuario_actualizado = PanelUsuarios.usuario_update;
         tablaUsuarios = PanelUsuarios.Table_listaUsuarios;
         modelo = PanelUsuarios.modelo;
-        
-        
+                
         setSize(522,429);
         setResizable(false);
         setTitle("Editar usuario ");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
          
         //Consultamos la info del usuario en la BD
         usuarioConsultado = usuControlador.consultarUsuario(usuario_actualizado);
@@ -302,6 +304,8 @@ public class EditarUsuario extends javax.swing.JFrame {
     //Metodo del boton cancelar
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         dispose();
+        //Avisamos que esta ventana se encuentra cerrada 
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
         new InformacionUsuario().setVisible(true);
     }//GEN-LAST:event_btn_cancelarActionPerformed
 

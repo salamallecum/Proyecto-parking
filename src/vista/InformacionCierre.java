@@ -50,13 +50,15 @@ public class InformacionCierre extends javax.swing.JFrame {
         cierre_actualizado = GestionarCierres.codigoCierre_update;
         tablaOperacionCierres = GestionarCierres.table_listaCierres;
         modelo = GestionarCierres.modelo;
-      
-        
+              
         setSize(420,500);
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Información de cierre");
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
         Fila = tablaOperacionCierres.getSelectedRow();      
         

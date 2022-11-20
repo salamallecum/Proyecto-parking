@@ -23,7 +23,9 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     Date fechaHoraActual;
     Thread h1; 
     
+    //Variables que monitorean las ventanas del sistema que estanabiertas y cerradas
     public static boolean acercaDeDesdeMenuAdministradorAbierto = false;    
+    public static boolean hayAlgunaVentanaAbiertaDelSistema = false;
     
     /**
      * Creates new form MenuAdministrador
@@ -401,7 +403,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     private void btn_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarSesionActionPerformed
         boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
         
-        if(sePuedeCerrarSesion == false){
+        if(sePuedeCerrarSesion == true){
             dispose();
             new Login().setVisible(true);
             log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");

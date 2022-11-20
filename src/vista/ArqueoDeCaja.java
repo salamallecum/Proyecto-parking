@@ -95,7 +95,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         setTitle("Arqueo de caja");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
+                
         usuarioDelSistema = Login.usuario;
         
         //Cargamos el valor de la base que debe tener la caja
@@ -885,11 +885,11 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
                    ventanaEmergCopiaArqueo = false;
                    dispose();
-
+                   
                    PanelCaja.desbloquearPanel();
 
-                   laCajaFueAbierta = true;          
-
+                   laCajaFueAbierta = true;
+                   
                    hilo1.start();
                    hilo2.start();            
 
