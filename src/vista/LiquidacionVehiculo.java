@@ -75,7 +75,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         
         if(parqueadero_actualizado!=null){
         
-            facturaALiquidar = facturaControla.consultarInformacionDeUnaFacturaAbierta(parqueadero_actualizado);
+            facturaALiquidar = facturaControla.consultarInformacionDeUnaFacturaAbiertaParaSuLiquidacion(parqueadero_actualizado);
             
             //Cargamos la información en el frame
             ID = facturaALiquidar.getId();

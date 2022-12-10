@@ -44,6 +44,10 @@ public class Tarifa {
         this.montoTiempoAdicional = montoTiempoAdicional;
         this.unidadDelTiempoAdicional = unidadDelTiempoAdicional;
     }
+
+    public Tarifa() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public int getId() {
         return id;

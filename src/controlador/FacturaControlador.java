@@ -43,7 +43,6 @@ import static vista.GestionarFacturas.modelo;
 import static vista.GestionarFacturas.table_listaFacturas;
 import vista.InformacionFacturaFinal;
 import vista.InformacionFacturaIngreso;
-import static vista.LiquidacionVehiculo.lbl_totalAPagar;
 
 
 /**
@@ -360,8 +359,8 @@ public class FacturaControlador {
         return cambio_str;
     }
         
-    //Metodo que consulta la información de una factura abierta para la liquidación de un vehiculo o visualizacion de la misma
-    public Factura consultarInformacionDeUnaFacturaAbierta(String placaDelVehiculo){
+    //Metodo que consulta la información de una factura abierta para la liquidación de un vehiculo 
+    public Factura consultarInformacionDeUnaFacturaAbiertaParaSuLiquidacion(String placaDelVehiculo){
                
         //Hace la consulta de registros a la base de datos
         try {
@@ -432,6 +431,41 @@ public class FacturaControlador {
         }
         return facturaConsultada;        
     }
+    
+    //Metodo que consulta la información de una factura cerrada para la liquidación de un vehiculo o su visualizacion
+    public Factura consultarInformacionDeUnaFacturaAbiertaParaSuEdicion(String codigoFactura){
+               
+        //Hace la consulta de registros a la base de datos
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select * from facturas where Codigo = '" + codigoFactura + "' and Estado_fctra='Abierta'");
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                facturaConsultada.setId(rs.getInt("Id_factura"));
+                facturaConsultada.setCodigo(rs.getString("Codigo"));
+                facturaConsultada.setId_cierre(rs.getInt("Id_cierre"));
+                facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
+                facturaConsultada.setPlaca(rs.getString("Placa"));
+                facturaConsultada.setPropietario(rs.getString("Propietario"));
+                facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
+                facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
+                facturaConsultada.setFacturadoPor(rs.getString("Facturado_por"));
+                facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
+                facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa")); 
+                facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
+                                
+                cn.close();              
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de una factura abierta!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de una factura abierta: " + e);
+        }
+        return facturaConsultada;        
+    }
+    
     
     //Metodo que permite liquidar una factura una vez el vehiculo sale del parqueadero
     public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio){
@@ -508,8 +542,8 @@ public class FacturaControlador {
         } 
     }
     
-    //Metodo que permite actualizar las facturas finales    
-    public void actualizarFacturaFinal(Factura facturaAActualizar){
+    //Metodo que permite actualizar las facturas de salida  
+    public void actualizarFacturaSalida(Factura facturaAActualizar){
         
         try{
             Connection cn9 = Conexion.conectar();
@@ -519,9 +553,24 @@ public class FacturaControlador {
             cn9.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al actualizar factura final, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura final de un vehiculo: " + e);  
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al actualizar factura de salida, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura de salida de un vehiculo: " + e);  
+        } 
+    }
+    
+    //Metodo que permite actualizar las facturas de ingreso    
+    public void actualizarFacturaIngreso(Factura facturaAActualizar){
+        
+        try{
+            Connection cn9 = Conexion.conectar();
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getClaseDeVehiculo()+"', Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+" where Id_factura ="+facturaAActualizar.getId());
+
+            pst9.executeUpdate();
+            cn9.close();
+
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error al actualizar factura de ingreso, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura de ingreso de un vehiculo: " + e);  
         } 
     }
     

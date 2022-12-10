@@ -98,6 +98,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                 
         usuarioDelSistema = Login.usuario;
         
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        
         //Cargamos el valor de la base que debe tener la caja
         String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
         

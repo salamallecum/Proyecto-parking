@@ -405,9 +405,11 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    //Metodo boton Guardar
+    //Metodo boton Actualizar
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
      
+        validacionesAntesDeActualizar();
+        
         int convenio_cmb = cmb_convenios.getSelectedIndex();
         int tarifa_cmb = cmb_tarifas.getSelectedIndex();
         
@@ -467,7 +469,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
             facturaAActualizar.setCambio(cambio);
             
             //Actualizamos la factura
-            facturaControla.actualizarFacturaFinal(facturaAActualizar);
+            facturaControla.actualizarFacturaSalida(facturaAActualizar);
                  
             //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar facturas
             Object Fila[] = new Object[4];
@@ -511,40 +513,8 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_placaKeyTyped
 
     private void txt_placaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusLost
-       
-        String placa = txt_placa.getText();
+        validacionesAntesDeActualizar();
         
-        if(placa.length() < 6){
-            JOptionPane.showMessageDialog(null, "Placa no valida.");
-            txt_placa.setText(placa_back);
-        }else{
-            boolean vehiculoPreviamenteRegistrado = vehiControla.evaluarExistenciaDelVehiculo(placa);
-             
-            if(vehiculoPreviamenteRegistrado == true){
-                 
-                String botones[] = {"Si", "No"};
-                int eleccion = JOptionPane.showOptionDialog(this, "La placa ingresada corresponde a un vehiculo previamente registrado en el sistema ¿Desea continuar?", "Mensaje", 0, 3, null, botones, this);
-
-                if(eleccion == JOptionPane.YES_OPTION){
-                    Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(placa);
-                                        
-                    txt_propietario.setText(infoVehiculo.getPropietario());
-                    cmb_tipVehi.setSelectedItem(infoVehiculo.getClase());
-                    lbl_noParq.setText(parqControla.consultarNombreDeParqueaderoMedianteID(infoVehiculo.getId_parqueadero()));
-                    cmb_convenios.setSelectedIndex(infoVehiculo.getId_convenio());
-                    cmb_tarifas.setSelectedIndex(infoVehiculo.getId_tarifa());
-                    
-                    txt_placa.setEnabled(false);
-                    txt_propietario.setEnabled(false);
-                    cmb_tipVehi.setEnabled(false);
-                    cmb_convenios.setEnabled(false);
-                    cmb_tarifas.setEnabled(false);
-                
-                }else{
-                    txt_placa.setText("");
-                }
-            }   
-        }
     }//GEN-LAST:event_txt_placaFocusLost
 
     private void txt_placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_placaKeyPressed
@@ -716,7 +686,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     }
     
     //Metodo que estima el convenio o la tarifa seleccionada a la factura a editar
-    public void estimarConvenioOTarifa(int tarifaEscogida, int convenioEscogido){
+    private void estimarConvenioOTarifa(int tarifaEscogida, int convenioEscogido){
         
         //Traemos la fecha en la que ingreso el vehiculo y la fecha en la que salió y las convertimos a Date y luego a Calendar
         String str_fechaIngresoVehiculo = facturaAEditar.getFechaDeIngresoVehiculo();
@@ -1215,16 +1185,54 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     }
     
     //Metodo que calcula las vueltas que hay que darle al cliente
-    public void calcularVueltas(String dineroRecibido){
+    private void calcularVueltas(String dineroRecibido){
         vueltas = facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido);
         lbl_cambio.setText(facturaControla.agregarFormatoMoneda(vueltas)); 
         lbl_cambio.setVisible(true);  
     }
     
     //Metodo que normaliza el formaulario
-    public void Normalizar(){
+    private void Normalizar(){
         txt_placa.setBackground(Color.WHITE);
         txt_propietario.setBackground(Color.WHITE);
         txt_efectivo.setBackground(Color.WHITE);
+    }
+    
+    //Validaciones antes de actualizar la factura
+    private void validacionesAntesDeActualizar(){
+        
+        String placa = txt_placa.getText();
+        
+        if(placa.length() < 6){
+            JOptionPane.showMessageDialog(null, "Placa no valida.");
+            txt_placa.setText(placa_back);
+        }else{
+            boolean vehiculoPreviamenteRegistrado = vehiControla.evaluarExistenciaDelVehiculo(placa);
+             
+            if(vehiculoPreviamenteRegistrado == true){
+                 
+                String botones[] = {"Si", "No"};
+                int eleccion = JOptionPane.showOptionDialog(this, "La placa ingresada corresponde a un vehiculo previamente registrado en el sistema ¿Desea continuar?", "Mensaje", 0, 3, null, botones, this);
+
+                if(eleccion == JOptionPane.YES_OPTION){
+                    Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(placa);
+                                        
+                    txt_propietario.setText(infoVehiculo.getPropietario());
+                    cmb_tipVehi.setSelectedItem(infoVehiculo.getClase());
+                    lbl_noParq.setText(parqControla.consultarNombreDeParqueaderoMedianteID(infoVehiculo.getId_parqueadero()));
+                    cmb_convenios.setSelectedIndex(infoVehiculo.getId_convenio());
+                    cmb_tarifas.setSelectedIndex(infoVehiculo.getId_tarifa());
+                    
+                    txt_placa.setEnabled(false);
+                    txt_propietario.setEnabled(false);
+                    cmb_tipVehi.setEnabled(false);
+                    cmb_convenios.setEnabled(false);
+                    cmb_tarifas.setEnabled(false);
+                
+                }else{
+                    txt_placa.setText("");
+                }
+            }   
+        }
     }
 }
