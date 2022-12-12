@@ -98,12 +98,13 @@ public class PanelReportes extends javax.swing.JPanel {
 
     //Metodo boton Arqueos
     private void btn_arqueosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_arqueosActionPerformed
+        new GestionarArqueos().setVisible(true); 
         btn_arqueos.setEnabled(false);
     }//GEN-LAST:event_btn_arqueosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_arqueos;
+    public static javax.swing.JButton btn_arqueos;
     private javax.swing.JButton btn_cierres;
     public static javax.swing.JButton btn_facturas;
     // End of variables declaration//GEN-END:variables

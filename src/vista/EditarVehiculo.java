@@ -434,7 +434,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                 facturaEditada.setId_cierre(1);
 
                 //Creamos el objeto Factura
-                facturaControla.actualizarFactura1erIngreso(placa, facturaEditada); 
+                facturaControla.actualizarFactura1erIngreso(facturaEditada); 
 
             }else{                    
                 nuevaFactura.setId(0);

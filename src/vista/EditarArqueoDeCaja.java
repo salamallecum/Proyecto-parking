@@ -1,36 +1,26 @@
 package vista;
 
-import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.ArqueoControlador;
 import controlador.FacturaControlador;
-import controlador.ParqueaderoControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Locale;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import modelo.Arqueo;
-import modelo.Parqueadero;
 import org.apache.log4j.Logger;
-import static vista.PanelCaja.cmb_numParqueadero;
-import static vista.PanelCaja.hayVehiculoLiquidandose;
-import static vista.PanelCaja.laCajaFueAbierta;
-import static vista.PanelCaja.modeloCaja;
-import static vista.PanelCaja.parqueadero_update;
-import static vista.PanelCaja.table_operacionParqueadero;
+
 
 /**
  *
  * @author ALEJO
  */
-public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
+public class EditarArqueoDeCaja extends javax.swing.JFrame{
     
     int baseDeCajaInt = 0;
     
@@ -56,9 +46,10 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     String numMonedasDe200 = "";
     String numMonedasDe100 = "";
     String numMonedasDe50 = "";
-    
-    public static String codigoArqueo = "";
-    
+        
+    int ID;
+    String codigoArqueo = "";
+        
     //Variables de montos en cada una de las denominaciones
     int montoEnBilletes100Mil = 0;
     int montoEnBilletes50Mil = 0;
@@ -72,31 +63,26 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     int montoEnMonedasDe100 = 0;
     int montoEnMonedasDe50 = 0; 
       
-    Arqueo nuevoArqueo = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
-    Parqueadero parq = new Parqueadero();
-    FacturaControlador facturaControla = new FacturaControlador();
+    Arqueo arqueoAEditar = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+    Arqueo arqueoAActualizar = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
     ArqueoControlador arqueoControla = new ArqueoControlador();
-    ParqueaderoControlador parqControlador = new ParqueaderoControlador();
-    
-    //Hilos que mantienen el actualizadas las facturas y el estado del parqueadero en tiempo real
-    Thread hilo1 = new Thread(this);
-    Thread hilo2 = new Thread(this);
-    
-    private final Logger log = Logger.getLogger(ArqueoDeCaja.class);
-    private URL url = ArqueoDeCaja.class.getResource("Log4j.properties");
+    FacturaControlador facturaControla = new FacturaControlador();
+        
+    private final Logger log = Logger.getLogger(EditarArqueoDeCaja.class);
+    private URL url = EditarArqueoDeCaja.class.getResource("Log4j.properties");
     
     /**
      * Creates new form ArqueoDeCaja
      */
-    public ArqueoDeCaja() {
+    public EditarArqueoDeCaja() {
         initComponents();
         setSize(560, 385);
         setResizable(false);
         setTitle("Arqueo de caja");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                
         usuarioDelSistema = Login.usuario;
+        codigoArqueo = GestionarArqueos.codigoArqueo_update;
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
@@ -114,6 +100,63 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
         
         lbl_baseDeCaja.setText(formatoMoneda.format(valorBase));
+        
+        //Traemos la información del arqueo a editar
+        arqueoAEditar = arqueoControla.consultarInformacionDeUnArqueo(codigoArqueo);
+        
+        //Capturamos la informacion recibida del objeto en variables
+        ID = arqueoAEditar.getId();
+        numBilletesDe100Mil = arqueoAEditar.getNumBilletesDe100Mil();
+        numBilletesDe50Mil = arqueoAEditar.getNumBilletesDe50Mil();
+        numBilletesDe20Mil = arqueoAEditar.getNumBilletesDe20Mil();
+        numBilletesDe10Mil = arqueoAEditar.getNumBilletesDe10Mil();
+        numBilletesDe5Mil = arqueoAEditar.getNumBilletesDe5Mil();
+        numBilletesDe2Mil = arqueoAEditar.getNumBilletesDe2Mil();
+        numBilletesOMonedasDeMil = arqueoAEditar.getNumBilletesOMonedasDeMil();
+        numMonedasDe500 = arqueoAEditar.getNumMonedasDe500();
+        numMonedasDe200 = arqueoAEditar.getNumMonedasDe200();       
+        numMonedasDe100 = arqueoAEditar.getNumMonedasDe100();
+        numMonedasDe50 = arqueoAEditar.getNumMonedasDe50();
+        
+        //Calculamos los montos para cada una de las denominaciones de dinero
+        montoEnBilletes100Mil = 100000 * Integer.parseInt(numBilletesDe100Mil);
+        montoEnBilletes50Mil = 50000 * Integer.parseInt(numBilletesDe50Mil);
+        montoEnBilletes20Mil = 20000 * Integer.parseInt(numBilletesDe20Mil);
+        montoEnBilletes10Mil = 10000 * Integer.parseInt(numBilletesDe10Mil);
+        montoEnBilletes5Mil = 5000 * Integer.parseInt(numBilletesDe5Mil);
+        montoEnBilletes2Mil = 2000 * Integer.parseInt(numBilletesDe2Mil);
+        montoEnBilletesOMonedasMil = 1000 * Integer.parseInt(numBilletesOMonedasDeMil);
+        montoEnMonedasDe500 = 500 * Integer.parseInt(numMonedasDe500);
+        montoEnMonedasDe200 = 200 * Integer.parseInt(numMonedasDe200);
+        montoEnMonedasDe100 = 100 * Integer.parseInt(numMonedasDe100);
+        montoEnMonedasDe50 = 50 * Integer.parseInt(numMonedasDe50);
+        
+        //Calculamos el dinero existente en caja para ese momento
+        dineroEnCaja = montoEnBilletes100Mil + montoEnBilletes50Mil + montoEnBilletes20Mil + montoEnBilletes10Mil + montoEnBilletes5Mil + montoEnBilletes2Mil + montoEnBilletesOMonedasMil + montoEnMonedasDe500 + montoEnMonedasDe200 + montoEnMonedasDe100 + montoEnMonedasDe50;
+                
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+        dineroEnCajaString = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+        
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                
+        //Mostramos toda la informacion en pantalla        
+        txt_numBilletes100mil.setText(numBilletesDe100Mil);
+        txt_numBilletes50mil.setText(numBilletesDe50Mil);
+        txt_numBilletes20mil.setText(numBilletesDe20Mil);
+        txt_numBilletes5mil.setText(numBilletesDe5Mil);
+        txt_numBilletes10mil.setText(numBilletesDe10Mil);
+        txt_numBilletes2mil.setText(numBilletesDe2Mil);
+        txt_numBilletesOMonedasDeMil.setText(numBilletesOMonedasDeMil);
+        txt_numMonedas500pesos.setText(numMonedasDe500);
+        txt_numMonedas200pesos.setText(numMonedasDe200);
+        txt_numMonedas100pesos.setText(numMonedasDe100);
+        txt_numMonedas50pesos.setText(numMonedasDe50);      
+        lbl_totalEnCaja.setText(dineroEnCajaString);
+        lbl_diferencia.setText(diferenciaTotal);
+        muestreoDiferencia();
         
     }
     
@@ -164,7 +207,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         lbl_baseDeCaja = new javax.swing.JLabel();
         lbl_totalEnCaja = new javax.swing.JLabel();
         lbl_diferencia = new javax.swing.JLabel();
-        btn_finalizar = new javax.swing.JButton();
+        btn_actualizar = new javax.swing.JButton();
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Clase:");
@@ -181,8 +224,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Conteo de dinero"));
 
@@ -200,6 +248,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numBilletes100mil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numBilletes100milKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numBilletes100milKeyTyped(evt);
             }
@@ -222,6 +273,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numBilletes50mil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numBilletes50milKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numBilletes50milKeyTyped(evt);
             }
@@ -247,6 +301,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numBilletes20mil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numBilletes20milKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numBilletes20milKeyTyped(evt);
             }
@@ -269,6 +326,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numBilletes10mil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numBilletes10milKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numBilletes10milKeyTyped(evt);
             }
@@ -291,6 +351,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numBilletes5mil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numBilletes5milKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numBilletes5milKeyTyped(evt);
             }
@@ -310,6 +373,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numBilletes2mil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numBilletes2milKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numBilletes2milKeyTyped(evt);
             }
@@ -335,6 +401,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numBilletesOMonedasDeMil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numBilletesOMonedasDeMilKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numBilletesOMonedasDeMilKeyTyped(evt);
             }
@@ -357,6 +426,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numMonedas500pesos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numMonedas500pesosKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numMonedas500pesosKeyTyped(evt);
             }
@@ -379,6 +451,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numMonedas200pesos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numMonedas200pesosKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numMonedas200pesosKeyTyped(evt);
             }
@@ -401,6 +476,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numMonedas100pesos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numMonedas100pesosKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numMonedas100pesosKeyTyped(evt);
             }
@@ -423,6 +501,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }
         });
         txt_numMonedas50pesos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numMonedas50pesosKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_numMonedas50pesosKeyTyped(evt);
             }
@@ -593,12 +674,12 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        btn_finalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_15107.png"))); // NOI18N
-        btn_finalizar.setText("Finalizar");
-        btn_finalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_finalizar.addActionListener(new java.awt.event.ActionListener() {
+        btn_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh256_24854.png"))); // NOI18N
+        btn_actualizar.setText("Actualizar");
+        btn_actualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_finalizarActionPerformed(evt);
+                btn_actualizarActionPerformed(evt);
             }
         });
 
@@ -615,7 +696,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(108, 108, 108)
-                        .addComponent(btn_finalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -627,7 +708,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57)
-                        .addComponent(btn_finalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -654,13 +735,13 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     private void txt_numBilletes100milKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes100milKeyTyped
         //Evalua que se digiten numeros no letras
         char validar = evt.getKeyChar();
-        
+                
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
             
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
-        }
+        }   
     }//GEN-LAST:event_txt_numBilletes100milKeyTyped
 
     private void txt_numBilletes50milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes50milActionPerformed
@@ -823,7 +904,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         }
     }//GEN-LAST:event_txt_numMonedas50pesosKeyTyped
 
-    private void btn_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_finalizarActionPerformed
+    private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
         
         boolean ventanaEmergCopiaArqueo = false; 
         
@@ -836,40 +917,37 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         
         }else{
                       
-            codigoArqueo = generadorClavesYCodigos.generarRandomString(10);
+            arqueoAActualizar.setId(0);
+            arqueoAActualizar.setFecha_arqueo(arqueoControla.fecha_Arqueo());
+            arqueoAActualizar.setUsuario(usuarioDelSistema);
+            arqueoAActualizar.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
+            arqueoAActualizar.setNumBilletesDe100Mil(numBilletesDe100Mil);
+            arqueoAActualizar.setNumBilletesDe50Mil(numBilletesDe50Mil);
+            arqueoAActualizar.setNumBilletesDe20Mil(numBilletesDe20Mil);
+            arqueoAActualizar.setNumBilletesDe10Mil(numBilletesDe10Mil);
+            arqueoAActualizar.setNumBilletesDe5Mil(numBilletesDe5Mil);
+            arqueoAActualizar.setNumBilletesDe2Mil(numBilletesDe2Mil);
+            arqueoAActualizar.setNumBilletesOMonedasDeMil(numBilletesOMonedasDeMil);
+            arqueoAActualizar.setNumMonedasDe500(numMonedasDe500);
+            arqueoAActualizar.setNumMonedasDe200(numMonedasDe200);
+            arqueoAActualizar.setNumMonedasDe100(numMonedasDe100);
+            arqueoAActualizar.setNumMonedasDe50(numMonedasDe50);
+            arqueoAActualizar.setMontoEnBilletes100Mil(montoEnBilletes100Mil);
+            arqueoAActualizar.setMontoEnBilletes50Mil(montoEnBilletes50Mil);
+            arqueoAActualizar.setMontoEnBilletes20Mil(montoEnBilletes20Mil);
+            arqueoAActualizar.setMontoEnBilletes10Mil(montoEnBilletes10Mil);
+            arqueoAActualizar.setMontoEnBilletes5Mil(montoEnBilletes5Mil);
+            arqueoAActualizar.setMontoEnBilletes2Mil(montoEnBilletes2Mil);
+            arqueoAActualizar.setMontoEnBilletesOMonedasMil(montoEnBilletesOMonedasMil);
+            arqueoAActualizar.setMontoEnMonedasDe500(montoEnMonedasDe500);
+            arqueoAActualizar.setMontoEnMonedasDe200(montoEnMonedasDe200);
+            arqueoAActualizar.setMontoEnMonedasDe100(montoEnMonedasDe100);
+            arqueoAActualizar.setMontoEnMonedasDe50(montoEnMonedasDe50);
+            arqueoAActualizar.setMontoTotalCaja(montoTotalCaja);
+            arqueoAActualizar.setDiferenciaTotal(diferenciaTotal);
 
-            nuevoArqueo.setId(0);
-            nuevoArqueo.setCodigo(codigoArqueo);
-            nuevoArqueo.setFecha_arqueo(arqueoControla.fecha_Arqueo());
-            nuevoArqueo.setUsuario(usuarioDelSistema);
-            nuevoArqueo.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
-            nuevoArqueo.setNumBilletesDe100Mil(numBilletesDe100Mil);
-            nuevoArqueo.setNumBilletesDe50Mil(numBilletesDe50Mil);
-            nuevoArqueo.setNumBilletesDe20Mil(numBilletesDe20Mil);
-            nuevoArqueo.setNumBilletesDe10Mil(numBilletesDe10Mil);
-            nuevoArqueo.setNumBilletesDe5Mil(numBilletesDe5Mil);
-            nuevoArqueo.setNumBilletesDe2Mil(numBilletesDe2Mil);
-            nuevoArqueo.setNumBilletesOMonedasDeMil(numBilletesOMonedasDeMil);
-            nuevoArqueo.setNumMonedasDe500(numMonedasDe500);
-            nuevoArqueo.setNumMonedasDe200(numMonedasDe200);
-            nuevoArqueo.setNumMonedasDe100(numMonedasDe100);
-            nuevoArqueo.setNumMonedasDe50(numMonedasDe50);
-            nuevoArqueo.setMontoEnBilletes100Mil(montoEnBilletes100Mil);
-            nuevoArqueo.setMontoEnBilletes50Mil(montoEnBilletes50Mil);
-            nuevoArqueo.setMontoEnBilletes20Mil(montoEnBilletes20Mil);
-            nuevoArqueo.setMontoEnBilletes10Mil(montoEnBilletes10Mil);
-            nuevoArqueo.setMontoEnBilletes5Mil(montoEnBilletes5Mil);
-            nuevoArqueo.setMontoEnBilletes2Mil(montoEnBilletes2Mil);
-            nuevoArqueo.setMontoEnBilletesOMonedasMil(montoEnBilletesOMonedasMil);
-            nuevoArqueo.setMontoEnMonedasDe500(montoEnMonedasDe500);
-            nuevoArqueo.setMontoEnMonedasDe200(montoEnMonedasDe200);
-            nuevoArqueo.setMontoEnMonedasDe100(montoEnMonedasDe100);
-            nuevoArqueo.setMontoEnMonedasDe50(montoEnMonedasDe50);
-            nuevoArqueo.setMontoTotalCaja(montoTotalCaja);
-            nuevoArqueo.setDiferenciaTotal(diferenciaTotal);
-
-            //Registramos el arqueo en base de datos
-            arqueoControla.crearArqueo(nuevoArqueo);      
+            //Actualizamos el arqueo en base de datos
+            arqueoControla.actualizarArqueo(arqueoAActualizar);      
 
             //Imprimimos el ticket de aruqeo de caja
             arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false);
@@ -879,7 +957,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             while(ventanaEmergCopiaArqueo == true){
                String botones[] = {"Imprimir copia", "Cerrar"};
                //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja finalizado satisfactoriamente.", "Arqueo de caja", 0, 1, null, botones, this);
+               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja actualizado satisfactoriamente.", "Arqueo de caja", 0, 1, null, botones, this);
 
                if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                    arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false); 
@@ -887,40 +965,11 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
                if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
                    ventanaEmergCopiaArqueo = false;
-                   dispose();
-                   
-                   PanelCaja.desbloquearPanel();
-
-                   laCajaFueAbierta = true;
-                   
-                   hilo1.start();
-                   hilo2.start();            
-
-                   //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
-                   table_operacionParqueadero.addMouseListener(new MouseAdapter() {
-                       @Override
-                       public void mouseClicked(MouseEvent e){
-                           int fila_point = table_operacionParqueadero.rowAtPoint(e.getPoint());
-                           int columna_point = 1;
-
-                           if(fila_point > -1){
-                               parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
-
-                               if(hayVehiculoLiquidandose == true){
-                                   JOptionPane.showMessageDialog(null,"No permitido.");
-                               }else{
-                                  hayVehiculoLiquidandose = true;  
-                                  LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
-                                  liquidacion_vehiculo.setVisible(true);
-                               }
-
-                           }
-                       }
-                   });
+                   dispose();   
                 } 
             }         
         }       
-    }//GEN-LAST:event_btn_finalizarActionPerformed
+    }//GEN-LAST:event_btn_actualizarActionPerformed
 
     private void txt_numBilletes100milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes100milFocusLost
         
@@ -928,503 +977,608 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                           
         if(numBilletesDe100Mil.equals("")){
             numBilletesDe100Mil = "0";
-            txt_numBilletes100mil.setText(numBilletesDe100Mil);
-            
-        }else{
-            int intNumBilletes100Mil = Integer.parseInt(numBilletesDe100Mil);
-
-            montoEnBilletes100Mil = 100000 * intNumBilletes100Mil;
-            dineroEnCaja = dineroEnCaja + montoEnBilletes100Mil;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
-            
+            txt_numBilletes100mil.setText(numBilletesDe100Mil);   
         }
+          
+        //restamos lo correspondiente al monto en billetes de 100 mil previamente registrado
+        dineroEnCaja = dineroEnCaja - montoEnBilletes100Mil;
+
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumBilletes100Mil = Integer.parseInt(numBilletesDe100Mil);
+        montoEnBilletes100Mil = 100000 * intNumBilletes100Mil;
+        dineroEnCaja = dineroEnCaja + montoEnBilletes100Mil;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
     }//GEN-LAST:event_txt_numBilletes100milFocusLost
 
     private void txt_numBilletes100milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes100milFocusGained
-        txt_numBilletes100mil.setText("");
-        dineroEnCaja = dineroEnCaja - montoEnBilletes100Mil;
-        
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
-        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
-        
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-        diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-        muestreoDiferencia();
-        
-        montoEnBilletes100Mil = 0;
-        
     }//GEN-LAST:event_txt_numBilletes100milFocusGained
 
     private void txt_numBilletes50milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes50milFocusGained
-        txt_numBilletes50mil.setText("");
-        dineroEnCaja = dineroEnCaja - montoEnBilletes50Mil;
         
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
-        
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-        diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-        muestreoDiferencia();
-        montoEnBilletes50Mil = 0;
     }//GEN-LAST:event_txt_numBilletes50milFocusGained
 
     private void txt_numBilletes50milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes50milFocusLost
         
         numBilletesDe50Mil = txt_numBilletes50mil.getText();
-                  
+                          
         if(numBilletesDe50Mil.equals("")){
             numBilletesDe50Mil = "0";
-            txt_numBilletes50mil.setText(numBilletesDe50Mil);
-            
-        }else{
-            int intNumBilletes50Mil = Integer.parseInt(numBilletesDe50Mil);
-
-            montoEnBilletes50Mil = 50000 * intNumBilletes50Mil;
-            dineroEnCaja = dineroEnCaja + montoEnBilletes50Mil;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
+            txt_numBilletes50mil.setText(numBilletesDe50Mil);   
         }
+          
+        //restamos lo correspondiente al monto en billetes de 50 mil previamente registrado
+        dineroEnCaja = dineroEnCaja - montoEnBilletes50Mil;
+
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumBilletes50Mil = Integer.parseInt(numBilletesDe50Mil);
+        montoEnBilletes50Mil = 50000 * intNumBilletes50Mil;
+        dineroEnCaja = dineroEnCaja + montoEnBilletes50Mil;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
     }//GEN-LAST:event_txt_numBilletes50milFocusLost
 
     private void txt_numBilletes20milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes20milFocusLost
         
         numBilletesDe20Mil = txt_numBilletes20mil.getText();
-                   
+                          
         if(numBilletesDe20Mil.equals("")){
             numBilletesDe20Mil = "0";
-            txt_numBilletes20mil.setText(numBilletesDe20Mil);
-            
-        }else{
-            int intNumBilletes20Mil = Integer.parseInt(numBilletesDe20Mil);
-
-            montoEnBilletes20Mil = 20000 * intNumBilletes20Mil;
-            dineroEnCaja = dineroEnCaja + montoEnBilletes20Mil;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
+            txt_numBilletes20mil.setText(numBilletesDe20Mil);   
         }
-    }//GEN-LAST:event_txt_numBilletes20milFocusLost
-
-    private void txt_numBilletes20milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes20milFocusGained
-        txt_numBilletes20mil.setText("");
+          
+        //restamos lo correspondiente al monto en billetes de 20 mil previamente registrado
         dineroEnCaja = dineroEnCaja - montoEnBilletes20Mil;
-        
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumBilletes20Mil = Integer.parseInt(numBilletesDe20Mil);
+        montoEnBilletes20Mil = 20000 * intNumBilletes20Mil;
+        dineroEnCaja = dineroEnCaja + montoEnBilletes20Mil;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
         montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
-        
+
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
-        montoEnBilletes20Mil = 0;
+    }//GEN-LAST:event_txt_numBilletes20milFocusLost
+
+    private void txt_numBilletes20milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes20milFocusGained
+          
     }//GEN-LAST:event_txt_numBilletes20milFocusGained
 
     private void txt_numBilletes10milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes10milFocusLost
         
         numBilletesDe10Mil = txt_numBilletes10mil.getText();
-               
+                          
         if(numBilletesDe10Mil.equals("")){
             numBilletesDe10Mil = "0";
-            txt_numBilletes10mil.setText(numBilletesDe10Mil);
-            
-        }else{
-            int intNumBilletes10Mil = Integer.parseInt(numBilletesDe10Mil);
+            txt_numBilletes10mil.setText(numBilletesDe10Mil);   
+        }
+          
+        //restamos lo correspondiente al monto en billetes de 10 mil previamente registrado
+        dineroEnCaja = dineroEnCaja - montoEnBilletes10Mil;
 
-            montoEnBilletes10Mil = 10000 * intNumBilletes10Mil;
-            dineroEnCaja = dineroEnCaja + montoEnBilletes10Mil;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
- 
-        }       
-    }//GEN-LAST:event_txt_numBilletes10milFocusLost
-
-    private void txt_numBilletes10milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes10milFocusGained
-       txt_numBilletes10mil.setText("");
-       dineroEnCaja = dineroEnCaja - montoEnBilletes10Mil;
-       
-       dineroEnCajaString = Integer.toString(dineroEnCaja);
-
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumBilletes10Mil = Integer.parseInt(numBilletesDe10Mil);
+        montoEnBilletes10Mil = 10000 * intNumBilletes10Mil;
+        dineroEnCaja = dineroEnCaja + montoEnBilletes10Mil;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
         montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
-        
+
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
-        muestreoDiferencia();
-       montoEnBilletes10Mil = 0;
+        muestreoDiferencia();       
+    }//GEN-LAST:event_txt_numBilletes10milFocusLost
+
+    private void txt_numBilletes10milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes10milFocusGained
+       
     }//GEN-LAST:event_txt_numBilletes10milFocusGained
 
     private void txt_numBilletes5milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes5milFocusLost
         
         numBilletesDe5Mil = txt_numBilletes5mil.getText();
-               
+                          
         if(numBilletesDe5Mil.equals("")){
             numBilletesDe5Mil = "0";
-            txt_numBilletes5mil.setText(numBilletesDe5Mil);           
-
-        }else{
-            int intNumBilletes5Mil = Integer.parseInt(numBilletesDe5Mil);
-
-            montoEnBilletes5Mil = 5000 * intNumBilletes5Mil;
-            dineroEnCaja = dineroEnCaja + montoEnBilletes5Mil;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
-
+            txt_numBilletes5mil.setText(numBilletesDe5Mil);   
         }
-    }//GEN-LAST:event_txt_numBilletes5milFocusLost
-
-    private void txt_numBilletes5milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes5milFocusGained
-        txt_numBilletes5mil.setText("");
+          
+        //restamos lo correspondiente al monto en billetes de 5 mil previamente registrado
         dineroEnCaja = dineroEnCaja - montoEnBilletes5Mil;
-        
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumBilletes5Mil = Integer.parseInt(numBilletesDe5Mil);
+        montoEnBilletes5Mil = 5000 * intNumBilletes5Mil;
+        dineroEnCaja = dineroEnCaja + montoEnBilletes5Mil;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
         montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
-        
+
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
-        montoEnBilletes5Mil = 0;
+    }//GEN-LAST:event_txt_numBilletes5milFocusLost
+
+    private void txt_numBilletes5milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes5milFocusGained
+        
     }//GEN-LAST:event_txt_numBilletes5milFocusGained
 
     private void txt_numBilletes2milFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes2milFocusLost
         
-        numBilletesDe2Mil= txt_numBilletes2mil.getText();
-               
+        numBilletesDe2Mil = txt_numBilletes2mil.getText();
+                          
         if(numBilletesDe2Mil.equals("")){
             numBilletesDe2Mil = "0";
-            txt_numBilletes2mil.setText(numBilletesDe2Mil);
+            txt_numBilletes2mil.setText(numBilletesDe2Mil);   
+        }
+          
+        //restamos lo correspondiente al monto en billetes de 2 mil previamente registrado
+        dineroEnCaja = dineroEnCaja - montoEnBilletes2Mil;
 
-        }else{
-            int intNumBilletes2Mil = Integer.parseInt(numBilletesDe2Mil);
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumBilletes2Mil = Integer.parseInt(numBilletesDe2Mil);
+        montoEnBilletes2Mil = 2000 * intNumBilletes2Mil;
+        dineroEnCaja = dineroEnCaja + montoEnBilletes2Mil;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
 
-            montoEnBilletes2Mil = 2000 * intNumBilletes2Mil;
-            dineroEnCaja = dineroEnCaja + montoEnBilletes2Mil;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
-
-        }    
+        muestreoDiferencia();    
     }//GEN-LAST:event_txt_numBilletes2milFocusLost
 
     private void txt_numBilletes2milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes2milFocusGained
-        txt_numBilletes2mil.setText("");
-        dineroEnCaja = dineroEnCaja - montoEnBilletes2Mil;
-        
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
-        
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-        diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-        muestreoDiferencia();
-        montoEnBilletes2Mil = 0;
+      
     }//GEN-LAST:event_txt_numBilletes2milFocusGained
 
     private void txt_numBilletesOMonedasDeMilFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilFocusGained
-        txt_numBilletesOMonedasDeMil.setText("");
-        dineroEnCaja = dineroEnCaja - montoEnBilletesOMonedasMil;
         
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-        lbl_totalEnCaja.setText(montoTotalCaja);
-        
-        //Calculamos la diferencia respecto a la base en tiempo real
-        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-        diferenciaString = Integer.toString(diferenciaCalculo);
-        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-        muestreoDiferencia();
-        montoEnBilletesOMonedasMil = 0;
     }//GEN-LAST:event_txt_numBilletesOMonedasDeMilFocusGained
 
     private void txt_numBilletesOMonedasDeMilFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilFocusLost
       
         numBilletesOMonedasDeMil = txt_numBilletesOMonedasDeMil.getText();
-               
+                          
         if(numBilletesOMonedasDeMil.equals("")){
             numBilletesOMonedasDeMil = "0";
-            txt_numBilletesOMonedasDeMil.setText(numBilletesOMonedasDeMil);
-
-        }else{
-            int intNumBilletesOMonedasDeMil = Integer.parseInt(numBilletesOMonedasDeMil);
-
-            montoEnBilletesOMonedasMil = 1000 * intNumBilletesOMonedasDeMil;
-            dineroEnCaja = dineroEnCaja + montoEnBilletesOMonedasMil;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();                
+            txt_numBilletesOMonedasDeMil.setText(numBilletesOMonedasDeMil);   
         }
-    }//GEN-LAST:event_txt_numBilletesOMonedasDeMilFocusLost
+          
+        //restamos lo correspondiente al monto en billetes o monedas de mil previamente registrado
+        dineroEnCaja = dineroEnCaja - montoEnBilletesOMonedasMil;
 
-    private void txt_numMonedas500pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosFocusLost
-        
-        numMonedasDe500 = txt_numMonedas500pesos.getText();
-                
-        if(numMonedasDe500.equals("")){
-            numMonedasDe500 = "0";
-            txt_numMonedas500pesos.setText(numMonedasDe500);
-            
-        }else{
-            int intNumMonedasDe500 = Integer.parseInt(numMonedasDe500);
-
-            montoEnMonedasDe500 = 500 * intNumMonedasDe500;
-            dineroEnCaja = dineroEnCaja + montoEnMonedasDe500;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
-
-        }
-    }//GEN-LAST:event_txt_numMonedas500pesosFocusLost
-
-    private void txt_numMonedas500pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosFocusGained
-        txt_numMonedas500pesos.setText("");
-        dineroEnCaja = dineroEnCaja - montoEnMonedasDe500;
-        
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumBilletesDeMil = Integer.parseInt(numBilletesOMonedasDeMil);
+        montoEnBilletesOMonedasMil = 1000 * intNumBilletesDeMil;
+        dineroEnCaja = dineroEnCaja + montoEnBilletesOMonedasMil;
         dineroEnCajaString = Integer.toString(dineroEnCaja);
-
         montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
-        
+
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
-        montoEnMonedasDe500 = 0;
+    }//GEN-LAST:event_txt_numBilletesOMonedasDeMilFocusLost
+
+    private void txt_numMonedas500pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosFocusLost
+        
+       numMonedasDe500 = txt_numMonedas500pesos.getText();
+                          
+        if(numMonedasDe500.equals("")){
+            numMonedasDe500 = "0";
+            txt_numMonedas500pesos.setText(numMonedasDe500);   
+        }
+          
+        //restamos lo correspondiente al monto en monedas de 500 mil previamente registrado
+        dineroEnCaja = dineroEnCaja - montoEnMonedasDe500;
+
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumMonedasDe500 = Integer.parseInt(numMonedasDe500);
+        montoEnMonedasDe500 = 500 * intNumMonedasDe500;
+        dineroEnCaja = dineroEnCaja + montoEnMonedasDe500;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
+        montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+        lbl_totalEnCaja.setText(montoTotalCaja);
+
+        //Calculamos la diferencia respecto a la base en tiempo real
+        diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+        diferenciaString = Integer.toString(diferenciaCalculo);
+        diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+
+        muestreoDiferencia();
+    }//GEN-LAST:event_txt_numMonedas500pesosFocusLost
+
+    private void txt_numMonedas500pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosFocusGained
+      
     }//GEN-LAST:event_txt_numMonedas500pesosFocusGained
 
     private void txt_numMonedas200pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosFocusLost
        
         numMonedasDe200 = txt_numMonedas200pesos.getText();
-                    
+                          
         if(numMonedasDe200.equals("")){
             numMonedasDe200 = "0";
-            txt_numMonedas200pesos.setText(numMonedasDe200);
-           
-        }else{
-            int intNumMonedasDe200 = Integer.parseInt(numMonedasDe200);
-
-            montoEnMonedasDe200 = 200 * intNumMonedasDe200;
-            dineroEnCaja = dineroEnCaja + montoEnMonedasDe200;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
-
+            txt_numMonedas200pesos.setText(numMonedasDe200);   
         }
-    }//GEN-LAST:event_txt_numMonedas200pesosFocusLost
-
-    private void txt_numMonedas200pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosFocusGained
-        txt_numMonedas200pesos.setText("");
+          
+        //restamos lo correspondiente al monto en monedas de 200 mil previamente registrado
         dineroEnCaja = dineroEnCaja - montoEnMonedasDe200;
-        
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumMonedasDe200 = Integer.parseInt(numMonedasDe200);
+        montoEnMonedasDe200 = 200 * intNumMonedasDe200;
+        dineroEnCaja = dineroEnCaja + montoEnMonedasDe200;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
         montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
-        
+
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
-        montoEnMonedasDe200 = 0;
+    }//GEN-LAST:event_txt_numMonedas200pesosFocusLost
+
+    private void txt_numMonedas200pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosFocusGained
+       
     }//GEN-LAST:event_txt_numMonedas200pesosFocusGained
 
     private void txt_numMonedas100pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosFocusLost
         
-        numMonedasDe100 = txt_numMonedas100pesos.getText();      
-            
+        numMonedasDe100 = txt_numMonedas100pesos.getText();
+                          
         if(numMonedasDe100.equals("")){
             numMonedasDe100 = "0";
-            txt_numMonedas100pesos.setText(numMonedasDe100);
-           
-        }else{
-            int intNumMonedasDe100 = Integer.parseInt(numMonedasDe100);
-
-            montoEnMonedasDe100 = 100 * intNumMonedasDe100;
-            dineroEnCaja = dineroEnCaja + montoEnMonedasDe100;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
+            txt_numMonedas100pesos.setText(numMonedasDe100);   
         }
-    }//GEN-LAST:event_txt_numMonedas100pesosFocusLost
-
-    private void txt_numMonedas100pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosFocusGained
-        txt_numMonedas100pesos.setText("");
+          
+        //restamos lo correspondiente al monto en monedas de 100 mil previamente registrado
         dineroEnCaja = dineroEnCaja - montoEnMonedasDe100;
-        
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumMonedasDe100 = Integer.parseInt(numMonedasDe100);
+        montoEnMonedasDe100 = 100 * intNumMonedasDe100;
+        dineroEnCaja = dineroEnCaja + montoEnMonedasDe100;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
         montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
-        
+
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
-        montoEnMonedasDe100 = 0;
+    }//GEN-LAST:event_txt_numMonedas100pesosFocusLost
+
+    private void txt_numMonedas100pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosFocusGained
+
     }//GEN-LAST:event_txt_numMonedas100pesosFocusGained
 
     private void txt_numMonedas50pesosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosFocusLost
         
         numMonedasDe50 = txt_numMonedas50pesos.getText();
-                   
+                          
         if(numMonedasDe50.equals("")){
             numMonedasDe50 = "0";
-            txt_numMonedas50pesos.setText(numMonedasDe50);
-            
-        }else{
-            int intNumMonedasDe50 = Integer.parseInt(numMonedasDe50);
-
-            montoEnMonedasDe50 = 50 * intNumMonedasDe50;
-            dineroEnCaja = dineroEnCaja + montoEnMonedasDe50;
-            dineroEnCajaString = Integer.toString(dineroEnCaja);
-
-            montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
-            lbl_totalEnCaja.setText(montoTotalCaja);
-
-            //Calculamos la diferencia respecto a la base en tiempo real
-            diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
-            diferenciaString = Integer.toString(diferenciaCalculo);
-            diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
-
-            muestreoDiferencia();
-            
+            txt_numMonedas50pesos.setText(numMonedasDe50);   
         }
-    }//GEN-LAST:event_txt_numMonedas50pesosFocusLost
-
-    private void txt_numMonedas50pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosFocusGained
-        txt_numMonedas50pesos.setText("");
+          
+        //restamos lo correspondiente al monto en monedas de 50 mil previamente registrado
         dineroEnCaja = dineroEnCaja - montoEnMonedasDe50;
-        
-        dineroEnCajaString = Integer.toString(dineroEnCaja);
 
+        //Obtenemos el numero de billetes actual y volvemos a calcular el monto 
+        int intNumMonedasDe50 = Integer.parseInt(numMonedasDe50);
+        montoEnMonedasDe50 = 50 * intNumMonedasDe50;
+        dineroEnCaja = dineroEnCaja + montoEnMonedasDe50;
+        dineroEnCajaString = Integer.toString(dineroEnCaja);
         montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
         lbl_totalEnCaja.setText(montoTotalCaja);
-        
+
         //Calculamos la diferencia respecto a la base en tiempo real
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
 
         muestreoDiferencia();
-        montoEnMonedasDe50 = 0;
+    }//GEN-LAST:event_txt_numMonedas50pesosFocusLost
+
+    private void txt_numMonedas50pesosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosFocusGained
+       
     }//GEN-LAST:event_txt_numMonedas50pesosFocusGained
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cerrarEdicionDeArqueo();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void txt_numBilletes100milKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes100milKeyPressed
+              
+    }//GEN-LAST:event_txt_numBilletes100milKeyPressed
+
+    private void txt_numBilletes50milKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes50milKeyPressed
+        
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numBilletes50mil.getText();
+            if(!cantidad.equals("")){
+                dineroEnCaja = dineroEnCaja - montoEnBilletes50Mil;
+
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+
+                montoEnBilletes50Mil = 0;
+            }
+        }    
+    }//GEN-LAST:event_txt_numBilletes50milKeyPressed
+
+    private void txt_numBilletes20milKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes20milKeyPressed
+        
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numBilletes20mil.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnBilletes20Mil;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+
+                montoEnBilletes20Mil = 0;   
+            }
+        }
+    }//GEN-LAST:event_txt_numBilletes20milKeyPressed
+
+    private void txt_numBilletes10milKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes10milKeyPressed
+        
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numBilletes10mil.getText();
+            if(!cantidad.equals("")){
+        
+                dineroEnCaja = dineroEnCaja - montoEnBilletes10Mil;
+
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+
+                montoEnBilletes10Mil = 0;
+            }
+        }
+    }//GEN-LAST:event_txt_numBilletes10milKeyPressed
+
+    private void txt_numBilletes5milKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes5milKeyPressed
+        
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numBilletes5mil.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnBilletes5Mil;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+                
+                montoEnBilletes5Mil = 0;
+            }
+        }
+    }//GEN-LAST:event_txt_numBilletes5milKeyPressed
+
+    private void txt_numBilletes2milKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletes2milKeyPressed
+
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numBilletes2mil.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnBilletes2Mil;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+
+                montoEnBilletes2Mil = 0;    
+            }
+        }
+    }//GEN-LAST:event_txt_numBilletes2milKeyPressed
+
+    private void txt_numBilletesOMonedasDeMilKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilKeyPressed
+
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numBilletesOMonedasDeMil.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnBilletesOMonedasMil;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+
+                montoEnBilletesOMonedasMil = 0;
+            }
+        }
+    }//GEN-LAST:event_txt_numBilletesOMonedasDeMilKeyPressed
+
+    private void txt_numMonedas500pesosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosKeyPressed
+
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numMonedas500pesos.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnMonedasDe500;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+                
+                montoEnMonedasDe500 = 0;   
+            }
+        }
+    }//GEN-LAST:event_txt_numMonedas500pesosKeyPressed
+
+    private void txt_numMonedas200pesosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosKeyPressed
+
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numMonedas200pesos.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnMonedasDe200;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+                
+                montoEnMonedasDe200 = 0;
+            }
+        }
+    }//GEN-LAST:event_txt_numMonedas200pesosKeyPressed
+
+    private void txt_numMonedas100pesosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosKeyPressed
+        
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numMonedas100pesos.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnMonedasDe100;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+                
+                montoEnMonedasDe100 = 0;
+            }
+        }
+    }//GEN-LAST:event_txt_numMonedas100pesosKeyPressed
+
+    private void txt_numMonedas50pesosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosKeyPressed
+        
+        if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+           
+            String cantidad = txt_numMonedas50pesos.getText();
+            if(!cantidad.equals("")){
+                
+                dineroEnCaja = dineroEnCaja - montoEnMonedasDe50;
+        
+                dineroEnCajaString = Integer.toString(dineroEnCaja);
+
+                montoTotalCaja = facturaControla.agregarFormatoMoneda(dineroEnCajaString);
+                lbl_totalEnCaja.setText(montoTotalCaja);
+
+                //Calculamos la diferencia respecto a la base en tiempo real
+                diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
+                diferenciaString = Integer.toString(diferenciaCalculo);
+                diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+                muestreoDiferencia();
+                
+                montoEnMonedasDe50 = 0;
+            }
+        }
+    }//GEN-LAST:event_txt_numMonedas50pesosKeyPressed
 
     /**
      * @param args the command line arguments
@@ -1443,14 +1597,15 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarArqueoDeCaja.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -1459,7 +1614,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                 try {
                     //Esto cambia la apariencia de la app para que se acomode al Siste Operativo
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    new ArqueoDeCaja().setVisible(true);
+                    new EditarArqueoDeCaja().setVisible(true);
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     //Logger.getLogger(GestionarFacturas.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1468,7 +1623,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_finalizar;
+    private javax.swing.JButton btn_actualizar;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1503,6 +1658,18 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     public static javax.swing.JTextField txt_numMonedas50pesos;
     // End of variables declaration//GEN-END:variables
 
+    //Metodo que se invoca al cerrar el jFrame
+    private void cerrarEdicionDeArqueo(){
+        
+        String botones[] = {"Cerrar", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar arqueo", 0, 3, null, botones, this);
+        
+        if(eleccion == JOptionPane.YES_OPTION){
+            dispose();
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
+        }
+    }
+        
     public void muestreoDiferencia(){
         
         if(diferenciaCalculo <= 0){
@@ -1531,32 +1698,5 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         txt_numMonedas50pesos.setBackground(Color.WHITE);
     }
     
-    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero en tiempo real    
-    @Override
-    public void run() {
-        Thread ct = Thread.currentThread();
-        Thread ct1 = Thread.currentThread();
-        while(ct == hilo1){
 
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosDisponibles());
-            cmb_numParqueadero.setModel(modeloParq);
-
-            try{
-                ct.sleep(120000);
-            }catch(InterruptedException e){
-                log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos disponibles en combobox panelCaja: " + e); 
-            }
-        }
-        while(ct1 == hilo2){
-
-            //Cargamos los datos de la tabla
-            parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
-
-            try{
-                ct1.sleep(10000);
-            }catch(InterruptedException e){
-                log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos ingresados al parqueadero del panelCaja: " + e); 
-            }
-        }
-    }
 }

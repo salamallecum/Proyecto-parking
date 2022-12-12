@@ -527,11 +527,11 @@ public class FacturaControlador {
     }
     
     //Metodo que permite actualizar las facturas que se encuentren abiertas con la información actualizada de un vehiculo    
-    public void actualizarFactura1erIngreso(String placa, Factura facturaEdit){
+    public void actualizarFactura1erIngreso(Factura facturaEdit){
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+placa+"', Propietario='"+facturaEdit.getPropietario()+"', Tipo_vehiculo='"+facturaEdit.getClaseDeVehiculo()+"', No_parqueadero='"+facturaEdit.getId_parqueadero()+"', Id_convenio='"+facturaEdit.getId_convenio()+"', Id_tarifa='"+facturaEdit.getId_tarifa()+"' where Placa ='"+placa+"' and Estado_fctra='Abierta' and Hora_ingreso = null");
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaEdit.getPlaca()+"', Propietario='"+facturaEdit.getPropietario()+"', Tipo_vehiculo='"+facturaEdit.getClaseDeVehiculo()+"', No_parqueadero='"+facturaEdit.getId_parqueadero()+"', Id_convenio='"+facturaEdit.getId_convenio()+"', Id_tarifa='"+facturaEdit.getId_tarifa()+"' where Placa ='"+facturaEdit.getPlaca()+"' and Estado_fctra='Abierta' and Hora_ingreso = null");
 
             pst9.executeUpdate();
             cn9.close();
