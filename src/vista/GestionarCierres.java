@@ -49,7 +49,7 @@ public class GestionarCierres extends javax.swing.JFrame implements Runnable {
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
         hiloTablaCierres = new Thread(this);
-            hiloTablaCierres.start();
+        hiloTablaCierres.start();
             
         //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
         table_listaCierres.addMouseListener(new MouseAdapter() {

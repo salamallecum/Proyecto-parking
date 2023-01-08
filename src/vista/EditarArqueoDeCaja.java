@@ -10,6 +10,7 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
 import modelo.Arqueo;
 import org.apache.log4j.Logger;
 
@@ -21,7 +22,8 @@ import org.apache.log4j.Logger;
 public class EditarArqueoDeCaja extends javax.swing.JFrame{
     
     int baseDeCajaInt = 0;
-    
+    javax.swing.JTable tablaArqueos;
+    DefaultTableModel modelo;
     String usuarioDelSistema = "";
     String baseDeCajaOriginal;
             
@@ -66,7 +68,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
     Arqueo arqueoAActualizar = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
     ArqueoControlador arqueoControla = new ArqueoControlador();
     FacturaControlador facturaControla = new FacturaControlador();
-        
+            
     private final Logger log = Logger.getLogger(EditarArqueoDeCaja.class);
     private URL url = EditarArqueoDeCaja.class.getResource("Log4j.properties");
     
@@ -82,6 +84,8 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         usuarioDelSistema = Login.usuario;
         codigoArqueo = GestionarArqueos.codigoArqueo_update;
+        tablaArqueos = GestionarArqueos.table_listaArqueos;
+        modelo = GestionarArqueos.modelo;
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
@@ -941,9 +945,20 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
             arqueoAActualizar.setDiferenciaTotal(diferenciaTotal);
 
             //Actualizamos el arqueo en base de datos
-            arqueoControla.actualizarArqueo(arqueoAActualizar);      
+            arqueoControla.actualizarArqueo(arqueoAActualizar);
+            
+            //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar arqueos
+            Object Fila[] = new Object[4];
+            Fila[0] = codigoArqueo;
+            Fila[1] = arqueoControla.fecha_Arqueo();
+            Fila[2] = usuarioDelSistema;
+            Fila[3] = montoTotalCaja;
+            
+            for(int i=0; i < tablaArqueos.getColumnCount(); i++){
+                modelo.setValueAt(Fila[i], GestionarArqueos.Filas, i);
+            }
 
-            //Imprimimos el ticket de aruqeo de caja
+            //Imprimimos el ticket de arqueo de caja
             arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false);
 
             ventanaEmergCopiaArqueo = true;

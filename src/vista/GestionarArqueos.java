@@ -24,7 +24,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
     public static String codigoArqueo_update;
     
     public static boolean hayArqueoVisualizandose = false;
-    
+        
     ArqueoControlador arqControla = new ArqueoControlador();
     
     private final Logger log = Logger.getLogger(GestionarArqueos.class);
