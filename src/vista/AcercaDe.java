@@ -53,7 +53,7 @@ public class AcercaDe extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Acerca del sistema");
         setIconImage(getIconImage());
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -229,8 +229,6 @@ public class AcercaDe extends javax.swing.JFrame {
                 dispose();
             }
             
-        }else{
-            new AcercaDe().setVisible(true);
         }
     }
 }

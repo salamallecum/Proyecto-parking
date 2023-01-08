@@ -257,11 +257,22 @@ public class ArqueoControlador {
 
             if(fila_point > -1){
                 codigoArqueo_update = (String) modelo.getValueAt(fila_point, columna_point);
-                new EditarArqueoDeCaja().setVisible(true);
+                generarInformacionDeArqueoEnFrame();  
             }
         }    
     });
-    }    
+    }
+
+    //Metodo que genera la informacion de un arqueo en el jframe
+    public void generarInformacionDeArqueoEnFrame(){
+
+        if(GestionarArqueos.hayArqueoVisualizandose == true){
+            JOptionPane.showMessageDialog(null,"No permitido.");
+        }else{
+            GestionarArqueos.hayArqueoVisualizandose = true;
+            new EditarArqueoDeCaja().setVisible(true);
+        }    
+    } 
 
     //Metodo que consulta la información de un arqueo
     public Arqueo consultarInformacionDeUnArqueo(String codigoArq){
@@ -276,6 +287,7 @@ public class ArqueoControlador {
             if(rs.next()){
                 arqueoConsultado.setId(rs.getInt("Id_arqueo"));
                 arqueoConsultado.setCodigo(rs.getString("codigo"));
+                arqueoConsultado.setBase_caja(rs.getString("base_caja"));
                 arqueoConsultado.setUsuario(rs.getString("usuario"));
                 arqueoConsultado.setNumBilletesDe100Mil(rs.getString("numerobilletes100mil"));
                 arqueoConsultado.setNumBilletesDe50Mil(rs.getString("numerobilletes50mil"));
@@ -305,7 +317,7 @@ public class ArqueoControlador {
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update arqueos set fecha_arqueo ='"+arqEdit.getFecha_arqueo()+"', usuario='"+arqEdit.getUsuario()+"', base_caja='"+arqEdit.getBase_caja()+"', numerobilletes100mil='"+arqEdit.getNumBilletesDe100Mil()+"', numerobilletes50mil='"+arqEdit.getNumBilletesDe50Mil()+"', numerobilletes20mil='"+arqEdit.getNumBilletesDe20Mil()+"' numerobilletes10mil='"+arqEdit.getNumBilletesDe10Mil()+"', numerobilletes5mil='"+arqEdit.getNumBilletesDe5Mil()+"', numerobilletes2mil='"+arqEdit.getNumBilletesDe2Mil()+"', numerobilletesMil='"+arqEdit.getNumBilletesOMonedasDeMil()+"', numeromonedas500='"+arqEdit.getNumMonedasDe500()+"', numeromonedas200='"+arqEdit.getNumMonedasDe200()+"', numeromonedas100='"+arqEdit.getNumMonedasDe100()+"', numeromonedas50='"+arqEdit.getNumMonedasDe50()+"', montoen100mil="+arqEdit.getMontoEnBilletes100Mil()+", montoen50mil="+arqEdit.getMontoEnBilletes50Mil()+", montoen20mil="+arqEdit.getMontoEnBilletes20Mil()+", montoen10mil="+arqEdit.getMontoEnBilletes10Mil()+", montoen5mil="+arqEdit.getMontoEnBilletes5Mil()+", montoen2mil="+arqEdit.getMontoEnBilletes2Mil()+", montoenmil="+arqEdit.getMontoEnBilletesOMonedasMil()+", montoen500="+arqEdit.getMontoEnMonedasDe500()+", montoen200="+arqEdit.getMontoEnMonedasDe200()+", montoen100="+arqEdit.getMontoEnMonedasDe100()+", montoen50="+arqEdit.getMontoEnMonedasDe50()+", total_caja='"+arqEdit.getMontoTotalCaja()+"', diferencia='"+arqEdit.getDiferenciaTotal()+"' where Id_arqueo ="+arqEdit.getId());
+            PreparedStatement pst9 = cn9.prepareStatement("update arqueos set fecha_arqueo ='"+arqEdit.getFecha_arqueo()+"', usuario='"+arqEdit.getUsuario()+"', base_caja='"+arqEdit.getBase_caja()+"', numerobilletes100mil='"+arqEdit.getNumBilletesDe100Mil()+"', numerobilletes50mil='"+arqEdit.getNumBilletesDe50Mil()+"', numerobilletes20mil='"+arqEdit.getNumBilletesDe20Mil()+"', numerobilletes10mil='"+arqEdit.getNumBilletesDe10Mil()+"', numerobilletes5mil='"+arqEdit.getNumBilletesDe5Mil()+"', numerobilletes2mil='"+arqEdit.getNumBilletesDe2Mil()+"', numerobilletesMil='"+arqEdit.getNumBilletesOMonedasDeMil()+"', numeromonedas500='"+arqEdit.getNumMonedasDe500()+"', numeromonedas200='"+arqEdit.getNumMonedasDe200()+"', numeromonedas100='"+arqEdit.getNumMonedasDe100()+"', numeromonedas50='"+arqEdit.getNumMonedasDe50()+"', montoen100mil="+arqEdit.getMontoEnBilletes100Mil()+", montoen50mil="+arqEdit.getMontoEnBilletes50Mil()+", montoen20mil="+arqEdit.getMontoEnBilletes20Mil()+", montoen10mil="+arqEdit.getMontoEnBilletes10Mil()+", montoen5mil="+arqEdit.getMontoEnBilletes5Mil()+", montoen2mil="+arqEdit.getMontoEnBilletes2Mil()+", montoenmil="+arqEdit.getMontoEnBilletesOMonedasMil()+", montoen500="+arqEdit.getMontoEnMonedasDe500()+", montoen200="+arqEdit.getMontoEnMonedasDe200()+", montoen100="+arqEdit.getMontoEnMonedasDe100()+", montoen50="+arqEdit.getMontoEnMonedasDe50()+", total_caja='"+arqEdit.getMontoTotalCaja()+"', diferencia='"+arqEdit.getDiferenciaTotal()+"' where Id_arqueo ="+arqEdit.getId());
             pst9.executeUpdate();
             cn9.close();
 

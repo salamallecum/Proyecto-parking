@@ -23,8 +23,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
     public static int Filas;
     public static String codigoArqueo_update;
     
-    public static boolean esFacturaAbierta = false;
-    public static boolean hayFacturaVisualizandose = false;
+    public static boolean hayArqueoVisualizandose = false;
     
     ArqueoControlador arqControla = new ArqueoControlador();
     

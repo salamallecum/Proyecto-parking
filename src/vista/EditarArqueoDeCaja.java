@@ -7,8 +7,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -25,6 +23,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
     int baseDeCajaInt = 0;
     
     String usuarioDelSistema = "";
+    String baseDeCajaOriginal;
             
     int dineroEnCaja = 0;
     String dineroEnCajaString = "";
@@ -86,21 +85,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
-        
-        //Cargamos el valor de la base que debe tener la caja
-        String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
-        
-        //Guardamos el valor int de la base de caja para calculos futuros 
-        baseDeCajaInt = Integer.parseInt(baseDeCaja);
-        
-        //Damos formato de moneda al valor de la base de la caja
-        Double valorBase = new Double(baseDeCaja);
-        Locale region = Locale.getDefault();
-        //Currency moneda = Currency.getInstance(region);
-        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(region);
-        
-        lbl_baseDeCaja.setText(formatoMoneda.format(valorBase));
-        
+                
         //Traemos la información del arqueo a editar
         arqueoAEditar = arqueoControla.consultarInformacionDeUnArqueo(codigoArqueo);
         
@@ -118,6 +103,12 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         numMonedasDe100 = arqueoAEditar.getNumMonedasDe100();
         numMonedasDe50 = arqueoAEditar.getNumMonedasDe50();
         
+        //Cargamos el valor de la base que debe tener la caja
+        baseDeCajaOriginal = arqueoAEditar.getBase_caja();
+        
+        //Guardamos el valor int de la base de caja para calculos futuros 
+        baseDeCajaInt = Integer.parseInt(baseDeCajaOriginal);
+                        
         //Calculamos los montos para cada una de las denominaciones de dinero
         montoEnBilletes100Mil = 100000 * Integer.parseInt(numBilletesDe100Mil);
         montoEnBilletes50Mil = 50000 * Integer.parseInt(numBilletesDe50Mil);
@@ -141,6 +132,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         diferenciaCalculo = baseDeCajaInt - dineroEnCaja;
         diferenciaString = Integer.toString(diferenciaCalculo);
         diferenciaTotal = facturaControla.agregarFormatoMoneda(diferenciaString);
+        String baseCajaFormat = facturaControla.agregarFormatoMoneda(baseDeCajaOriginal);
                 
         //Mostramos toda la informacion en pantalla        
         txt_numBilletes100mil.setText(numBilletesDe100Mil);
@@ -153,9 +145,11 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         txt_numMonedas500pesos.setText(numMonedasDe500);
         txt_numMonedas200pesos.setText(numMonedasDe200);
         txt_numMonedas100pesos.setText(numMonedasDe100);
-        txt_numMonedas50pesos.setText(numMonedasDe50);      
+        txt_numMonedas50pesos.setText(numMonedasDe50);  
+        lbl_baseDeCaja.setText(baseCajaFormat);
         lbl_totalEnCaja.setText(dineroEnCajaString);
         lbl_diferencia.setText(diferenciaTotal);
+        lbl_baseDeCaja.setText(facturaControla.agregarFormatoMoneda(baseDeCajaOriginal));
         muestreoDiferencia();
         
     }
@@ -917,10 +911,10 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         }else{
                       
-            arqueoAActualizar.setId(0);
+            arqueoAActualizar.setId(ID);
             arqueoAActualizar.setFecha_arqueo(arqueoControla.fecha_Arqueo());
             arqueoAActualizar.setUsuario(usuarioDelSistema);
-            arqueoAActualizar.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
+            arqueoAActualizar.setBase_caja(baseDeCajaOriginal);
             arqueoAActualizar.setNumBilletesDe100Mil(numBilletesDe100Mil);
             arqueoAActualizar.setNumBilletesDe50Mil(numBilletesDe50Mil);
             arqueoAActualizar.setNumBilletesDe20Mil(numBilletesDe20Mil);
@@ -965,6 +959,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
 
                if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
                    ventanaEmergCopiaArqueo = false;
+                   GestionarArqueos.hayArqueoVisualizandose = false;
                    dispose();   
                 } 
             }         
@@ -1666,6 +1661,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
+            GestionarArqueos.hayArqueoVisualizandose = false;
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
         }
     }
