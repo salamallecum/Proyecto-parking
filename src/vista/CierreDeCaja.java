@@ -7,9 +7,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -953,7 +951,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
             cierreControla.asignarCierreAFacturasContabilizadas(idCierreDef);
 
             //Imprimimos el ticket de cierre de caja
-            cierreControla.generarTicketCierreDeCaja(codigoCierre);           
+            cierreControla.generarTicketCierreDeCaja(codigoCierre, false);           
 
             ventanaEmergCopiaCierre = true;
 
@@ -963,7 +961,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
                int eleccionFinalizarCierre = JOptionPane.showOptionDialog(this, "Cierre de caja finalizado satisfactoriamente.", "Cierre de caja", 0, 1, null, botones, this);
 
                if(eleccionFinalizarCierre == JOptionPane.YES_OPTION){
-                   cierreControla.generarTicketCierreDeCaja(codigoCierre); 
+                   cierreControla.generarTicketCierreDeCaja(codigoCierre, false); 
                }
 
                if(eleccionFinalizarCierre == JOptionPane.NO_OPTION){

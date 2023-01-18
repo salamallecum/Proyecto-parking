@@ -326,7 +326,24 @@ public class ArqueoControlador {
             log.fatal("ERROR - Se ha producido un error al intentar actualizar un arqueo: " + e);  
         } 
     }
-
+    
+    //Metodo para eliminar un arqueo asociado a un cierre
+    public void eliminarArqueo(String codigoArqueo){
+        
+        PreparedStatement ps1 = null;
+        try{
+            Connection cn1 = Conexion.conectar();          
+            
+            ps1 = cn1.prepareStatement("delete from cierres where Codigo_arqueo=?");
+            ps1.setString(1, codigoArqueo);
+            ps1.execute();
+            cn1.close();
+            
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar arqueo de un cierre!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar eliminar el arqueo de un cierre: " + e);
+        }   
+    }
 }       
 
     

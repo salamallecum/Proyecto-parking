@@ -526,6 +526,24 @@ public class FacturaControlador {
         }   
     }
     
+    //Metodo para eliminar las facturas que estan asociadas a un cierre
+    public void eliminarFacturasDeUnCierre(int idCierre){
+        
+        PreparedStatement ps1 = null;
+        try{
+            Connection cn1 = Conexion.conectar();          
+            
+            ps1 = cn1.prepareStatement("delete from facturas where Id_cierre=?");
+            ps1.setInt(1, idCierre);
+            ps1.execute();
+            cn1.close();
+            
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar facturas de un cierre!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar eliminar las facturas de  un cierre: " + e);
+        }   
+    }
+    
     //Metodo que permite actualizar las facturas que se encuentren abiertas con la información actualizada de un vehiculo    
     public void actualizarFactura1erIngreso(Factura facturaEdit){
         

@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 public class InformacionCierre extends javax.swing.JFrame {
 
     String usuario;
-    int cierre_actualizado;
+    String cierre_actualizado;
     public static int ID;
     javax.swing.JTable tablaOperacionCierres;
     DefaultTableModel modelo;

@@ -105,7 +105,7 @@ public class PanelReportes extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btn_arqueos;
-    private javax.swing.JButton btn_cierres;
+    public static javax.swing.JButton btn_cierres;
     public static javax.swing.JButton btn_facturas;
     // End of variables declaration//GEN-END:variables
 }
