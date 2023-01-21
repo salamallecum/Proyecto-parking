@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.WindowConstants;
 import java.net.URL;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;

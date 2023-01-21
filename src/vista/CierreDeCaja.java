@@ -13,7 +13,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import modelo.Cierre;
 import org.apache.log4j.Logger;
-import static vista.ArqueoDeCaja.txt_numBilletes50mil;
 import static vista.PanelCaja.laCajaFueAbierta;
 
 
