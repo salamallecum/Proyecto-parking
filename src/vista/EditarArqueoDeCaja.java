@@ -718,12 +718,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
     }//GEN-LAST:event_txt_nombrePropietarioActionPerformed
 
     private void txt_nombrePropietarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombrePropietarioKeyTyped
-        //Forza aescribir en mayuscula
-        char c=evt.getKeyChar();
-        if(Character.isLowerCase(c)){
-            evt.setKeyChar(Character.toUpperCase(c));
-
-        }
+        
     }//GEN-LAST:event_txt_nombrePropietarioKeyTyped
 
     private void txt_numBilletes100milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes100milActionPerformed
@@ -737,9 +732,15 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }   
+            
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numBilletes100mil.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        }    
     }//GEN-LAST:event_txt_numBilletes100milKeyTyped
 
     private void txt_numBilletes50milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes50milActionPerformed
@@ -752,10 +753,16 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         if(Character.isLetter(validar)){
             getToolkit().beep();
-            evt.consume();
-            
+            evt.consume();            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numBilletes50mil.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numBilletes50milKeyTyped
 
     private void txt_numBilletes20milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes20milActionPerformed
@@ -768,10 +775,16 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         if(Character.isLetter(validar)){
             getToolkit().beep();
-            evt.consume();
-            
+            evt.consume();            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numBilletes20mil.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numBilletes20milKeyTyped
 
     private void txt_numBilletes10milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes10milActionPerformed
@@ -785,9 +798,15 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numBilletes10mil.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numBilletes10milKeyTyped
 
     private void txt_numBilletes5milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes5milActionPerformed
@@ -801,9 +820,15 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numBilletes5mil.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numBilletes5milKeyTyped
 
     private void txt_numBilletes2milActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletes2milActionPerformed
@@ -816,10 +841,16 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         if(Character.isLetter(validar)){
             getToolkit().beep();
-            evt.consume();
-            
+            evt.consume();            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numBilletes2mil.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numBilletes2milKeyTyped
 
     private void txt_numBilletesOMonedasDeMilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numBilletesOMonedasDeMilActionPerformed
@@ -832,10 +863,16 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         if(Character.isLetter(validar)){
             getToolkit().beep();
-            evt.consume();
-            
+            evt.consume();            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numBilletesOMonedasDeMil.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numBilletesOMonedasDeMilKeyTyped
 
     private void txt_numMonedas500pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas500pesosActionPerformed
@@ -849,9 +886,15 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numMonedas500pesos.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numMonedas500pesosKeyTyped
 
     private void txt_numMonedas200pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas200pesosActionPerformed
@@ -865,9 +908,15 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numMonedas200pesos.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numMonedas200pesosKeyTyped
 
     private void txt_numMonedas100pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas100pesosActionPerformed
@@ -881,9 +930,15 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numMonedas100pesos.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numMonedas100pesosKeyTyped
 
     private void txt_numMonedas50pesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numMonedas50pesosActionPerformed
@@ -896,10 +951,16 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         
         if(Character.isLetter(validar)){
             getToolkit().beep();
-            evt.consume();
-            
+            evt.consume();            
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 4;
+        if(txt_numMonedas50pesos.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+        } 
     }//GEN-LAST:event_txt_numMonedas50pesosKeyTyped
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed

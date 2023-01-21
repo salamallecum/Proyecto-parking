@@ -313,7 +313,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
 
     private void txt_montoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_montoKeyTyped
         //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 20;
+        int numeroCaracteres = 10;
         if(txt_monto.getText().length()== numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 20 caracteres");

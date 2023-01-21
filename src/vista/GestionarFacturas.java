@@ -232,7 +232,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private void txt_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyTyped
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 10;
-        if(txt_usuario.getText().length() > numeroCaracteres){
+        if(txt_usuario.getText().length() == numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
             txt_usuario.setText("");
@@ -242,7 +242,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private void txt_codigoFacturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyTyped
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 10;
-        if(txt_codigoFactura.getText().length() > numeroCaracteres){
+        if(txt_codigoFactura.getText().length() == numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
             txt_codigoFactura.setText("");

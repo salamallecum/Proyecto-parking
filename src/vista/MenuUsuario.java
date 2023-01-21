@@ -43,7 +43,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
         
         setSize(1155,737);
         setResizable(false);
-        setTitle("SISTEMA DE PARKING - Sesión de " + user);
+        setTitle("MORE PARKING - Sesión de " + user);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         
         //Inicio de color a los botones

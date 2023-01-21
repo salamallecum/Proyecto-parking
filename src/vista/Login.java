@@ -37,7 +37,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         setSize(487, 390);
         setResizable(false);
-        setTitle("SISTEMA DE PARKING - Acceso al sistema");
+        setTitle("MORE PARKING - Acceso al sistema");
         setLocationRelativeTo(null);
         sincronizarLog();
         log.info("INFO - Se inicia aplicación satisfactoriamente");
@@ -72,7 +72,8 @@ public class Login extends javax.swing.JFrame {
         setIconImage(getIconImage());
 
         lbl_Titulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        lbl_Titulo.setText("Sistema de Parking ");
+        lbl_Titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_Titulo.setText("MORE PARKING");
 
         lbl_imagenPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagenPrincipal.png"))); // NOI18N
 
@@ -182,8 +183,8 @@ public class Login extends javax.swing.JFrame {
 
     private void txt_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyTyped
        //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 9;
-        if(txt_usuario.getText().length() > numeroCaracteres){
+        int numeroCaracteres = 10;
+        if(txt_usuario.getText().length() == numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
             txt_usuario.setText("");
@@ -193,8 +194,8 @@ public class Login extends javax.swing.JFrame {
     private void txt_claveKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_claveKeyTyped
        char_clave = txt_clave.getPassword();
        clave = String.valueOf(char_clave);
-       int numeroCaracteres = 9;
-        if(clave.length() > numeroCaracteres){
+       int numeroCaracteres = 10;
+        if(clave.length() == numeroCaracteres){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
             txt_clave.setText("");
