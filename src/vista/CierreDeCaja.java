@@ -1609,7 +1609,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
     //Metodo que se invoca al cerrar el gestor de cierre de caja
     private void cerrarCierreDeCaja(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Generar cierre", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

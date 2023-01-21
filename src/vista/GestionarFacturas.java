@@ -366,15 +366,28 @@ public class GestionarFacturas extends javax.swing.JFrame {
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarGestorFacturas(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
+        if(idCierre != 0){
+            String botones[] = {"Cerrar", "Cancelar"};
+            int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
+
+            if(eleccion == JOptionPane.YES_OPTION){
+                dispose();
+                //Avisamos que esta ventana se encuentra cerrada 
+                MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
+                new EditarCierreDeCaja().setVisible(true);
+            }
         
-        if(eleccion == JOptionPane.YES_OPTION){
-            dispose();
-            //Avisamos que esta ventana se encuentra cerrada 
-            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
-            PanelReportes.btn_facturas.setEnabled(true);
-        }
+        }else{
+            String botones[] = {"Si", "No"};
+            int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
+
+            if(eleccion == JOptionPane.YES_OPTION){
+                dispose();
+                //Avisamos que esta ventana se encuentra cerrada 
+                MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
+                PanelReportes.btn_facturas.setEnabled(true);
+            }
+        }        
     }
      
     //Metodo que limpia el formulario en caso de ingresar tablero principal

@@ -267,7 +267,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_usuarioKeyPressed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        cerrarGestorFacturas();
+        cerrarGestorArqueos();
     }//GEN-LAST:event_formWindowClosing
 
     private void table_listaArqueosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_listaArqueosMouseClicked
@@ -391,9 +391,9 @@ public class GestionarArqueos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     //Metodo que se invoca al cerrar el jFrame
-    private void cerrarGestorFacturas(){
+    private void cerrarGestorArqueos(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de arqueos", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

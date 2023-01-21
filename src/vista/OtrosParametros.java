@@ -481,7 +481,7 @@ public class OtrosParametros extends javax.swing.JFrame {
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarOtrosParametros(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parámetros", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

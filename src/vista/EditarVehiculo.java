@@ -22,7 +22,6 @@ import modelo.Parqueadero;
 import modelo.Tarifa;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
-import static vista.PanelVehiculos.modelo;
 
 
 /**
@@ -79,7 +78,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         user = Login.usuario;
         modelo = PanelVehiculos.modelo;
         
-        setSize(630,375);
+        setSize(620,358);
         setResizable(false);
         setTitle("Editar vehiculo");
         setLocationRelativeTo(null);
@@ -159,7 +158,6 @@ public class EditarVehiculo extends javax.swing.JFrame{
         jLabel6 = new javax.swing.JLabel();
         txt_placa = new javax.swing.JTextField();
         txt_dueño = new javax.swing.JTextField();
-        btn_cancelar = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
         lbl_imgEditUsuario = new javax.swing.JLabel();
         cmb_noParqueadero = new javax.swing.JComboBox<>();
@@ -170,6 +168,11 @@ public class EditarVehiculo extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Placa:");
@@ -198,14 +201,6 @@ public class EditarVehiculo extends javax.swing.JFrame{
         txt_dueño.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_dueñoKeyTyped(evt);
-            }
-        });
-
-        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Cancelar.png"))); // NOI18N
-        btn_cancelar.setText("Cancelar");
-        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancelarActionPerformed(evt);
             }
         });
 
@@ -282,12 +277,10 @@ public class EditarVehiculo extends javax.swing.JFrame{
                         .addGap(45, 45, 45)
                         .addComponent(check_editEstaVehiculoEnParqueadero)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(224, 224, 224)
                 .addComponent(btn_actualizar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_cancelar)
-                .addGap(52, 52, 52))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,28 +319,14 @@ public class EditarVehiculo extends javax.swing.JFrame{
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel6)
                             .addComponent(cmb_tarifas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    //Metodo del boton cancelar
-    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
-               
-        parqControla.actualizarEstadoDeParqueadero(vehiculo_actualizado, propietariaBack, noParqueaderoBack, estaEnParqBack);
-        Limpiar();
-        vehicontrolador.recargarVehiculo(ID, vehiculo_actualizado);
-        PanelVehiculos.hayVehiculoEnEdicion = false;
-        dispose();  
-        //Avisamos que esta ventana se encuentra cerrada 
-        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
-    }//GEN-LAST:event_btn_cancelarActionPerformed
-
     //Metodo boton Actualizar
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
        
@@ -577,6 +556,10 @@ public class EditarVehiculo extends javax.swing.JFrame{
         // TODO add your handling code here:
     }//GEN-LAST:event_check_editEstaVehiculoEnParqueaderoActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cerrarEdicionVehiculo();
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -627,7 +610,6 @@ public class EditarVehiculo extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizar;
-    private javax.swing.JButton btn_cancelar;
     private javax.swing.JCheckBox check_editEstaVehiculoEnParqueadero;
     private javax.swing.JComboBox<String> cmb_clase;
     private javax.swing.JComboBox<String> cmb_convenios;
@@ -701,6 +683,19 @@ public class EditarVehiculo extends javax.swing.JFrame{
         if(conv_string > 1){
             cmb_tarifas.setSelectedIndex(1);
         } 
+    }
+    
+    //Metodo que se invoca al cerrar el jFrame
+    private void cerrarEdicionVehiculo(){
+        
+        String botones[] = {"Si", "No"};
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar vehiculo", 0, 3, null, botones, this);
+        
+        if(eleccion == JOptionPane.YES_OPTION){
+            dispose();
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
+            PanelVehiculos.hayVehiculoEnEdicion = false;
+        }
     }
       
 }

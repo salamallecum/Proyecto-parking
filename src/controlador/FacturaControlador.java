@@ -1093,5 +1093,64 @@ public class FacturaControlador {
             }
         }
     });
-    }    
+    }  
+    
+    //Metodo que agrega una factura al cierre donde esta involucrada, despues de ser actualizada
+    public void agregarFacturaActualizadaAUnCierre(String totalAPagarDeFactura, int idCierreImplicado){
+                
+        //Creamos un objeto de tipo CierreControlador
+        CierreControlador cierreControla = new CierreControlador();
+        
+        Cierre cierreInvolucrado = cierreControla.consultarInformacionDeUnCierre(idCierreImplicado, "");
+                  
+        //Hacemos el calculo correspondiente (Sumamos el valor de la factura al total esperado del cierre y sumamos 1a factura al total de facturas)
+        String totalEsperado = cierreInvolucrado.getTotal_esperado();
+        String cantFacturas = cierreInvolucrado.getNo_facturas();
+        String dineroEnCaja = cierreInvolucrado.getDinero_caja();
+        String producido = cierreInvolucrado.getProducido();
+        String dineroAConsignar = cierreInvolucrado.getDineroAConsignar();
+        
+        //Quitamos el formato moneda a las cifras del cierre para su modificacion
+        totalEsperado = quitarFormatoMoneda(totalEsperado);
+        dineroEnCaja = quitarFormatoMoneda(dineroEnCaja);
+        producido = quitarFormatoMoneda(producido);
+        dineroAConsignar = quitarFormatoMoneda(dineroAConsignar);
+        totalAPagarDeFactura = quitarFormatoMoneda(totalAPagarDeFactura);
+       
+        int totalEsp_int = Integer.parseInt(totalEsperado);
+        int dineroEnCaja_int = Integer.parseInt(dineroEnCaja);
+        int noFacturas_impl = Integer.parseInt(cantFacturas);
+        int producido_int = Integer.parseInt(producido);
+        int dineroAConsignar_int = Integer.parseInt(dineroAConsignar);
+        int valorAPagarFactura = Integer.parseInt(totalAPagarDeFactura);
+        
+        //Sumamos el valor a pagar de la factura al dinero esperado, al dinero total existente en caja, al producido y al dinero a consignar
+        int nuevoTotalEsperado = totalEsp_int + valorAPagarFactura;
+        int nuevoDineroEnCaja = dineroEnCaja_int + valorAPagarFactura;
+        int nuevoProducido = producido_int + valorAPagarFactura;
+        int nuevoDineroAConsignar = dineroAConsignar_int + valorAPagarFactura;
+        
+        //Calculamos la nueva diferencia y restamos una factura al cierre
+        int nuevaDiferencia = nuevoTotalEsperado - nuevoDineroEnCaja;
+        int nuevaCantFacturas = noFacturas_impl + 1;
+                        
+        //Convertimos a string los nuevos resultados para el cierre
+        totalEsperado = Integer.toString(nuevoTotalEsperado);
+        dineroEnCaja = Integer.toString(nuevoDineroEnCaja);
+        String diferencia = Integer.toString(nuevaDiferencia);
+        cantFacturas = Integer.toString(nuevaCantFacturas);
+        producido = Integer.toString(nuevoProducido);
+        dineroAConsignar = Integer.toString(nuevoDineroAConsignar);
+        
+        //Aplicamos el formato moneda a los nuevos resultados para el cierre
+        totalEsperado = agregarFormatoMoneda(totalEsperado);
+        dineroEnCaja = agregarFormatoMoneda(dineroEnCaja);
+        diferencia = agregarFormatoMoneda(diferencia);
+        producido = agregarFormatoMoneda(producido);
+        dineroAConsignar = agregarFormatoMoneda(dineroAConsignar);
+        
+        //Actualizamos el cierre 
+        cierreControla.actualizarMontosFinalesDeUnCierre(idCierreImplicado, producido, totalEsperado, dineroEnCaja, diferencia, dineroAConsignar, cantFacturas);
+                                        
+    }
 }

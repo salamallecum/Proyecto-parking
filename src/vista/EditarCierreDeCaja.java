@@ -1753,6 +1753,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     private void btn_verFacturasAsociadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_verFacturasAsociadasActionPerformed
         GestionarFacturas.idCierre = ID;
         new GestionarFacturas().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_verFacturasAsociadasActionPerformed
 
     /**
@@ -1878,7 +1879,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarCierreDeCaja(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Generar cierre", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

@@ -1,6 +1,5 @@
 package vista;
 
-import clasesDeApoyo.Conexion;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
@@ -31,7 +30,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
     int Fila;
             
     Factura facturaAbiertaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
-        FacturaControlador facturaControla = new FacturaControlador();
+    FacturaControlador facturaControla = new FacturaControlador();
 
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
@@ -392,20 +391,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
 
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarInformacionFactura(){
-        
-        String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
-        
-        if(eleccion == JOptionPane.YES_OPTION){
-            GestionarFacturas.hayFacturaVisualizandose = false;
-            dispose();
-        }
-    }
-    
-    
-    
-    
-    
-    
-   
+        GestionarFacturas.hayFacturaVisualizandose = false;
+        dispose();
+    } 
 }

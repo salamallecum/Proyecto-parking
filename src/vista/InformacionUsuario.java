@@ -88,7 +88,6 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        btn_cancelar = new javax.swing.JButton();
         lbl_nombreUsuario = new javax.swing.JLabel();
         lbl_apellidoUsuario = new javax.swing.JLabel();
         lbl_celularUsuario = new javax.swing.JLabel();
@@ -104,6 +103,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Nombres:");
@@ -125,15 +129,6 @@ public class InformacionUsuario extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Rol:");
-
-        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Cancelar.png"))); // NOI18N
-        btn_cancelar.setText("Cancelar");
-        btn_cancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancelarActionPerformed(evt);
-            }
-        });
 
         lbl_nombreUsuario.setText("nombreUsuario");
 
@@ -213,16 +208,14 @@ public class InformacionUsuario extends javax.swing.JFrame {
                         .addComponent(lbl_imgInfoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(136, 136, 136)
-                                .addComponent(btn_editar)
-                                .addGap(31, 31, 31)
-                                .addComponent(btn_eliminar)
-                                .addGap(29, 29, 29)
-                                .addComponent(btn_cancelar)))
-                        .addGap(0, 28, Short.MAX_VALUE))))
+                        .addComponent(jLabel8)
+                        .addGap(0, 492, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_editar)
+                .addGap(31, 31, 31)
+                .addComponent(btn_eliminar)
+                .addGap(54, 54, 54))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,25 +255,16 @@ public class InformacionUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_estadoUsuario)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41))
+                .addGap(40, 40, 40))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    //Metodo del boton Cancelar
-    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
-        PanelUsuarios.hayUsuarioAbierto = false;
-        dispose();
-        //Avisamos que esta ventana se encuentra cerrada 
-        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
-    }//GEN-LAST:event_btn_cancelarActionPerformed
-
     //Metodo boton Eliminar
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         
@@ -299,6 +283,10 @@ public class InformacionUsuario extends javax.swing.JFrame {
         dispose();
         new EditarUsuario().setVisible(true);  
     }//GEN-LAST:event_btn_editarActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cerrarInfoUsuario();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -345,7 +333,6 @@ public class InformacionUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JLabel jLabel1;
@@ -367,4 +354,9 @@ public class InformacionUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_usuario;
     // End of variables declaration//GEN-END:variables
 
+    //Metodo que se invoca al cerrar el jFrame
+    private void cerrarInfoUsuario(){
+        PanelUsuarios.hayUsuarioAbierto = false;
+        dispose();
+    } 
 }

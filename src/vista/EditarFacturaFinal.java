@@ -468,9 +468,20 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
             facturaAActualizar.setEfectivo(efectivo);
             facturaAActualizar.setCambio(cambio);
             
-            //Actualizamos la factura
-            facturaControla.actualizarFacturaSalida(facturaAActualizar);
-                 
+            //Capturamos el id del cierre al que pertenece la factura
+            int idCierreFctraEditada = facturaControla.obtenerIdCierreConCodigoFactura(factura_actualizada);
+                
+            if(idCierreFctraEditada != 0){
+               facturaControla.descontarFacturaDeUnCierre(factura_actualizada);
+               facturaControla.agregarFacturaActualizadaAUnCierre(valorPagar, idCierreFctraEditada);
+               
+               //Actualizamos la factura
+               facturaControla.actualizarFacturaSalida(facturaAActualizar);
+            }else{
+                //Actualizamos la factura
+                facturaControla.actualizarFacturaSalida(facturaAActualizar);
+            }                     
+                
             //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar facturas
             Object Fila[] = new Object[4];
             Fila[0] = codigo_factura;
@@ -676,7 +687,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarEdicionDeFacturaFinal(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar factura", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

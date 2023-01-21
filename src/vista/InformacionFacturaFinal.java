@@ -493,13 +493,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarInformacionFactura(){
-        
-        String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
-        
-        if(eleccion == JOptionPane.YES_OPTION){
-            GestionarFacturas.hayFacturaVisualizandose = false;
-            dispose();
-        }
+        GestionarFacturas.hayFacturaVisualizandose = false;
+        dispose();
     }
 }

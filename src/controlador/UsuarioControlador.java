@@ -20,7 +20,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
-import vista.Login;
 import static vista.Login.txt_clave;
 import static vista.Login.txt_usuario;
 import vista.MenuAdministrador;
@@ -242,14 +241,7 @@ public class UsuarioControlador {
         }else{
            sePuedeCerrarSesion = true;        
         }
-        
-        //Evaluamos si la ventana de acerca del sistemase encuentra abierta
-        if(MenuAdministrador.acercaDeDesdeMenuAdministradorAbierto == true){
-            sePuedeCerrarSesion = false;
-        }else{
-            sePuedeCerrarSesion = true;
-        }
-        
+               
         //Evaluamos si hay alguna ventana abierta del sistema para el rol administrador
         if(MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema == true){
             sePuedeCerrarSesion = false;

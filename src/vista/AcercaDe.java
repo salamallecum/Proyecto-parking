@@ -16,7 +16,7 @@ public class AcercaDe extends javax.swing.JFrame {
     
     private final Logger log = Logger.getLogger(AcercaDe.class);
     private URL url = AcercaDe.class.getResource("Log4j.properties");
-
+    
     /**
      * Creates new form AcercaDe
      */
@@ -25,6 +25,8 @@ public class AcercaDe extends javax.swing.JFrame {
         setSize(580, 450);
         setResizable(false);
         setLocationRelativeTo(null);
+        
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
     }
     
     @Override
@@ -69,7 +71,7 @@ public class AcercaDe extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagenPrincipal.png"))); // NOI18N
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("2022 -  Todos los derechos reservados.©");
+        jLabel3.setText("2023 -  Todos los derechos reservados.©");
 
         jLabel4.setText("Desarrollado por: ALEJO");
 
@@ -208,27 +210,8 @@ public class AcercaDe extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     //Metodo que se invoca al cerrar el jFrame
-    private void cerrarAcercaDe(){
-        
-        String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Acerca de", 0, 3, null, botones, this);
-        
-        if(eleccion == JOptionPane.YES_OPTION){
-            boolean desdeMenAdministrador = MenuAdministrador.acercaDeDesdeMenuAdministradorAbierto;
-            boolean desdeMenUsuario = MenuUsuario.acercaDeDesdeMenuUsuarioAbierto;
-            
-            if(desdeMenAdministrador == true){
-                MenuAdministrador.jMenuItem_AcercaDe.setEnabled(true);
-                MenuAdministrador.acercaDeDesdeMenuAdministradorAbierto = false;
-                dispose();
-            }
-            
-            if(desdeMenUsuario == true){
-                MenuUsuario.jMenuItem_AcercaDe.setEnabled(true);
-                MenuUsuario.acercaDeDesdeMenuUsuarioAbierto = false;
-                dispose();
-            }
-            
-        }
+    private void cerrarAcercaDe(){         
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
+        dispose();
     }
 }

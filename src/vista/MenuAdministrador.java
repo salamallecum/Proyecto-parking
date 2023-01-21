@@ -23,8 +23,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     Date fechaHoraActual;
     Thread h1; 
     
-    //Variables que monitorean las ventanas del sistema que estanabiertas y cerradas
-    public static boolean acercaDeDesdeMenuAdministradorAbierto = false;    
+    //Variables que monitorean las ventanas del sistema que estanabiertas y cerradas  
     public static boolean hayAlgunaVentanaAbiertaDelSistema = false;
     
     /**
@@ -347,7 +346,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         });
 
         jMenuItem_AcercaDe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/about.png"))); // NOI18N
-        jMenuItem_AcercaDe.setText("Acerca de");
+        jMenuItem_AcercaDe.setText("Acerca del sistema");
         jMenuItem_AcercaDe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem_AcercaDe.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -546,7 +545,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     private void jMenuItem_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_cerrarSesionActionPerformed
         boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
         
-        if(sePuedeCerrarSesion == false){
+        if(sePuedeCerrarSesion == true){
             dispose();
             new Login().setVisible(true);
             log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
@@ -560,7 +559,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     private void jMenuItem_AcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_AcercaDeActionPerformed
         new AcercaDe().setVisible(true);
         jMenuItem_AcercaDe.setEnabled(false);
-        acercaDeDesdeMenuAdministradorAbierto = true;
+        hayAlgunaVentanaAbiertaDelSistema = true;
         log.info("INFO - Se consulta información acerca del desarrollo del sistema");
     }//GEN-LAST:event_jMenuItem_AcercaDeActionPerformed
 

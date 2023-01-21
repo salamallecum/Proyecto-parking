@@ -393,7 +393,7 @@ public class GestionarCierres extends javax.swing.JFrame{
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarGestorCierres(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de cierres", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

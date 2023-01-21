@@ -4,14 +4,13 @@ import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.File;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.WindowConstants;
 import org.apache.log4j.Logger;
-import static vista.MenuAdministrador.jMenuItem_AcercaDe;
+
 
 
 /**
@@ -25,8 +24,6 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
     Calendar calendario;
     Date fechaHoraActual;
     Thread h1;
-   
-    public static boolean acercaDeDesdeMenuUsuarioAbierto = false;    
 
     public static PanelUsuarios panelUsu;
     PanelCaja panelCaja;
@@ -255,7 +252,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
         });
 
         jMenuItem_AcercaDe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/about.png"))); // NOI18N
-        jMenuItem_AcercaDe.setText("Acerca de");
+        jMenuItem_AcercaDe.setText("Acerca del sistema");
         jMenuItem_AcercaDe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem_AcercaDe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,8 +301,14 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
 
     //Metodo boton "Cerrar sesion"
     private void btn_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarSesionActionPerformed
-        usuControlador.cerrarSesion(user);    
-        dispose();
+        
+        boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
+        
+        if(sePuedeCerrarSesion == true){
+            dispose();
+            new Login().setVisible(true);
+            log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
+        }
     }//GEN-LAST:event_btn_cerrarSesionActionPerformed
 
    
@@ -345,7 +348,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
     private void jMenuItem_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_cerrarSesionActionPerformed
         boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
         
-        if(sePuedeCerrarSesion == false){
+        if(sePuedeCerrarSesion == true){
             dispose();
             new Login().setVisible(true);
             log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
@@ -359,8 +362,8 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
     private void jMenuItem_AcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_AcercaDeActionPerformed
         new AcercaDe().setVisible(true);
         jMenuItem_AcercaDe.setEnabled(false);
-        acercaDeDesdeMenuUsuarioAbierto = true;
-        log.info("INFO - Se consulta información acerca del desarrollo del sistema modo user");
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        log.info("INFO - Se consulta información acerca del desarrollo del sistema");
     }//GEN-LAST:event_jMenuItem_AcercaDeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

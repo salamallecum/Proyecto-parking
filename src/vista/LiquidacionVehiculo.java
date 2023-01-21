@@ -940,14 +940,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
          
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarLiquidacionVehiculo(){
-        
-        String botones[] = {"Cerrar", "Cancelar"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Liquidar vehiculo", 0, 3, null, botones, this);
-        
-        if(eleccion == JOptionPane.YES_OPTION){
-            PanelCaja.hayVehiculoLiquidandose = false;
-            dispose();
-        }
+        PanelCaja.hayVehiculoLiquidandose = false;
+        dispose();
     }
     
     //Metodo que hace el calculo del monto de vueltas a nivel de presentacion del frame

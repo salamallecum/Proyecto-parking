@@ -632,7 +632,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarGestorConvenios(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de convenios", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

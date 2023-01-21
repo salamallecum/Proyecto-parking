@@ -183,6 +183,11 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(getIconImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Conteo de dinero"));
 
@@ -1426,6 +1431,10 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         montoEnMonedasDe50 = 0;
     }//GEN-LAST:event_txt_numMonedas50pesosFocusGained
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cerrarArqueoDeCaja();
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -1557,6 +1566,18 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
             }catch(InterruptedException e){
                 log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos ingresados al parqueadero del panelCaja: " + e); 
             }
+        }
+    }
+    
+    //Metodo que se invoca al cerrar el arqueo de caja
+    private void cerrarArqueoDeCaja(){
+        
+        String botones[] = {"Si", "No"};
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Generar cierre", 0, 3, null, botones, this);
+        
+        if(eleccion == JOptionPane.YES_OPTION){
+            dispose();
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
         }
     }
 }
