@@ -1026,4 +1026,72 @@ public class FacturaControlador {
         
         return formatoMoneda.format(valorBase);
     }
+    
+    //Metodo que carga el contenido de la tabla del Administrador de facturas con las facturas que posee un cierre en especifico
+    public void cargarFacturasDeUnCierre(int idCierre){
+        
+        //Cargamos los datos de la tabla
+        try {
+            modelo = new DefaultTableModel();
+            table_listaFacturas.setModel(modelo);
+
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                        "select Codigo, Fecha_Factura,  Facturado_por, Valor_a_pagar from facturas where Id_cierre = "+idCierre);
+
+            ResultSet rs = pst.executeQuery();
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Fecha");
+            modelo.addColumn("Usuario");
+            modelo.addColumn("Valor ($)");
+
+            int[] anchosTabla = {10,10,5,10};
+
+            for(int x=0; x < cantidadColumnas; x++){
+                table_listaFacturas.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+            }
+
+            while (rs.next()) {
+
+                Object[] filas = new Object[cantidadColumnas];
+
+                for (int i = 0; i < cantidadColumnas; i++) {
+
+                        filas[i] = rs.getObject(i + 1); 
+                }
+                modelo.addRow(filas);
+            }
+            cn.close();                    
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al llenar tabla de facturas con las facturas de un cierre, ¡Contacte al administrador!");
+                log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de facturas del Administrador de facturascon las facturas de cierre. " + e);
+            }
+            
+        //Agregamos la funcion de ver informacion de factura al hacer click sobre el registro de la tabla
+        table_listaFacturas.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e){
+            int fila_point = table_listaFacturas.rowAtPoint(e.getPoint());
+            int columna_point = 0;
+
+            if(fila_point > -1){
+                codigoFactura_update = (String) modelo.getValueAt(fila_point, columna_point);
+                boolean estFctra = validarEstadoFactura(codigoFactura_update);
+                
+                if(estFctra == true){
+                    esFacturaAbierta = true;
+                    generarInformacionDeFacturaEnFrame();
+                    
+                }else{
+                    esFacturaAbierta = false;
+                    generarInformacionDeFacturaEnFrame();                    
+                }
+            }
+        }
+    });
+    }    
 }

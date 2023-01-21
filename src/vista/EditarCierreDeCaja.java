@@ -1751,7 +1751,8 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     }//GEN-LAST:event_btn_eliminarCierreCajaActionPerformed
 
     private void btn_verFacturasAsociadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_verFacturasAsociadasActionPerformed
-        // TODO add your handling code here:
+        GestionarFacturas.idCierre = ID;
+        new GestionarFacturas().setVisible(true);
     }//GEN-LAST:event_btn_verFacturasAsociadasActionPerformed
 
     /**

@@ -25,6 +25,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     
     public static boolean esFacturaAbierta = false;
     public static boolean hayFacturaVisualizandose = false;
+    public static int idCierre;
     
     FacturaControlador facturaControla = new FacturaControlador();
     
@@ -44,8 +45,11 @@ public class GestionarFacturas extends javax.swing.JFrame {
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
-        facturaControla.cargarTablaAdministradorDeFacturas();
-                    
+        if(idCierre != 0){
+            facturaControla.cargarFacturasDeUnCierre(idCierre);
+        }else{
+            facturaControla.cargarTablaAdministradorDeFacturas();
+        }             
     }
     
     @Override
