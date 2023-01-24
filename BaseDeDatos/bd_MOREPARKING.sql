@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 21-01-2023 a las 23:09:07
+-- Tiempo de generación: 24-01-2023 a las 01:10:58
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.4.26
 
@@ -105,7 +105,14 @@ CREATE TABLE IF NOT EXISTS `cierres` (
   `No_facturas` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Observaciones` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`Id_cierre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de cierres de caja';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de cierres de caja';
+
+--
+-- Volcado de datos para la tabla `cierres`
+--
+
+INSERT INTO `cierres` (`Id_cierre`, `Codigo`, `Codigo_arqueo`, `Fecha_cierre`, `Nombre_usuario`, `Base_caja`, `numerobilletes100mil`, `numerobilletes50mil`, `numerobilletes20mil`, `numerobilletes10mil`, `numerobilletes5mil`, `numerobilletes2mil`, `numerobilletesMil`, `numeromonedas500`, `numeromonedas200`, `numeromonedas100`, `numeromonedas50`, `montoen100mil`, `montoen50mil`, `montoen20mil`, `montoen10mil`, `montoen5mil`, `montoen2mil`, `montoenmil`, `montoen500`, `montoen200`, `montoen100`, `montoen50`, `Producido`, `Total_esperado`, `Dinero_en_caja`, `Diferencia`, `Dinero_a_consignar`, `No_facturas`, `Observaciones`) VALUES
+(1, '4444', '', '1970-01-01 00:00:00', '', '000000', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '00', '00', '00', '00', '00', '0', 'Nada / cierre default');
 
 -- --------------------------------------------------------
 
@@ -120,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `convenios` (
   `Monto` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Frecuencia` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_convenio`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de convenios de parqueadero';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de convenios de parqueadero';
 
 --
 -- Volcado de datos para la tabla `convenios`
@@ -161,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `facturas` (
   KEY `Id_tarifa` (`Id_tarifa`),
   KEY `Id_cierre` (`Id_cierre`),
   KEY `No_parqueadero` (`No_parqueadero`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de facturas';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de facturas';
 
 -- --------------------------------------------------------
 
@@ -182,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `parametros` (
 --
 
 INSERT INTO `parametros` (`Id_parametro`, `Nombre_parametro`, `Valor`) VALUES
-(1, 'BASE_CAJA', '350000');
+(1, 'BASE_CAJA', '400000');
 
 -- --------------------------------------------------------
 
@@ -221,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `tarifas` (
   `Monto_Tiempo_Ad` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Unidad_Tiempo_Ad` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`Id_tarifa`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de tarifas';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de tarifas';
 
 --
 -- Volcado de datos para la tabla `tarifas`
@@ -250,7 +257,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `Rol` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Activo` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de usuarios';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de usuarios';
 
 --
 -- Volcado de datos para la tabla `usuarios`
