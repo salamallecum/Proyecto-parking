@@ -44,7 +44,7 @@ facturas.`Placa` = $P{placa_vehiculo}]]>
 				<textElement textAlignment="Center">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sistema de Parking]]></text>
+				<text><![CDATA[MORE PARKING]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="101" y="35" width="69" height="13" uuid="a6932ed0-9ca4-44f6-a2b0-4fb9052a4f03"/>
