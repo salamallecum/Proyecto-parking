@@ -270,8 +270,18 @@ public class UsuarioControlador {
             view.setVisible(true);
             view.setIconImage(getIconImagePDFUser());
             view.setTitle("Reporte de usuarios registrados");
-            log.info("INFO - Reporte de vehiculos registrados generado satisfactoriamente.");            
-        
+            log.info("INFO - Reporte de vehiculos registrados generado satisfactoriamente."); 
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+            
+            //Agregamos un evento para cuando el visor del reporte se cierre
+            view.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+               MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false; 
+               PanelUsuarios.btn_generaPDF.setEnabled(true);
+            }
+            });
+                                
         }catch(JRException ex){
             JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Reporte de Usuarios, contacte al administrador!!");
             log.fatal("ERROR - Se ha producido un error al intentar generar reporte PDF de los usuarios del sistema: " + ex);

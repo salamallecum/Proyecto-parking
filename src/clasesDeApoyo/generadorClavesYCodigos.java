@@ -13,11 +13,10 @@ public class generadorClavesYCodigos {
         // Puede personalizar los personajes que desea agregar a
         // las cadenas al azar
         String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
-        String CHAR_SPECIAL = "#&/*?+-$!¿";
         String CHAR_UPPER = CHAR_LOWER.toUpperCase();
         String NUMBER = "0123456789";
 
-        String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER + CHAR_SPECIAL;
+        String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER;
         SecureRandom random = new SecureRandom();
 
         if (length < 1) throw new IllegalArgumentException();

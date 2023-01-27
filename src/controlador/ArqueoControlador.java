@@ -28,6 +28,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import vista.EditarArqueoDeCaja;
+import vista.EditarCierreDeCaja;
 import vista.GestionarArqueos;
 import static vista.GestionarArqueos.codigoArqueo_update;
 import static vista.GestionarArqueos.modelo;
@@ -128,6 +129,14 @@ public class ArqueoControlador {
                 view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 view.setTitle("Ticket de arqueo de caja");
                 view.setVisible(true);
+                           
+                //Agregamos un evento para cuando el visor del reporte se cierre
+                view.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent evt) {
+                    EditarCierreDeCaja.btn_verArqueoPrevio.setEnabled(true);
+                }
+                });
            
            }else{
                //Hace que se imprima directamente

@@ -33,7 +33,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
      */
     public GestionarParqueaderos() {       
         initComponents();
-        setSize(713, 510);
+        setSize(713, 520);
         setResizable(false);
         setTitle("Gestionar parqueaderos");
         setLocationRelativeTo(null);
@@ -258,6 +258,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     //Metodo boton generar pdf
     private void btn_generaPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFActionPerformed
         parqControla.generarPDFParqueaderosRegistrados();
+        btn_generaPDF.setEnabled(false);
     }//GEN-LAST:event_btn_generaPDFActionPerformed
 
     private void txt_nombreParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoActionPerformed
@@ -337,7 +338,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_eliminar;
-    private javax.swing.JButton btn_generaPDF;
+    public static javax.swing.JButton btn_generaPDF;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -405,7 +406,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarGestorParqueaderos(){
         
-        String botones[] = {"Cerrar", "Cancelar"};
+        String botones[] = {"Si", "No"};
         int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parqueaderos", 0, 3, null, botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){

@@ -25,7 +25,7 @@ public class OtrosParametros extends javax.swing.JFrame {
      */
     public OtrosParametros() {
         initComponents();
-        setSize(333, 180);
+        setSize(333, 190);
         setResizable(false);
         setTitle("Otros parámetros");
         setLocationRelativeTo(null);
@@ -303,19 +303,19 @@ public class OtrosParametros extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Titulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lbl_Titulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(txt_baseDeCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 9, Short.MAX_VALUE))
+                        .addComponent(txt_baseDeCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(109, 109, 109)
                 .addComponent(btn_actualizarParametros)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

@@ -28,7 +28,7 @@ FROM
 				<textElement textAlignment="Center">
 					<font size="24" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sistema de Parking]]></text>
+				<text><![CDATA[MORE PARKING]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="204" y="36" width="279" height="21" uuid="0b09a4ec-130a-4a93-950b-00925edf259d"/>

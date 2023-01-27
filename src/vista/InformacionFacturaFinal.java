@@ -378,7 +378,8 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
         String placa = lbl_placa.getText();
-        facturaControla.generarTicketSalida(placa, true);       
+        facturaControla.generarTicketSalida(placa, true);  
+        btn_imprimirFactura.setEnabled(false);
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
@@ -460,7 +461,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
-    private javax.swing.JButton btn_imprimirFactura;
+    public static javax.swing.JButton btn_imprimirFactura;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

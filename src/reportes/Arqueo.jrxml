@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.0.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Arqueo" pageWidth="226" pageHeight="338" columnWidth="198" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" uuid="80d0115b-9bba-419b-980f-5a199aaea682">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SistemaParkingConexion.jrdax"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -12,6 +11,9 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.zoom" value="2.4200000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="31"/>
 	<parameter name="codigo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT codigo,
@@ -42,7 +44,7 @@
 	total_caja,
 	diferencia
 FROM bd_sistemaparking.arqueos
-WHERE codigo = $P{codigo} ]]>
+WHERE codigo = $P{codigo}]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
@@ -189,7 +191,7 @@ WHERE codigo = $P{codigo} ]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sistema de parking]]></text>
+				<text><![CDATA[MORE PARKING]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="95" y="0" width="104" height="19" uuid="734d4a8e-3e7f-4e00-a51a-a00903922804"/>

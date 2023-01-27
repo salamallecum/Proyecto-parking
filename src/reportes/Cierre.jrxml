@@ -13,7 +13,7 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="205"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="codigo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -98,7 +98,7 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sistema de parking]]></text>
+				<text><![CDATA[MORE PARKING]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="95" y="0" width="104" height="19" uuid="734d4a8e-3e7f-4e00-a51a-a00903922804"/>

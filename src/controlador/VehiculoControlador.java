@@ -20,6 +20,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
+import vista.MenuAdministrador;
+import vista.PanelVehiculos;
 import static vista.PanelVehiculos.modelo;
 import static vista.PanelVehiculos.Table_listaVehiculos;
 
@@ -110,6 +112,17 @@ public class VehiculoControlador {
             view.setIconImage(getIconImagePDFVehiculos());
             view.setTitle("Reporte de vehiculos registrados");
             log.info("INFO - Reporte de vehiculos registrados generado satisfactoriamente.");
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+            
+            //Agregamos un evento para cuando el visor del reporte se cierre
+            view.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+               MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
+               PanelVehiculos.btn_generarPDF.setEnabled(true);
+            }
+            });
+            
 
         }catch(JRException ex){
             JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Reporte de Vehiculos, contacte al administrador!!");

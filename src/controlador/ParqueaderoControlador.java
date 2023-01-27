@@ -38,10 +38,13 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import static vista.EstadoParqueadero.Table_estado;
+import vista.GestionarParqueaderos;
 import static vista.GestionarParqueaderos.modeloParq;
 import static vista.GestionarParqueaderos.table_listaParqueaderos;
+import vista.MenuAdministrador;
 import static vista.PanelCaja.modeloCaja;
 import static vista.PanelCaja.table_operacionParqueadero;
+import vista.PanelVehiculos;
 
 
 
@@ -176,6 +179,16 @@ public class ParqueaderoControlador {
             view.setIconImage(obtenerIconoReportePDFParqueaderos());
             view.setTitle("Reporte de parqueaderos registrados");
             log.info("INFO - Reporte de parqueaderos registrados generado satisfactoriamente.");
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+            
+            //Agregamos un evento para cuando el visor del reporte se cierre
+            view.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+               MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false; 
+                GestionarParqueaderos.btn_generaPDF.setEnabled(true);
+            }
+            });
 
         }catch(JRException ex){
             //Logger.getLogger(PanelUsuarios.class.getName()).log(Level.SEVERE, null, ex);

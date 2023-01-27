@@ -211,16 +211,17 @@ public class PanelUsuarios extends javax.swing.JPanel {
                         .addGap(199, 199, 199))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_generaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(16, Short.MAX_VALUE))))
+                        .addContainerGap(43, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     //Metodo del boton Generar Reporte PDF
     private void btn_generaPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFActionPerformed
         usuControlador.generarReportePDFdeUsuariosRegistrados();
+        btn_generaPDF.setEnabled(false);
     }//GEN-LAST:event_btn_generaPDFActionPerformed
 
     //Metodo boton "Nuevo Usuario"
@@ -246,7 +247,7 @@ public class PanelUsuarios extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTable Table_listaUsuarios;
-    private javax.swing.JButton btn_generaPDF;
+    public static javax.swing.JButton btn_generaPDF;
     public static javax.swing.JButton btn_nuevoUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

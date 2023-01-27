@@ -357,6 +357,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarInfoUsuario(){
         PanelUsuarios.hayUsuarioAbierto = false;
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
         dispose();
     } 
 }

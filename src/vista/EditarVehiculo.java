@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 public class EditarVehiculo extends javax.swing.JFrame{
 
     String vehiculo_actualizado="";
+    String placaBack;
     String propietariaBack;
     int noParqueaderoBack;
     String claseBack;
@@ -101,7 +102,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
          
         //Colocamos la infromacion del objeto vehiculo en la interfaz
         ID = vehiculoConsultado.getId();
-        txt_placa.setText(vehiculoConsultado.getPlaca());
+        placaBack = vehiculoConsultado.getPlaca();
+        txt_placa.setText(placaBack);
         
         propietariaBack = vehiculoConsultado.getPropietario();
         txt_dueño.setText(propietariaBack);
@@ -695,6 +697,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             dispose();
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
             PanelVehiculos.hayVehiculoEnEdicion = false;
+            vehicontrolador.recargarVehiculo(ID, placaBack);
         }
     }
       

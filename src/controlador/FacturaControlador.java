@@ -101,6 +101,14 @@ public class FacturaControlador {
                 view.setTitle("Ticket de ingreso vehiculo " + placaVehiculo);
                 view.setVisible(true);
                 view.setIconImage(getIconImageTicket());
+                
+                //Agregamos un evento para cuando el visor del reporte se cierre
+                view.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent evt) {
+                    InformacionFacturaIngreso.btn_imprimirFactura.setEnabled(true);
+                }
+                });
            
            }else{
                //Hace que se imprima directamente
@@ -137,6 +145,14 @@ public class FacturaControlador {
                 view.setTitle("Ticket de salida vehiculo " + placa_tick);
                 view.setVisible(true);
                 view.setIconImage(getIconImageTicket());
+                
+                //Agregamos un evento para cuando el visor del reporte se cierre
+                view.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent evt) {
+                    InformacionFacturaFinal.btn_imprimirFactura.setEnabled(true);
+                }
+                });
            
            }else{
                //Hace que se imprima directamente

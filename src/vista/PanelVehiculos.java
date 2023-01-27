@@ -525,6 +525,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     //Metodo que genera el reporte pdf de los vehiculos
     private void btn_generarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarPDFActionPerformed
         vehicontrolador.generarReportePDFdeVehiculosRegistrados();
+        btn_generarPDF.setEnabled(false);
     }//GEN-LAST:event_btn_generarPDFActionPerformed
 
     
@@ -920,7 +921,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_estadoParqueadero;
-    private javax.swing.JButton btn_generarPDF;
+    public static javax.swing.JButton btn_generarPDF;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JCheckBox check_estaVehiculoEnParqueadero;
     private javax.swing.JComboBox<String> cmb_clase;

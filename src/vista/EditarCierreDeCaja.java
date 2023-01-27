@@ -951,6 +951,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     private void btn_verArqueoPrevioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_verArqueoPrevioActionPerformed
         String codigo_arqueo = cierreAEditar.getCodigoArqueo();
         arqueoControla.generarTicketArqueoDeCaja(codigo_arqueo, true);
+        btn_verArqueoPrevio.setEnabled(false);
     }//GEN-LAST:event_btn_verArqueoPrevioActionPerformed
 
     private void txt_numBilletes100milFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numBilletes100milFocusGained
@@ -1869,7 +1870,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizarCierreCaja;
     private javax.swing.JButton btn_eliminarCierreCaja;
-    private javax.swing.JButton btn_verArqueoPrevio;
+    public static javax.swing.JButton btn_verArqueoPrevio;
     private javax.swing.JButton btn_verFacturasAsociadas;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
