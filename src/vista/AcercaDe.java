@@ -65,7 +65,7 @@ public class AcercaDe extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Sistema de Parking");
+        jLabel1.setText("MORE PARKING");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagenPrincipal.png"))); // NOI18N
 
