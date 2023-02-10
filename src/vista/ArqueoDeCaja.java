@@ -1614,11 +1614,11 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         Thread ct1 = Thread.currentThread();
         while(ct == hilo1){
 
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosDisponibles());
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
             cmb_numParqueadero.setModel(modeloParq);
 
             try{
-                ct.sleep(120000);
+                ct.sleep(100000);
             }catch(InterruptedException e){
                 log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos disponibles en combobox panelCaja: " + e); 
             }

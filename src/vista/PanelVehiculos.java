@@ -52,8 +52,6 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     
     Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
     
-    boolean usoIngresarVehiculoConConvenio = false;
-    boolean usoIngresarVehiculoSinConvenio = false;
     boolean elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = true;
     
     //Declaramos los objetos  y se los aprovisionamos a su combobox
@@ -235,6 +233,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         txt_placa.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_placaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_placaFocusLost(evt);
             }
         });
         txt_placa.addActionListener(new java.awt.event.ActionListener() {
@@ -566,8 +567,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     //Metodo del boton ingresar
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
         
-        int clase_cmb, parqueadero_cmb, convenio_cmb, tarifa_cmb, validacion = 0, placaRepetida = 0;
+        int clase_cmb, parqueadero_cmb, convenio_cmb, tarifa_cmb, validacion = 0;
         String placa, dueño, clase_string = "";
+        Parqueadero parqSeleccionado = new Parqueadero();
                 
         placa = txt_placa.getText().trim();
         dueño = txt_propietario.getText().trim();
@@ -577,6 +579,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         tarifa_cmb = cmb_tarifa.getSelectedIndex();
         vehiculoEnParqueadero = check_estaVehiculoEnParqueadero.isSelected();
         String vehiculoEstaEnParqueo = "";
+        
+        //Capturamos el objeto parqueadero para validar le verdadero id en base de datos
+        parqSeleccionado = (Parqueadero)cmb_parqueaderos.getSelectedItem();
                        
         int minimoCaracteres = 6;
         
@@ -622,6 +627,12 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             validacion++;
         }
         
+        if(hayVehiculoEnEdicion == true){
+            JOptionPane.showMessageDialog(null, "No Permitido, cierre la ventana de edición de vehiculos para continuar.");
+            txt_placa.requestFocus();
+            validacion++;
+        }
+        
         if(vehiculoEnParqueadero){
             vehiculoEstaEnParqueo = "Si";
         }else{
@@ -636,7 +647,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             validacion++;
         }      
         
-        boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(parqueadero_cmb);
+        //Validamos el verdadero id del parqueadero en bd
+        int idRealDelParqueaderoSeleccionado = parqControla.consultarIdParqueadero(parqSeleccionado.getNombre());
+                
+        boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado);
         
         if(parqueaderoEstaOcupado == true){
             JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.");
@@ -651,42 +665,77 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             nuevoVehiculo.setPlaca(placa);
             nuevoVehiculo.setPropietario(dueño);
             nuevoVehiculo.setClase(clase_string);
-            nuevoVehiculo.setId_parqueadero(parqueadero_cmb);
+            nuevoVehiculo.setId_parqueadero(idRealDelParqueaderoSeleccionado);
             nuevoVehiculo.setId_convenio(convenio_cmb);
             nuevoVehiculo.setId_tarifa(tarifa_cmb); 
             nuevoVehiculo.setEstaEnParqueadero(vehiculoEstaEnParqueo);
             
-            vehicontrolador.crearVehiculo(nuevoVehiculo);
-            parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqueadero_cmb, vehiculoEstaEnParqueo);
+            //Evaluamos si el vehiculo tiene factura abierta
+            boolean vehiculoConFctraAbierta = vehicontrolador.consultarSiVehiculoTieneFacturasAbiertas(placa);
             
             //Generamos el ingreso del vehiculo en caja dependiendo de si esta o no en parqueadero
             if(vehiculoEstaEnParqueo.equals("Si")){
                 
-                nuevaFactura.setId(0);
-                nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
-                nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
-                nuevaFactura.setPlaca(placa);
-                nuevaFactura.setPropietario(dueño);
-                nuevaFactura.setClaseDeVehiculo(clase_string);
-                nuevaFactura.setId_parqueadero(parqueadero_cmb);
-                nuevaFactura.setFacturadoPor(user);
-                nuevaFactura.setEstadoDeFactura("Abierta");
-                nuevaFactura.setEstaContabilizada("No");
-                nuevaFactura.setId_convenio(convenio_cmb);
-                nuevaFactura.setId_tarifa(tarifa_cmb);
-                nuevaFactura.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
-                nuevaFactura.setId_cierre(1);
-                
-                //Creamos el objeto Factura
-                facturaControla.crearFactura(nuevaFactura);                
-            }        
+                if(vehiculoConFctraAbierta == true){
+                    int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);                    
+                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, clase_string, idRealDelParqueaderoSeleccionado, convenio_cmb, tarifa_cmb);
+                    
+                    //Validamos si el parqueadero utilizado por el vehiculo antes de registrarse en el sistema es igual al ingresado por caja
+                    int idDelParqDelVehiculoAntesDeSerRegistrado = vehicontrolador.consultarIdParqQueOcupaUnVehiculo(placa);
+                    
+                    if(idDelParqDelVehiculoAntesDeSerRegistrado != idRealDelParqueaderoSeleccionado){
+                       parqControla.liberarParqueadero(placa);
+                       parqControla.actualizarEstadoDeParqueadero(placa, dueño, idRealDelParqueaderoSeleccionado, vehiculoEstaEnParqueo);
+                    }
+                                        
+                }else{
+                    //Modelamos la factura de primer ingreso 
+                    nuevaFactura.setId(0);
+                    nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                    nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
+                    nuevaFactura.setPlaca(placa);
+                    nuevaFactura.setPropietario(dueño);
+                    nuevaFactura.setClaseDeVehiculo(clase_string);
+                    nuevaFactura.setId_parqueadero(idRealDelParqueaderoSeleccionado);
+                    nuevaFactura.setFacturadoPor(user);
+                    nuevaFactura.setEstadoDeFactura("Abierta");
+                    nuevaFactura.setEstaContabilizada("No");
+                    nuevaFactura.setId_convenio(convenio_cmb);
+                    nuevaFactura.setId_tarifa(tarifa_cmb);
+                    nuevaFactura.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
+                    nuevaFactura.setId_cierre(1);
+
+                    //Creamos el objeto Factura de primer ingreso
+                    facturaControla.crearFactura(nuevaFactura);
+                }
+                                
+            }else{
+                if(vehiculoConFctraAbierta == true){
+                    int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);
+                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, clase_string, idRealDelParqueaderoSeleccionado, convenio_cmb, tarifa_cmb);
+                    
+                    //Validamos si el parqueadero utilizado por el vehiculo antes de registrarse en el sistema es igual al ingresado por caja
+                    int idDelParqDelVehiculoAntesDeSerRegistrado = vehicontrolador.consultarIdParqQueOcupaUnVehiculo(placa);
+                    
+                    if(idDelParqDelVehiculoAntesDeSerRegistrado != idRealDelParqueaderoSeleccionado){
+                       parqControla.liberarParqueadero(placa);
+                       vehiculoEstaEnParqueo = "Si";
+                       parqControla.actualizarEstadoDeParqueadero(placa, dueño, idRealDelParqueaderoSeleccionado, vehiculoEstaEnParqueo);
+                    }
+                }else{
+                    parqControla.actualizarEstadoDeParqueadero(placa, dueño, idRealDelParqueaderoSeleccionado, vehiculoEstaEnParqueo);
+                }    
+            }    
+            
+            //Crael objeto vehiculo en el sistema
+            vehicontrolador.crearVehiculo(nuevoVehiculo);
             
             //Agregamos el objeto vehiculo a la tabla de vehiculos
             Object[] fila = new Object[6];
             fila[0] = placa;
             fila[1] = dueño;
             fila[2] = clase_string;
-            fila[3] = parqControla.consultarNombreDeParqueaderoMedianteID(parqueadero_cmb);
+            fila[3] = parqSeleccionado.getNombre();
             fila[4] = convenioControla.consultarNombreDeConvenioMedianteID(convenio_cmb);
             fila[5] = tarifaControla.consultarNombreDeTarifaMedianteID(tarifa_cmb);
             modelo.addRow(fila);
@@ -718,10 +767,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 
                 vehicontrolador.eliminarVehiculo(placa);
 
-                elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = facturaControla.consultarSiVehiculoTieneFacturaDePrimerIngreso(placa);
+                boolean elvehiculoTieneFacturaAbierta = vehicontrolador.consultarSiVehiculoTieneFacturasAbiertas(placa);
 
-                if(elvehiculoTieneFacturaPrimerIngresoPrevRegistrada == true){
-                    facturaControla.eliminarFacturaDePrimerIngresoDeUnVehiculo(placa);
+                if(elvehiculoTieneFacturaAbierta == true){
+                    facturaControla.eliminarFacturaAbierta(placa);
                 } 
 
                 JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado"); 
@@ -861,7 +910,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private void txt_placaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusGained
         btn_eliminar.setEnabled(false);
         btn_ingresar.setEnabled(true);
-        btn_editar.setEnabled(false);
+        btn_editar.setEnabled(false);             
     }//GEN-LAST:event_txt_placaFocusGained
 
     private void txt_propietarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_propietarioFocusGained
@@ -914,6 +963,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private void check_estaVehiculoEnParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_estaVehiculoEnParqueaderoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_check_estaVehiculoEnParqueaderoActionPerformed
+
+    private void txt_placaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusLost
+      
+    }//GEN-LAST:event_txt_placaFocusLost
 
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -974,7 +1027,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         
         while(ct == hilo1){
 
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderos());
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoResidente());
             cmb_parqueaderos.setModel(modeloParq);
 
             try{

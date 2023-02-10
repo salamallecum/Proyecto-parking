@@ -33,7 +33,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
      */
     public GestionarParqueaderos() {       
         initComponents();
-        setSize(713, 520);
+        setSize(713, 535);
         setResizable(false);
         setTitle("Gestionar parqueaderos");
         setLocationRelativeTo(null);
@@ -67,6 +67,8 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         table_listaParqueaderos = new javax.swing.JTable();
         btn_generaPDF = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cmb_tipoParq = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -102,6 +104,9 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_nombreParqueaderoFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_nombreParqueaderoFocusLost(evt);
+            }
         });
         txt_nombreParqueadero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,36 +121,36 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
 
         table_listaParqueaderos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Estado", "Placa", "Propietario", "Está en parqueo"
+                "Nombre", "Estado", "Tipo", "Placa", "Propietario", "Está en parqueo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -166,6 +171,11 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("Tipo:");
+
+        cmb_tipoParq.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "RESIDENTE", "VISITANTE" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -174,16 +184,20 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btn_generaPDF)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txt_nombreParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btn_ingresar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btn_eliminar))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txt_nombreParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btn_ingresar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btn_eliminar))
+                            .addComponent(cmb_tipoParq, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -196,11 +210,15 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txt_nombreParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_tipoParq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_generaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+                .addGap(20, 20, 20))
         );
 
         pack();
@@ -279,6 +297,10 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowActivated
 
+    private void txt_nombreParqueaderoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoFocusLost
+        btn_eliminar.setEnabled(true);
+    }//GEN-LAST:event_txt_nombreParqueaderoFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -340,7 +362,9 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     private javax.swing.JButton btn_eliminar;
     public static javax.swing.JButton btn_generaPDF;
     private javax.swing.JButton btn_ingresar;
+    private javax.swing.JComboBox<String> cmb_tipoParq;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable table_listaParqueaderos;
     private javax.swing.JTextField txt_nombreParqueadero;
@@ -351,12 +375,25 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
        
         int validacion = 0;
         String nombreParqueadero;
+        String tipo_parqstr = "";
         
         nombreParqueadero = txt_nombreParqueadero.getText().trim();
+        int tipo_parq = cmb_tipoParq.getSelectedIndex();
                        
         if(nombreParqueadero.equals("")){
             txt_nombreParqueadero.setBackground(Color.red);
             validacion++;
+        }
+        
+        if(tipo_parq == 0){
+            tipo_parqstr = "Seleccione";
+            cmb_tipoParq.setBackground(Color.red);
+            validacion++;
+        }        
+        else if(tipo_parq == 1){
+            tipo_parqstr = "RESIDENTE";
+        }else if(tipo_parq == 2){
+            tipo_parqstr = "VISITANTE";
         }
         
         //Valida si el usuario en cuestion ya fue creado con anterioridad
@@ -372,13 +409,15 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                 //Encapsulamos el objeto Parqueadero
                 nuevoParqueadero.setId(0);
                 nuevoParqueadero.setNombre(nombreParqueadero);
+                nuevoParqueadero.setTipoParqueadero(tipo_parqstr);
                 nuevoParqueadero.setEstado("Disponible");
                 
                 parqControla.crearParqueadero(nuevoParqueadero);
                 
-                Object[] fila = new Object[5];
+                Object[] fila = new Object[6];
                 fila[0] = nombreParqueadero;
                 fila[1] = "Disponible";
+                fila[2] = tipo_parqstr;
                 modeloParq.addRow(fila);
 
                 JOptionPane.showMessageDialog(null, "Parqueadero registrado satisfactoriamente.");
@@ -396,6 +435,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     //Metodo que limpia el formulario en caso de ingresar tablero principal
     public void Limpiar(){
         txt_nombreParqueadero.setText("");
+        cmb_tipoParq.setSelectedIndex(0);
     }
     
     //Metodo que normaliza el formulario en caso tablero compartido

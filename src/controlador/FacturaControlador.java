@@ -60,12 +60,12 @@ public class FacturaControlador {
     //Constructor
     public FacturaControlador() {}
     
-    //Metodo que permite actualizar las facturas que se encuentren abiertas con la información actualizada de un vehiculo    
-    public void actualizarFacturas(String placa, String dueño, String tipVehi, int IdParq, int IdConv, int IdTarif){
+    //Metodo que permite actualizar las facturas que se encuentre abierta con la información actualizada de un vehiculo    
+    public void actualizarFacturaAbierta(int id, String placa, String dueño, String tipVehi, int IdParq, int IdConv, int IdTarif){
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+placa+"', Propietario='"+dueño+"', Tipo_vehiculo='"+tipVehi+"', No_parqueadero='"+IdParq+"', Id_convenio='"+IdConv+"', Id_tarifa='"+IdTarif+"' where Placa ='"+placa+"' and Estado_fctra='Abierta'");
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+placa+"', Propietario='"+dueño+"', Tipo_vehiculo='"+tipVehi+"', No_parqueadero='"+IdParq+"', Id_convenio='"+IdConv+"', Id_tarifa='"+IdTarif+"' where Id_factura ='"+id+"' and Estado_fctra='Abierta'");
 
             pst9.executeUpdate();
             cn9.close();
@@ -90,7 +90,7 @@ public class FacturaControlador {
             JasperReport reporte = null;
             //String path = "src\\Reportes\\TicketIngreso.jasper";
 
-            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketIngreso.jasper"));
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/TicketIngreso.jasper"));
 
             JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, cn3);
             
@@ -111,7 +111,7 @@ public class FacturaControlador {
                 });
            
            }else{
-               //Hace que se imprima directamente
+                //Hace que se imprima directamente
                JasperPrintManager.printReport(jprint, false);
            }          
 
@@ -522,23 +522,23 @@ public class FacturaControlador {
         }
         
         return vehiculoTieneFacturaDePrimerIngreso;
-    }
+    }  
     
-    //Metodo para eliminar la factura de primer ingreso generada para un vehiculo que es registrado en el sistema
-    public void eliminarFacturaDePrimerIngresoDeUnVehiculo(String placa){
+    //Metodo para eliminar la factura abierta de un vehiculo
+    public void eliminarFacturaAbierta(String placa){
         
         PreparedStatement ps1 = null;
         try{
             Connection cn1 = Conexion.conectar();          
             
-            ps1 = cn1.prepareStatement("delete from facturas where Placa=? and Hora_ingreso='1990-01-01 23:59:00'");
+            ps1 = cn1.prepareStatement("delete from facturas where Placa=? and Estado_fctra='Abierta'");
             ps1.setString(1, placa);
             ps1.execute();
             cn1.close();
             
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar factura de primer ingreso!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar eliminar la factura de primer ingreso del vehiculo: "+ placa + e);
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar factura abierta!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar eliminar la factura abierta del vehiculo: "+ placa +" " + e);
         }   
     }
     
@@ -558,22 +558,6 @@ public class FacturaControlador {
             JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar facturas de un cierre!!, contacte al administrador.");
             log.fatal("ERROR - Se ha producido un error al intentar eliminar las facturas de  un cierre: " + e);
         }   
-    }
-    
-    //Metodo que permite actualizar las facturas que se encuentren abiertas con la información actualizada de un vehiculo    
-    public void actualizarFactura1erIngreso(Factura facturaEdit){
-        
-        try{
-            Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaEdit.getPlaca()+"', Propietario='"+facturaEdit.getPropietario()+"', Tipo_vehiculo='"+facturaEdit.getClaseDeVehiculo()+"', No_parqueadero='"+facturaEdit.getId_parqueadero()+"', Id_convenio='"+facturaEdit.getId_convenio()+"', Id_tarifa='"+facturaEdit.getId_tarifa()+"' where Placa ='"+facturaEdit.getPlaca()+"' and Estado_fctra='Abierta' and Hora_ingreso = null");
-
-            pst9.executeUpdate();
-            cn9.close();
-
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al actualizar facturas, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);  
-        } 
     }
     
     //Metodo que permite actualizar las facturas de salida  
@@ -1168,5 +1152,30 @@ public class FacturaControlador {
         //Actualizamos el cierre 
         cierreControla.actualizarMontosFinalesDeUnCierre(idCierreImplicado, producido, totalEsperado, dineroEnCaja, diferencia, dineroAConsignar, cantFacturas);
                                         
+    }
+    
+    //Metodo que permite consultar el id de una factura abierta
+    public int consultarIdDeUnaFacturaAbierta(String placa){
+       
+        int idFact = 0;
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            pst = cn.prepareStatement(
+                        "select Id_factura from facturas where Placa = '" + placa + "' and Estado_fctra = 'Abierta'");
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                idFact = rs.getInt("Id_factura");
+                cn.close();
+           
+            } else {
+                log.fatal("ERROR - No se ha encontrado el ID de la factura abierta para la placa indicada");
+            }
+        }catch (SQLException ex){ 
+            log.fatal("ERROR - Se ha producido un error al consultar el ID de una factura abierta en el sistema: " + ex); 
+        } 
+        return idFact;
     }
 }

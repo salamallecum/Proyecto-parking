@@ -343,32 +343,7 @@ public class VehiculoControlador {
             log.fatal("ERROR - Se ha producido un error al liberar un vehiculo: " + e);
         }
     }
-    
-    //Metodo que permite identificar si el vehiculo en cuestion esta involucrado en alguna factura
-    public boolean consultarSiVehiculoTieneFacturas(String placa){
-
-        boolean vehiculoTieneFacturas = false;
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select * from facturas where Placa = '" + placa + "'");
-
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                vehiculoTieneFacturas = true;
-            }else{
-                vehiculoTieneFacturas = false;
-            }
-            
-        } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "ERROR al revisar facturación de vehiculo, contacte al administrador.");
-           log.fatal("ERROR - Se ha producido un error al intentar revisar facturación de vehiculo: " + ex);
-        }
-        
-        return vehiculoTieneFacturas;
-    }
-    
+       
     //Metodo que permite identificar si el vehiculo en cuestion esta involucrado en alguna factura
     public boolean consultarSiVehiculoTieneFacturasAbiertas(String placa){
 
@@ -422,6 +397,31 @@ public class VehiculoControlador {
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error al recargar vehiculo, contacte al administrador.");
         } 
+    }
+    
+    //Metodo que consulta  el id del parqueadero que esta ocupando un vehiculo
+    public int consultarIdParqQueOcupaUnVehiculo(String placa){
+       
+        int idParq = 0;
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            pst = cn.prepareStatement(
+                        "select Id_parqueadero from parqueaderos where Placa = '" + placa + "'");
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                idParq= rs.getInt("Id_parqueadero");
+                cn.close();
+           
+            } else {
+                log.fatal("ERROR - No se ha encontrado el ID del parqueadero que ocupa un vehiculo");
+            }
+        }catch (SQLException ex){ 
+            log.fatal("ERROR - Se ha producido un error al consultar el ID del parqueadero que ocupa un vehiculo: " + ex); 
+        } 
+        return idParq;
     }
     
     

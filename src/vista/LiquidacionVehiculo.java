@@ -65,7 +65,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         lbl_totalAPagar.setVisible(false);
         lbl_dineroCambio.setVisible(false);
        
-        setSize(417, 492);
+        setSize(417, 500);
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Liquidación de vehiculo");

@@ -46,15 +46,15 @@ public class PanelCaja extends javax.swing.JPanel{
     public static boolean hayVehiculoLiquidandose = false;
     public static String parqueadero_update;
     
-    private final Logger log = Logger.getLogger(PanelCaja.class);
-    private URL url = PanelCaja.class.getResource("Log4j.properties");
-        
     FacturaControlador facturaControla = new FacturaControlador();    
     ConvenioControlador convControla = new ConvenioControlador();
     TarifaControlador tarifaControlador = new TarifaControlador();
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
     VehiculoControlador vehControla = new VehiculoControlador();
-    
+       
+    private final Logger log = Logger.getLogger(PanelCaja.class);
+    private URL url = PanelCaja.class.getResource("Log4j.properties");
+             
     public static DefaultTableModel modeloCaja;
     
     Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
@@ -275,45 +275,40 @@ public class PanelCaja extends javax.swing.JPanel{
                         .addContainerGap()
                         .addComponent(jSeparator1))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 945, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_Placa, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmb_clase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_nombrePropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(btn_ingresar)
+                                .addGap(54, 54, 54)
+                                .addComponent(btn_abrirCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(52, 52, 52)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_parqueadero)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel4))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txt_Placa, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cmb_clase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txt_nombrePropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(btn_ingresar)
-                                        .addGap(54, 54, 54)
-                                        .addComponent(btn_abrirCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lbl_parqueadero)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel5)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txt_convenio, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(39, 39, 39)
-                                                .addComponent(jLabel6)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txt_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(cmb_numParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addGap(0, 16, Short.MAX_VALUE)))
+                                        .addComponent(jLabel5)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txt_convenio, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(39, 39, 39)
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txt_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cmb_numParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 24, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(451, 451, 451)
@@ -321,6 +316,10 @@ public class PanelCaja extends javax.swing.JPanel{
                 .addGap(18, 18, 18)
                 .addComponent(btn_estadoParqueadero)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 945, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,19 +342,16 @@ public class PanelCaja extends javax.swing.JPanel{
                         .addComponent(jLabel4)
                         .addComponent(jLabel5)
                         .addComponent(txt_convenio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(cmb_numParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_parqueadero))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cmb_numParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_parqueadero))
+                .addGap(7, 7, 7)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_estadoParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_generarCierreDeCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -409,6 +405,8 @@ public class PanelCaja extends javax.swing.JPanel{
             cmb_clase.setEnabled(true);
             cmb_numParqueadero.setEnabled(true);
             txt_Placa.setBackground(Color.WHITE);
+            lbl_parqueadero.setVisible(false);
+            cmb_numParqueadero.setVisible(true);
                         
         }
     }//GEN-LAST:event_txt_PlacaKeyPressed
@@ -607,8 +605,8 @@ public class PanelCaja extends javax.swing.JPanel{
     
     //Metodo que ingresa vehiculos no registrados en el sistema al parqueadero
     public void ingresarVehiculoDesconocido(){
-        
-        boolean ventanaEmergCopiaIngresoVehiculoDesconocido = false; 
+                
+        boolean ventanaEmergCopiaIngresoVehiculoDesconocido = false;
         
         int clase_cmb,  validacion = 0;
         String placa, dueño = "";
@@ -691,23 +689,22 @@ public class PanelCaja extends javax.swing.JPanel{
                 //Ocupamos el parqueadero con la info del vehiculo facturado
                 parqControlador.actualizarEstadoDeParqueadero(placa, dueño, nuevaFactura.getId_parqueadero(), "Si");
 
-                Object[] fila = new Object[5];
+                Object[] fila = new Object[4];
                 fila[0] = facturaControla.fecha_de_factura();
                 fila[1] = placa;
                 fila[2] = dueño;
-                fila[3] = facturaControla.fecha_Ingresovehiculo();
-                fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(validoParqueadero);
+                fila[3] = parqControlador.consultarNombreDeParqueaderoMedianteID(validoParqueadero);
 
                 modeloCaja.addRow(fila);
-
+                                
                 txt_Placa.setBackground(Color.green);
                 txt_nombrePropietario.setBackground(Color.green);
                 cmb_clase.setBackground(Color.green);
                 cmb_numParqueadero.setBackground(Color.green);
                 txt_convenio.setBackground(Color.green);
                 txt_tarifa.setBackground(Color.green);
-            
-                facturaControla.generarTicketIngreso(placa, false);
+                
+                facturaControla.generarTicketIngreso(placa, Boolean.FALSE);
                 
                 ventanaEmergCopiaIngresoVehiculoDesconocido = true;
 
@@ -717,17 +714,16 @@ public class PanelCaja extends javax.swing.JPanel{
                    int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo ingresado satisfactoriamente.", "Ingreso de vehiculo", 0, 1, null, botones, this);
 
                    if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                       facturaControla.generarTicketIngreso(placa, false); 
+                       facturaControla.generarTicketIngreso(placa, Boolean.FALSE); 
                    }
 
                    if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
                        ventanaEmergCopiaIngresoVehiculoDesconocido = false;
+                       Limpiar();
+                       Normalizar();
                    }
                 }
-                            
-                Normalizar();
-                Limpiar();
-                
+                                            
             }else{
                 JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
                 Normalizar(); 
@@ -736,7 +732,7 @@ public class PanelCaja extends javax.swing.JPanel{
     }
     
     public void ingresarVehiculoRegistrado(){
-        
+                
         boolean ventanaEmergCopiaIngresoVehiculoRegistrado = false;
         
         int parqueaderos_cmb, clase_cmb,  validacion = 0;
@@ -808,12 +804,11 @@ public class PanelCaja extends javax.swing.JPanel{
                 //Ocupamos el parqueadero con la info del vehiculo facturado
                 parqControlador.actualizarEstadoDeParqueadero(placa, dueño, nuevaFactura.getId_parqueadero(), "Si");
 
-                Object[] fila = new Object[5];
+                Object[] fila = new Object[4];
                 fila[0] = facturaControla.fecha_de_factura();
                 fila[1] = placa;
                 fila[2] = dueño;
-                fila[3] = facturaControla.fecha_Ingresovehiculo();
-                fila[4] = parqControlador.consultarNombreDeParqueaderoMedianteID(idParq);
+                fila[3] = parqControlador.consultarNombreDeParqueaderoMedianteID(idParq);
 
                 modeloCaja.addRow(fila);
                 
@@ -838,6 +833,8 @@ public class PanelCaja extends javax.swing.JPanel{
 
                     if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
                         ventanaEmergCopiaIngresoVehiculoRegistrado = false;
+                        Normalizar();
+                        Limpiar();
                     }
                 }              
                                 
@@ -846,8 +843,6 @@ public class PanelCaja extends javax.swing.JPanel{
                 cmb_clase.setEnabled(true);
                 lbl_parqueadero.setText("");
                 lbl_parqueadero.setVisible(false);
-                Normalizar();
-                Limpiar();
                 
             }else {
                 JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
@@ -907,6 +902,7 @@ public class PanelCaja extends javax.swing.JPanel{
             JOptionPane.showMessageDialog(null,"No permitido.");
         }else{
             hayVehiculoLiquidandose = true;
+            parqueadero_update = txt_Placa.getText();
             new LiquidacionVehiculo().setVisible(true);
         }    
     } 

@@ -3,5 +3,5 @@
                                               
  Estado  |  No Parq  |  Placa   |  Parqueado? 
 ----------------------------------------------
- Disponible  |  PARQUEADERO 1A  |    |        
- Ocupado  |  PARQUEADERO 2A  |  BTA624  |  No 
+ Ocupado  |  PARQUEADERO 1A  |  BJG978  |  No 
+ Ocupado  |  PARQUEADERO 2A  |  BTA624  |  Si 

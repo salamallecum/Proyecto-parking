@@ -20,6 +20,7 @@ public class Parqueadero {
     private int id;
     private String nombre;
     private String estado;
+    private String tipoParqueadero;
     private String placa;
     private String propietario;
     private String estaEnParqueo;
@@ -74,7 +75,15 @@ public class Parqueadero {
     public void setEstaOcupado(String estaEnParqueo) {
         this.estaEnParqueo = estaEnParqueo;
     }
-    
+
+    public String getTipoParqueadero() {
+        return tipoParqueadero;
+    }
+
+    public void setTipoParqueadero(String tipoParqueadero) {
+        this.tipoParqueadero = tipoParqueadero;
+    }
+      
         
     //Metodos
     public String toString(){
@@ -82,7 +91,7 @@ public class Parqueadero {
     }
     
     //Agrega los valores de la tabla de parqueaderos al combobox 
-    public Vector<Parqueadero> mostrarParqueaderosDisponibles(){
+    public Vector<Parqueadero> mostrarParqueaderosTipoVisitanteDisponibles(){
         
         //Traemos todoslos parqueaderos
         PreparedStatement pst3 = null;
@@ -94,7 +103,7 @@ public class Parqueadero {
 
         
         try{
-           pst3 = cn3.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos where Estado = 'Disponible'"); 
+           pst3 = cn3.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos where Estado = 'Disponible' and TipoParq = 'VISITANTE'"); 
            rs3 = pst3.executeQuery();
            
            dat = new Parqueadero();
@@ -119,7 +128,7 @@ public class Parqueadero {
     }  
     
     //Agrega los valores de la tabla de parqueaderos al combobox de la ventana de registro y edición de vehiculos
-    public Vector<Parqueadero> mostrarParqueaderos(){
+    public Vector<Parqueadero> mostrarParqueaderosTipoResidente(){
         
         //Traemos todoslos parqueaderos
         PreparedStatement pst4 = null;
@@ -131,7 +140,7 @@ public class Parqueadero {
 
         
         try{
-           pst4 = cn4.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos"); 
+           pst4 = cn4.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE'"); 
            rs4 = pst4.executeQuery();
            
            dat = new Parqueadero();
@@ -149,9 +158,10 @@ public class Parqueadero {
            rs4.close();
 
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Error al cargar listado de parqueaderos al combobox de edición de vehiculos, ¡Contacte al administrador!");
-            log.fatal("ERROR - Se ha producido un error al al cargar listado de parqueaderos alcombobox de parqueaderos dela ventana de edición de vehiculos: " + ex.toString());
+            JOptionPane.showMessageDialog(null, "Error al cargar listado de parqueaderos, ¡Contacte al administrador!");
+            log.fatal("ERROR - Se ha producido un error al al cargar listado de parqueaderos: " + ex.toString());
         }
         return datosPrueba;
     }
+    
 }

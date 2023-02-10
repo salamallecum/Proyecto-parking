@@ -8,16 +8,16 @@
      parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
      parqueaderos.`Estado` AS parqueaderos_Estado,
      parqueaderos.`Placa` AS parqueaderos_Placa,
-     parqueaderos.`Propietario` AS parqueaderos_Propietario,
-     parqueaderos.`Esta_en_parqueadero` AS parqueaderos_Esta_en_parqueadero
+     parqueaderos.`Esta_en_parqueadero` AS parqueaderos_Esta_en_parqueadero,
+     parqueaderos.`TipoParq` AS parqueaderos_TipoParq
 FROM
      `parqueaderos` parqueaderos]]>
 	</queryString>
 	<field name="parqueaderos_Nombre_parqueadero" class="java.lang.String"/>
 	<field name="parqueaderos_Estado" class="java.lang.String"/>
 	<field name="parqueaderos_Placa" class="java.lang.String"/>
-	<field name="parqueaderos_Propietario" class="java.lang.String"/>
 	<field name="parqueaderos_Esta_en_parqueadero" class="java.lang.String"/>
+	<field name="parqueaderos_TipoParq" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -53,13 +53,13 @@ FROM
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="119" height="20" uuid="409975d6-feca-473e-9494-dd34a879f742"/>
+				<reportElement x="0" y="0" width="139" height="20" uuid="409975d6-feca-473e-9494-dd34a879f742"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font isBold="true" isItalic="true"/>
@@ -67,13 +67,13 @@ FROM
 				<text><![CDATA[Nombre Parq]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="0" width="100" height="20" uuid="4b1d8feb-8f13-464d-8971-d1ba164dab32"/>
+				<reportElement x="139" y="0" width="100" height="20" uuid="4b1d8feb-8f13-464d-8971-d1ba164dab32"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font isBold="true" isItalic="true"/>
@@ -81,13 +81,13 @@ FROM
 				<text><![CDATA[Estado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="219" y="0" width="111" height="20" uuid="5ba07696-8078-4579-ab2f-20eb912eb654"/>
+				<reportElement x="349" y="0" width="111" height="20" uuid="5ba07696-8078-4579-ab2f-20eb912eb654"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font isBold="true" isItalic="true"/>
@@ -95,96 +95,99 @@ FROM
 				<text><![CDATA[Placa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="330" y="0" width="111" height="20" uuid="15bf66d7-3351-47c9-94ac-5e60b14282e6"/>
+				<reportElement x="460" y="0" width="110" height="20" uuid="c2d25b8e-c6d6-45ae-97a1-8eeac2ed0414"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Propietario]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="441" y="0" width="129" height="20" uuid="c2d25b8e-c6d6-45ae-97a1-8eeac2ed0414"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Está en parqueadero?]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="239" y="0" width="110" height="20" uuid="e94051c4-7395-4b0f-8a85-a37b85355549"/>
+				<box>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Parq]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="119" height="20" uuid="1ce95b1a-e7ce-4af6-8c7d-20f784df004b"/>
+				<reportElement x="0" y="0" width="139" height="20" uuid="1ce95b1a-e7ce-4af6-8c7d-20f784df004b"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.5"/>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="119" y="0" width="100" height="20" uuid="03d636d6-0733-4a07-a4d1-9a1f2b1dcfc0"/>
+				<reportElement x="139" y="0" width="100" height="20" backcolor="#000000" uuid="03d636d6-0733-4a07-a4d1-9a1f2b1dcfc0"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.5"/>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Estado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="219" y="0" width="111" height="20" uuid="debdcdfe-5ff5-41fc-a496-d76b95ba43e2"/>
+				<reportElement x="349" y="0" width="111" height="20" uuid="debdcdfe-5ff5-41fc-a496-d76b95ba43e2"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.5"/>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Placa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="330" y="0" width="111" height="20" uuid="5a691cd4-c242-427d-abd0-aa6b72790c16"/>
+				<reportElement x="460" y="0" width="110" height="20" uuid="d88fb8fc-8b52-4a4e-9577-425e123faa3c"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{parqueaderos_Propietario}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="441" y="0" width="129" height="20" uuid="d88fb8fc-8b52-4a4e-9577-425e123faa3c"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="1.5"/>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Esta_en_parqueadero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="239" y="0" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="feeb3c0a-8466-42f4-baba-aa97e5cc53ef"/>
+				<box>
+					<pen lineWidth="1.5"/>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parqueaderos_TipoParq}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -124,7 +124,7 @@ public class ParqueaderoControlador {
                
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Nombre_parqueadero, Estado, Placa, Propietario, Esta_en_parqueadero from parqueaderos");
+                        "select Nombre_parqueadero, Estado, TipoParq, Placa, Propietario, Esta_en_parqueadero from parqueaderos");
             
             ResultSet rs = pst.executeQuery();
             
@@ -133,11 +133,12 @@ public class ParqueaderoControlador {
            
             modeloParq.addColumn("Nombre");
             modeloParq.addColumn("Estado");
+            modeloParq.addColumn("TipoParq");
             modeloParq.addColumn("Placa");
             modeloParq.addColumn("Propietario");
             modeloParq.addColumn("Está en parqueo?");
             
-            int[] anchosTabla = {10,10,5,20,5};
+            int[] anchosTabla = {10,10,5,5,20,5};
             
             for(int x=0; x < cantidadColumnas; x++){
                 table_listaParqueaderos.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
@@ -210,11 +211,12 @@ public class ParqueaderoControlador {
         try {
             Connection cn3 = Conexion.conectar();
             PreparedStatement pst3 = cn3.prepareStatement(
-                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, Estado) values (?,?,?)");
+                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, TipoParq, Estado) values (?,?,?,?)");
 
             pst3.setInt(1, nvoParq.getId());
             pst3.setString(2, nvoParq.getNombre());
-            pst3.setString(3, nvoParq.getEstado());
+            pst3.setString(3, nvoParq.getTipoParqueadero());
+            pst3.setString(4, nvoParq.getEstado());
 
 
             pst3.executeUpdate();
@@ -388,7 +390,7 @@ public class ParqueaderoControlador {
        
        int pie = 0;
        
-        for (int i = 0; i < filas; i++) { printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 4)); pie++; } if(filas >= pie){
+        for (int i = 0; i < filas; i++) { printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 3)); pie++; } if(filas >= pie){
         
         printer.printTextWrap(filas + 1, filas + 2, 8, 46, "Todos los derechos reservados ");
         
@@ -396,11 +398,11 @@ public class ParqueaderoControlador {
             printer.printTextWrap(filas + 1, 26, 8, 46, "Todos los derechos reservados ");
         }
         
-        printer.toFile("src\\clasesDeApoyo\\impresion.txt");
+        printer.toFile("bin\\impresion.txt");
 
       FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("src\\clasesDeApoyo\\impresion.txt");
+            inputStream = new FileInputStream("bin\\impresion.txt");
         } catch (FileNotFoundException ex) {
             log.fatal("ERROR - Se ha producido un error de localizacion del archivo impresion.txt: " + ex);
         }
@@ -437,12 +439,12 @@ public class ParqueaderoControlador {
         
         //Consulta de datos a la BD
         try {
-            modeloEstadoParq = new DefaultTableModel(0, 5);
+            modeloEstadoParq = new DefaultTableModel(0, 4);
             Table_estado.setModel(modeloEstadoParq);
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select  Estado, Nombre_parqueadero, Placa, Propietario, Esta_en_parqueadero from parqueaderos");
+                        "select  Estado, Nombre_parqueadero, Placa, Esta_en_parqueadero from parqueaderos");
 
             ResultSet rs = pst.executeQuery();
 
@@ -462,17 +464,14 @@ public class ParqueaderoControlador {
             
             TableColumn tableColumn2 = tableColumnModel.getColumn(2);
             tableColumn2.setHeaderValue( "Placa" );
-            
+                       
             TableColumn tableColumn3 = tableColumnModel.getColumn(3);
-            tableColumn3.setHeaderValue( "Propietario" );
-            
-            TableColumn tableColumn4 = tableColumnModel.getColumn(4);
-            tableColumn4.setHeaderValue( "Parqueado?" );
+            tableColumn3.setHeaderValue( "Parqueado?" );
                        
             tableHeader.repaint();
             
     
-            int[] anchosTabla = {15,5,20,60,10};
+            int[] anchosTabla = {5,15,20,10};
 
             for(int x=0; x < cantidadColumnas; x++){
                 Table_estado.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);

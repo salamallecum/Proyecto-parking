@@ -76,7 +76,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
      */
     public CierreDeCaja() {
         initComponents();
-        setSize(583, 515);
+        setSize(590, 530);
         setResizable(false);
         setTitle("Cierre de caja");
         setLocationRelativeTo(null);
