@@ -79,36 +79,36 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
 
         Table_estado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Estado", "N° Parq", "Placa", "Parqueado?"
+                "Estado", "Tipo", "N° Parq", "Placa", "Parqueado?"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -229,8 +229,10 @@ public class EstadoParqueadero extends javax.swing.JFrame implements Runnable {
                 parqControla.mostrarTablaDeEstadoDelParqueaderoEnTiempoReal();
 
                 try{
-                    Thread.sleep(10000);
-                }catch(InterruptedException e){}
+                    Thread.sleep(30000);
+                }catch(InterruptedException e){
+                    log.fatal("ERROR - Se ha producido un error al intentar ejecutar hilo de cargue de tabla de parqueadero: " + e);
+                }
             }
     }
     

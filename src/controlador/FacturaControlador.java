@@ -134,7 +134,7 @@ public class FacturaControlador {
            JasperReport reporte = null;
            //String path = "src\\Reportes\\TicketSalida.jasper";
 
-           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/TicketSalida.jasper"));
+           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/TicketSalida.jasper"));
 
            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
            
@@ -266,7 +266,7 @@ public class FacturaControlador {
         
         valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
         
-        diferenciaAdicional = " y " + minutosExtra_str + " minutos";
+        diferenciaAdicional = " horas y " + minutosExtra_str + " minutos";
         
         return diferenciaAdicional;
             
@@ -304,7 +304,7 @@ public class FacturaControlador {
         
         valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
         
-        diferenciaAdicional = " y " + horasExtra_str + " horas";
+        diferenciaAdicional = " días y " + horasExtra_str + " horas";
         
         return diferenciaAdicional;
     

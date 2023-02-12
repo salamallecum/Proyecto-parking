@@ -123,11 +123,15 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                 //Validamos si la tarifa se encuentra anulada, si es asi, no generará cobro alguno
                 String tarifaEstaAnulada = tarifaACobrar.getTarifaAnulada();
                 if(tarifaEstaAnulada.equals("Si")){
+                    lbl_diferencia.setText("N/A");
+                    lbl_diferencia.setVisible(true);
                     lbl_totalAPagar.setText("0");
+                    lbl_totalAPagar.setVisible(true);
                     txt_dineroRecibido.setEnabled(false);
                     txt_dineroRecibido.setText("0");
                     btn_calcular.setEnabled(false);
                     lbl_dineroCambio.setText("0");
+                    lbl_dineroCambio.setVisible(true);
                 
                 }else{
                     //Obtenemos los datos de la tarifa a cobrar
