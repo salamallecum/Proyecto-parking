@@ -86,6 +86,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
+        btn_eliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_eliminarActionPerformed(evt);
@@ -94,6 +95,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
 
         btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
         btn_ingresar.setText("Ingresar");
+        btn_ingresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_ingresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_ingresarActionPerformed(evt);
@@ -165,6 +167,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
 
         btn_generaPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
         btn_generaPDF.setText("Generar Informe PDF");
+        btn_generaPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_generaPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_generaPDFActionPerformed(evt);

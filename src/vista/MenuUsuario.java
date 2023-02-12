@@ -32,6 +32,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
     private URL url = MenuUsuario.class.getResource("Log4j.properties");
     
     UsuarioControlador usuControlador = new UsuarioControlador();
+    public static boolean menuUsuario = false;
     
     public MenuUsuario() {
         initComponents();
@@ -363,6 +364,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
         new AcercaDe().setVisible(true);
         jMenuItem_AcercaDe.setEnabled(false);
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        menuUsuario = true;
         log.info("INFO - Se consulta información acerca del desarrollo del sistema");
     }//GEN-LAST:event_jMenuItem_AcercaDeActionPerformed
 

@@ -210,7 +210,17 @@ public class AcercaDe extends javax.swing.JFrame {
 
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarAcercaDe(){         
-        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;           
+        
+        if(MenuAdministrador.menuAdministrador == true){
+            MenuAdministrador.jMenuItem_AcercaDe.setEnabled(true);
+            MenuAdministrador.menuAdministrador = false;
+        }
+        
+        if(MenuUsuario.menuUsuario == true){
+          MenuUsuario.jMenuItem_AcercaDe.setEnabled(true);
+          MenuUsuario.menuUsuario = false;
+        }
         dispose();
     }
 }

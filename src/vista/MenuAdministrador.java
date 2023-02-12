@@ -25,6 +25,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     
     //Variables que monitorean las ventanas del sistema que estanabiertas y cerradas  
     public static boolean hayAlgunaVentanaAbiertaDelSistema = false;
+    public static boolean menuAdministrador = false;
     
     /**
      * Creates new form MenuAdministrador
@@ -560,6 +561,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         new AcercaDe().setVisible(true);
         jMenuItem_AcercaDe.setEnabled(false);
         hayAlgunaVentanaAbiertaDelSistema = true;
+        menuAdministrador = true;
         log.info("INFO - Se consulta información acerca del desarrollo del sistema");
     }//GEN-LAST:event_jMenuItem_AcercaDeActionPerformed
 

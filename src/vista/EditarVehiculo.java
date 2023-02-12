@@ -91,6 +91,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         
         DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoResidente());
         cmb_noParqueadero.setModel(modeloParq);
+        parq.almacenarNombresParqueadero();
         
         DefaultComboBoxModel modeloConv = new DefaultComboBoxModel(conv.mostrarConveniosDisponibles());
         cmb_convenios.setModel(modeloConv);
@@ -113,8 +114,22 @@ public class EditarVehiculo extends javax.swing.JFrame{
         cmb_clase.setSelectedItem(claseBack);
 
         noParqueaderoBack = vehiculoConsultado.getId_parqueadero();
-        cmb_noParqueadero.setSelectedIndex(noParqueaderoBack);
-
+                
+        //Buscamos el nombre del parqueadero que le pertenece a ese id para pintarlo en el combobox
+        String nom_parqueadero = parqControla.consultarNombreDeParqueaderoMedianteID(noParqueaderoBack);    
+                                     
+        //Iteramos el combobox en busca del nomParqueadero que tiene el vehiculo previamente registrado para asi obtener su verdadero id
+        int idVerdaderoDelParq = 0;
+        int tamañoArregloParqueaderos = Parqueadero.listadoNombresParqueadero.size();
+        for(int i=0; i<tamañoArregloParqueaderos; i++){
+           String nomPark = Parqueadero.listadoNombresParqueadero.get(i);
+           if(nom_parqueadero.equals(nomPark)){
+               idVerdaderoDelParq = tamañoArregloParqueaderos - i;
+           }
+        }
+       
+        cmb_noParqueadero.setSelectedIndex(idVerdaderoDelParq);
+        
         convenioBack = vehiculoConsultado.getId_convenio();
         cmb_convenios.setSelectedIndex(convenioBack);
 
@@ -470,6 +485,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                         int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);
                         facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, tipoVehi_string, idRealDelParqueaderoSeleccionado, convenio_cmb, tarifa_cmb);
                         vehiculoEstaEnParqueo = "Si";
+                        JOptionPane.showMessageDialog(null, "El vehiculo si está en parqueadero, tiene un proceso de liquidación pendiente.");
                     }   
                 }
             }  
