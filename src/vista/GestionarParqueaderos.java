@@ -268,10 +268,10 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         }
         
         //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 30;
+        int numeroCaracteres = 15;
         if(txt_nombreParqueadero.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 15 caracteres");
             txt_nombreParqueadero.setText("");
         } 
     }//GEN-LAST:event_txt_nombreParqueaderoKeyTyped

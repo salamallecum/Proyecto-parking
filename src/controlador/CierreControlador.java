@@ -72,6 +72,7 @@ public class CierreControlador {
         PanelCaja.btn_generarCierreDeCaja.setEnabled(false);
         PanelCaja.btn_ingresar.setEnabled(false);
         PanelCaja.cmb_numParqueadero.setEnabled(false);
+        PanelCaja.table_operacionParqueadero.setEnabled(false);
 
     }
     
@@ -214,8 +215,7 @@ public class CierreControlador {
         //Convertimos las cantidades a enteros para el calculo correspondiente
         int baseInt = Integer.parseInt(base);
         int dineroCajaInt = Integer.parseInt(dineroCaja);
-        dineroCajaInt = Integer.parseInt(dineroEnCaja);
-       
+               
         int dineroAConsig = dineroCajaInt - baseInt;
         
         //Damos formato de moneda al dinero a consignar
