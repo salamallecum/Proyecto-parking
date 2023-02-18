@@ -79,7 +79,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         usuario = Login.usuario;
         filas = GestionarFacturas.Filas;
         
-        setSize(644,445);
+        setSize(644,455);
         setResizable(false);
         setTitle("Editar factura");
         setLocationRelativeTo(null);

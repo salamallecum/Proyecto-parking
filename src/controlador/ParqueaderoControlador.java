@@ -577,4 +577,26 @@ public class ParqueaderoControlador {
         } 
     }
     
+    //Metodo que consulta el tipo de parqueadero mediante su id
+    public String consultarTipoParqueaderoMedianteID(int idParq){
+        
+        String tipoParq = "";
+        
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select TipoParq from parqueaderos where Id_parqueadero = " + idParq);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                tipoParq = rs.getString("TipoParq");  
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar tipo parqueadero!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar el tipo de un parquadero utilizando su ID: " + e);
+        } 
+        return tipoParq;
+    }
+    
 }

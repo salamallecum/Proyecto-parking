@@ -522,7 +522,7 @@ public class FacturaControlador {
         }
         
         return vehiculoTieneFacturaDePrimerIngreso;
-    }  
+    }    
     
     //Metodo para eliminar la factura abierta de un vehiculo
     public void eliminarFacturaAbierta(String placa){
@@ -875,7 +875,7 @@ public class FacturaControlador {
         return facturaContabilizada;
     }
     
-    //Metodo que borra una factura
+    //Metodo que borra una factura teniendo en cuenta su codigo
     public void borrarFactura(String cod_factura){
 
         //Eliminamos la factura

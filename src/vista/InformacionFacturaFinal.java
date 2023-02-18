@@ -50,7 +50,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         tablaOperacionFacturas = GestionarFacturas.table_listaFacturas;
         modelo = GestionarFacturas.modelo;
         
-        setSize(417,495);
+        setSize(417,500);
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Información de factura");

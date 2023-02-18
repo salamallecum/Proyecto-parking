@@ -51,7 +51,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
         tablaOperacionFacturas = GestionarFacturas.table_listaFacturas;
         modelo = GestionarFacturas.modelo;
         
-        setSize(417,360);
+        setSize(417,370);
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Información de factura");
@@ -303,9 +303,18 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
         int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         
         if(decision == JOptionPane.YES_OPTION){    
+           
+            int idParq = facturaAbiertaConsultada.getId_parqueadero();
+            String tipoDeParqueadero = parqControla.consultarTipoParqueaderoMedianteID(idParq);
             
-            facturaControla.borrarFactura(factura_actualizada);
-          
+            if(tipoDeParqueadero.equals("RESIDENTE")){
+                facturaControla.borrarFactura(factura_actualizada);
+                parqControla.actualizarEstadoDeParqueadero(lbl_placa.getText(), lbl_propietario.getText(), idParq, "No");
+            }else{
+                facturaControla.borrarFactura(factura_actualizada);
+                parqControla.liberarParqueadero(lbl_placa.getText());
+            }
+            
             int filaSelec = tablaOperacionFacturas.getSelectedRow();
             modelo.removeRow(filaSelec);
             JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.");
