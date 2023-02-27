@@ -155,165 +155,16 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                         lbl_dineroCambio.setText("0");
                     }else if(convenioAAplicar.getNombre().equals("NINGUNO") && !tarifaACobrar.getNombreTarifa().equals("NINGUNA")){
 
-                    long long_montoTarifa = Long.parseLong(montoDeTarifa);
-                    long diferencia = 0;
-
-                    String descuento_str;
-                    long descuento;
-                    long diferenciaConDescuento = 0;
-                    String dif_str;
-                    String montoAPagar = "";
-                    String difConDescuento_str = "";
-                
-                    //Calculamos la diferencia el milisegundo que existe entre la fecha de ingreso y lafecha desalida del vehiculo
-                    diferenciaDeFechasEnMilisegundos = facturaControla.calcularDiferenciaDeFechasEnMilisegundos(calendar_fechaIngreso, fechaDeSalida);
-
-                    //Evaluamos la frecuencia de la tarifa a aplicar
-                    if(frecuenciaTarifa.equals("MINUTO")){
-
-                        diferencia = TimeUnit.MILLISECONDS.toMinutes(diferenciaDeFechasEnMilisegundos);
-
-                        if(aplicarDescuento.equals("Si")){
-                            descuento_str = tarifaACobrar.getTiempoDelDescuento();
-                            descuento = Long.parseLong(descuento_str);
-                            diferenciaConDescuento = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
-                            difConDescuento_str = Long.toString(diferenciaConDescuento) + " minutos";
-                            lbl_diferencia.setText(difConDescuento_str);   
-                            lbl_diferencia.setVisible(true);
-
-                            //Damos formato de moneda al monto a pagar
-                            montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                            montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                            lbl_totalAPagar.setText(montoAPagar);
-                            lbl_totalAPagar.setVisible(true);   
-
-                        }else{
-                            dif_str = Long.toString(diferencia);
-                            lbl_diferencia.setText(dif_str + " minutos");
-                            lbl_diferencia.setVisible(true);
-
-                           //Damos formato de moneda al monto a pagar
-                           montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                            montoAPagar = facturaControla.agregarFormatoMoneda(facturaControla.calcularPago(long_montoTarifa, diferencia));
-                            lbl_totalAPagar.setText(montoAPagar);
-                            lbl_totalAPagar.setVisible(true); 
-
-                        }            
-
-                        }else if(frecuenciaTarifa.equals("HORA")){
-
-                            diferencia = TimeUnit.MILLISECONDS.toHours(diferenciaDeFechasEnMilisegundos);
-
-                            if(aplicarDescuento.equals("Si")){
-                                descuento_str = tarifaACobrar.getTiempoDelDescuento();
-                                descuento = Long.parseLong(descuento_str);
-                                diferenciaConDescuento = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
-                                difConDescuento_str = Long.toString(diferenciaConDescuento) + " horas";
-                                lbl_diferencia.setText(difConDescuento_str);   
-                                lbl_diferencia.setVisible(true);
-
-                                if(aplicarCostoAdicional.equals("Si")){
-                                    difConDescuento_str = diferenciaConDescuento + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferenciaConDescuento, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                    lbl_diferencia.setText(difConDescuento_str);   
-                                    lbl_diferencia.setVisible(true);
-                                    //Mostramos el total a pagar en pantalla
-                                    lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
-                                    lbl_totalAPagar.setVisible(true);
-                                    
-                                }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
-                                }
-
-                            }else{
-                                dif_str = Long.toString(diferencia) + " horas";
-                                lbl_diferencia.setText(dif_str);
-                                lbl_diferencia.setVisible(true);
-
-                                if(aplicarCostoAdicional.equals("Si")){
-                                   dif_str = dif_str + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                   lbl_diferencia.setText(dif_str);
-                                   lbl_diferencia.setVisible(true);
-                                   //Mostramos el total a pagar en pantalla
-                                    lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
-                                    lbl_totalAPagar.setVisible(true);
-                                   
-                                }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
-                                }
-                            }
-
-                        }else if(frecuenciaTarifa.equals("DIA")){
-
-                            diferencia = TimeUnit.MILLISECONDS.toDays(diferenciaDeFechasEnMilisegundos);
-
-                            if(aplicarDescuento.equals("Si")){
-                                descuento_str = tarifaACobrar.getTiempoDelDescuento();
-                                descuento = Long.parseLong(descuento_str);
-                                diferenciaConDescuento = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
-                                difConDescuento_str = Long.toString(diferenciaConDescuento) + " días";
-                                lbl_diferencia.setText(difConDescuento_str);   
-                                lbl_diferencia.setVisible(true);
-
-                                if(aplicarCostoAdicional.equals("Si")){
-                                   difConDescuento_str = difConDescuento_str + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferenciaConDescuento, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                   lbl_diferencia.setText(difConDescuento_str);   
-                                   lbl_diferencia.setVisible(true);
-                                   //Mostramos el total a pagar en pantalla
-                                    lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
-                                    lbl_totalAPagar.setVisible(true);
-
-                                }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
-                                }
-                        
-                            }else{
-                                dif_str = Long.toString(diferencia) + " días";
-                                lbl_diferencia.setText(dif_str);
-                                lbl_diferencia.setVisible(true);
-
-                                if(aplicarCostoAdicional.equals("Si")){
-                                   dif_str = dif_str + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                   lbl_diferencia.setText(dif_str);
-                                   lbl_diferencia.setVisible(true);
-                                   //Mostramos el total a pagar en pantalla
-                                    lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
-                                    lbl_totalAPagar.setVisible(true);
-                                   
-                                }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
-                                }
-                            }
-                        }
-                
-                    }else if(!convenioAAplicar.getNombre().equals("NINGUNO") && !tarifaACobrar.getNombreTarifa().equals("NINGUNA")){
-                        //En este caso, asi tenga un convenio asignado, si la tarifa no es ninguna, predominará la tarifa    
-                            long long_montoTarifa = Long.parseLong(montoDeTarifa);
+                        long long_montoTarifa = Long.parseLong(montoDeTarifa);
                         long diferencia = 0;
-
+                        long diferenciaAntesDeDescuento = 0;
                         String descuento_str;
-                        long descuento;
-                        long diferenciaConDescuento = 0;
-                        String dif_str;
+                        long descuento = 0;
+                        String dif_str = "";
                         String montoAPagar = "";
-                        String difConDescuento_str = "";
-
-                        //Calculamos la diferencia el milisegundo que existe entre la fecha de ingreso y lafecha desalida del vehiculo
+                        
+                
+                        //Calculamos la diferencia el milisegundo que existe entre la fecha de ingreso y la fecha desalida del vehiculo
                         diferenciaDeFechasEnMilisegundos = facturaControla.calcularDiferenciaDeFechasEnMilisegundos(calendar_fechaIngreso, fechaDeSalida);
 
                         //Evaluamos la frecuencia de la tarifa a aplicar
@@ -324,13 +175,13 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             if(aplicarDescuento.equals("Si")){
                                 descuento_str = tarifaACobrar.getTiempoDelDescuento();
                                 descuento = Long.parseLong(descuento_str);
-                                diferenciaConDescuento = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
-                                difConDescuento_str = Long.toString(diferenciaConDescuento) + " minutos";
-                                lbl_diferencia.setText(difConDescuento_str);   
+                                diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
+                                dif_str = Long.toString(diferencia) + " minutos";
+                                lbl_diferencia.setText(dif_str);   
                                 lbl_diferencia.setVisible(true);
 
                                 //Damos formato de moneda al monto a pagar
-                                montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
+                                montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
                                 montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
                                 lbl_totalAPagar.setText(montoAPagar);
                                 lbl_totalAPagar.setVisible(true);   
@@ -351,102 +202,309 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                         }else if(frecuenciaTarifa.equals("HORA")){
 
                             diferencia = TimeUnit.MILLISECONDS.toHours(diferenciaDeFechasEnMilisegundos);
-
+                            long diferenciaEnMin = TimeUnit.MILLISECONDS.toMinutes(diferenciaDeFechasEnMilisegundos);
+                            
                             if(aplicarDescuento.equals("Si")){
                                 descuento_str = tarifaACobrar.getTiempoDelDescuento();
                                 descuento = Long.parseLong(descuento_str);
-                                diferenciaConDescuento = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
-                                difConDescuento_str = Long.toString(diferenciaConDescuento) + " horas";
-                                lbl_diferencia.setText(difConDescuento_str);   
-                                lbl_diferencia.setVisible(true);
-
-                                if(aplicarCostoAdicional.equals("Si")){
-                                    difConDescuento_str = diferenciaConDescuento + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferenciaConDescuento, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                    lbl_diferencia.setText(difConDescuento_str);   
-                                    lbl_diferencia.setVisible(true);
-                                    //Mostramos el total a pagar en pantalla
-                                    lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
-                                    lbl_totalAPagar.setVisible(true);
-
+                                diferenciaAntesDeDescuento = diferencia;
+                                                                
+                                //Solo calcula el descuento si la diferencia de fechas es superior a cero, de lo contrario no
+                                if(diferenciaAntesDeDescuento > 0){
+                                    
+                                    if(diferenciaAntesDeDescuento == descuento){
+                                        
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                       
+                                        //Convertimos la hora de descuento en minutos
+                                        long descuentoEnMin = facturaControla.convertirHorasAMinutos(descuento);
+                                        
+                                        //Hallamos la diferencia en minutos final entre la diferencia de fechas en minutos y el descuento en minutos y la convertimos a milisegundos
+                                        long diferenciaRealistaEnMinutos = diferenciaEnMin - descuentoEnMin;
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.convertirDeMinutosAMilisegundos(diferenciaEnMin, diferenciaDeFechasEnMilisegundos, diferenciaRealistaEnMinutos);
+                                        
+                                        dif_str = "0 horas";
+                                        lbl_diferencia.setText(dif_str);   
+                                        lbl_diferencia.setVisible(true);
+                                                                                
+                                    }else{
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.aplicarDescuentoADiferenciaEnMilisegundos(diferenciaDeFechasEnMilisegundos, diferenciaAntesDeDescuento, diferencia);
+                                        dif_str = Long.toString(diferencia) + " horas";
+                                        lbl_diferencia.setText(dif_str);   
+                                        lbl_diferencia.setVisible(true);
+                                    }      
                                 }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
-                                }
-
-                            }else{
+                                    dif_str = Long.toString(diferencia) + " horas";
+                                    lbl_diferencia.setText(dif_str);   
+                                    lbl_diferencia.setVisible(true);
+                                }        
+                                                            
+                            }else{                   
                                 dif_str = Long.toString(diferencia) + " horas";
                                 lbl_diferencia.setText(dif_str);
-                                lbl_diferencia.setVisible(true);
+                                lbl_diferencia.setVisible(true); 
+                            }            
 
-                                if(aplicarCostoAdicional.equals("Si")){
-                                   dif_str = dif_str + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                   lbl_diferencia.setText(dif_str);
-                                   lbl_diferencia.setVisible(true);
-                                   //Mostramos el total a pagar en pantalla
+                            if(aplicarCostoAdicional.equals("Si") && aplicarDescuento.equals("No")){
+                                                                
+                                dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
+                                lbl_diferencia.setText(dif_str);
+                                lbl_diferencia.setVisible(true);
+                                //Mostramos el total a pagar en pantalla
+                                lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
+                                lbl_totalAPagar.setVisible(true);
+                            
+                            }else if(aplicarCostoAdicional.equals("Si") && aplicarDescuento.equals("Si")){    
+                                
+                                if(diferenciaAntesDeDescuento >= descuento){
+                                    dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
+                                    lbl_diferencia.setText(dif_str);
+                                    lbl_diferencia.setVisible(true);                                    
                                     lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                     lbl_totalAPagar.setVisible(true);
-                                   
                                 }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
+                                    lbl_totalAPagar.setText("$0,00");
+                                    lbl_totalAPagar.setVisible(true);
                                 }
+                                
+                            }else{
+                                //Damos formato de moneda al monto a pagar
+                                montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
+                                lbl_totalAPagar.setText(montoAPagar);
+                                lbl_totalAPagar.setVisible(true); 
                             }
 
                         }else if(frecuenciaTarifa.equals("DIA")){
 
                             diferencia = TimeUnit.MILLISECONDS.toDays(diferenciaDeFechasEnMilisegundos);
+                            long diferenciaEnHrs = TimeUnit.MILLISECONDS.toDays(diferenciaDeFechasEnMilisegundos);
 
                             if(aplicarDescuento.equals("Si")){
                                 descuento_str = tarifaACobrar.getTiempoDelDescuento();
                                 descuento = Long.parseLong(descuento_str);
-                                diferenciaConDescuento = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
-                                difConDescuento_str = Long.toString(diferenciaConDescuento) + " días";
-                                lbl_diferencia.setText(difConDescuento_str);   
-                                lbl_diferencia.setVisible(true);
-
-                                if(aplicarCostoAdicional.equals("Si")){
-                                   difConDescuento_str = difConDescuento_str + facturaControla.calcularPagoTeniendoEnCuentaHorasUtilizadas(long_montoTarifa, diferenciaConDescuento, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                   lbl_diferencia.setText(difConDescuento_str);   
-                                   lbl_diferencia.setVisible(true);
-                                   //Mostramos el total a pagar en pantalla
-                                    lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
-                                    lbl_totalAPagar.setVisible(true);
-
+                                diferenciaAntesDeDescuento = diferencia;
+                                
+                                //Solo calcula el descuento si la diferencia de fechas es superior a cero, de lo contrario no
+                                if(diferenciaAntesDeDescuento > 0){
+                                    
+                                    if(diferenciaAntesDeDescuento == descuento){
+                                        
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                        
+                                        //Convertimos el dia de descuento en horas
+                                        long descuentoEnHrs = facturaControla.convertirDiasAHoras(descuento);
+                                        
+                                        //Hallamos la diferencia en horas final entre la diferencia de fechas en horas y el descuento en horas y lo convertimos a milisegundos
+                                        long diferenciaRealistaEnHoras = diferenciaEnHrs - descuentoEnHrs;
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.convertirDeHorasAMilisegundos(diferenciaEnHrs, diferenciaDeFechasEnMilisegundos, diferenciaRealistaEnHoras);
+                                        
+                                        dif_str = "0 días";
+                                        lbl_diferencia.setText(dif_str);
+                                        lbl_diferencia.setVisible(true);
+                                                                                
+                                    }else{
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.aplicarDescuentoADiferenciaEnMilisegundos(diferenciaDeFechasEnMilisegundos, diferenciaAntesDeDescuento, diferencia);
+                                        dif_str = Long.toString(diferencia) + " días";
+                                        lbl_diferencia.setText(dif_str);
+                                        lbl_diferencia.setVisible(true);
+                                    }
                                 }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferenciaConDescuento);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
+                                    dif_str = Long.toString(diferencia) + " días";
+                                    lbl_diferencia.setText(dif_str);   
+                                    lbl_diferencia.setVisible(true);
                                 }
-
-                            }else{
+                                
+                            }else{                   
                                 dif_str = Long.toString(diferencia) + " días";
                                 lbl_diferencia.setText(dif_str);
+                                lbl_diferencia.setVisible(true); 
+                            }
+                            
+                            //Damos formato de moneda al monto a pagar
+                            montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
+                            montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
+                            lbl_totalAPagar.setText(montoAPagar);
+                            lbl_totalAPagar.setVisible(true);
+                        }
+                                              
+                    }else if(!convenioAAplicar.getNombre().equals("NINGUNO") && !tarifaACobrar.getNombreTarifa().equals("NINGUNA")){
+                        //En este caso, asi tenga un convenio asignado, si la tarifa no es ninguna, predominará la tarifa    
+                        long long_montoTarifa = Long.parseLong(montoDeTarifa);
+                        long diferencia = 0;
+                        long diferenciaAntesDeDescuento = 0;
+                        String descuento_str;
+                        long descuento = 0;
+                        String dif_str = "";
+                        String montoAPagar = "";
+                        
+                
+                        //Calculamos la diferencia el milisegundo que existe entre la fecha de ingreso y la fecha desalida del vehiculo
+                        diferenciaDeFechasEnMilisegundos = facturaControla.calcularDiferenciaDeFechasEnMilisegundos(calendar_fechaIngreso, fechaDeSalida);
+
+                        //Evaluamos la frecuencia de la tarifa a aplicar
+                        if(frecuenciaTarifa.equals("MINUTO")){
+
+                            diferencia = TimeUnit.MILLISECONDS.toMinutes(diferenciaDeFechasEnMilisegundos);
+
+                            if(aplicarDescuento.equals("Si")){
+                                descuento_str = tarifaACobrar.getTiempoDelDescuento();
+                                descuento = Long.parseLong(descuento_str);
+                                diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento); 
+                                dif_str = Long.toString(diferencia) + " minutos";
+                                lbl_diferencia.setText(dif_str);   
                                 lbl_diferencia.setVisible(true);
 
-                                if(aplicarCostoAdicional.equals("Si")){
-                                   dif_str = dif_str + facturaControla.calcularPagoTeniendoEnCuentaHorasUtilizadas(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
-                                   lbl_diferencia.setText(dif_str);
-                                   lbl_diferencia.setVisible(true);
-                                   //Mostramos el total a pagar en pantalla
+                                //Damos formato de moneda al monto a pagar
+                                montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
+                                lbl_totalAPagar.setText(montoAPagar);
+                                lbl_totalAPagar.setVisible(true);   
+
+                            }else{
+                                dif_str = Long.toString(diferencia);
+                                lbl_diferencia.setText(dif_str + " minutos");
+                                lbl_diferencia.setVisible(true);
+
+                               //Damos formato de moneda al monto a pagar
+                               montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(facturaControla.calcularPago(long_montoTarifa, diferencia));
+                                lbl_totalAPagar.setText(montoAPagar);
+                                lbl_totalAPagar.setVisible(true); 
+
+                            }            
+
+                        }else if(frecuenciaTarifa.equals("HORA")){
+
+                            diferencia = TimeUnit.MILLISECONDS.toHours(diferenciaDeFechasEnMilisegundos);
+                            long diferenciaEnMin = TimeUnit.MILLISECONDS.toMinutes(diferenciaDeFechasEnMilisegundos);
+                            
+                            if(aplicarDescuento.equals("Si")){
+                                descuento_str = tarifaACobrar.getTiempoDelDescuento();
+                                descuento = Long.parseLong(descuento_str);
+                                diferenciaAntesDeDescuento = diferencia;
+                                                                
+                                //Solo calcula el descuento si la diferencia de fechas es superior a cero, de lo contrario no
+                                if(diferenciaAntesDeDescuento > 0){
+                                    
+                                    if(diferenciaAntesDeDescuento == descuento){
+                                        
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                       
+                                        //Convertimos la hora de descuento en minutos
+                                        long descuentoEnMin = facturaControla.convertirHorasAMinutos(descuento);
+                                        
+                                        //Hallamos la diferencia en minutos final entre la diferencia de fechas en minutos y el descuento en minutos y la convertimos a milisegundos
+                                        long diferenciaRealistaEnMinutos = diferenciaEnMin - descuentoEnMin;
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.convertirDeMinutosAMilisegundos(diferenciaEnMin, diferenciaDeFechasEnMilisegundos, diferenciaRealistaEnMinutos);
+                                        
+                                        dif_str = "0 horas";
+                                        lbl_diferencia.setText(dif_str);   
+                                        lbl_diferencia.setVisible(true);
+                                                                                
+                                    }else{
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.aplicarDescuentoADiferenciaEnMilisegundos(diferenciaDeFechasEnMilisegundos, diferenciaAntesDeDescuento, diferencia);
+                                        dif_str = Long.toString(diferencia) + " horas";
+                                        lbl_diferencia.setText(dif_str);   
+                                        lbl_diferencia.setVisible(true);
+                                    }      
+                                }else{
+                                    dif_str = Long.toString(diferencia) + " horas";
+                                    lbl_diferencia.setText(dif_str);   
+                                    lbl_diferencia.setVisible(true);
+                                }        
+                                                            
+                            }else{                   
+                                dif_str = Long.toString(diferencia) + " horas";
+                                lbl_diferencia.setText(dif_str);
+                                lbl_diferencia.setVisible(true); 
+                            }            
+
+                            if(aplicarCostoAdicional.equals("Si") && aplicarDescuento.equals("No")){
+                                                                
+                                dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
+                                lbl_diferencia.setText(dif_str);
+                                lbl_diferencia.setVisible(true);
+                                //Mostramos el total a pagar en pantalla
+                                lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
+                                lbl_totalAPagar.setVisible(true);
+                            
+                            }else if(aplicarCostoAdicional.equals("Si") && aplicarDescuento.equals("Si")){    
+                                
+                                if(diferenciaAntesDeDescuento >= descuento){
+                                    dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
+                                    lbl_diferencia.setText(dif_str);
+                                    lbl_diferencia.setVisible(true);                                    
                                     lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                     lbl_totalAPagar.setVisible(true);
-                                   
                                 }else{
-                                    //Damos formato de moneda al monto a pagar
-                                    montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
-                                    montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
-                                    lbl_totalAPagar.setText(montoAPagar);
-                                    lbl_totalAPagar.setVisible(true); 
+                                    lbl_totalAPagar.setText("$0,00");
+                                    lbl_totalAPagar.setVisible(true);
                                 }
+                                
+                            }else{
+                                //Damos formato de moneda al monto a pagar
+                                montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
+                                montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
+                                lbl_totalAPagar.setText(montoAPagar);
+                                lbl_totalAPagar.setVisible(true); 
                             }
+
+                        }else if(frecuenciaTarifa.equals("DIA")){
+
+                            diferencia = TimeUnit.MILLISECONDS.toDays(diferenciaDeFechasEnMilisegundos);
+                            long diferenciaEnHrs = TimeUnit.MILLISECONDS.toDays(diferenciaDeFechasEnMilisegundos);
+
+                            if(aplicarDescuento.equals("Si")){
+                                descuento_str = tarifaACobrar.getTiempoDelDescuento();
+                                descuento = Long.parseLong(descuento_str);
+                                diferenciaAntesDeDescuento = diferencia;
+                                
+                                //Solo calcula el descuento si la diferencia de fechas es superior a cero, de lo contrario no
+                                if(diferenciaAntesDeDescuento > 0){
+                                    
+                                    if(diferenciaAntesDeDescuento == descuento){
+                                        
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                        
+                                        //Convertimos el dia de descuento en horas
+                                        long descuentoEnHrs = facturaControla.convertirDiasAHoras(descuento);
+                                        
+                                        //Hallamos la diferencia en horas final entre la diferencia de fechas en horas y el descuento en horas y lo convertimos a milisegundos
+                                        long diferenciaRealistaEnHoras = diferenciaEnHrs - descuentoEnHrs;
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.convertirDeHorasAMilisegundos(diferenciaEnHrs, diferenciaDeFechasEnMilisegundos, diferenciaRealistaEnHoras);
+                                        
+                                        dif_str = "0 días";
+                                        lbl_diferencia.setText(dif_str);
+                                        lbl_diferencia.setVisible(true);
+                                                                                
+                                    }else{
+                                        diferencia = facturaControla.calcularDiferenciaConDescuento(diferencia, descuento);
+                                        diferenciaDeFechasEnMilisegundos = facturaControla.aplicarDescuentoADiferenciaEnMilisegundos(diferenciaDeFechasEnMilisegundos, diferenciaAntesDeDescuento, diferencia);
+                                        dif_str = Long.toString(diferencia) + " días";
+                                        lbl_diferencia.setText(dif_str);
+                                        lbl_diferencia.setVisible(true);
+                                    }
+                                }else{
+                                    dif_str = Long.toString(diferencia) + " días";
+                                    lbl_diferencia.setText(dif_str);   
+                                    lbl_diferencia.setVisible(true);
+                                }
+                                
+                            }else{                   
+                                dif_str = Long.toString(diferencia) + " días";
+                                lbl_diferencia.setText(dif_str);
+                                lbl_diferencia.setVisible(true); 
+                            }
+                            
+                            //Damos formato de moneda al monto a pagar
+                            montoAPagarParaCalculoPago = facturaControla.calcularPago(long_montoTarifa, diferencia);
+                            montoAPagar = facturaControla.agregarFormatoMoneda(montoAPagarParaCalculoPago);
+                            lbl_totalAPagar.setText(montoAPagar);
+                            lbl_totalAPagar.setVisible(true);
                         }
                     }
                 }

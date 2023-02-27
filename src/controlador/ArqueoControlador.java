@@ -343,7 +343,7 @@ public class ArqueoControlador {
         try{
             Connection cn1 = Conexion.conectar();          
             
-            ps1 = cn1.prepareStatement("delete from cierres where Codigo_arqueo=?");
+            ps1 = cn1.prepareStatement("delete from arqueos where codigo=?");
             ps1.setString(1, codigoArqueo);
             ps1.execute();
             cn1.close();

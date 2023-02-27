@@ -35,16 +35,14 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jPanel2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="check_aplicarDescuento" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="check_activarMinutosAdicionales" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="check_activarHorasAdicionales" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="txt_subtarifaParaAplicar" min="-2" pref="122" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jPanel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -69,7 +67,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btn_ingresar" min="-2" pref="113" max="-2" attributes="0"/>
                   <Component id="btn_editar" min="-2" max="-2" attributes="0"/>
@@ -105,7 +103,6 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="check_activarMinutosAdicionales" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="check_activarHorasAdicionales" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="check_aplicarDescuento" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txt_subtarifaParaAplicar" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -326,15 +323,6 @@
       </Properties>
       <Events>
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="check_activarMinutosAdicionalesItemStateChanged"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="check_activarHorasAdicionales">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Cobrar horas ($)"/>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="check_activarHorasAdicionalesItemStateChanged"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_ingresar">

@@ -237,18 +237,13 @@ public class UsuarioControlador {
             sePuedeCerrarSesion = false;
             JOptionPane.showMessageDialog(null, "La Caja se encuentra abierta, debe generar el cierre!!");
             log.warn("ADVERTENCIA - El usuario " + usu +" intentó cerrar la caja estando esta aún abierta");
-            
-        }else{
-           sePuedeCerrarSesion = true;        
-        }
-               
-        //Evaluamos si hay alguna ventana abierta del sistema para el rol administrador
-        if(MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema == true){
+                 
+        //Evaluamos si hay alguna ventana abierta del sistema para el rol administrador    
+        }else if(MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema == true){
             sePuedeCerrarSesion = false;
         }else{
             sePuedeCerrarSesion = true;
-        }
-                
+        }                
         return sePuedeCerrarSesion;
     }
 

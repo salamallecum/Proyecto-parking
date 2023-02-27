@@ -80,7 +80,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
      */
     public EditarCierreDeCaja() {
         initComponents();
-        setSize(583, 515);
+        setSize(595, 525);
         setResizable(false);
         setTitle("Cierre de caja");
         setLocationRelativeTo(null);

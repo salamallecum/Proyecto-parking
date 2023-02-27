@@ -88,7 +88,6 @@ public class GestionarTarifas extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         check_anularTarif = new javax.swing.JCheckBox();
         check_activarMinutosAdicionales = new javax.swing.JCheckBox();
-        check_activarHorasAdicionales = new javax.swing.JCheckBox();
         btn_ingresar = new javax.swing.JButton();
         btn_editar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
@@ -279,14 +278,6 @@ public class GestionarTarifas extends javax.swing.JFrame {
             }
         });
 
-        check_activarHorasAdicionales.setText("Cobrar horas ($)");
-        check_activarHorasAdicionales.setEnabled(false);
-        check_activarHorasAdicionales.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                check_activarHorasAdicionalesItemStateChanged(evt);
-            }
-        });
-
         btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
         btn_ingresar.setText("Ingresar");
         btn_ingresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -326,15 +317,13 @@ public class GestionarTarifas extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(check_aplicarDescuento)
                                 .addGap(18, 18, 18)
                                 .addComponent(check_activarMinutosAdicionales)
-                                .addGap(18, 18, 18)
-                                .addComponent(check_activarHorasAdicionales)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_subtarifaParaAplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_subtarifaParaAplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
@@ -351,7 +340,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
                                 .addComponent(txt_nombreTarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(check_anularTarif)))))
-                .addGap(30, 30, 30)
+                .addGap(67, 67, 67)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_editar)
@@ -381,7 +370,6 @@ public class GestionarTarifas extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(check_activarMinutosAdicionales)
-                            .addComponent(check_activarHorasAdicionales)
                             .addComponent(check_aplicarDescuento)
                             .addComponent(txt_subtarifaParaAplicar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -412,7 +400,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
         int numeroCaracteres = 30;
         if(txt_nombreTarifa.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Máximo 30 caracteres");
             txt_nombreTarifa.setText("");
         } 
     }//GEN-LAST:event_txt_nombreTarifaKeyTyped
@@ -490,40 +478,15 @@ public class GestionarTarifas extends javax.swing.JFrame {
                 
                 if(tarifaRescatada.getUnidadDelTiempoAdicional().equals("minutos")){
                     check_activarMinutosAdicionales.setSelected(true);
-                    txt_subtarifaParaAplicar.setText(tarifaRescatada.getMontoTiempoAdicional());
-                                        
-                }else if(tarifaRescatada.getUnidadDelTiempoAdicional().equals("horas")){
-                    check_activarHorasAdicionales.setSelected(true);
-                    txt_subtarifaParaAplicar.setText(tarifaRescatada.getMontoTiempoAdicional());
+                    txt_subtarifaParaAplicar.setText(tarifaRescatada.getMontoTiempoAdicional());                        
                 }
                
             }else{
                 check_activarMinutosAdicionales.setSelected(false);
-                check_activarHorasAdicionales.setSelected(false);
                 txt_subtarifaParaAplicar.setText("");
             }    
         }   
     }//GEN-LAST:event_table_listaTarifasMouseClicked
-
-    private void txt_subtarifaParaAplicarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_subtarifaParaAplicarKeyTyped
-        //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 20;
-        if(txt_subtarifaParaAplicar.getText().length()== numeroCaracteres){
-            evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 20 caracteres");
-            txt_subtarifaParaAplicar.setText("");
-        }
-        
-        //Evalua que se digiten numeros no letras
-        char validar = evt.getKeyChar();
-        
-        if(Character.isLetter(validar)){
-            getToolkit().beep();
-            evt.consume();
-            
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
-        }
-    }//GEN-LAST:event_txt_subtarifaParaAplicarKeyTyped
 
     private void check_aplicarDescuentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_check_aplicarDescuentoMouseClicked
         int opcSeleccionada = cmb_frecuencia.getSelectedIndex();
@@ -563,22 +526,13 @@ public class GestionarTarifas extends javax.swing.JFrame {
     private void check_activarMinutosAdicionalesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_check_activarMinutosAdicionalesItemStateChanged
         cobroMinutos = check_activarMinutosAdicionales.isSelected();
         if(cobroMinutos){
-            check_activarHorasAdicionales.setSelected(false);
             txt_subtarifaParaAplicar.setEditable(true);
+            txt_subtarifaParaAplicar.setText("");
         }else{
             txt_subtarifaParaAplicar.setEditable(false);
+            txt_subtarifaParaAplicar.setText("");
         }
     }//GEN-LAST:event_check_activarMinutosAdicionalesItemStateChanged
-
-    private void check_activarHorasAdicionalesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_check_activarHorasAdicionalesItemStateChanged
-        cobroHoras = check_activarHorasAdicionales.isSelected();
-        if(cobroHoras){
-            check_activarMinutosAdicionales.setSelected(false);
-            txt_subtarifaParaAplicar.setEditable(true);
-        }else{
-            txt_subtarifaParaAplicar.setEditable(false);   
-        }
-    }//GEN-LAST:event_check_activarHorasAdicionalesItemStateChanged
 
     private void txt_menosDiasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_menosDiasActionPerformed
         // TODO add your handling code here:
@@ -609,10 +563,10 @@ public class GestionarTarifas extends javax.swing.JFrame {
         }
         
         //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 20;
+        int numeroCaracteres = 10;
         if(txt_monto.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 20 caracteres");
+            JOptionPane.showMessageDialog(null,"Máximo 10 caracteres");
             txt_monto.setText("");
         }
         
@@ -625,9 +579,11 @@ public class GestionarTarifas extends javax.swing.JFrame {
         
         if(opcSeleccionada == 0){
             check_activarMinutosAdicionales.setEnabled(false);
-            check_activarHorasAdicionales.setEnabled(false); 
-            
+                        
             if(tieneDescuento){
+                txt_menosMinutos.setText("");
+                txt_menosHoras.setText("");
+                txt_menosDias.setText("");
                 txt_menosMinutos.setEditable(false);
                 txt_menosHoras.setEditable(false);
                 txt_menosDias.setEditable(false);
@@ -637,9 +593,11 @@ public class GestionarTarifas extends javax.swing.JFrame {
         }
         if(opcSeleccionada == 1){
             check_activarMinutosAdicionales.setEnabled(false);
-            check_activarHorasAdicionales.setEnabled(false); 
             
             if(tieneDescuento){
+                txt_menosMinutos.setText("");
+                txt_menosHoras.setText("");
+                txt_menosDias.setText("");
                 txt_menosMinutos.setEditable(true);
                 txt_menosHoras.setEditable(false);
                 txt_menosDias.setEditable(false);
@@ -649,9 +607,11 @@ public class GestionarTarifas extends javax.swing.JFrame {
                         
         }if(opcSeleccionada == 2){
             check_activarMinutosAdicionales.setEnabled(true);
-            check_activarHorasAdicionales.setEnabled(false);
             
             if(tieneDescuento){
+                txt_menosMinutos.setText("");
+                txt_menosHoras.setText("");
+                txt_menosDias.setText("");
                 txt_menosMinutos.setEditable(false);
                 txt_menosHoras.setEditable(true);
                 txt_menosDias.setEditable(false);
@@ -660,10 +620,12 @@ public class GestionarTarifas extends javax.swing.JFrame {
             }
         
         }if(opcSeleccionada == 3){
-            check_activarHorasAdicionales.setEnabled(true);
             check_activarMinutosAdicionales.setEnabled(false);      
             
             if(tieneDescuento){
+                txt_menosMinutos.setText("");
+                txt_menosHoras.setText("");
+                txt_menosDias.setText("");
                 txt_menosMinutos.setEditable(false);
                 txt_menosHoras.setEditable(false);
                 txt_menosDias.setEditable(true);
@@ -680,9 +642,11 @@ public class GestionarTarifas extends javax.swing.JFrame {
         
         if(opcSeleccionada == 1){
             check_activarMinutosAdicionales.setEnabled(false);
-            check_activarHorasAdicionales.setEnabled(false); 
-            
+                       
             if(tieneDescuento){
+                txt_menosMinutos.setText("");
+                txt_menosHoras.setText("");
+                txt_menosDias.setText("");
                 txt_menosMinutos.setEditable(true);
                 txt_menosHoras.setEditable(false);
                 txt_menosDias.setEditable(false);
@@ -692,9 +656,11 @@ public class GestionarTarifas extends javax.swing.JFrame {
                         
         }if(opcSeleccionada == 2){
             check_activarMinutosAdicionales.setEnabled(true);
-            check_activarHorasAdicionales.setEnabled(false);
-            
+                        
             if(tieneDescuento){
+                txt_menosMinutos.setText("");
+                txt_menosHoras.setText("");
+                txt_menosDias.setText("");
                 txt_menosMinutos.setEditable(false);
                 txt_menosHoras.setEditable(true);
                 txt_menosDias.setEditable(false);
@@ -703,10 +669,12 @@ public class GestionarTarifas extends javax.swing.JFrame {
             }
         
         }if(opcSeleccionada == 3){
-            check_activarHorasAdicionales.setEnabled(true);
             check_activarMinutosAdicionales.setEnabled(false);      
             
             if(tieneDescuento){
+                txt_menosMinutos.setText("");
+                txt_menosHoras.setText("");
+                txt_menosDias.setText("");
                 txt_menosMinutos.setEditable(false);
                 txt_menosHoras.setEditable(false);
                 txt_menosDias.setEditable(true);
@@ -734,6 +702,13 @@ public class GestionarTarifas extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 2;
+        if(txt_menosMinutos.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres");
+        }
     }//GEN-LAST:event_txt_menosMinutosKeyTyped
 
     private void txt_menosHorasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_menosHorasKeyTyped
@@ -745,6 +720,13 @@ public class GestionarTarifas extends javax.swing.JFrame {
             evt.consume();
             
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 2;
+        if(txt_menosHoras.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres");
         }
     }//GEN-LAST:event_txt_menosHorasKeyTyped
 
@@ -758,7 +740,34 @@ public class GestionarTarifas extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
+        
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 2;
+        if(txt_menosDias.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres");
+        }
     }//GEN-LAST:event_txt_menosDiasKeyTyped
+
+    private void txt_subtarifaParaAplicarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_subtarifaParaAplicarKeyTyped
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 10;
+        if(txt_subtarifaParaAplicar.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
+            txt_subtarifaParaAplicar.setText("");
+        }
+
+        //Evalua que se digiten numeros no letras
+        char validar = evt.getKeyChar();
+
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+        }
+    }//GEN-LAST:event_txt_subtarifaParaAplicarKeyTyped
 
     /**
      * @param args the command line arguments
@@ -868,7 +877,6 @@ public class GestionarTarifas extends javax.swing.JFrame {
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_ingresar;
-    private javax.swing.JCheckBox check_activarHorasAdicionales;
     private javax.swing.JCheckBox check_activarMinutosAdicionales;
     private javax.swing.JCheckBox check_anularTarif;
     private javax.swing.JCheckBox check_aplicarDescuento;
@@ -903,7 +911,6 @@ public class GestionarTarifas extends javax.swing.JFrame {
         String cobrarTiempoAdicional = "";
         tarifaAnulada = check_anularTarif.isSelected();
         cobroMinutos = check_activarMinutosAdicionales.isSelected();
-        cobroHoras = check_activarHorasAdicionales.isSelected();
         boolean laTarifaYaExiste = false;        
         String nombreTarifa = txt_nombreTarifa.getText();
         String monto = txt_monto.getText();
@@ -1059,7 +1066,6 @@ public class GestionarTarifas extends javax.swing.JFrame {
         String cobrarTiempoAdicional = "";
         tarifaAnulada = check_anularTarif.isSelected();
         cobroMinutos = check_activarMinutosAdicionales.isSelected();
-        cobroHoras = check_activarHorasAdicionales.isSelected();
         boolean laTarifaYaExiste = false;        
         String nombreTarifa = txt_nombreTarifa.getText();
         String monto = txt_monto.getText();
@@ -1079,7 +1085,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             txt_monto.setBackground(Color.red);
             validacion++;
         }
-        
+                
         if(frecuencia_cmb == 0){
             cmb_frecuencia.setBackground(Color.red);
             validacion++;
@@ -1245,7 +1251,6 @@ public class GestionarTarifas extends javax.swing.JFrame {
         cmb_frecuencia.setSelectedIndex(0);
         check_aplicarDescuento.setSelected(false);
         check_anularTarif.setSelected(false);
-        check_activarHorasAdicionales.setSelected(false);
         check_activarMinutosAdicionales.setSelected(false);
         txt_menosDias.setText("");
         txt_menosHoras.setText("");
@@ -1262,6 +1267,9 @@ public class GestionarTarifas extends javax.swing.JFrame {
    
     //Metodo que bloquea el panel de descuentos
     private void bloquearPanelDescuentos() {
+        txt_menosMinutos.setText("");
+        txt_menosHoras.setText("");
+        txt_menosDias.setText("");
         txt_menosMinutos.setEditable(false);
         txt_menosHoras.setEditable(false);
         txt_menosDias.setEditable(false);

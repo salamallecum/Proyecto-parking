@@ -33,7 +33,7 @@ public class GestionarCierres extends javax.swing.JFrame{
      */
     public GestionarCierres() {       
         initComponents();
-        setSize(691, 525);
+        setSize(700, 530);
         setResizable(false);
         setTitle("Gestionar cierres");
         setLocationRelativeTo(null);

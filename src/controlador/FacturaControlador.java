@@ -53,7 +53,7 @@ public class FacturaControlador {
     
     private final Logger log = Logger.getLogger(FacturaControlador.class);
     private URL url = FacturaControlador.class.getResource("Log4j.properties");
-    private String valorAPagarPorDiferenciaAdicional = "";
+    private String valorAPagarPorDiferenciaAdicional = "";   
     
     Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
            
@@ -221,10 +221,34 @@ public class FacturaControlador {
         return resultado;        
     }
     
+    //Metodo que permite aplicar un descuento a la diferencia de fechas en milisegundos
+    public long aplicarDescuentoADiferenciaEnMilisegundos(long difFechasEnMilisegundos, long diferenciaAntesDescuento, long diferenciaConDescuento){
+        
+        long resultado;
+        if(diferenciaAntesDescuento <= 0){
+            resultado = diferenciaConDescuento * difFechasEnMilisegundos;
+        }else{
+            resultado = (diferenciaConDescuento * difFechasEnMilisegundos) / diferenciaAntesDescuento;
+        }        
+        return resultado;
+    }
+        
     //Metodo que le aplica el descuento ala diferencia de tiempo obtenida y hace el calculo correspondiente 
     public long calcularDiferenciaConDescuento(long dif, long desc) {
-        long diferenciaFinal = dif - desc;
+        long diferenciaFinal = dif - desc;       
         return diferenciaFinal;
+    }   
+    
+    //Metodo que permite convertir de minutos a milisegundos mediante regalde 3 teniendo en cuenta un caso base
+    public long convertirDeMinutosAMilisegundos(long diferenciaBaseEnMinutos, long diferenciaBaseEnMilisegundos, long minutosACalcular){
+        long resultado = (diferenciaBaseEnMilisegundos * minutosACalcular) / diferenciaBaseEnMinutos;
+        return resultado;
+    }
+    
+    //Metodo que permite convertir de horas a milisegundos mediante regalde 3 teniendo en cuenta un caso base
+    public long convertirDeHorasAMilisegundos(long diferenciaBaseEnHoras, long diferenciaBaseEnMilisegundos, long horasACalcular){
+        long resultado = (diferenciaBaseEnMilisegundos * horasACalcular) / diferenciaBaseEnHoras;
+        return resultado;
     }   
     
     //Metodo que calcula el monto a pagar
@@ -242,73 +266,115 @@ public class FacturaControlador {
     
     //Metodo que calcula el monto a pagar con minutos adicionales (PARA EL COBRO POR HORAS)
     public String calcularPagoTeniendoEnCuentaMinutosUtilizados(long mon, long dif, Tarifa tarifaInvolucrada, long diferenciaEnMilisegundos){
-        
-        //Hacemos el calculo de pago teniendo en cuenta la diferencia en horas
-        long total_a_pagar_en_horas = mon * dif;
-        String diferenciaAdicional = "";
-               
-        //Leemos la tarifa del campo txt de minutos adicionales
+       
+        //Leemos la tarifa del campo de minutos adicionales
         String tarifaMinAdicionales_str = tarifaInvolucrada.getMontoTiempoAdicional();
+        String tarifaHoras_str = tarifaInvolucrada.getMontoTarifa();
+        long tarifaHoras = Long.parseLong(tarifaHoras_str);
         long tarifaMinAdicionales = Long.parseLong(tarifaMinAdicionales_str);
-                
+        long tiempoADescontar;
+        long totalAPagarMinutosExtra = 0;
+        long totalAPagarHorasAdic = 0;
+        long totalAPagarNeto = 0;
+        long minAdicReales = 0;
+        String totalAPagarNeto_str;
+        String minutosExtra_str;
+        String diferenciaAdicional = "";
+        long minutosExtra;
+                    
         //Obtenemos la diferencia en minutos total
-        long diferenciaTotalEnMinutos = TimeUnit.MILLISECONDS.toMinutes(diferenciaEnMilisegundos);
-        long tiempoADescontar = 60 * dif;
-        long minutosExtra = diferenciaTotalEnMinutos - tiempoADescontar;
-        long totalAPagarMinutosExtra = minutosExtra * tarifaMinAdicionales;
+        long diferenciaTotalEnMinutos = TimeUnit.MILLISECONDS.toMinutes(diferenciaEnMilisegundos);        
         
-        //Calculamos el total a pagar neto (en horas + minutos adicionales)
-        long totalAPagarNeto = total_a_pagar_en_horas + totalAPagarMinutosExtra;
+        if(dif <= 0){
+                                      
+            minutosExtra = diferenciaTotalEnMinutos;
+            totalAPagarMinutosExtra = minutosExtra * tarifaMinAdicionales;
+
+            //Asignamos el total a pagar neto (solo los minutos adicionales)
+            totalAPagarNeto = totalAPagarMinutosExtra;
+
+            //Convertimos los datos para mostrar en pantalla
+            minutosExtra_str = Long.toString(diferenciaTotalEnMinutos);
+            totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
+
+            valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
+            diferenciaAdicional = " horas y " + minutosExtra_str + " minutos";
+
+            return diferenciaAdicional;
         
-        //Convertimos los datos para mostrar en pantalla
-        String minutosExtra_str = Long.toString(minutosExtra);
-        String totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
-        
-        valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
-        
-        diferenciaAdicional = " horas y " + minutosExtra_str + " minutos";
-        
-        return diferenciaAdicional;
+        }else{         
+          
+            //Hacemos el calculo de pago teniendo en cuenta la diferencia en horas inicial
+            long total_a_pagar_en_horas = mon * dif;           
+
+            tiempoADescontar = 60 * dif;
+            minutosExtra = diferenciaTotalEnMinutos - tiempoADescontar;
             
+            //Verificamos si el tiempo extra es superior a 60 minutos, si es asi, lo toma como horas           
+            if(minutosExtra >= 60){
+                double horasAdicionales = Math.floor(minutosExtra / 60);
+                               
+                //Hacemos el calculo del total a pagar de las horas adic teniendo en cuenta la tarifa                
+                totalAPagarHorasAdic = tarifaHoras * (long)horasAdicionales;
+                
+                //Sumamos las horas adicionales a la diferencia inicial                
+                dif = dif + (long)horasAdicionales;
+                
+                //Sumamos el total a pagar de las horas adic al total a pagar de horas inicial 
+                total_a_pagar_en_horas = total_a_pagar_en_horas + totalAPagarHorasAdic;
+                
+                //Calculamos los verdaderos minutos extras, para ello restamos los minutos de las horas adicionales obtenidas al total de minutos extra
+                minAdicReales = minutosExtra - ((long)horasAdicionales * 60);
+                
+                //Calculamos la tarifa para los verdaderos minutos extra
+                totalAPagarMinutosExtra = minAdicReales * tarifaMinAdicionales;
+                
+                //Calculamos el total a pagar neto (en horas + minutos adicionales)
+                totalAPagarNeto = total_a_pagar_en_horas + totalAPagarMinutosExtra;
+                
+                //Convertimos los datos para mostrar en pantalla
+                minutosExtra_str = Long.toString(minAdicReales);
+                totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
+
+                valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
+                diferenciaAdicional = " horas y " + minutosExtra_str + " minutos";
+                return diferenciaAdicional; 
+                
+            }else{
+                totalAPagarMinutosExtra = minutosExtra * tarifaMinAdicionales;
+               
+                //Calculamos el total a pagar neto (en horas + minutos adicionales)
+                totalAPagarNeto = total_a_pagar_en_horas + totalAPagarMinutosExtra;
+
+                //Convertimos los datos para mostrar en pantalla
+                minutosExtra_str = Long.toString(minutosExtra);
+                totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
+
+                valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
+                diferenciaAdicional = " horas y " + minutosExtra_str + " minutos";
+                return diferenciaAdicional; 
+            }
+        }     
     }
     
     //Metodo que retorna el valor a pagar para los metodos con diferencia adicional
     public String obtenervalorAPagarPorDiferenciaAdicional(){
         return valorAPagarPorDiferenciaAdicional;
-    } 
-    
-    
-    //Metodo que calcula el monto a pagar con minutos adicionales (PARA EL COBRO POR DIAS)
-    public String calcularPagoTeniendoEnCuentaHorasUtilizadas(long mon, long dif, Tarifa tarifaInvolucrada, long diferenciaEnMilisegundos) {
-        
-        //Hacemos el calculo de pago teniendo en cuenta la diferencia en dias
-        long total_a_pagar_en_dias = mon * dif;
-        String diferenciaAdicional = "";
-               
-        //Leemos la tarifa del campo txt de horas adicionales
-        String tarifaHorasAdicionales_str = tarifaInvolucrada.getMontoTiempoAdicional();;
-        long tarifaHorasAdicionales = Long.parseLong(tarifaHorasAdicionales_str);
-                
-        //Obtenemos la diferencia en horas total
-        long diferenciaTotalEnHoras = TimeUnit.MILLISECONDS.toHours(diferenciaEnMilisegundos);
-        long tiempoADescontar = 24 * dif;
-        long horasExtra = diferenciaTotalEnHoras - tiempoADescontar;
-        long totalAPagarHorasExtra = horasExtra * tarifaHorasAdicionales;
-        
-        //Calculamos el total a pagar neto (en dias + horas adicionales)
-        long totalAPagarNeto = total_a_pagar_en_dias + totalAPagarHorasExtra;
-        
-        //Convertimos los datos para mostrar en pantalla
-        String horasExtra_str = Long.toString(horasExtra);
-        String totalAPagarNeto_str = agregarFormatoMoneda(Long.toString(totalAPagarNeto));
-        
-        valorAPagarPorDiferenciaAdicional = totalAPagarNeto_str;
-        
-        diferenciaAdicional = " días y " + horasExtra_str + " horas";
-        
-        return diferenciaAdicional;
-    
     }   
+    
+    //Metodo que se encarga deconvertir un numero de horas a minutos
+    public long convertirHorasAMinutos(long numeroDeHoras){
+        long resultado = numeroDeHoras * 60;
+        return resultado;
+    }
+    
+    //Metodo que se encarga de convertir un numero de dias a horas
+    public long convertirDiasAHoras(long numeroDeDias){
+        long resultado = numeroDeDias * 24;
+        return resultado;
+    }
+    
+    
     
     //Metodo que crea facturas que se cobran con normalidad
     public void crearFactura (Factura nvaFactura){
