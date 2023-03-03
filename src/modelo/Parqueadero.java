@@ -1,7 +1,6 @@
 package modelo;
 
 import clasesDeApoyo.Conexion;
-import java.sql.ResultSetMetaData;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -214,8 +213,7 @@ public class Parqueadero {
             
         } catch (SQLException e) {
             log.fatal("ERROR - Se ha producido un error al contar la cantidad de parqueaderos registrados en el sistema: " + e);
-        } 
-        
+        }    
         return numParq;
     }
 }

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
@@ -30,6 +31,8 @@ public class Tarifa {
     
     private final Logger log = Logger.getLogger(Tarifa.class);
     private URL url = Tarifa.class.getResource("Log4j.properties");
+    
+     public static ArrayList<String> listadoNombresTarifa = new ArrayList<String>();
 
     public Tarifa(int id, String nombreTarifa, String montoTarifa, String frecuenciaTarifa, String tarifaAnulada, String tarifaTieneDescuento, String tiempoDelDescuento, String unidadDelDescuento, String tarifaCobraTiempoAdicional, String montoTiempoAdicional, String unidadDelTiempoAdicional) {
         this.id = id;
@@ -178,5 +181,57 @@ public class Tarifa {
             log.fatal("ERROR - Se ha producido un error al al cargar listado de tarifas disponibles: " + ex.toString());
         }
         return datos;
+    }
+    
+    //Metodo que se encarga de almacenar los nombres de tarifa en un arraylist 
+    public void almacenarNombresTarifa(){
+        
+        //Traemos todos los parqueaderos
+        PreparedStatement pst4 = null;
+        ResultSet rs4 = null;       
+        Connection cn4 = Conexion.conectar();
+        
+        //Pedimos al sistema que cuente cuantas tarifas tiene registrados
+        int numTarifasRegistradas = contarTarifasRegistradas();
+        
+        try{
+           pst4 = cn4.prepareStatement("select Nombre_tarifa from tarifas"); 
+           rs4 = pst4.executeQuery();
+                          
+           while(rs4.next()){               
+               for (int i = 0; i < numTarifasRegistradas; i++) {
+                   if(!listadoNombresTarifa.contains(rs4.getString("Nombre_tarifa"))){
+                       listadoNombresTarifa.add(i, rs4.getString("Nombre_tarifa"));
+                   }
+               }
+           }            
+           rs4.close();
+          
+        }catch(SQLException ex){
+            log.fatal("ERROR - Se ha producido un error al armar Arraylist de nombres de parqueaderos: " + ex.toString());
+        }    
+    } 
+    
+    //Metodo que se encarga de contar cuantas tarifas se encuentran registrados en el sistema
+    private int contarTarifasRegistradas(){
+        
+        int numTarif = 0;
+        
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select COUNT(*) from tarifas");
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                numTarif = rs.getInt("COUNT(*)");
+                cn.close();
+                return numTarif;
+            }
+            
+        } catch (SQLException e) {
+            log.fatal("ERROR - Se ha producido un error al contar la cantidad de tarifas registradas en el sistema: " + e);
+        } 
+        return numTarif;
     }
 }

@@ -593,6 +593,8 @@ public class GestionarTarifas extends javax.swing.JFrame {
         }
         if(opcSeleccionada == 1){
             check_activarMinutosAdicionales.setEnabled(false);
+            check_activarMinutosAdicionales.setSelected(false);
+            txt_subtarifaParaAplicar.setText("");
             
             if(tieneDescuento){
                 txt_menosMinutos.setText("");
@@ -620,7 +622,9 @@ public class GestionarTarifas extends javax.swing.JFrame {
             }
         
         }if(opcSeleccionada == 3){
-            check_activarMinutosAdicionales.setEnabled(false);      
+            check_activarMinutosAdicionales.setEnabled(false);
+            check_activarMinutosAdicionales.setSelected(false);
+            txt_subtarifaParaAplicar.setText("");
             
             if(tieneDescuento){
                 txt_menosMinutos.setText("");

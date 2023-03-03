@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
@@ -24,6 +25,8 @@ public class Convenio{
     
     private final Logger log = Logger.getLogger(Convenio.class);
     private URL url = Convenio.class.getResource("Log4j.properties");
+    
+     public static ArrayList<String> listadoNombresConvenio = new ArrayList<String>();
 
     //Constructor
     public Convenio(int id, String nombre, String monto, String frecuencia) {
@@ -111,5 +114,57 @@ public class Convenio{
             log.fatal("ERROR - Se ha producido un error al al cargar listado de convenios disponibles: " + ex.toString());
         }
         return datos;
+    }
+    
+    //Metodo que se encarga de almacenar los nombres de convenio en un arraylist 
+    public void almacenarNombresConvenio(){
+        
+        //Traemos todos los parqueaderos
+        PreparedStatement pst4 = null;
+        ResultSet rs4 = null;       
+        Connection cn4 = Conexion.conectar();
+        
+        //Pedimos al sistema que cuente cuantos convenios tiene registrados
+        int numConveniosRegistrados = contarConveniosRegistrados();
+        
+        try{
+           pst4 = cn4.prepareStatement("select Nombre_convenio from convenios"); 
+           rs4 = pst4.executeQuery();
+                          
+           while(rs4.next()){               
+               for (int i = 0; i < numConveniosRegistrados; i++) {
+                   if(!listadoNombresConvenio.contains(rs4.getString("Nombre_convenio"))){
+                       listadoNombresConvenio.add(i, rs4.getString("Nombre_convenio"));
+                   }
+               }
+           }            
+           rs4.close();
+          
+        }catch(SQLException ex){
+            log.fatal("ERROR - Se ha producido un error al armar Arraylist de nombres de parqueaderos: " + ex.toString());
+        }    
+    } 
+    
+    //Metodo que se encarga de contar cuantos convenios hay registrados en el sistema
+    private int contarConveniosRegistrados(){
+        
+        int numConv = 0;
+        
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select COUNT(*) from convenios");
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                numConv = rs.getInt("COUNT(*)");
+                cn.close();
+                return numConv;
+            }
+            
+        } catch (SQLException e) {
+            log.fatal("ERROR - Se ha producido un error al contar la cantidad de convenios registrados en el sistema: " + e);
+        } 
+        return numConv;
     }
 }

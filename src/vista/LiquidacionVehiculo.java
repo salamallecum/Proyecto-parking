@@ -251,6 +251,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                                 dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
                                 lbl_diferencia.setText(dif_str);
                                 lbl_diferencia.setVisible(true);
+                                montoAPagarParaCalculoPago = facturaControla.quitarFormatoMoneda(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                 //Mostramos el total a pagar en pantalla
                                 lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                 lbl_totalAPagar.setVisible(true);
@@ -260,7 +261,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                                 if(diferenciaAntesDeDescuento >= descuento){
                                     dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
                                     lbl_diferencia.setText(dif_str);
-                                    lbl_diferencia.setVisible(true);                                    
+                                    lbl_diferencia.setVisible(true);
+                                    montoAPagarParaCalculoPago = facturaControla.quitarFormatoMoneda(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                     lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                     lbl_totalAPagar.setVisible(true);
                                 }else{
@@ -428,6 +430,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                                 dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
                                 lbl_diferencia.setText(dif_str);
                                 lbl_diferencia.setVisible(true);
+                                montoAPagarParaCalculoPago = facturaControla.quitarFormatoMoneda(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                 //Mostramos el total a pagar en pantalla
                                 lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                 lbl_totalAPagar.setVisible(true);
@@ -437,7 +440,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                                 if(diferenciaAntesDeDescuento >= descuento){
                                     dif_str = diferencia + facturaControla.calcularPagoTeniendoEnCuentaMinutosUtilizados(long_montoTarifa, diferencia, tarifaACobrar, diferenciaDeFechasEnMilisegundos);
                                     lbl_diferencia.setText(dif_str);
-                                    lbl_diferencia.setVisible(true);                                    
+                                    lbl_diferencia.setVisible(true);
+                                    montoAPagarParaCalculoPago = facturaControla.quitarFormatoMoneda(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                     lbl_totalAPagar.setText(facturaControla.obtenervalorAPagarPorDiferenciaAdicional());
                                     lbl_totalAPagar.setVisible(true);
                                 }else{
@@ -506,7 +510,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             lbl_totalAPagar.setText(montoAPagar);
                             lbl_totalAPagar.setVisible(true);
                         }
-                    }
+                    
+                    }    
                 }
             }
         }           

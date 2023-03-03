@@ -372,10 +372,8 @@ public class FacturaControlador {
     public long convertirDiasAHoras(long numeroDeDias){
         long resultado = numeroDeDias * 24;
         return resultado;
-    }
-    
-    
-    
+    } 
+       
     //Metodo que crea facturas que se cobran con normalidad
     public void crearFactura (Factura nvaFactura){
         
@@ -960,7 +958,7 @@ public class FacturaControlador {
     public void descontarFacturaDeUnCierre(String codigoFactura){
         
         int idCierreImplicado = obtenerIdCierreConCodigoFactura(codigoFactura);
-        
+                
         //Creamos un objeto de tipo CierreControlador
         CierreControlador cierreControla = new CierreControlador();
         
@@ -973,13 +971,13 @@ public class FacturaControlador {
         String dineroEnCaja = cierreInvolucrado.getDinero_caja();
         String producido = cierreInvolucrado.getProducido();
         String dineroAConsignar = cierreInvolucrado.getDineroAConsignar();
-        
+                
         //Quitamos el formato moneda a las cifras del cierre para su modificacion
         totalEsperado = quitarFormatoMoneda(totalEsperado);
         dineroEnCaja = quitarFormatoMoneda(dineroEnCaja);
         totalAPagarDeFactura = quitarFormatoMoneda(totalAPagarDeFactura);
         producido = quitarFormatoMoneda(producido);
-        dineroAConsignar = quitarFormatoMoneda(dineroAConsignar);
+        dineroAConsignar = quitarFormatoMoneda(dineroAConsignar);     
        
         int totalEsp_int = Integer.parseInt(totalEsperado);
         int valorAPagarFactura = Integer.parseInt(totalAPagarDeFactura);

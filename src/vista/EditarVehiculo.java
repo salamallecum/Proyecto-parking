@@ -95,9 +95,11 @@ public class EditarVehiculo extends javax.swing.JFrame{
         
         DefaultComboBoxModel modeloConv = new DefaultComboBoxModel(conv.mostrarConveniosDisponibles());
         cmb_convenios.setModel(modeloConv);
+        conv.almacenarNombresConvenio();
 
         DefaultComboBoxModel modeloTarif = new DefaultComboBoxModel(tarif.mostrarTarifasDisponibles());
         cmb_tarifas.setModel(modeloTarif);
+        tarif.almacenarNombresTarifa();
                        
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
         vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(vehiculo_actualizado);
@@ -113,7 +115,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         claseBack = vehiculoConsultado.getClase();
         cmb_clase.setSelectedItem(claseBack);
 
-        noParqueaderoBack = vehiculoConsultado.getId_parqueadero();
+        noParqueaderoBack = vehiculoConsultado.getId_parqueadero();       
                 
         //Buscamos el nombre del parqueadero que le pertenece a ese id para pintarlo en el combobox
         String nom_parqueadero = parqControla.consultarNombreDeParqueaderoMedianteID(noParqueaderoBack);    
@@ -131,10 +133,36 @@ public class EditarVehiculo extends javax.swing.JFrame{
         cmb_noParqueadero.setSelectedIndex(idVerdaderoDelParq);
         
         convenioBack = vehiculoConsultado.getId_convenio();
-        cmb_convenios.setSelectedIndex(convenioBack);
+        //Buscamos el nombre del convenio que le pertenece a ese id para pintarlo en el combobox
+        String nom_convenio = convenioControla.consultarNombreDeConvenioMedianteID(convenioBack);    
+                                     
+        //Iteramos el combobox en busca del nom_convenio que tiene el vehiculo previamente registrado para asi obtener su verdadero id
+        int idVerdaderoDelConv = 0;
+        int tamañoArregloConvenios = Convenio.listadoNombresConvenio.size();
+        for(int i=0; i<tamañoArregloConvenios; i++){
+           String nomConv = Convenio.listadoNombresConvenio.get(i);
+           if(nom_convenio.equals(nomConv)){
+               idVerdaderoDelConv = tamañoArregloConvenios - i;
+           }
+        }
+           
+        cmb_convenios.setSelectedIndex(idVerdaderoDelConv);
 
         tarifaBack = vehiculoConsultado.getId_tarifa();
-        cmb_tarifas.setSelectedIndex(tarifaBack);
+        //Buscamos el nombre de la tarifa que le pertenece a ese id para pintarlo en el combobox
+        String nom_tarifa = tarifaControla.consultarNombreDeTarifaMedianteID(tarifaBack);    
+                                     
+        //Iteramos el combobox en busca del nom_tarifa que tiene el vehiculo previamente registrado para asi obtener su verdadero id
+        int idVerdaderoDeTarifa = 0;
+        int tamañoArregloTarifas = Tarifa.listadoNombresTarifa.size();
+        for(int i=0; i<tamañoArregloTarifas; i++){
+           String nomTarifa = Tarifa.listadoNombresTarifa.get(i);
+           if(nom_tarifa.equals(nomTarifa)){
+               idVerdaderoDeTarifa = tamañoArregloTarifas - i;
+           }
+        }       
+        
+        cmb_tarifas.setSelectedIndex(idVerdaderoDeTarifa);
 
         elVehiculoEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(vehiculo_actualizado);
         

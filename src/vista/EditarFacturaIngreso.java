@@ -647,5 +647,4 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
             }   
         }  
     }
-         
 }
