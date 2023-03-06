@@ -43,7 +43,7 @@ public class PanelCaja extends javax.swing.JPanel{
     int Fila;
     
     public static boolean laCajaFueAbierta = false;
-    public static boolean hayVehiculoLiquidandose = false;
+    public static int numVehiculosLiquidandose = 0;
     public static String parqueadero_update;
     
     FacturaControlador facturaControla = new FacturaControlador();    
@@ -487,10 +487,8 @@ public class PanelCaja extends javax.swing.JPanel{
                 //Se abre el jFrame para realizar el arqueo de caja
                 new ArqueoDeCaja().setVisible(true);
             
-            }else if(decision_conteoDeCaja == JOptionPane.NO_OPTION){}   
-                
-       }else if(decision == JOptionPane.NO_OPTION){}                       
-           
+            }          
+        }             
     }//GEN-LAST:event_btn_abrirCajaActionPerformed
 
 
@@ -898,10 +896,10 @@ public class PanelCaja extends javax.swing.JPanel{
     //Metodo que genera la liquidacion de una vehiculo desde su busqueda en el panel de caja
     public void generarLiquidacion(){
 
-        if(hayVehiculoLiquidandose == true){
+        if(numVehiculosLiquidandose > 0){
             JOptionPane.showMessageDialog(null,"No permitido.");
         }else{
-            hayVehiculoLiquidandose = true;
+            numVehiculosLiquidandose++;
             parqueadero_update = txt_Placa.getText();
             new LiquidacionVehiculo().setVisible(true);
         }    

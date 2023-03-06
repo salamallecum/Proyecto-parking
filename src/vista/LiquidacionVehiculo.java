@@ -837,7 +837,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                    if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
                        ventanaEmergenteCopiaTicketSalida = false;
                        dispose();
-                       PanelCaja.hayVehiculoLiquidandose = false;
+                       PanelCaja.numVehiculosLiquidandose--;
                    }
                 }  
 
@@ -878,7 +878,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                        if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
                            ventanaEmergenteCopiaTicketSalida = false;
                            dispose();
-                           PanelCaja.hayVehiculoLiquidandose = false;
+                           PanelCaja.numVehiculosLiquidandose--;
                        }
                     }         
                 }  
@@ -1007,13 +1007,13 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
          
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarLiquidacionVehiculo(){
-        PanelCaja.hayVehiculoLiquidandose = false;
+        PanelCaja.numVehiculosLiquidandose--;
         dispose();
     }
     
     //Metodo que hace el calculo del monto de vueltas a nivel de presentacion del frame
     public void calcularVueltas(){
-        String dineroRecibido = txt_dineroRecibido.getText();
+        String dineroRecibido = txt_dineroRecibido.getText();        
         vueltas = facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido);
         lbl_dineroCambio.setText(facturaControla.agregarFormatoMoneda(vueltas)); 
         lbl_dineroCambio.setVisible(true);

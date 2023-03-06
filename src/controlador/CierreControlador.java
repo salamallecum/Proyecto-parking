@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import modelo.Cierre;
@@ -44,7 +45,7 @@ public class CierreControlador {
    private URL url = CierreControlador.class.getResource("Log4j.properties");
    
    Cierre cierreConsultado = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
-   
+   FacturaControlador factControla = new FacturaControlador();
    
    //Constructor
    public CierreControlador() {}  
@@ -73,8 +74,24 @@ public class CierreControlador {
         PanelCaja.btn_ingresar.setEnabled(false);
         PanelCaja.cmb_numParqueadero.setEnabled(false);
         PanelCaja.table_operacionParqueadero.setEnabled(false);
+        limpiarTablaOperacionParqueadero(PanelCaja.table_operacionParqueadero);
+        factControla.detenerHiloOperacionParqueadero();
 
     }
+    
+    //Metodo que permite limpiar todos los registros de la tabla de operacion del parqueadero una vez se ha realizado el cierre
+    public void limpiarTablaOperacionParqueadero(JTable tabla){
+        try {
+            DefaultTableModel modelo=(DefaultTableModel) tabla.getModel();
+            int filas=tabla.getRowCount();
+            for (int i = 0;filas>i; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al intentar limpiar la tabla de operacion del parqueadero, contacte al administrador!!!.");
+            log.fatal("ERROR - Se ha producido un error al intentar resetear registros de la tabla de operacion del parqueadero: " + ex);
+        }
+    }    
     
     //Metodo que crea un cierre de caja
     public void crearCierreDeCaja(Cierre cier){

@@ -49,17 +49,35 @@ import vista.InformacionFacturaIngreso;
  *
  * @author ALEJO
  */
-public class FacturaControlador {
+public class FacturaControlador implements Runnable {
     
     private final Logger log = Logger.getLogger(FacturaControlador.class);
     private URL url = FacturaControlador.class.getResource("Log4j.properties");
     private String valorAPagarPorDiferenciaAdicional = "";   
     
     Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+
+    //Hilo encargado del cargue de la tabla de opercaion del parqueradero en el panel caja
+    public Thread hilo2 = new Thread(this);
+    ParqueaderoControlador parqControlador = new ParqueaderoControlador();
+    public static boolean ejecutarHiloOpParq; 
            
     //Constructor
-    public FacturaControlador() {}
+    public FacturaControlador() {
     
+    }
+    
+    //Metodo que se encarga de detener el hilo que detiene el hilo que muestra la operacion del parqueadero en la tabla del panel caja
+    public void detenerHiloOperacionParqueadero(){
+        ejecutarHiloOpParq = false;
+    }
+    
+    //Metodo que se encarga de ejecutar el hilo que detiene el hilo que muestra la operacion del parqueadero en la tabla del panel caja
+    public void ejecutarHiloOperacionparqueadero(){
+        ejecutarHiloOpParq = true;
+        hilo2.start();
+    }
+        
     //Metodo que permite actualizar las facturas que se encuentre abierta con la información actualizada de un vehiculo    
     public void actualizarFacturaAbierta(int id, String placa, String dueño, String tipVehi, int IdParq, int IdConv, int IdTarif){
         
@@ -431,10 +449,15 @@ public class FacturaControlador {
         if(efectivoRecibido.equals("")){
             JOptionPane.showMessageDialog(null, "Ingrese el dinero recibido para calcular.");
         }else{            
-            int efectivo_int = Integer.parseInt(efectivoRecibido); 
-            int cuentaPagar_int = Integer.parseInt(cuentaAPagar);
-            int cambio = efectivo_int - cuentaPagar_int;
-            cambio_str = String.valueOf(cambio);
+            
+            if(cuentaAPagar.equals("") || cuentaAPagar.equals("0")){
+                cambio_str = efectivoRecibido;
+            }else{
+                int efectivo_int = Integer.parseInt(efectivoRecibido); 
+                int cuentaPagar_int = Integer.parseInt(cuentaAPagar);
+                int cambio = efectivo_int - cuentaPagar_int;
+                cambio_str = String.valueOf(cambio);
+            } 
         }
         return cambio_str;
     }
@@ -1241,5 +1264,25 @@ public class FacturaControlador {
             log.fatal("ERROR - Se ha producido un error al consultar el ID de una factura abierta en el sistema: " + ex); 
         } 
         return idFact;
+    }
+
+    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero en tiempo real    
+    @Override
+    public void run() {
+        Thread ct1 = Thread.currentThread();
+        
+        while(ejecutarHiloOpParq == true){
+
+            if(ct1 == hilo2){
+                //Cargamos los datos de la tabla
+                parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
+
+                try{
+                    ct1.sleep(10000);
+                }catch(InterruptedException e){
+                    log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos ingresados al parqueadero del panelCaja: " + e); 
+                }
+            }
+        }
     }
 }

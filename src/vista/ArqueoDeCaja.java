@@ -20,7 +20,6 @@ import modelo.Arqueo;
 import modelo.Parqueadero;
 import org.apache.log4j.Logger;
 import static vista.PanelCaja.cmb_numParqueadero;
-import static vista.PanelCaja.hayVehiculoLiquidandose;
 import static vista.PanelCaja.laCajaFueAbierta;
 import static vista.PanelCaja.modeloCaja;
 import static vista.PanelCaja.parqueadero_update;
@@ -80,7 +79,6 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     
     //Hilos que mantienen el actualizadas las facturas y el estado del parqueadero en tiempo real
     Thread hilo1 = new Thread(this);
-    Thread hilo2 = new Thread(this);
     
     private final Logger log = Logger.getLogger(ArqueoDeCaja.class);
     private URL url = ArqueoDeCaja.class.getResource("Log4j.properties");
@@ -95,7 +93,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         setTitle("Arqueo de caja");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                
+                       
         usuarioDelSistema = Login.usuario;
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
@@ -966,7 +964,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                    laCajaFueAbierta = true;
                    
                    hilo1.start();
-                   hilo2.start();            
+                   facturaControla.ejecutarHiloOperacionparqueadero();
 
                    //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
                    table_operacionParqueadero.addMouseListener(new MouseAdapter() {
@@ -978,14 +976,14 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                            if(fila_point > -1){
                                parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
 
-                               if(hayVehiculoLiquidandose == true){
+                                if(PanelCaja.numVehiculosLiquidandose > 0){
                                    JOptionPane.showMessageDialog(null,"No permitido.");
-                               }else{
-                                  hayVehiculoLiquidandose = true;  
+                                   
+                                }else{
+                                  PanelCaja.numVehiculosLiquidandose++;  
                                   LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
                                   liquidacion_vehiculo.setVisible(true);
-                               }
-
+                                }    
                            }
                        }
                    });
@@ -1611,7 +1609,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         Thread ct = Thread.currentThread();
-        Thread ct1 = Thread.currentThread();
+
         while(ct == hilo1){
 
             DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
@@ -1621,17 +1619,6 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
                 ct.sleep(100000);
             }catch(InterruptedException e){
                 log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos disponibles en combobox panelCaja: " + e); 
-            }
-        }
-        while(ct1 == hilo2){
-
-            //Cargamos los datos de la tabla
-            parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
-
-            try{
-                ct1.sleep(10000);
-            }catch(InterruptedException e){
-                log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos ingresados al parqueadero del panelCaja: " + e); 
             }
         }
     }
