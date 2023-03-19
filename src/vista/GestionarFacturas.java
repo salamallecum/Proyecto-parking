@@ -17,8 +17,7 @@ import org.apache.log4j.Logger;
  * @author ALEJO
  */
 public class GestionarFacturas extends javax.swing.JFrame {
-      
-   
+         
     public static DefaultTableModel modelo;
     public static int Filas;
     public static String codigoFactura_update;
@@ -366,7 +365,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarGestorFacturas(){
         
-        if(idCierre != 0){
+        if(idCierre != 1){
             String botones[] = {"Cerrar", "Cancelar"};
             int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);
 
