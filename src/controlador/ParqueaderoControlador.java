@@ -211,12 +211,14 @@ public class ParqueaderoControlador {
         try {
             Connection cn3 = Conexion.conectar();
             PreparedStatement pst3 = cn3.prepareStatement(
-                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, TipoParq, Estado) values (?,?,?,?)");
+                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, TipoParq, Estado, Placa, Esta_en_parqueadero) values (?,?,?,?,?,?)");
 
             pst3.setInt(1, nvoParq.getId());
             pst3.setString(2, nvoParq.getNombre());
             pst3.setString(3, nvoParq.getTipoParqueadero());
             pst3.setString(4, nvoParq.getEstado());
+            pst3.setString(5, nvoParq.getPlaca());
+            pst3.setString(6, nvoParq.getEstaOcupado());
 
 
             pst3.executeUpdate();

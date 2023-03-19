@@ -414,6 +414,8 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                 nuevoParqueadero.setNombre(nombreParqueadero);
                 nuevoParqueadero.setTipoParqueadero(tipo_parqstr);
                 nuevoParqueadero.setEstado("Disponible");
+                nuevoParqueadero.setPlaca("");
+                nuevoParqueadero.setEstaOcupado("");
                 
                 parqControla.crearParqueadero(nuevoParqueadero);
                 

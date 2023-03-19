@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 24-01-2023 a las 01:10:58
+-- Tiempo de generación: 19-03-2023 a las 02:22:58
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.4.26
 
@@ -201,10 +201,11 @@ DROP TABLE IF EXISTS `parqueaderos`;
 CREATE TABLE IF NOT EXISTS `parqueaderos` (
   `Id_parqueadero` int(50) NOT NULL AUTO_INCREMENT,
   `Nombre_parqueadero` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `TipoParq` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Estado` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `Placa` varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Placa` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `Propietario` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `Esta_en_parqueadero` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Esta_en_parqueadero` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_parqueadero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de parqueaderos';
 
