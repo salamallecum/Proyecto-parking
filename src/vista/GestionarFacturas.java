@@ -43,8 +43,9 @@ public class GestionarFacturas extends javax.swing.JFrame {
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        System.out.println(idCierre);
         
-        if(idCierre != 0){
+        if(idCierre != 1){
             facturaControla.cargarFacturasDeUnCierre(idCierre);
         }else{
             facturaControla.cargarTablaAdministradorDeFacturas();
@@ -364,7 +365,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
 
     //Metodo que se invoca al cerrar el jFrame
     private void cerrarGestorFacturas(){
-        
+        System.out.println(idCierre);
         if(idCierre != 1){
             String botones[] = {"Cerrar", "Cancelar"};
             int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de facturas", 0, 3, null, botones, this);

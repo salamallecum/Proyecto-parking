@@ -92,6 +92,7 @@ public class PanelReportes extends javax.swing.JPanel {
 
     //Metodo del boton Facturas
     private void btn_facturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_facturasActionPerformed
+        GestionarFacturas.idCierre = 1;
         new GestionarFacturas().setVisible(true); 
         btn_facturas.setEnabled(false);
     }//GEN-LAST:event_btn_facturasActionPerformed
