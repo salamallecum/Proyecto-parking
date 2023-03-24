@@ -380,7 +380,7 @@ public class ParqueaderoControlador {
         int filas = Table_estado.getRowCount();
 
         //Definir el tamanho del papel para la impresion  aca 25 lineas y 80 columnas
-        printer.setOutSize(filas + 5, 46);
+        printer.setOutSize(filas + 8, 46);
         //Imprimir * 1ra linea de la columa de 1 a 80
         printer.printCharAtCol(1, 1, 46, "=");
         //Imprimir Encabezado nombre del La EMpresa
@@ -390,16 +390,20 @@ public class ParqueaderoControlador {
        printer.printTextWrap(3, 8, 1, 46, "Estado  |  No Parq  |  Placa  |  Parqueado?");
        printer.printCharAtCol(5, 1, 46, "-");
        
-       int pie = 0;
-       
-        for (int i = 0; i < filas; i++) { printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 3)); pie++; } if(filas >= pie){
+       int pie = 1;
+            
+        for (int i = 0; i < filas; i++) { 
+            printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 3)); 
+            pie++; 
+        } 
         
-        printer.printTextWrap(filas + 1, filas + 2, 8, 46, "Todos los derechos reservados ");
+        System.out.println("Filas impresas: "+ filas);
+        System.out.println("Indice para pie de pagina: "+ pie);
         
-        }else{
-            printer.printTextWrap(filas + 1, 26, 8, 46, "Todos los derechos reservados ");
+        if(pie > filas){
+            printer.printTextWrap(filas + 6, 0, 8, 46, "Todos los derechos reservados ");
         }
-        
+             
         printer.toFile("bin\\impresion.txt");
 
       FileInputStream inputStream = null;
