@@ -396,10 +396,7 @@ public class ParqueaderoControlador {
             printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 3)); 
             pie++; 
         } 
-        
-        System.out.println("Filas impresas: "+ filas);
-        System.out.println("Indice para pie de pagina: "+ pie);
-        
+               
         if(pie > filas){
             printer.printTextWrap(filas + 6, 0, 8, 46, "Todos los derechos reservados ");
         }
