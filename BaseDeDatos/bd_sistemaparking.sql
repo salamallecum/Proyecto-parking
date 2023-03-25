@@ -1,34 +1,28 @@
--- phpMyAdmin SQL Dump
--- version 5.1.1
--- https://www.phpmyadmin.net/
+-- MariaDB dump 10.19  Distrib 10.4.24-MariaDB, for Win64 (AMD64)
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 19-03-2023 a las 02:22:58
--- Versión del servidor: 5.7.36
--- Versión de PHP: 7.4.26
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
+-- Host: localhost    Database: bd_sistemaparking
+-- ------------------------------------------------------
+-- Server version	5.7.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Base de datos: `bd_sistemaparking`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `arqueos`
+-- Table structure for table `arqueos`
 --
 
 DROP TABLE IF EXISTS `arqueos`;
-CREATE TABLE IF NOT EXISTS `arqueos` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `arqueos` (
   `Id_arqueo` int(11) NOT NULL AUTO_INCREMENT,
   `codigo` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `fecha_arqueo` datetime NOT NULL,
@@ -60,15 +54,25 @@ CREATE TABLE IF NOT EXISTS `arqueos` (
   `diferencia` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_arqueo`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de arqueos realizados a la caja';
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `cierres`
+-- Dumping data for table `arqueos`
+--
+
+LOCK TABLES `arqueos` WRITE;
+/*!40000 ALTER TABLE `arqueos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `arqueos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cierres`
 --
 
 DROP TABLE IF EXISTS `cierres`;
-CREATE TABLE IF NOT EXISTS `cierres` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cierres` (
   `Id_cierre` int(50) NOT NULL AUTO_INCREMENT,
   `Codigo` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Codigo_arqueo` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -106,44 +110,52 @@ CREATE TABLE IF NOT EXISTS `cierres` (
   `Observaciones` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`Id_cierre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de cierres de caja';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Volcado de datos para la tabla `cierres`
+-- Dumping data for table `cierres`
 --
 
-INSERT INTO `cierres` (`Id_cierre`, `Codigo`, `Codigo_arqueo`, `Fecha_cierre`, `Nombre_usuario`, `Base_caja`, `numerobilletes100mil`, `numerobilletes50mil`, `numerobilletes20mil`, `numerobilletes10mil`, `numerobilletes5mil`, `numerobilletes2mil`, `numerobilletesMil`, `numeromonedas500`, `numeromonedas200`, `numeromonedas100`, `numeromonedas50`, `montoen100mil`, `montoen50mil`, `montoen20mil`, `montoen10mil`, `montoen5mil`, `montoen2mil`, `montoenmil`, `montoen500`, `montoen200`, `montoen100`, `montoen50`, `Producido`, `Total_esperado`, `Dinero_en_caja`, `Diferencia`, `Dinero_a_consignar`, `No_facturas`, `Observaciones`) VALUES
-(1, '4444', '', '1970-01-01 00:00:00', '', '000000', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '00', '00', '00', '00', '00', '0', 'Nada / cierre default');
-
--- --------------------------------------------------------
+LOCK TABLES `cierres` WRITE;
+/*!40000 ALTER TABLE `cierres` DISABLE KEYS */;
+INSERT INTO `cierres` VALUES (1,'4444','','1970-01-01 00:00:00','','000000','0','0','0','0','0','0','0','0','0','0','0',0,0,0,0,0,0,0,0,0,0,0,'00','00','00','00','00','0','Nada / cierre default');
+/*!40000 ALTER TABLE `cierres` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Estructura de tabla para la tabla `convenios`
+-- Table structure for table `convenios`
 --
 
 DROP TABLE IF EXISTS `convenios`;
-CREATE TABLE IF NOT EXISTS `convenios` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `convenios` (
   `Id_convenio` int(50) NOT NULL AUTO_INCREMENT,
   `Nombre_convenio` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `Monto` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Frecuencia` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_convenio`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de convenios de parqueadero';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Volcado de datos para la tabla `convenios`
+-- Dumping data for table `convenios`
 --
 
-INSERT INTO `convenios` (`Id_convenio`, `Nombre_convenio`, `Monto`, `Frecuencia`) VALUES
-(1, 'NINGUNO', '', '');
-
--- --------------------------------------------------------
+LOCK TABLES `convenios` WRITE;
+/*!40000 ALTER TABLE `convenios` DISABLE KEYS */;
+INSERT INTO `convenios` VALUES (1,'NINGUNO','','');
+/*!40000 ALTER TABLE `convenios` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Estructura de tabla para la tabla `facturas`
+-- Table structure for table `facturas`
 --
 
 DROP TABLE IF EXISTS `facturas`;
-CREATE TABLE IF NOT EXISTS `facturas` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `facturas` (
   `Id_factura` int(50) NOT NULL AUTO_INCREMENT,
   `Codigo` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Id_cierre` int(50) NOT NULL DEFAULT '0',
@@ -167,38 +179,56 @@ CREATE TABLE IF NOT EXISTS `facturas` (
   KEY `Id_convenio` (`Id_convenio`),
   KEY `Id_tarifa` (`Id_tarifa`),
   KEY `Id_cierre` (`Id_cierre`),
-  KEY `No_parqueadero` (`No_parqueadero`)
+  KEY `No_parqueadero` (`No_parqueadero`),
+  CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`Id_convenio`) REFERENCES `convenios` (`Id_convenio`) ON UPDATE CASCADE,
+  CONSTRAINT `facturas_ibfk_2` FOREIGN KEY (`Id_tarifa`) REFERENCES `tarifas` (`Id_tarifa`) ON UPDATE CASCADE,
+  CONSTRAINT `facturas_ibfk_3` FOREIGN KEY (`Id_cierre`) REFERENCES `cierres` (`Id_cierre`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `facturas_ibfk_4` FOREIGN KEY (`No_parqueadero`) REFERENCES `parqueaderos` (`Id_parqueadero`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de facturas';
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `parametros`
+-- Dumping data for table `facturas`
+--
+
+LOCK TABLES `facturas` WRITE;
+/*!40000 ALTER TABLE `facturas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `facturas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `parametros`
 --
 
 DROP TABLE IF EXISTS `parametros`;
-CREATE TABLE IF NOT EXISTS `parametros` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `parametros` (
   `Id_parametro` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre_parametro` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `Valor` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_parametro`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de parámetros del sistema';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Volcado de datos para la tabla `parametros`
+-- Dumping data for table `parametros`
 --
 
-INSERT INTO `parametros` (`Id_parametro`, `Nombre_parametro`, `Valor`) VALUES
-(1, 'BASE_CAJA', '400000');
-
--- --------------------------------------------------------
+LOCK TABLES `parametros` WRITE;
+/*!40000 ALTER TABLE `parametros` DISABLE KEYS */;
+INSERT INTO `parametros` VALUES (1,'BASE_CAJA','400000');
+/*!40000 ALTER TABLE `parametros` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Estructura de tabla para la tabla `parqueaderos`
+-- Table structure for table `parqueaderos`
 --
 
 DROP TABLE IF EXISTS `parqueaderos`;
-CREATE TABLE IF NOT EXISTS `parqueaderos` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `parqueaderos` (
   `Id_parqueadero` int(50) NOT NULL AUTO_INCREMENT,
   `Nombre_parqueadero` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `TipoParq` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -208,15 +238,25 @@ CREATE TABLE IF NOT EXISTS `parqueaderos` (
   `Esta_en_parqueadero` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_parqueadero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de parqueaderos';
-
--- --------------------------------------------------------
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Estructura de tabla para la tabla `tarifas`
+-- Dumping data for table `parqueaderos`
+--
+
+LOCK TABLES `parqueaderos` WRITE;
+/*!40000 ALTER TABLE `parqueaderos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `parqueaderos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tarifas`
 --
 
 DROP TABLE IF EXISTS `tarifas`;
-CREATE TABLE IF NOT EXISTS `tarifas` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tarifas` (
   `Id_tarifa` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre_tarifa` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `Monto_tarifa` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -230,24 +270,26 @@ CREATE TABLE IF NOT EXISTS `tarifas` (
   `Unidad_Tiempo_Ad` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`Id_tarifa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de tarifas';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Volcado de datos para la tabla `tarifas`
+-- Dumping data for table `tarifas`
 --
 
-INSERT INTO `tarifas` (`Id_tarifa`, `Nombre_tarifa`, `Monto_tarifa`, `Frecuencia_tarifa`, `Tarifa_anulada`, `Tiene_descuento`, `Tiempo_descuento`, `Unidad_descuento`, `Cobrar_Tiempo_Ad`, `Monto_Tiempo_Ad`, `Unidad_Tiempo_Ad`) VALUES
-(1, 'NINGUNA', '0', '', '', '', NULL, NULL, '', NULL, NULL),
-(2, 'TARIF_AUTOMOVIL', '300', 'MINUTO', 'No', 'No', 'null', 'null', 'No', 'null', 'null'),
-(3, 'TARIF_MOTO', '150', 'MINUTO', 'No', 'No', NULL, NULL, 'No', NULL, NULL);
-
--- --------------------------------------------------------
+LOCK TABLES `tarifas` WRITE;
+/*!40000 ALTER TABLE `tarifas` DISABLE KEYS */;
+INSERT INTO `tarifas` VALUES (1,'NINGUNA','0','','','',NULL,NULL,'',NULL,NULL),(2,'TARIF_AUTOMOVIL','300','MINUTO','No','No','null','null','No','null','null'),(3,'TARIF_MOTO','150','MINUTO','No','No',NULL,NULL,'No',NULL,NULL);
+/*!40000 ALTER TABLE `tarifas` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Table structure for table `usuarios`
 --
 
 DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE IF NOT EXISTS `usuarios` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `usuarios` (
   `Id_usuario` int(30) NOT NULL AUTO_INCREMENT,
   `Nombres` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `Apellidos` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -259,23 +301,26 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `Activo` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_usuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de usuarios';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Volcado de datos para la tabla `usuarios`
+-- Dumping data for table `usuarios`
 --
 
-INSERT INTO `usuarios` (`Id_usuario`, `Nombres`, `Apellidos`, `Celular`, `Telefono`, `Usuario`, `Clave`, `Rol`, `Activo`) VALUES
-(1, 'ING  ALEJO', 'AMAYA TORRES', '3147427981', '3147427981', 'Alejo97', '18abril', 'Administra', 'Si'),
-(2, 'WILFREDI', 'AMAYA TORRES', '3112236781', '4897894', 'More', 'm0r3**', 'Administra', 'Si');
-
--- --------------------------------------------------------
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'ING  ALEJO','AMAYA TORRES','3147427981','3147427981','Alejo97','18abril','Administra','Si'),(2,'WILFREDI','AMAYA TORRES','3112236781','4897894','More','m0r3**','Administra','Si');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Estructura de tabla para la tabla `vehiculos`
+-- Table structure for table `vehiculos`
 --
 
 DROP TABLE IF EXISTS `vehiculos`;
-CREATE TABLE IF NOT EXISTS `vehiculos` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vehiculos` (
   `Id_vehiculo` int(50) NOT NULL AUTO_INCREMENT,
   `Placa` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `Propietario` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -286,31 +331,29 @@ CREATE TABLE IF NOT EXISTS `vehiculos` (
   PRIMARY KEY (`Id_vehiculo`),
   KEY `Id_convenio` (`Id_convenio`),
   KEY `Id_tarifa` (`Id_tarifa`),
-  KEY `Id_parqueadero` (`Id_parqueadero`)
+  KEY `Id_parqueadero` (`Id_parqueadero`),
+  CONSTRAINT `vehiculos_ibfk_1` FOREIGN KEY (`Id_tarifa`) REFERENCES `tarifas` (`Id_tarifa`) ON UPDATE CASCADE,
+  CONSTRAINT `vehiculos_ibfk_2` FOREIGN KEY (`Id_convenio`) REFERENCES `convenios` (`Id_convenio`) ON UPDATE CASCADE,
+  CONSTRAINT `vehiculos_ibfk_3` FOREIGN KEY (`Id_parqueadero`) REFERENCES `parqueaderos` (`Id_parqueadero`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de vehiculos';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Restricciones para tablas volcadas
+-- Dumping data for table `vehiculos`
 --
 
---
--- Filtros para la tabla `facturas`
---
-ALTER TABLE `facturas`
-  ADD CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`Id_convenio`) REFERENCES `convenios` (`Id_convenio`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `facturas_ibfk_2` FOREIGN KEY (`Id_tarifa`) REFERENCES `tarifas` (`Id_tarifa`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `facturas_ibfk_3` FOREIGN KEY (`Id_cierre`) REFERENCES `cierres` (`Id_cierre`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `facturas_ibfk_4` FOREIGN KEY (`No_parqueadero`) REFERENCES `parqueaderos` (`Id_parqueadero`) ON UPDATE CASCADE;
+LOCK TABLES `vehiculos` WRITE;
+/*!40000 ALTER TABLE `vehiculos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vehiculos` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- Filtros para la tabla `vehiculos`
---
-ALTER TABLE `vehiculos`
-  ADD CONSTRAINT `vehiculos_ibfk_1` FOREIGN KEY (`Id_tarifa`) REFERENCES `tarifas` (`Id_tarifa`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `vehiculos_ibfk_2` FOREIGN KEY (`Id_convenio`) REFERENCES `convenios` (`Id_convenio`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `vehiculos_ibfk_3` FOREIGN KEY (`Id_parqueadero`) REFERENCES `parqueaderos` (`Id_parqueadero`) ON UPDATE CASCADE;
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-03-24 20:12:29

@@ -5,6 +5,7 @@ import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.sql.Connection;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -39,6 +40,13 @@ public class Login extends javax.swing.JFrame {
         setResizable(false);
         setTitle("MORE PARKING - Acceso al sistema");
         setLocationRelativeTo(null);
+        
+        Connection pruebaConexion = usuControlador.hacerTestdeConexion();
+                
+        if(pruebaConexion == null){
+           usuControlador.crearBaseDeDatosDelSistema();
+           usuControlador.cargarEstructuraDeTablasDeBaseDeDatos();
+        }
         sincronizarLog();
         log.info("INFO - Se inicia aplicación satisfactoriamente");
     }

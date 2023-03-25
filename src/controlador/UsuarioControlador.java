@@ -378,5 +378,21 @@ public class UsuarioControlador {
             log.fatal("ERROR - Se ha producido un error al cargar los usuarios de la BD a la Tabla de usuarios: " + e);
         }
     }
+    
+    //Metodo que se encarga de consultar los resultados del test de conexion a la base de datos
+    public Connection hacerTestdeConexion(){
+        Connection pruebaDeConexion = Conexion.TestDeConexion();
+        return pruebaDeConexion;
+    }
+    
+    //Metodo que se encarga de crear la base dedatos del sistema
+    public void crearBaseDeDatosDelSistema(){
+        Conexion.crearBaseDeDatos();
+    }
+    
+    //Metodo que se encarga de armar la estructura de tablas en las cuales se guardaará la información del sistema
+    public void cargarEstructuraDeTablasDeBaseDeDatos(){
+        Conexion.cargarScriptDeEstructura();
+    }
 }
 
