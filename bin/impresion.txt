@@ -1,7 +1,8 @@
 ==============================================
             ESTADO DEL PARQUEADERO            
                                               
- Estado  |  No Parq  |  Placa   |  Parqueado? 
+ Estado  |  No Parq  |  Placa  |  Parqueado?  
 ----------------------------------------------
- Ocupado  |  PARQUEADERO 1A  |  BJG978  |  No 
- Ocupado  |  PARQUEADERO 2A  |  BTA624  |  Si 
+                                              
+        Todos los derechos reservados         
+                                              
