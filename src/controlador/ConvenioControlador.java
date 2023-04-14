@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Convenio;
@@ -21,7 +20,7 @@ import static vista.GestionarConvenios.table_listaConvenios;
  */
 public class ConvenioControlador {
     
-   Convenio convenioConsultado = new Convenio(0, "", "", ""); 
+   Convenio convenioConsultado = new Convenio(); 
     
    private final Logger log = Logger.getLogger(ConvenioControlador.class);
    private URL url = ConvenioControlador.class.getResource("Log4j.properties");
@@ -222,7 +221,7 @@ public class ConvenioControlador {
     //Metodo que trae un objeto de tipo convenio con los atributos para su edición o eliminacion
     public Convenio traerUnConvenioAlFormulario(String nomConv){
               
-        Convenio convenioRescatado = new Convenio(0, "", "", "");
+        Convenio convenioRescatado = new Convenio();
         PreparedStatement ps1 = null;
         try{
             Connection cn1 = Conexion.conectar();          

@@ -46,6 +46,7 @@ public class CierreControlador {
    
    Cierre cierreConsultado = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
    FacturaControlador factControla = new FacturaControlador();
+   ParqueaderoControlador parqControla = new ParqueaderoControlador();
    
    //Constructor
    public CierreControlador() {}  
@@ -76,7 +77,8 @@ public class CierreControlador {
         PanelCaja.table_operacionParqueadero.setEnabled(false);
         limpiarTablaOperacionParqueadero(PanelCaja.table_operacionParqueadero);
         factControla.detenerHiloOperacionParqueadero();
-
+        parqControla.detenerHiloParqueaderosVisitantesDisponibles();
+        
     }
     
     //Metodo que permite limpiar todos los registros de la tabla de operacion del parqueadero una vez se ha realizado el cierre

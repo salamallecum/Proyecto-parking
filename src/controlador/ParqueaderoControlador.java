@@ -22,6 +22,7 @@ import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -37,14 +38,17 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
+import static vista.EditarFacturaFinal.cmb_parqVisitantesFinal;
+import static vista.EditarFacturaIngreso.cmb_parqVisitantes;
 import static vista.EstadoParqueadero.Table_estado;
 import vista.GestionarParqueaderos;
 import static vista.GestionarParqueaderos.modeloParq;
 import static vista.GestionarParqueaderos.table_listaParqueaderos;
 import vista.MenuAdministrador;
+import static vista.PanelCaja.cmb_numParqueadero;
 import static vista.PanelCaja.modeloCaja;
 import static vista.PanelCaja.table_operacionParqueadero;
-import vista.PanelVehiculos;
+
 
 
 
@@ -52,13 +56,20 @@ import vista.PanelVehiculos;
  *
  * @author ALEJO
  */
-public class ParqueaderoControlador {
+public class ParqueaderoControlador implements Runnable{
     
    VehiculoControlador vehiControlador = new VehiculoControlador();
    DefaultTableModel modeloEstadoParq;
+   Parqueadero parq = new Parqueadero();
       
    private final Logger log = Logger.getLogger(ParqueaderoControlador.class);
    private URL url = ParqueaderoControlador.class.getResource("Log4j.properties");
+   public static boolean ejecutarHiloParqueaderosVisitantesDisponibles; 
+   
+   //Hilo encargado del cargue del listado de parqueaderos de visitantes disponibles
+    public Thread hilo1 = new Thread(this);
+    public Thread hilo2 = new Thread(this);
+    public Thread hilo3 = new Thread(this);
        
    //Constructor
    public ParqueaderoControlador() {}
@@ -102,6 +113,19 @@ public class ParqueaderoControlador {
             JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar parqueadero!!, contacte al administrador.");
             log.fatal("ERROR - Se ha producido un error al pasar de Disponible a Ocupado un parqueadero" + ex);
         } 
+    }
+    
+    //Metodo que se encarga de detener el hilo que detiene el hilo que muestra el listado de parqueaderos de visitantes disponibles
+    public void detenerHiloParqueaderosVisitantesDisponibles(){
+        ejecutarHiloParqueaderosVisitantesDisponibles = false;
+    }
+    
+    //Metodo que se encarga de ejecutar el hilo que muestra el listado de parqueaderos de visitantes disponibles
+    public void ejecutarHiloParqueaderosVisitantesDisponibles(){
+        ejecutarHiloParqueaderosVisitantesDisponibles = true;
+        hilo1.start();
+        hilo2.start();
+        hilo3.start();
     }
         
     //Cargamos la tabla de parqueaderos de la ventana gestionarParqueaderos
@@ -515,7 +539,7 @@ public class ParqueaderoControlador {
             modeloCaja.addColumn("Fecha");
             modeloCaja.addColumn("Placa");
             modeloCaja.addColumn("Propietario");
-            modeloCaja.addColumn("Numero de Parquadero");
+            modeloCaja.addColumn("Numero de Parqueadero");
 
             int[] anchosTabla = {10,10,15,5};
 
@@ -600,6 +624,51 @@ public class ParqueaderoControlador {
             log.fatal("ERROR - Se ha producido un error al intentar validar el tipo de un parquadero utilizando su ID: " + e);
         } 
         return tipoParq;
+    }
+    
+    //Metodo que ejecuta el hilo que trae listado de parqueaderos visitante disponibles en tiempo real    
+    @Override
+    public void run() {
+        Thread ct1 = Thread.currentThread();
+        
+        while(ejecutarHiloParqueaderosVisitantesDisponibles == true){
+
+            if(ct1 == hilo1){
+                //Cargamos los datos en los combobox
+                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
+                cmb_numParqueadero.setModel(modeloParq);
+                                
+                try{
+                    ct1.sleep(100000);
+                }catch(InterruptedException e){
+                    log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos visitantes disponibles: " + e); 
+                }
+            }
+            
+            if(ct1 == hilo2){
+                //Cargamos los datos en los combobox
+                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
+                cmb_parqVisitantesFinal.setModel(modeloParq);
+
+                try{
+                    ct1.sleep(100000);
+                }catch(InterruptedException e){
+                    log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos visitantes disponibles en edicion factura final: " + e); 
+                }
+            }
+            
+            if(ct1 == hilo3){
+                //Cargamos los datos en los combobox
+                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
+                cmb_parqVisitantes.setModel(modeloParq);
+
+                try{
+                    ct1.sleep(100000);
+                }catch(InterruptedException e){
+                    log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos visitantes disponibles en edicion factura ingreso: " + e); 
+                }
+            }
+        }
     }
     
 }

@@ -29,9 +29,9 @@ public class GestionarTarifas extends javax.swing.JFrame {
     public static boolean cobroHoras = false;
     public static boolean tieneDescuento = false;
     
-    Tarifa nuevaTarifa = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
-    Tarifa tarifaRescatada = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
-    Tarifa editTarifa = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
+    Tarifa nuevaTarifa = new Tarifa();
+    Tarifa tarifaRescatada = new Tarifa();
+    Tarifa editTarifa = new Tarifa();
     TarifaControlador tarifaControla = new TarifaControlador();
        
     private final Logger log = Logger.getLogger(GestionarTarifas.class);

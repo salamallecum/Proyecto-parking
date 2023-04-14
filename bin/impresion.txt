@@ -3,6 +3,9 @@
                                               
  Estado  |  No Parq  |  Placa  |  Parqueado?  
 ----------------------------------------------
+ Ocupado  |  PARQ 1  |  JNU086  |  No         
+ Disponible  |  PARQ 3  |    |                
+ Ocupado  |  PARQ 4  |  HTV890  |  Si         
                                               
         Todos los derechos reservados         
                                               

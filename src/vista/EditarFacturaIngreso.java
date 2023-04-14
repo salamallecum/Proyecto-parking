@@ -1,5 +1,6 @@
 package vista;
 
+import com.sun.glass.events.KeyEvent;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
@@ -16,6 +17,7 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import modelo.Convenio;
 import modelo.Factura;
+import modelo.Parqueadero;
 import modelo.Tarifa;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
@@ -35,8 +37,8 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     int validacion = 0;
     DefaultTableModel modelo;
     
-    Convenio conv = new Convenio(0, "", "", "");
-    Tarifa tarif = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
+    Convenio conv = new Convenio();
+    Tarifa tarif = new Tarifa();
     
     Factura facturaAEditar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
     Factura facturaAActualizar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
@@ -51,8 +53,15 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     String codigo_factura;
     String usuario;
     String placa_back;
+    String propietario_back;
+    String tipVehi_back;
+    String noParq_back;
     int filas;
-    boolean vehiculoPreviamenteRegistrado = false;
+    int tarifaBack;
+    int convenioBack;
+    boolean vehiculoDelBackupExiste = false;
+    boolean seRealizaronValidaciones = false;
+    boolean ingresoDesconocido = false;
     
     Convenio nomConvenio;
     Tarifa nomTarifa;
@@ -81,13 +90,18 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
+        //Ocultamos el combobox de parqueaderos
+        cmb_parqVisitantes.setVisible(false);
+        
         DefaultComboBoxModel modeloConv = new DefaultComboBoxModel(conv.mostrarConveniosDisponibles());
         cmb_convenios.setModel(modeloConv);
+        conv.almacenarNombresConvenio();
 
         DefaultComboBoxModel modeloTarif = new DefaultComboBoxModel(tarif.mostrarTarifasDisponibles());
         cmb_tarifas.setModel(modeloTarif);
-              
-        //Cargamos la informacion de la facturaabierta en el frame
+        tarif.almacenarNombresTarifa();
+                     
+        //Cargamos la informacion de la factura abierta en el frame
         facturaAEditar = facturaControla.consultarInformacionDeUnaFacturaAbiertaParaSuEdicion(factura_actualizada);
         
         ID = facturaAEditar.getId();
@@ -96,12 +110,42 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         //Hacemos un respaldo de la informacion por si el usuario se equivoca
         placa_back = facturaAEditar.getPlaca();
         txt_placa.setText(placa_back);
-        txt_propietario.setText(facturaAEditar.getPropietario());
-        cmb_tipVehi.setSelectedItem(facturaAEditar.getClaseDeVehiculo());
-        lbl_noParq.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaAEditar.getId_parqueadero()));
-        cmb_convenios.setSelectedIndex(facturaAEditar.getId_convenio());
-        cmb_tarifas.setSelectedIndex(facturaAEditar.getId_tarifa());
+        
+        //Evaluamos la existencia del vehiculo backup en bd paras futura consulta al actualizar
+        vehiculoDelBackupExiste = vehiControla.evaluarExistenciaDelVehiculo(placa_back);
+        
+        propietario_back = facturaAEditar.getPropietario(); 
+        txt_propietario.setText(propietario_back);
+        
+        tipVehi_back = facturaAEditar.getClaseDeVehiculo();
+        cmb_tipVehi.setSelectedItem(tipVehi_back);
+        
+        noParq_back = parqControla.consultarNombreDeParqueaderoMedianteID(facturaAEditar.getId_parqueadero());
+        lbl_noParq.setText(noParq_back);
+        
+        convenioBack = facturaAEditar.getId_convenio();
+        //Buscamos el nombre del convenio que le pertenece a ese id para pintarlo en el combobox
+        String nom_convenio = convControla.consultarNombreDeConvenioMedianteID(convenioBack);    
+                                     
+        cmb_convenios.setSelectedIndex(buscarConvenioEnComboBox(nom_convenio));
+    
+        tarifaBack = facturaAEditar.getId_tarifa();
+        //Buscamos el nombre de la tarifa que le pertenece a ese id para pintarlo en el combobox
+        String nom_tarifa = tarifaControla.consultarNombreDeTarifaMedianteID(tarifaBack);    
+        
+        cmb_tarifas.setSelectedIndex(buscarTarifaEnComboBox(nom_tarifa));
+               
         lbl_horaIngreso.setText(facturaAEditar.getFechaDeIngresoVehiculo());
+        
+        //Consultamos el propietario con el fin de ver si se encuentra registrado, de ser asi, deshabilitamos la edicion del formulario
+        boolean vehiculoRegistrado = vehiControla.evaluarExistenciaDelVehiculo(placa_back);
+        
+        if(vehiculoRegistrado == true){
+            txt_propietario.setEditable(false);
+            cmb_tipVehi.setEnabled(false);
+            cmb_convenios.setEnabled(false);
+            cmb_tarifas.setEnabled(false);
+        }
     }
     
     @Override
@@ -135,12 +179,18 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         cmb_tipVehi = new javax.swing.JComboBox<>();
         lbl_horaIngreso = new javax.swing.JLabel();
         lbl_noParq = new javax.swing.JLabel();
+        cmb_parqVisitantes = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
             }
         });
 
@@ -230,14 +280,21 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
 
         lbl_horaIngreso.setText("lbl_feha_ingreso");
 
-        lbl_noParq.setText("lbl_no_parqueadero");
+        lbl_noParq.setText("lbl");
+
+        cmb_parqVisitantes.setAutoscrolls(true);
+        cmb_parqVisitantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_parqVisitantesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+                .addContainerGap(51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -248,22 +305,20 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmb_tipVehi, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_placa, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_horaIngreso)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmb_tipVehi, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_placa, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lbl_noParq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmb_parqVisitantes, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(cmb_tarifas, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cmb_convenios, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbl_noParq, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txt_propietario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbl_horaIngreso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_propietario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(lbl_imgEditUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                .addGap(28, 28, 28))
             .addGroup(layout.createSequentialGroup()
                 .addGap(236, 236, 236)
                 .addComponent(btn_actualizar)
@@ -273,9 +328,6 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(lbl_imgEditUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -289,10 +341,11 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(cmb_tipVehi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(17, 17, 17)
+                        .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(lbl_noParq))
+                            .addComponent(lbl_noParq)
+                            .addComponent(cmb_parqVisitantes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
@@ -300,14 +353,17 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                         .addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(cmb_tarifas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(lbl_horaIngreso))))
+                            .addComponent(cmb_tarifas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(lbl_imgEditUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(lbl_horaIngreso))
                 .addGap(28, 28, 28)
                 .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -315,11 +371,10 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     
     //Metodo boton Actualizar
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
-        
-        validacionesAntesDeActualizar();
-        
-        int convenio_cmb = cmb_convenios.getSelectedIndex();
-        int tarifa_cmb = cmb_tarifas.getSelectedIndex();
+                        
+        Convenio convSeleccionado = new Convenio();
+        Tarifa tarifSeleccionada = new Tarifa();
+        Parqueadero parqSeleccionado = new Parqueadero();
         
         //Capturamos los datos del formulario
         String tipoVehi_string = "";       
@@ -327,16 +382,20 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         String dueño = txt_propietario.getText();
         int tipVehi_cmb = cmb_tipVehi.getSelectedIndex();       
         String no_parq = lbl_noParq.getText();
+        
+        convSeleccionado = (Convenio)cmb_convenios.getSelectedItem();
+        tarifSeleccionada = (Tarifa)cmb_tarifas.getSelectedItem();
                        
         if(placa.equals("")){
             txt_placa.setBackground(Color.red);
             validacion++;
         }
+        
         if(dueño.equals("")){
             txt_propietario.setBackground(Color.red);
             validacion++;
         }
-        
+               
         if(tipVehi_cmb == 0){
             tipoVehi_string = "Seleccione"; 
             validacion++;
@@ -346,46 +405,100 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         }else if(tipVehi_cmb == 2){
             tipoVehi_string = "MOTO";
         } 
+                
+        //Validamos el verdadero id del convenio y de la tarifa en bd
+        int idRealDelConvenioSeleccionado = convControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
+        int idRealDeTarifaSeleccionada = tarifaControla.consultarIdDeunaTarifa(tarifSeleccionada.getNombreTarifa());
                              
         if (validacion == 0){
             
-            //Encapsulamos el objeto factura a actualizar
-            facturaAActualizar.setId(ID);
-            facturaAActualizar.setPlaca(placa);
-            facturaAActualizar.setPropietario(dueño);
-            facturaAActualizar.setClaseDeVehiculo(tipoVehi_string);
-            facturaAActualizar.setId_parqueadero(parqControla.consultarIdParqueadero(no_parq));
-            facturaAActualizar.setFacturadoPor(usuario);
-            facturaAActualizar.setId_convenio(convenio_cmb);
-            facturaAActualizar.setId_tarifa(tarifa_cmb);
-      
-            //Actualizamos la factura
-            facturaControla.actualizarFacturaIngreso(facturaAActualizar);
-                 
-            //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar facturas
-            Object Fila[] = new Object[4];
-            Fila[0] = codigo_factura;
-            Fila[1] = facturaControla.fecha_de_factura();
-            Fila[2] = usuario;
-            Fila[3] = "0";
-            
-            for(int i=0; i < tablafacturas.getColumnCount(); i++){
-                modelo.setValueAt(Fila[i], filas, i);
-            }
-            
-            if(vehiculoPreviamenteRegistrado == true){
-                parqControla.liberarParqueadero(placa_back);
+            if(seRealizaronValidaciones == true){
                 
-                //Consultamos el id del parqueadero del vehiculo registrado
-                int idParqueadero = parqControla.consultarIdParqueadero(no_parq);
-                parqControla.actualizarEstadoDeParqueadero(placa, dueño, idParqueadero, "Si");
+                //Encapsulamos el objeto factura a actualizar
+                facturaAActualizar.setId(ID);
+                facturaAActualizar.setPlaca(placa);
+                facturaAActualizar.setPropietario(dueño);
+                facturaAActualizar.setClaseDeVehiculo(tipoVehi_string);
+                
+                //El vehiculo analizado ya existe en el sistema y el ingresado tambien existe
+                if(vehiculoDelBackupExiste == true && ingresoDesconocido == false){
+                    
+                    //Modificamos el id del parqueadero por el del vehiculo ingresado en el objeto factura
+                    facturaAActualizar.setId_parqueadero(parqControla.consultarIdParqueadero(no_parq));
+                    
+                    //Cambiamos los estados de los parqueaderos para los vehiculos registrados involucrados
+                    parqControla.actualizarEstadoDeParqueadero(placa_back, propietario_back, facturaAEditar.getId_parqueadero(), "No");
+                    parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(no_parq), "Si");
+                    
+                }
+                
+                //El vehiculo analizado no existe en el sistema y el ingresado tampoco existe
+                else if(vehiculoDelBackupExiste == false && ingresoDesconocido == true){
+                    
+                    parqSeleccionado = (Parqueadero)cmb_parqVisitantes.getSelectedItem();
+                             
+                    //Validamos el verdadero id del convenio y de la tarifa en bd y lo editamos en el objeto factura
+                    int idRealDelParqSeleccionado = parqControla.consultarIdParqueadero(parqSeleccionado.getNombre());
+                    facturaAActualizar.setId_parqueadero(idRealDelParqSeleccionado);
+                    
+                    //Liberamos el parqueadero en donde estaba el vehiculo analizado y ocupamos el seleccionado para el vehiculo ingresado
+                    parqControla.liberarParqueadero(placa_back);
+                    parqControla.actualizarEstadoDeParqueadero(placa, dueño, idRealDelParqSeleccionado, "Si");
+                     
+                }                
+                
+                //El vehiculo analizado ya existe en el sistema pero el ingresado es desconocido
+                if(vehiculoDelBackupExiste == true && ingresoDesconocido == true){
+                    
+                    parqSeleccionado = (Parqueadero)cmb_parqVisitantes.getSelectedItem();
+                             
+                    //Validamos el verdadero id del convenio y de la tarifa en bd
+                    int idRealDelParqSeleccionado = parqControla.consultarIdParqueadero(parqSeleccionado.getNombre());
+                    facturaAActualizar.setId_parqueadero(idRealDelParqSeleccionado);
+                            
+                    //Cambiamos los estados de los parqueaderos para los vehiculos registrados involucrados
+                    parqControla.actualizarEstadoDeParqueadero(placa_back, propietario_back, facturaAEditar.getId_parqueadero(), "No");
+                    parqControla.actualizarEstadoDeParqueadero(placa, dueño, idRealDelParqSeleccionado, "Si");
+                    
+                }               
+                
+                //El vehiculo analizado no existe en el sistema pero el ingresado es conocido
+                else if(vehiculoDelBackupExiste == false && ingresoDesconocido == false){
+                    
+                    //Modificamos el id del parqueadero por el del vehiculo ingresado en el objeto factura
+                    facturaAActualizar.setId_parqueadero(parqControla.consultarIdParqueadero(no_parq));
+                    
+                    //Liberamos el parqueadero en donde estaba el vehiculo analizado y ocupamos el seleccionado para el vehiculo ingresado
+                    parqControla.liberarParqueadero(placa_back);
+                    parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(no_parq), "Si");
+                }
+                
+                facturaAActualizar.setFacturadoPor(usuario);
+                facturaAActualizar.setId_convenio(idRealDelConvenioSeleccionado);
+                facturaAActualizar.setId_tarifa(idRealDeTarifaSeleccionada);
+
+                //Actualizamos la factura
+                facturaControla.actualizarFacturaIngreso(facturaAActualizar);
+
+                //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar facturas
+                Object Fila[] = new Object[4];
+                Fila[0] = codigo_factura;
+                Fila[1] = facturaControla.fecha_de_factura();
+                Fila[2] = usuario;
+                Fila[3] = "0";
+
+                for(int i=0; i < tablafacturas.getColumnCount(); i++){
+                    modelo.setValueAt(Fila[i], filas, i);
+                }
+
+                JOptionPane.showMessageDialog(null, "Factura actualizada satisfactoriamente.");
+                this.dispose();
+                new InformacionFacturaIngreso().setVisible(true);
+                
             }else{
-                parqControla.actualizarInfoDePropietarioEnParqueadero(placa, dueño, no_parq);
+                JOptionPane.showMessageDialog(null, "Presione la tecla F1 para continuar.");
+                txt_placa.requestFocus();
             }
-                                               
-            JOptionPane.showMessageDialog(null, "Factura actualizada satisfactoriamente.");
-            this.dispose();
-            new InformacionFacturaIngreso().setVisible(true);
             
         }else{
             JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
@@ -397,7 +510,8 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 6;
-        if(txt_placa.getText().length()== numeroCaracteres){
+        char validar = evt.getKeyChar();
+        if(txt_placa.getText().length()== numeroCaracteres && !Character.isISOControl(validar)){
             evt.consume();
             JOptionPane.showMessageDialog(null,"Solo 6 caracteres");
         }
@@ -406,37 +520,35 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         char c=evt.getKeyChar();
         if(Character.isLowerCase(c)){
             evt.setKeyChar(Character.toUpperCase(c));  
-        }
+        }     
     }//GEN-LAST:event_txt_placaKeyTyped
 
     private void txt_placaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusLost
-        validacionesAntesDeActualizar();
+      
     }//GEN-LAST:event_txt_placaFocusLost
 
     private void txt_placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_placaKeyPressed
-
+        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
+            recargarInfoOriginal();
+            seRealizaronValidaciones = false;
+            ingresoDesconocido = false;
+        }
+        
+        if(evt.getKeyCode() == KeyEvent.VK_F1){
+            String placa = txt_placa.getText();
+            if(!placa.equals(placa_back)){
+                validacionesAntesDeActualizar();
+            }
+            seRealizaronValidaciones = true;
+        }
     }//GEN-LAST:event_txt_placaKeyPressed
 
     private void cmb_tipVehiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tipVehiItemStateChanged
         
-        String tipVehi_string = (String)cmb_tipVehi.getSelectedItem();
-            
-        if(tipVehi_string.equals("Seleccione")){
-            cmb_convenios.setSelectedIndex(0);
-            cmb_tarifas.setSelectedIndex(0);
-
-        } else if(tipVehi_string.equals("AUTOMOVIL")){
-            cmb_convenios.setSelectedIndex(1);
-            cmb_tarifas.setSelectedIndex(2);
-
-        } else if(tipVehi_string.equals("MOTO")){
-            cmb_convenios.setSelectedIndex(1);
-            cmb_tarifas.setSelectedIndex(3);
-        }
     }//GEN-LAST:event_cmb_tipVehiItemStateChanged
 
     private void txt_propietarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyPressed
-      
+        
     }//GEN-LAST:event_txt_propietarioKeyPressed
 
     private void txt_propietarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyTyped
@@ -461,12 +573,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     }//GEN-LAST:event_txt_placaKeyReleased
 
     private void cmb_conveniosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_conveniosItemStateChanged
-        
-       int convenio_escogido = cmb_convenios.getSelectedIndex();
-                 
-        if(convenio_escogido == 0){
-            cmb_convenios.setSelectedIndex(1);
-        }
+       
     }//GEN-LAST:event_cmb_conveniosItemStateChanged
 
     private void cmb_conveniosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_conveniosActionPerformed
@@ -474,17 +581,20 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     }//GEN-LAST:event_cmb_conveniosActionPerformed
 
     private void cmb_tarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tarifasItemStateChanged
-        
-        int tarifa_escogida = cmb_tarifas.getSelectedIndex();
-                 
-        if(tarifa_escogida == 0){
-            cmb_tarifas.setSelectedIndex(1);
-        } 
+       
     }//GEN-LAST:event_cmb_tarifasItemStateChanged
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         cerrarEdicionDeFacturaIngreso();
     }//GEN-LAST:event_formWindowClosing
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+    }//GEN-LAST:event_formKeyPressed
+
+    private void cmb_parqVisitantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_parqVisitantesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_parqVisitantesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -555,6 +665,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizar;
     private javax.swing.JComboBox<String> cmb_convenios;
+    public static javax.swing.JComboBox<String> cmb_parqVisitantes;
     private javax.swing.JComboBox<String> cmb_tarifas;
     private javax.swing.JComboBox<String> cmb_tipVehi;
     private javax.swing.JLabel jLabel2;
@@ -607,13 +718,13 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     
         String placa = txt_placa.getText();
         
-        if(placa.length() < 6){
-            JOptionPane.showMessageDialog(null, "Placa no valida.");
+        if(placa.length() > 0 && placa.length() < 6){
+            JOptionPane.showMessageDialog(null, "Placa no válida.");
             txt_placa.setText(placa_back);
         }else{
-            vehiculoPreviamenteRegistrado = vehiControla.evaluarExistenciaDelVehiculo(placa);
+            boolean vehiculoYaExisteEnSistema = vehiControla.evaluarExistenciaDelVehiculo(placa);
              
-            if(vehiculoPreviamenteRegistrado == true){
+            if(vehiculoYaExisteEnSistema == true){
                  
                 String botones[] = {"Si", "No"};
                 int eleccion = JOptionPane.showOptionDialog(this, "La placa ingresada corresponde a un vehiculo previamente registrado en el sistema ¿Desea continuar?", "Mensaje", 0, 3, null, botones, this);
@@ -632,19 +743,98 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                         txt_propietario.setText(infoVehiculo.getPropietario());
                         cmb_tipVehi.setSelectedItem(infoVehiculo.getClase());
                         lbl_noParq.setText(parqControla.consultarNombreDeParqueaderoMedianteID(infoVehiculo.getId_parqueadero()));
-                        cmb_convenios.setSelectedIndex(infoVehiculo.getId_convenio());
-                        cmb_tarifas.setSelectedIndex(infoVehiculo.getId_tarifa());
-
-                        txt_placa.setEnabled(false);
-                        txt_propietario.setEnabled(false);
+                        cmb_convenios.setSelectedIndex(buscarConvenioEnComboBox(convControla.consultarNombreDeConvenioMedianteID(infoVehiculo.getId_convenio())));
+                        cmb_tarifas.setSelectedIndex(buscarTarifaEnComboBox(tarifaControla.consultarNombreDeTarifaMedianteID(infoVehiculo.getId_tarifa())));
+                        
+                        txt_placa.setEditable(false);
+                        txt_propietario.setEditable(false);
                         cmb_tipVehi.setEnabled(false);
+                        lbl_noParq.setVisible(true);
+                        cmb_parqVisitantes.setEnabled(false);
                         cmb_convenios.setEnabled(false);
                         cmb_tarifas.setEnabled(false);
                     }
                 }else{
-                    txt_placa.setText("");
+                    txt_placa.setText(placa_back);
+                    seRealizaronValidaciones = false;
+                }
+            
+            }else{
+                //Validamos si el vehiculo tiene una factura previa en estado abierto
+                boolean vehiculoTieneFacturaAbiertaPrevia = vehiControla.consultarSiVehiculoTieneFacturasAbiertas(placa);
+                    
+                if(vehiculoTieneFacturaAbiertaPrevia == true){
+                    JOptionPane.showMessageDialog(null, "El vehiculo ya tiene un proceso de facturación previo.");
+                    txt_placa.setText(placa_back);
+                }else{
+                    
+                    JOptionPane.showMessageDialog(null, "Vehiculo desconocido.");
+                    ingresoDesconocido = true;
+                    parqControla.ejecutarHiloParqueaderosVisitantesDisponibles();
+                    txt_propietario.setText("");
+                    cmb_tipVehi.setSelectedIndex(0);
+                    lbl_noParq.setText("");
+                    lbl_noParq.setVisible(false);
+                    cmb_parqVisitantes.setVisible(true);
+                    cmb_convenios.setSelectedIndex(0);
+                    cmb_tarifas.setSelectedIndex(0);
+
+                    txt_placa.setEditable(true);
+                    txt_propietario.setEditable(true);
+                    cmb_tipVehi.setEnabled(true);
+                    cmb_convenios.setEnabled(true);
+                    cmb_tarifas.setEnabled(true);
                 }
             }   
         }  
+    }
+    
+     //Metodo que se encarga de recargar la informacion original de la factura
+    public void recargarInfoOriginal(){
+        
+        txt_placa.setText(placa_back);
+        txt_propietario.setText(propietario_back);
+        cmb_tipVehi.setSelectedItem(tipVehi_back);
+        lbl_noParq.setText(noParq_back);
+        cmb_convenios.setSelectedIndex(buscarConvenioEnComboBox(convControla.consultarNombreDeConvenioMedianteID(convenioBack)));
+        cmb_tarifas.setSelectedIndex(buscarTarifaEnComboBox(tarifaControla.consultarNombreDeTarifaMedianteID(tarifaBack)));
+        cmb_parqVisitantes.setVisible(false);
+        lbl_noParq.setVisible(true);
+        
+       if(vehiculoDelBackupExiste == true){
+            txt_propietario.setEditable(false);
+            cmb_tipVehi.setEnabled(false);
+            cmb_convenios.setEnabled(false);
+            cmb_tarifas.setEnabled(false);
+            lbl_noParq.setVisible(true);
+        }
+    }
+    
+    //Metodo que se encarga de buscar una tarifa en el combobox mediante su id
+    public int buscarTarifaEnComboBox(String nom_tarifa){
+        //Iteramos el combobox en busca del nomTarifa que tiene la factura previamente registrada para asi obtener su verdadero id
+        int idVerdaderoDeTarif = 0;
+        int tamañoArregloTarifas = Tarifa.listadoNombresTarifa.size();
+        for(int i=0; i<tamañoArregloTarifas; i++){
+           String nomTarif = Tarifa.listadoNombresTarifa.get(i);
+           if(nom_tarifa.equals(nomTarif)){
+               idVerdaderoDeTarif = (tamañoArregloTarifas - i) - 1;
+           }
+        }
+        return idVerdaderoDeTarif;
+    }
+    
+    //Metodo que se encarga de buscar un convenio en el combobox mediante su id
+    public int buscarConvenioEnComboBox(String nom_convenio){
+        //Iteramos el combobox en busca del nomConvenio que tiene la factura previamente registrada para asi obtener su verdadero id
+        int idVerdaderoDelConv = 0;
+        int tamañoArregloConvenios = Convenio.listadoNombresConvenio.size();
+        for(int i=0; i<tamañoArregloConvenios; i++){
+           String nomConv = Convenio.listadoNombresConvenio.get(i);
+           if(nom_convenio.equals(nomConv)){
+               idVerdaderoDelConv = (tamañoArregloConvenios - i) - 1;
+           }
+        }
+        return idVerdaderoDelConv;
     }
 }

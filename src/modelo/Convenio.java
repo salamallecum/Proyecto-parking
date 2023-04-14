@@ -26,20 +26,7 @@ public class Convenio{
     private final Logger log = Logger.getLogger(Convenio.class);
     private URL url = Convenio.class.getResource("Log4j.properties");
     
-     public static ArrayList<String> listadoNombresConvenio = new ArrayList<String>();
-
-    //Constructor
-    public Convenio(int id, String nombre, String monto, String frecuencia) {
-        this.id = id;
-        this.nombre = nombre;
-        this.monto = monto;
-        this.frecuencia = frecuencia;
-    }
-
-    public Convenio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+     public static ArrayList<String> listadoNombresConvenio = new ArrayList<String>(); 
     
     public int getId() {
         return id;
@@ -92,16 +79,10 @@ public class Convenio{
         
         try{
            pst3 = cn3.prepareStatement("select Id_convenio, Nombre_convenio from convenios "); 
-           rs3 = pst3.executeQuery();
-           
-           dat = new Convenio(0, "", "", "");
-           dat.setId(0);
-           dat.setNombre("Seleccione");
-           datos.add(dat);
-           
+           rs3 = pst3.executeQuery();        
                      
            while(rs3.next()){
-               dat = new Convenio(0, "", "", "");
+               dat = new Convenio();
                dat.setId(rs3.getInt("Id_convenio"));
                dat.setNombre(rs3.getString("Nombre_convenio"));
                datos.add(dat);

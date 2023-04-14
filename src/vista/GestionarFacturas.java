@@ -43,7 +43,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
-        
+                
         if(idCierre != 1){
             facturaControla.cargarFacturasDeUnCierre(idCierre);
         }else{

@@ -75,15 +75,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
         lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaAbiertaConsultada.getId_convenio()));
         lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaAbiertaConsultada.getId_tarifa()));
         lbl_horaIngreso.setText(facturaAbiertaConsultada.getFechaDeIngresoVehiculo());
-                
-        //Consultamos el propietario con el fin de ver si se encuentra registrado, de ser asi, deshabilitamos el boton de edición de factura
-        boolean vehiculoRegistradoEnSistema = vehiControlador.evaluarExistenciaDelVehiculo(lbl_placa.getText());
-        
-        if(vehiculoRegistradoEnSistema == true){
-            btn_editar.setEnabled(false);
-        }else{
-            btn_editar.setEnabled(true);
-        }
+               
     }
     
     @Override

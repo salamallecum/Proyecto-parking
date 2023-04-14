@@ -36,8 +36,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     int Fila;
     
     Factura facturaALiquidar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
-    Tarifa tarifaACobrar = new Tarifa(0, "", "", "", "", "", "", "", "", "", ""); 
-    Convenio convenioAAplicar = new Convenio(0, "", "", "");
+    Tarifa tarifaACobrar = new Tarifa(); 
+    Convenio convenioAAplicar = new Convenio();
     String montoAPagarParaCalculoPago = "";
     String vueltas = "";
     

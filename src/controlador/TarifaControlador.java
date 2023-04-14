@@ -21,7 +21,7 @@ import static vista.GestionarTarifas.table_listaTarifas;
  */
 public class TarifaControlador {
     
-    Tarifa tarifaConsultada = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
+    Tarifa tarifaConsultada = new Tarifa();
     
     private final Logger log = Logger.getLogger(TarifaControlador.class);
     private URL url = TarifaControlador.class.getResource("Log4j.properties");
@@ -144,7 +144,7 @@ public class TarifaControlador {
      //Metodo que trae un objeto de tipo tarifa con los atributos para su edición o eliminacion
     public Tarifa traerUnaTarifaAlFormulario(String nomTarifa){
         
-        Tarifa tarifaRescatada = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
+        Tarifa tarifaRescatada = new Tarifa();
         PreparedStatement ps1 = null;
         try{
             Connection cn1 = Conexion.conectar();          

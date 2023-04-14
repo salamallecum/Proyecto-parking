@@ -56,8 +56,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     
     //Declaramos los objetos  y se los aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
-    Convenio conv = new Convenio(0, "", "", "");
-    Tarifa tarif = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
+    Convenio conv = new Convenio();
+    Tarifa tarif = new Tarifa();
     
     //Variables boton editar
     String parqueaderoActual;
@@ -567,7 +567,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     //Metodo del boton ingresar
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
         
-        int clase_cmb, parqueadero_cmb, convenio_cmb, tarifa_cmb, validacion = 0;
+        int clase_cmb, parqueadero_cmb, validacion = 0;
         String placa, dueño, clase_string = "";
         Parqueadero parqSeleccionado = new Parqueadero();
                 
@@ -575,8 +575,13 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         dueño = txt_propietario.getText().trim();
         clase_cmb = cmb_clase.getSelectedIndex();
         parqueadero_cmb = cmb_parqueaderos.getSelectedIndex();
-        convenio_cmb = cmb_convenios.getSelectedIndex();
-        tarifa_cmb = cmb_tarifa.getSelectedIndex();
+        
+        Convenio convSeleccionado = new Convenio();
+        Tarifa tarifSeleccionada = new Tarifa();     
+        
+        convSeleccionado = (Convenio)cmb_convenios.getSelectedItem();
+        tarifSeleccionada = (Tarifa)cmb_tarifa.getSelectedItem();
+        
         vehiculoEnParqueadero = check_estaVehiculoEnParqueadero.isSelected();
         String vehiculoEstaEnParqueo = "";
         
@@ -609,17 +614,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             cmb_parqueaderos.setBackground(Color.red);
             validacion++;
         }
-        
-        if(convenio_cmb==0){
-            cmb_convenios.setBackground(Color.red);
-            validacion++;
-        }
-        
-        if(tarifa_cmb==0){
-            cmb_tarifa.setBackground(Color.red);
-            validacion++;
-        }
-              
+                      
         if(txt_placa.getText().length() < minimoCaracteres){
             txt_placa.setBackground(Color.red);
             JOptionPane.showMessageDialog(null,"Placa no válida.");
@@ -657,6 +652,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             cmb_parqueaderos.setSelectedIndex(0);
             validacion++;
         } 
+        
+         //Validamos el verdadero id del convenio y de la tarifa en bd
+        int idRealDelConvenioSeleccionado = convenioControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
+        int idRealDeTarifaSeleccionada = tarifaControla.consultarIdDeunaTarifa(tarifSeleccionada.getNombreTarifa());
              
         if(validacion == 0 ){
                      
@@ -666,8 +665,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             nuevoVehiculo.setPropietario(dueño);
             nuevoVehiculo.setClase(clase_string);
             nuevoVehiculo.setId_parqueadero(idRealDelParqueaderoSeleccionado);
-            nuevoVehiculo.setId_convenio(convenio_cmb);
-            nuevoVehiculo.setId_tarifa(tarifa_cmb); 
+            nuevoVehiculo.setId_convenio(idRealDelConvenioSeleccionado);
+            nuevoVehiculo.setId_tarifa(idRealDeTarifaSeleccionada); 
             nuevoVehiculo.setEstaEnParqueadero(vehiculoEstaEnParqueo);
             
             //Evaluamos si el vehiculo tiene factura abierta
@@ -678,7 +677,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 
                 if(vehiculoConFctraAbierta == true){
                     int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);                    
-                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, clase_string, idRealDelParqueaderoSeleccionado, convenio_cmb, tarifa_cmb);
+                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, clase_string, idRealDelParqueaderoSeleccionado, idRealDelConvenioSeleccionado, idRealDeTarifaSeleccionada);
                     
                     //Validamos si el parqueadero utilizado por el vehiculo antes de registrarse en el sistema es igual al ingresado por caja
                     int idDelParqDelVehiculoAntesDeSerRegistrado = vehicontrolador.consultarIdParqQueOcupaUnVehiculo(placa);
@@ -700,8 +699,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                     nuevaFactura.setFacturadoPor(user);
                     nuevaFactura.setEstadoDeFactura("Abierta");
                     nuevaFactura.setEstaContabilizada("No");
-                    nuevaFactura.setId_convenio(convenio_cmb);
-                    nuevaFactura.setId_tarifa(tarifa_cmb);
+                    nuevaFactura.setId_convenio(idRealDelConvenioSeleccionado);
+                    nuevaFactura.setId_tarifa(idRealDeTarifaSeleccionada);
                     nuevaFactura.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
                     nuevaFactura.setId_cierre(1);
 
@@ -712,7 +711,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             }else{
                 if(vehiculoConFctraAbierta == true){
                     int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);
-                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, clase_string, idRealDelParqueaderoSeleccionado, convenio_cmb, tarifa_cmb);
+                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, clase_string, idRealDelParqueaderoSeleccionado, idRealDelConvenioSeleccionado, idRealDeTarifaSeleccionada);
                     
                     //Validamos si el parqueadero utilizado por el vehiculo antes de registrarse en el sistema es igual al ingresado por caja
                     int idDelParqDelVehiculoAntesDeSerRegistrado = vehicontrolador.consultarIdParqQueOcupaUnVehiculo(placa);
@@ -736,8 +735,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             fila[1] = dueño;
             fila[2] = clase_string;
             fila[3] = parqSeleccionado.getNombre();
-            fila[4] = convenioControla.consultarNombreDeConvenioMedianteID(convenio_cmb);
-            fila[5] = tarifaControla.consultarNombreDeTarifaMedianteID(tarifa_cmb);
+            fila[4] = convSeleccionado.getNombre();
+            fila[5] = tarifSeleccionada.getNombreTarifa();
             modelo.addRow(fila);
                         
             JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.");
@@ -944,20 +943,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     }//GEN-LAST:event_cmb_tarifaFocusGained
 
     private void cmb_claseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_claseItemStateChanged
-        String tipVehi_string = (String)cmb_clase.getSelectedItem();
-            
-        if(tipVehi_string.equals("Seleccione")){
-            cmb_convenios.setSelectedIndex(0);
-            cmb_tarifa.setSelectedIndex(0);
-
-        } else if(tipVehi_string.equals("AUTOMOVIL")){
-            cmb_convenios.setSelectedIndex(1);
-            cmb_tarifa.setSelectedIndex(2);
-
-        } else if(tipVehi_string.equals("MOTO")){
-            cmb_convenios.setSelectedIndex(1);
-            cmb_tarifa.setSelectedIndex(3);
-        }
+        
     }//GEN-LAST:event_cmb_claseItemStateChanged
 
     private void check_estaVehiculoEnParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_estaVehiculoEnParqueaderoActionPerformed
@@ -1039,6 +1025,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
             DefaultComboBoxModel modeloConv = new DefaultComboBoxModel(conv.mostrarConveniosDisponibles());
             cmb_convenios.setModel(modeloConv);
+            conv.almacenarNombresConvenio();
 
             try{
                 ct1.sleep(60000);
@@ -1049,6 +1036,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
             DefaultComboBoxModel modeloTarif = new DefaultComboBoxModel(tarif.mostrarTarifasDisponibles());
             cmb_tarifa.setModel(modeloTarif);
+            tarif.almacenarNombresTarifa();
 
             try{
                 ct2.sleep(60000);

@@ -49,22 +49,21 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txt_propietario" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lbl_noParq" alignment="0" max="32767" attributes="0"/>
                           <Component id="cmb_convenios" alignment="0" max="32767" attributes="0"/>
                           <Component id="cmb_tarifas" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lbl_diferencia" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txt_placa" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
-                                  <Component id="cmb_tipVehi" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
-                                  <Component id="lbl_fechaIngreso" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lbl_fechaSalida" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lbl_totalAPagar" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="0" pref="104" max="32767" attributes="0"/>
+                          <Component id="lbl_diferencia" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="txt_placa" alignment="0" min="-2" pref="93" max="-2" attributes="0"/>
+                          <Component id="cmb_tipVehi" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
+                          <Component id="lbl_fechaIngreso" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_fechaSalida" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_totalAPagar" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="lbl_noParq" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="cmb_parqVisitantesFinal" min="-2" pref="235" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="lbl_imgEditUsuario" min="-2" pref="163" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
@@ -72,22 +71,21 @@
                       <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                       <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="lbl_cambio" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="btn_estimarTarifa" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="btn_actualizar" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lbl_cambio" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="259" pref="259" max="-2" attributes="0"/>
-                      <Component id="btn_actualizar" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="180" pref="180" max="-2" attributes="0"/>
-                      <Component id="txt_efectivo" min="-2" pref="129" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <EmptySpace min="180" pref="180" max="-2" attributes="0"/>
+              <Component id="txt_efectivo" min="-2" pref="129" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -116,10 +114,11 @@
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cmb_tipVehi" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lbl_noParq" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmb_parqVisitantesFinal" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -164,7 +163,10 @@
                   <Component id="lbl_cambio" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-              <Component id="btn_actualizar" min="-2" pref="46" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btn_actualizar" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
+                  <Component id="btn_estimarTarifa" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -314,7 +316,9 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txt_efectivo">
       <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_efectivoActionPerformed"/>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_efectivoKeyPressed"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_efectivoKeyTyped"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">
@@ -357,7 +361,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lbl_noParq">
       <Properties>
-        <Property name="text" type="java.lang.String" value="num_parqueadero"/>
+        <Property name="text" type="java.lang.String" value="num"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbl_fechaSalida">
@@ -388,6 +392,35 @@
         </Property>
         <Property name="text" type="java.lang.String" value="diferencia"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btn_estimarTarifa">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/calculator-icon_34473.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Estimar tarifa"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Cursor de Mano"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_estimarTarifaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmb_parqVisitantesFinal">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+        <Property name="autoscrolls" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmb_parqVisitantesFinalActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

@@ -29,7 +29,7 @@ import static vista.PanelCaja.table_operacionParqueadero;
  *
  * @author ALEJO
  */
-public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
+public class ArqueoDeCaja extends javax.swing.JFrame {
     
     int baseDeCajaInt = 0;
     
@@ -72,13 +72,9 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
     int montoEnMonedasDe50 = 0; 
       
     Arqueo nuevoArqueo = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
-    Parqueadero parq = new Parqueadero();
     FacturaControlador facturaControla = new FacturaControlador();
     ArqueoControlador arqueoControla = new ArqueoControlador();
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
-    
-    //Hilos que mantienen el actualizadas las facturas y el estado del parqueadero en tiempo real
-    Thread hilo1 = new Thread(this);
     
     private final Logger log = Logger.getLogger(ArqueoDeCaja.class);
     private URL url = ArqueoDeCaja.class.getResource("Log4j.properties");
@@ -963,7 +959,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
 
                    laCajaFueAbierta = true;
                    
-                   hilo1.start();
+                   parqControlador.ejecutarHiloParqueaderosVisitantesDisponibles();
                    facturaControla.ejecutarHiloOperacionparqueadero();
 
                    //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
@@ -1604,25 +1600,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame implements Runnable {
         txt_numMonedas100pesos.setBackground(Color.WHITE);
         txt_numMonedas50pesos.setBackground(Color.WHITE);
     }
-    
-    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero en tiempo real    
-    @Override
-    public void run() {
-        Thread ct = Thread.currentThread();
-
-        while(ct == hilo1){
-
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
-            cmb_numParqueadero.setModel(modeloParq);
-
-            try{
-                ct.sleep(100000);
-            }catch(InterruptedException e){
-                log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos disponibles en combobox panelCaja: " + e); 
-            }
-        }
-    }
-    
+        
     //Metodo que se invoca al cerrar el arqueo de caja
     private void cerrarArqueoDeCaja(){
         

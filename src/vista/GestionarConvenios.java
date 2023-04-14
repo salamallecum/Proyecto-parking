@@ -27,8 +27,8 @@ public class GestionarConvenios extends javax.swing.JFrame {
     int FilaAnterior;
     
     ConvenioControlador convenioControla = new ConvenioControlador();
-    Convenio nuevoConvenio = new Convenio(0, "", "", "");
-    Convenio editConvenio = new Convenio(0, "", "", "");
+    Convenio nuevoConvenio = new Convenio();
+    Convenio editConvenio = new Convenio();
     
     private final Logger log = Logger.getLogger(GestionarConvenios.class);
     private URL url = GestionarConvenios.class.getResource("Log4j.properties");

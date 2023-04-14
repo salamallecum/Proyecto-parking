@@ -91,16 +91,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
             lbl_efectivo.setText(facturaCerradaConsultada.getEfectivo());
             lbl_dineroCambio.setText(facturaCerradaConsultada.getCambio());
         }
-        
-        //Consultamos el propietario con el fin de ver si se encuentra registrado, de ser asi, deshabilitamos el boton de edición de factura
-        boolean vehiculoRegistradoEnSistema = vehiControlador.evaluarExistenciaDelVehiculo(lbl_placa.getText());
-        
-        if(vehiculoRegistradoEnSistema == true){
-            btn_editar.setEnabled(false);
-        }else{
-            btn_editar.setEnabled(true);
-        }
-        
+                
         if(lbl_horaIngreso.getText().equals("Registro 1er vez en sistema.")){
             btn_eliminar.setEnabled(false);
         }else{
@@ -390,6 +381,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         
         int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        String placa = lbl_placa.getText();
         
         if(decision == JOptionPane.YES_OPTION){    
             
@@ -398,8 +390,8 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
                 facturaControla.descontarFacturaDeUnCierre(factura_actualizada);
                 facturaControla.borrarFactura(factura_actualizada);
           
-            }else if(factContabilizada == false){
-                facturaControla.borrarFactura(factura_actualizada);
+            }else{
+                facturaControla.borrarFactura(factura_actualizada);                
             }
             
             int filaSelec = tablaOperacionFacturas.getSelectedRow();

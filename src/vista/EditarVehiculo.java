@@ -64,8 +64,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
         
     //Declaramos los objetos  y se los aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
-    Convenio conv = new Convenio(0, "", "", "");
-    Tarifa tarif = new Tarifa(0, "", "", "", "", "", "", "", "", "", "");
+    Convenio conv = new Convenio();
+    Tarifa tarif = new Tarifa();
       
     private final Logger log = Logger.getLogger(EditarVehiculo.class);
     private URL url = EditarVehiculo.class.getResource("Log4j.properties");
@@ -142,7 +142,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         for(int i=0; i<tamañoArregloConvenios; i++){
            String nomConv = Convenio.listadoNombresConvenio.get(i);
            if(nom_convenio.equals(nomConv)){
-               idVerdaderoDelConv = tamañoArregloConvenios - i;
+               idVerdaderoDelConv = (tamañoArregloConvenios - i) - 1;
            }
         }
            
@@ -158,12 +158,12 @@ public class EditarVehiculo extends javax.swing.JFrame{
         for(int i=0; i<tamañoArregloTarifas; i++){
            String nomTarifa = Tarifa.listadoNombresTarifa.get(i);
            if(nom_tarifa.equals(nomTarifa)){
-               idVerdaderoDeTarifa = tamañoArregloTarifas - i;
+               idVerdaderoDeTarifa = (tamañoArregloTarifas - i) - 1;
            }
         }       
         
         cmb_tarifas.setSelectedIndex(idVerdaderoDeTarifa);
-
+        
         elVehiculoEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(vehiculo_actualizado);
         
         if(elVehiculoEstaEnParqueadero){
@@ -379,19 +379,22 @@ public class EditarVehiculo extends javax.swing.JFrame{
         String placa, dueño = "";
         String tipoVehi_string="";
         Parqueadero parqSeleccionado = new Parqueadero();
+        Convenio convSeleccionado = new Convenio();
+        Tarifa tarifSeleccionada = new Tarifa();
         
         placa = txt_placa.getText().trim();
         dueño = txt_dueño.getText().trim();
         tipVehi_cmb = cmb_clase.getSelectedIndex();
         int parqueadero_cmb = cmb_noParqueadero.getSelectedIndex();
-        int convenio_cmb = cmb_convenios.getSelectedIndex();
-        int tarifa_cmb = cmb_tarifas.getSelectedIndex();
+        
         boolean vehiculoEnParqueadero = check_editEstaVehiculoEnParqueadero.isSelected();
         String vehiculoEstaEnParqueo = "";
         
         //Capturamos el objeto parqueadero para validar le verdadero id en base de datos
         parqSeleccionado = (Parqueadero)cmb_noParqueadero.getSelectedItem();
-        
+        convSeleccionado = (Convenio)cmb_convenios.getSelectedItem();
+        tarifSeleccionada = (Tarifa)cmb_tarifas.getSelectedItem();
+                
         String logError = "";
                     
        int minimoCaracteres = 6;
@@ -421,17 +424,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             cmb_noParqueadero.setBackground(Color.red);
             validacion++;
         }
-        
-        if(convenio_cmb==0){
-            cmb_convenios.setBackground(Color.red);
-            validacion++;
-        }
-        
-        if(tarifa_cmb==0){
-            cmb_tarifas.setBackground(Color.red);
-            validacion++;
-        }
-              
+                     
         if(txt_placa.getText().length() < minimoCaracteres){
             txt_placa.setBackground(Color.red);
             JOptionPane.showMessageDialog(null,"Placa no válida.");
@@ -453,9 +446,11 @@ public class EditarVehiculo extends javax.swing.JFrame{
             validacion++;
         }   
         
-        //Validamos el verdadero id del parqueadero en bd
+        //Validamos el verdadero id del parqueadero, del convenio y de la tarifa en bd
         int idRealDelParqueaderoSeleccionado = parqControla.consultarIdParqueadero(parqSeleccionado.getNombre());
-                
+        int idRealDelConvenioSeleccionado = convenioControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
+        int idRealDeTarifaSeleccionada = tarifaControla.consultarIdDeunaTarifa(tarifSeleccionada.getNombreTarifa());
+                        
         boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado);
                
         if(parqueaderoEstaOcupado == true){
@@ -474,13 +469,13 @@ public class EditarVehiculo extends javax.swing.JFrame{
             vehiculoEditado.setPropietario(dueño);
             vehiculoEditado.setClase(tipoVehi_string);
             vehiculoEditado.setId_parqueadero(idRealDelParqueaderoSeleccionado);
-            vehiculoEditado.setId_convenio(convenio_cmb);
-            vehiculoEditado.setId_tarifa(tarifa_cmb); 
+            vehiculoEditado.setId_convenio(idRealDelConvenioSeleccionado);
+            vehiculoEditado.setId_tarifa(idRealDeTarifaSeleccionada); 
                        
             if(vehiculoEstaEnParqueo.equals("Si")){
                 if(elVehiculoTieneFacturaAbierta == true){
                     int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);
-                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, tipoVehi_string, idRealDelParqueaderoSeleccionado, convenio_cmb, tarifa_cmb);
+                    facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, tipoVehi_string, idRealDelParqueaderoSeleccionado, idRealDelConvenioSeleccionado, idRealDeTarifaSeleccionada);
                 
                 }else{
                     //Modelamos la factura de primer ingreso
@@ -494,8 +489,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
                     nuevaFactura.setFacturadoPor(user);
                     nuevaFactura.setEstadoDeFactura("Abierta");
                     nuevaFactura.setEstaContabilizada("No");
-                    nuevaFactura.setId_convenio(convenio_cmb);
-                    nuevaFactura.setId_tarifa(tarifa_cmb);
+                    nuevaFactura.setId_convenio(idRealDelConvenioSeleccionado);
+                    nuevaFactura.setId_tarifa(idRealDeTarifaSeleccionada);
                     nuevaFactura.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
                     nuevaFactura.setId_cierre(1);
 
@@ -511,7 +506,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                         facturaControla.eliminarFacturaAbierta(placa);
                     }else{
                         int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);
-                        facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, tipoVehi_string, idRealDelParqueaderoSeleccionado, convenio_cmb, tarifa_cmb);
+                        facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, tipoVehi_string, idRealDelParqueaderoSeleccionado, idRealDelConvenioSeleccionado, idRealDeTarifaSeleccionada);
                         vehiculoEstaEnParqueo = "Si";
                         JOptionPane.showMessageDialog(null, "El vehiculo si está en parqueadero, tiene un proceso de liquidación pendiente.");
                     }   
@@ -526,9 +521,9 @@ public class EditarVehiculo extends javax.swing.JFrame{
             fila[0] = placa;
             fila[1] = dueño;
             fila[2] = tipoVehi_string;
-            fila[3] = parqSeleccionado.getNombre();;
-            fila[4] = convenioControla.consultarNombreDeConvenioMedianteID(convenio_cmb);
-            fila[5] = tarifaControla.consultarNombreDeTarifaMedianteID(tarifa_cmb);
+            fila[3] = parqSeleccionado.getNombre();
+            fila[4] = convSeleccionado.getNombre();
+            fila[5] = tarifSeleccionada.getNombreTarifa();
             
             modelo.addRow(fila);
             modelo.removeRow(FilaAnterior);
@@ -536,6 +531,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.");
             this.dispose();  
             PanelVehiculos.hayVehiculoEnEdicion = false;
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
             
             log.info("INFO - Se ha actualizado un vehiculo en el sistema.");
             

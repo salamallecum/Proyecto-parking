@@ -346,6 +346,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                 this.dispose();
                 panelUsu.setVisible(true);
                 PanelUsuarios.btn_nuevoUsuario.setEnabled(true);
+                MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
                 
             } else {
                 JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
