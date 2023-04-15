@@ -93,8 +93,10 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         }
                 
         if(lbl_horaIngreso.getText().equals("Registro 1er vez en sistema.")){
+            btn_editar.setEnabled(false);
             btn_eliminar.setEnabled(false);
         }else{
+            btn_editar.setEnabled(true);
             btn_eliminar.setEnabled(true);
         }
     }

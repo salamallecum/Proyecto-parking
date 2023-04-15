@@ -75,7 +75,16 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
         lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaAbiertaConsultada.getId_convenio()));
         lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaAbiertaConsultada.getId_tarifa()));
         lbl_horaIngreso.setText(facturaAbiertaConsultada.getFechaDeIngresoVehiculo());
-               
+        
+        //Deshabilitamos la edicion de las facturas de primer ingreso
+        if(lbl_horaIngreso.getText().equals("1990-01-01 23:59:00.0")){
+            lbl_horaIngreso.setText("Registro 1er vez en sistema.");
+            btn_editar.setEnabled(false);
+            btn_eliminar.setEnabled(false);
+        }else{
+            btn_editar.setEnabled(true);
+            btn_eliminar.setEnabled(true);
+        }               
     }
     
     @Override
