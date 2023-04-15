@@ -165,8 +165,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
         cmb_tarifas.setSelectedIndex(idVerdaderoDeTarifa);
         
         elVehiculoEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(vehiculo_actualizado);
-        
-        if(elVehiculoEstaEnParqueadero){
+                
+        if(elVehiculoEstaEnParqueadero == true){
             check_editEstaVehiculoEnParqueadero.setSelected(true);
             estaEnParqBack = "Si";
         }else{

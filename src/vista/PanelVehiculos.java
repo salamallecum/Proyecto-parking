@@ -39,7 +39,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     int FilaAnterior;
     public static String vehiculo_update;
     public static boolean hayVehiculoEnEdicion = false;
-    public static boolean vehiculoEnParqueadero = false;
+    //public static boolean vehiculoEnParqueadero = false;
     String user = "";
     
     VehiculoControlador vehicontrolador;
@@ -570,7 +570,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int clase_cmb, parqueadero_cmb, validacion = 0;
         String placa, dueño, clase_string = "";
         Parqueadero parqSeleccionado = new Parqueadero();
-                
+                        
         placa = txt_placa.getText().trim();
         dueño = txt_propietario.getText().trim();
         clase_cmb = cmb_clase.getSelectedIndex();
@@ -582,7 +582,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         convSeleccionado = (Convenio)cmb_convenios.getSelectedItem();
         tarifSeleccionada = (Tarifa)cmb_tarifa.getSelectedItem();
         
-        vehiculoEnParqueadero = check_estaVehiculoEnParqueadero.isSelected();
+        boolean vehiculoEnParqueadero = check_estaVehiculoEnParqueadero.isSelected();
         String vehiculoEstaEnParqueo = "";
         
         //Capturamos el objeto parqueadero para validar le verdadero id en base de datos
@@ -633,7 +633,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         }else{
             vehiculoEstaEnParqueo = "No";
         }
-        
+                
         boolean vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(placa);
         
         if(vehiculoYaPreviamenteRegistrado == true){
@@ -706,6 +706,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
                     //Creamos el objeto Factura de primer ingreso
                     facturaControla.crearFactura(nuevaFactura);
+                    
+                    //Actualizamos el estado del parqueadero
+                    parqControla.actualizarEstadoDeParqueadero(placa, dueño, idRealDelParqueaderoSeleccionado, vehiculoEstaEnParqueo);
                 }
                                 
             }else{
