@@ -5,6 +5,7 @@ import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.VehiculoControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -45,6 +46,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
     ConvenioControlador convControla = new ConvenioControlador();
+    VehiculoControlador vehiControla = new VehiculoControlador();
     
     long diferenciaDeFechasEnMilisegundos;    
     
@@ -832,9 +834,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                    if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                        facturaControla.generarTicketSalida(placa, false); 
-                   }
-
-                   if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+                   }else{
                        ventanaEmergenteCopiaTicketSalida = false;
                        dispose();
                        PanelCaja.numVehiculosLiquidandose--;
@@ -860,7 +860,16 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                     facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, diferencia, dineroRecibMoney, cambio);
                     dispose();
-                    parqControla.liberarParqueadero(placa);
+                    
+                    //Evaluamos si el vehiculo se encuentra registrado en el sistema, si es asi solo pasamos el estado parqueadero a No
+                    boolean vehiculoRegistrado = vehiControla.evaluarExistenciaDelVehiculo(placa);
+                    
+                    if(vehiculoRegistrado == true){
+                        parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
+                    }else{
+                        parqControla.liberarParqueadero(placa);
+                    }
+                    
                     facturaControla.cerrarFactura(placa);
                     facturaControla.generarTicketSalida(placa, false);
 
@@ -873,9 +882,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                        if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                            facturaControla.generarTicketSalida(placa, false); 
-                       }
-
-                       if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+                       }else{
                            ventanaEmergenteCopiaTicketSalida = false;
                            dispose();
                            PanelCaja.numVehiculosLiquidandose--;

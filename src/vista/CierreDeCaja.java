@@ -1028,7 +1028,6 @@ public class CierreDeCaja extends javax.swing.JFrame{
                if(eleccionFinalizarCierre == JOptionPane.NO_OPTION){
                    ventanaEmergCopiaCierre = false;
                    dispose();
-
                    laCajaFueAbierta = false;
                    cierreControla.bloquearCaja();
                 } 

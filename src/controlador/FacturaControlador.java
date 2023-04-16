@@ -75,7 +75,9 @@ public class FacturaControlador implements Runnable {
     //Metodo que se encarga de ejecutar el hilo que detiene el hilo que muestra la operacion del parqueadero en la tabla del panel caja
     public void ejecutarHiloOperacionparqueadero(){
         ejecutarHiloOpParq = true;
-        hilo2.start();
+        if(ejecutarHiloOpParq == true){
+            hilo2.start();
+        }
     }
         
     //Metodo que permite actualizar las facturas que se encuentre abierta con la información actualizada de un vehiculo    

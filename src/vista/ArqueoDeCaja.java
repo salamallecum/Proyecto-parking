@@ -949,9 +949,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
 
                if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                    arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false); 
-               }
-
-               if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){
+               }else{
                    ventanaEmergCopiaArqueo = false;
                    dispose();
                    
@@ -972,14 +970,11 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                            if(fila_point > -1){
                                parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
 
-                                if(PanelCaja.numVehiculosLiquidandose > 0){
-                                   JOptionPane.showMessageDialog(null,"No permitido.");
-                                   
-                                }else{
-                                  PanelCaja.numVehiculosLiquidandose++;  
-                                  LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
-                                  liquidacion_vehiculo.setVisible(true);
-                                }    
+                                if(PanelCaja.numVehiculosLiquidandose == 0){
+                                    LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
+                                    liquidacion_vehiculo.setVisible(true);
+                                    PanelCaja.numVehiculosLiquidandose++;  
+                                }
                            }
                        }
                    });
