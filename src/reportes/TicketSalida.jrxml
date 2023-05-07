@@ -6,6 +6,7 @@
 	<parameter name="placa" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[SELECT
      convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
@@ -73,8 +74,8 @@ WHERE
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="7" y="6" width="35" height="41" uuid="6491b01c-b5df-4bcf-96a1-abdc0fe86c90"/>
-				<imageExpression><![CDATA["E:\\MIS PROYECTOS\\Java\\proyectos netbeans Java\\ProyectoParking\\src\\icons\\ImgTickets.jpg"]]></imageExpression>
+				<reportElement x="0" y="0" width="100" height="50" uuid="75a9970b-2c50-4ec6-bb93-ddf3e6f94fb7"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>

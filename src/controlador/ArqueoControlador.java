@@ -1,6 +1,7 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import static controlador.FacturaControlador.rutaImgTickets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -116,6 +117,7 @@ public class ArqueoControlador {
            Map parametro = new HashMap();
            parametro.clear();
            parametro.put("codigo", codigoDeArqueo);
+           parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
            
            JasperReport reporte = null;
            

@@ -3,6 +3,7 @@ package controlador;
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
 import clasesDeApoyo.Conexion;
+import static controlador.UsuarioControlador.rutaImgReporteAColor;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.FileInputStream;
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
@@ -188,6 +191,10 @@ public class ParqueaderoControlador implements Runnable{
     //Metodo que genera el reporte PDF de los parqueaderos registrados
     public void generarPDFParqueaderosRegistrados(){
         
+        //Enviamos el paramtetro con la ruta que traera la img del reporte
+        Map parametroImg = new HashMap();
+        parametroImg.put("imagen", this.getClass().getResourceAsStream(rutaImgReporteAColor));
+        
         try{
             Connection cn3 = Conexion.conectar();
 
@@ -196,7 +203,7 @@ public class ParqueaderoControlador implements Runnable{
 
             reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ListadoParqueaderos.jasper"));
 
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, null, cn3);
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametroImg, cn3);
 
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

@@ -1,6 +1,7 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import static controlador.FacturaControlador.rutaImgTickets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -159,6 +160,7 @@ public class CierreControlador {
            Map parametro = new HashMap();
            parametro.clear();
            parametro.put("codigo", codigoDeCierre);
+           parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
            
            JasperReport reporte = null;
            

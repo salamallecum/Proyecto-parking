@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[SELECT
      usuarios.`Nombres` AS usuarios_Nombres,
@@ -37,15 +38,15 @@ FROM
 				<textElement textAlignment="Center">
 					<font size="24" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sistema de Parking]]></text>
+				<text><![CDATA[MORE PARKING]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="441" y="0" width="131" height="20" uuid="2f08db85-fda8-4a87-882c-f5c3499ca7a4"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="32" y="0" width="75" height="79" uuid="83f85b90-958f-4d6b-9605-7e3c5907047d"/>
-				<imageExpression><![CDATA["E:\\MIS PROYECTOS\\Java\\proyectos netbeans Java\\ProyectoParking\\src\\icons\\ImgReporte.jpg"]]></imageExpression>
+				<reportElement x="42" y="0" width="143" height="64" uuid="c155e0d3-7cd3-4322-9253-729d090a37c9"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>

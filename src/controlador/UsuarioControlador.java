@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -40,6 +42,7 @@ public class UsuarioControlador {
        
     private final Logger log = Logger.getLogger(UsuarioControlador.class);
     private URL url = UsuarioControlador.class.getResource("/clasesDeApoyo/Log4j.properties");
+    public static String rutaImgReporteAColor = "/icons/ImgReporte.jpg";
 
     //Constructor
     public UsuarioControlador() {} 
@@ -250,6 +253,10 @@ public class UsuarioControlador {
     //Metodo que genera el reporte PDF del listado de los usuarios registrados
     public void generarReportePDFdeUsuariosRegistrados(){
         
+        //Enviamos el paramtetro con la ruta que traera la img del reporte
+        Map parametroImg = new HashMap();
+        parametroImg.put("imagen", this.getClass().getResourceAsStream(rutaImgReporteAColor));
+                
         try{
             Connection cn3 = Conexion.conectar();
 
@@ -258,7 +265,7 @@ public class UsuarioControlador {
 
             reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ListadoUsuarios.jasper")); 
             
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, null, cn3);
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametroImg, cn3);
             
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

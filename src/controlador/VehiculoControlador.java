@@ -1,6 +1,7 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import static controlador.UsuarioControlador.rutaImgReporteAColor;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -9,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -96,6 +99,10 @@ public class VehiculoControlador {
     //Metodo que genera el reporte PDF de los vehiculos registrados
     public void generarReportePDFdeVehiculosRegistrados(){
         
+        //Enviamos el paramtetro con la ruta que traera la img del reporte
+        Map parametroImg = new HashMap();
+        parametroImg.put("imagen", this.getClass().getResourceAsStream(rutaImgReporteAColor));
+        
         try{
             Connection cn3 = Conexion.conectar();
 
@@ -104,7 +111,7 @@ public class VehiculoControlador {
 
             reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ListadoVehiculos.jasper"));
 
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, null, cn3);
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametroImg, cn3);
 
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

@@ -72,6 +72,9 @@ public class PanelUsuarios extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txt_busqueda = new javax.swing.JTextField();
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(818, 229, -1, -1));
+
         btn_nuevoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/adduser.png"))); // NOI18N
         btn_nuevoUsuario.setText("Nuevo Usuario");
         btn_nuevoUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -80,6 +83,10 @@ public class PanelUsuarios extends javax.swing.JPanel {
                 btn_nuevoUsuarioActionPerformed(evt);
             }
         });
+        add(btn_nuevoUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 70, -1, 42));
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 20));
 
         Table_listaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -130,6 +137,8 @@ public class PanelUsuarios extends javax.swing.JPanel {
         Table_listaUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jScrollPane1.setViewportView(Table_listaUsuarios);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 125, 762, 330));
+
         btn_generaPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
         btn_generaPDF.setText("Generar Informe PDF");
         btn_generaPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -138,6 +147,7 @@ public class PanelUsuarios extends javax.swing.JPanel {
                 btn_generaPDFActionPerformed(evt);
             }
         });
+        add(btn_generaPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 460, -1, 46));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar por"));
 
@@ -174,48 +184,7 @@ public class PanelUsuarios extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btn_nuevoUsuario)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(591, 591, 591)
-                            .addComponent(btn_generaPDF)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 762, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap(48, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btn_nuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(199, 199, 199))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_generaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(43, Short.MAX_VALUE))))
-        );
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(482, 47, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     //Metodo del boton Generar Reporte PDF

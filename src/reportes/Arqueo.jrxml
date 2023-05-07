@@ -15,6 +15,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="31"/>
 	<parameter name="codigo" class="java.lang.String"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[SELECT codigo,
 	usuario,
@@ -206,8 +207,8 @@ WHERE codigo = $P{codigo}]]>
 				<text><![CDATA[Arqueo de caja]]></text>
 			</staticText>
 			<image>
-				<reportElement x="0" y="0" width="50" height="50" uuid="e356d741-8298-4c0c-94cc-14dbb3b843fa"/>
-				<imageExpression><![CDATA["/SistemaParking/icons/ImgTickets.jpg"]]></imageExpression>
+				<reportElement x="0" y="0" width="100" height="50" uuid="dca37b10-522d-48d6-af2a-f8d3f37c4303"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>

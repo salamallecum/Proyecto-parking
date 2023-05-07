@@ -54,6 +54,7 @@ public class FacturaControlador implements Runnable {
     private final Logger log = Logger.getLogger(FacturaControlador.class);
     private URL url = FacturaControlador.class.getResource("Log4j.properties");
     private String valorAPagarPorDiferenciaAdicional = "";   
+    public static String rutaImgTickets = "/icons/ImgTickets.jpg";
     
     Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
 
@@ -106,6 +107,7 @@ public class FacturaControlador implements Runnable {
             //Agregamos los parametros con los cuales se generara el ticket
             Map parametros = new HashMap ();
             parametros.put("placa_vehiculo", placaVehiculo);
+            parametros.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
                      
             JasperReport reporte = null;
             //String path = "src\\Reportes\\TicketIngreso.jasper";
@@ -150,7 +152,8 @@ public class FacturaControlador implements Runnable {
            Map parametro = new HashMap();
            parametro.clear();
            parametro.put("placa", placa_tick);
-
+           parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
+           
            JasperReport reporte = null;
            //String path = "src\\Reportes\\TicketSalida.jasper";
 

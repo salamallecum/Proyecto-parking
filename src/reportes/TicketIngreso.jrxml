@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="placa_vehiculo" class="java.lang.String"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[SELECT
      facturas.`Codigo` AS facturas_Codigo,
@@ -65,8 +66,8 @@ facturas.`Placa` = $P{placa_vehiculo}]]>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="1" y="1" width="45" height="59" uuid="18dc51b5-8e8a-4e92-9053-c14358a420c0"/>
-				<imageExpression><![CDATA["E:\\MIS PROYECTOS\\Java\\proyectos netbeans Java\\ProyectoParking\\src\\icons\\ImgTickets.jpg"]]></imageExpression>
+				<reportElement x="1" y="0" width="100" height="50" uuid="0f272153-d65f-414b-aa57-cc0c30f200b1"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>
