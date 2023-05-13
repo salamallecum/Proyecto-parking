@@ -15,7 +15,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="codigo" class="java.lang.String"/>
-	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[SELECT
      cierres.`Codigo` AS cierres_Codigo,
@@ -114,7 +114,7 @@ WHERE
 				<text><![CDATA[Cierre de caja]]></text>
 			</staticText>
 			<image>
-				<reportElement x="-1" y="3" width="100" height="50" uuid="84cd06e8-1a48-45dd-b9b4-53dba39c85fa"/>
+				<reportElement x="1" y="0" width="100" height="50" uuid="84cd06e8-1a48-45dd-b9b4-53dba39c85fa"/>
 				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>

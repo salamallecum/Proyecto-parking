@@ -158,6 +158,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             }
         });
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         Table_listaVehiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -209,6 +211,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         });
         jScrollPane1.setViewportView(Table_listaVehiculos);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 973, 197));
+
         btn_generarPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
         btn_generarPDF.setText("Generar Informe PDF");
         btn_generarPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -217,18 +221,23 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_generarPDFActionPerformed(evt);
             }
         });
+        add(btn_generarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 420, -1, 43));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Placa:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 3, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Propietario:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 30, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Clase:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 64, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("N° de Parqueadero:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 95, -1, -1));
 
         txt_placa.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -254,6 +263,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 txt_placaKeyTyped(evt);
             }
         });
+        add(txt_placa, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 0, 81, -1));
 
         txt_propietario.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -271,6 +281,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 txt_propietarioKeyTyped(evt);
             }
         });
+        add(txt_propietario, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 27, 314, -1));
 
         cmb_clase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO" }));
         cmb_clase.addItemListener(new java.awt.event.ItemListener() {
@@ -283,6 +294,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 cmb_claseFocusGained(evt);
             }
         });
+        add(cmb_clase, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 61, -1, -1));
 
         cmb_parqueaderos.setAutoscrolls(true);
         cmb_parqueaderos.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -290,9 +302,11 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 cmb_parqueaderosFocusGained(evt);
             }
         });
+        add(cmb_parqueaderos, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 92, 271, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Convenio:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 126, -1, -1));
 
         cmb_convenios.setAutoscrolls(true);
         cmb_convenios.addItemListener(new java.awt.event.ItemListener() {
@@ -305,6 +319,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 cmb_conveniosFocusGained(evt);
             }
         });
+        add(cmb_convenios, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 123, 271, -1));
 
         btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
         btn_ingresar.setText("Ingresar");
@@ -314,6 +329,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_ingresarActionPerformed(evt);
             }
         });
+        add(btn_ingresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 0, -1, -1));
+        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 197, 1100, 7));
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
@@ -324,6 +341,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_eliminarActionPerformed(evt);
             }
         });
+        add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 47, -1, -1));
 
         cmb_tarifa.setAutoscrolls(true);
         cmb_tarifa.addItemListener(new java.awt.event.ItemListener() {
@@ -336,9 +354,11 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 cmb_tarifaFocusGained(evt);
             }
         });
+        add(cmb_tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 154, 272, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Tarifa:");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 157, -1, -1));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar por"));
 
@@ -397,6 +417,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(695, 44, -1, -1));
+
         btn_editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-validated_40458.png"))); // NOI18N
         btn_editar.setText("Editar");
         btn_editar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -406,6 +428,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_editarActionPerformed(evt);
             }
         });
+        add(btn_editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 94, -1, -1));
 
         check_estaVehiculoEnParqueadero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         check_estaVehiculoEnParqueadero.setText("Está en parqueadero");
@@ -414,109 +437,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 check_estaVehiculoEnParqueaderoActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmb_clase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_propietario, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_placa, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmb_parqueaderos, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmb_convenios, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_ingresar)
-                    .addComponent(btn_eliminar)
-                    .addComponent(btn_editar))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(115, 115, 115))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_generarPDF)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(59, 59, 59)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(131, 131, 131)
-                            .addComponent(jLabel6)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmb_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(37, 37, 37)
-                            .addComponent(check_estaVehiculoEnParqueadero))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(52, 52, 52)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 973, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel1)
-                            .addComponent(txt_placa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(jLabel2))
-                            .addComponent(txt_propietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel3)
-                            .addComponent(cmb_clase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel4)
-                            .addComponent(cmb_parqueaderos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmb_convenios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmb_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(check_estaVehiculoEnParqueadero))
-                .addGap(21, 21, 21)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_generarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
-        );
+        add(check_estaVehiculoEnParqueadero, new org.netbeans.lib.awtextra.AbsoluteConstraints(494, 153, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_estadoParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_estadoParqueaderoActionPerformed
