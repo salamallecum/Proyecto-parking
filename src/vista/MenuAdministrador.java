@@ -492,7 +492,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         btn_vehiculos.setBackground(Color.GRAY);
         btn_parametros.setBackground(Color.WHITE);
         
-        setSize(1355,670);
+        setSize(1300,670);
         panelUsu.setVisible(false);
         panelCaja.setVisible(false);
         panelReport.setVisible(false);
