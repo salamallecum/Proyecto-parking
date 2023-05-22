@@ -39,7 +39,6 @@ public class PanelParametros extends javax.swing.JPanel {
         btn_tarifas = new javax.swing.JButton();
         btn_masParametros = new javax.swing.JButton();
         JFC_exportarBackup = new javax.swing.JFileChooser();
-        btn_exportBackup1 = new javax.swing.JButton();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -81,15 +80,6 @@ public class PanelParametros extends javax.swing.JPanel {
             }
         });
 
-        btn_exportBackup1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export.png"))); // NOI18N
-        btn_exportBackup1.setText("Generar Copia de seguridad");
-        btn_exportBackup1.setEnabled(false);
-        btn_exportBackup1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_exportBackup1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,9 +89,7 @@ public class PanelParametros extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(btn_masParametros)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_exportBackup1)
-                        .addGap(37, 37, 37)
+                        .addGap(322, 322, 322)
                         .addComponent(JFC_exportarBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
@@ -126,9 +114,7 @@ public class PanelParametros extends javax.swing.JPanel {
                         .addComponent(JFC_exportarBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btn_masParametros, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_exportBackup1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btn_masParametros, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -160,14 +146,9 @@ public class PanelParametros extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_JFC_exportarBackupActionPerformed
 
-    private void btn_exportBackup1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportBackup1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_exportBackup1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser JFC_exportarBackup;
     public static javax.swing.JButton btn_convenios;
-    private javax.swing.JButton btn_exportBackup1;
     public static javax.swing.JButton btn_masParametros;
     public static javax.swing.JButton btn_parqueaderos;
     public static javax.swing.JButton btn_tarifas;

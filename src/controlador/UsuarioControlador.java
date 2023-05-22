@@ -166,6 +166,8 @@ public class UsuarioControlador {
     //Metodo de login
     public boolean logueo(String usu, String pass){
     
+        String usuario = "";
+        String clave = "";
         String rolDeIngreso = "";
         String estaActivo = "";
         boolean login = false;
@@ -173,28 +175,39 @@ public class UsuarioControlador {
         try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                    "select Rol, Activo from usuarios where Usuario = '" + usu
+                    "select Usuario, Clave, Rol, Activo from usuarios where Usuario = '" + usu
                     + "' and Clave = '" + pass + "'");
 
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 
+                usuario = rs.getString("Usuario");
+                clave = rs.getString("Clave");
                 rolDeIngreso = rs.getString("Rol");
                 estaActivo = rs.getString("Activo");
 
-                if (rolDeIngreso.equalsIgnoreCase("Administra") && estaActivo.equalsIgnoreCase("Si")) {
-                    login = true;
-                    //Permito el ingreso al panel de administrador
-                    new MenuAdministrador().setVisible(true);
-                    log.info("INFO - El usuario Administrador: "+ usu +" se ha logueado satisfactoriamente.");
-                } else if (rolDeIngreso.equalsIgnoreCase("Usuario") && estaActivo.equalsIgnoreCase("Si")) {
-                    login = true;
-                    //Permito el ingreso al panel de usuario
-                    new MenuUsuario().setVisible(true);
-                    log.info("INFO - El usuario Operario: "+ usu +" se ha logueado satisfactoriamente.");
-                }else{
-                    login = false;
-                }
+                if(usuario.equals(usu) && clave.equals(pass)){
+                    if (rolDeIngreso.equalsIgnoreCase("Administra") && estaActivo.equalsIgnoreCase("Si")) {
+                        login = true;
+                        //Permito el ingreso al panel de administrador
+                        new MenuAdministrador().setVisible(true);
+                        log.info("INFO - El usuario Administrador: "+ usu +" se ha logueado satisfactoriamente.");
+                    } else if (rolDeIngreso.equalsIgnoreCase("Usuario") && estaActivo.equalsIgnoreCase("Si")) {
+                        login = true;
+                        //Permito el ingreso al panel de usuario
+                        new MenuUsuario().setVisible(true);
+                        log.info("INFO - El usuario Operario: "+ usu +" se ha logueado satisfactoriamente.");
+                    }else{
+                        login = false;
+                    }
+                
+                }else {
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+                    txt_usuario.setText("");
+                    txt_clave.setText("");
+                    log.warn("ADVERTENCIA - Se intentó acceder al sistema con datos erróneos");
+                }                 
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
                 txt_usuario.setText("");
