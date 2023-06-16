@@ -385,6 +385,7 @@ public class EditarUsuario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Usuario actualizado satisfactoriamente.");
             this.dispose();  
             PanelUsuarios.hayUsuarioAbierto = false;
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
 
         } else {
             JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
