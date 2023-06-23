@@ -941,7 +941,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             cmb_parqueaderos.setModel(modeloParq);
 
             try{
-                ct.sleep(60000);
+                ct.sleep(30000);
             }catch(InterruptedException e){}
         }
 
@@ -952,7 +952,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             conv.almacenarNombresConvenio();
 
             try{
-                ct1.sleep(60000);
+                ct1.sleep(30000);
             }catch(InterruptedException e){}
         }
 
@@ -963,7 +963,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             tarif.almacenarNombresTarifa();
 
             try{
-                ct2.sleep(60000);
+                ct2.sleep(30000);
             }catch(InterruptedException e){}
         }
     }       

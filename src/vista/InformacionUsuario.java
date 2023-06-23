@@ -128,7 +128,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel6.setText("Clave:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Rol:");
+        jLabel7.setText("Perfil:");
 
         lbl_nombreUsuario.setText("nombreUsuario");
 

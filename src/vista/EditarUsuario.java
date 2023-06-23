@@ -141,7 +141,7 @@ public class EditarUsuario extends javax.swing.JFrame {
         jLabel6.setText("Clave:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Rol:");
+        jLabel7.setText("Perfil:");
 
         txt_nombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -173,7 +173,7 @@ public class EditarUsuario extends javax.swing.JFrame {
             }
         });
 
-        cmb_Rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Administra", "Usuario" }));
+        cmb_Rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Administra", "Operario" }));
 
         btn_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh256_24854.png"))); // NOI18N
         btn_actualizar.setText("Actualizar");
@@ -337,7 +337,7 @@ public class EditarUsuario extends javax.swing.JFrame {
         } else if(roles_cmb == 2){
             roles_string = "Administra";
         } else if(roles_cmb == 3){
-            roles_string = "Usuario";
+            roles_string = "Operario";
         }
         
         if(activo_cmb == 1){

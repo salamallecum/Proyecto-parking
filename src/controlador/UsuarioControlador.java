@@ -192,7 +192,7 @@ public class UsuarioControlador {
                         //Permito el ingreso al panel de administrador
                         new MenuAdministrador().setVisible(true);
                         log.info("INFO - El usuario Administrador: "+ usu +" se ha logueado satisfactoriamente.");
-                    } else if (rolDeIngreso.equalsIgnoreCase("Usuario") && estaActivo.equalsIgnoreCase("Si")) {
+                    } else if (rolDeIngreso.equalsIgnoreCase("Operario") && estaActivo.equalsIgnoreCase("Si")) {
                         login = true;
                         //Permito el ingreso al panel de usuario
                         new MenuUsuario().setVisible(true);

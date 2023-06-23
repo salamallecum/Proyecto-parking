@@ -97,7 +97,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jLabel6.setText("Clave:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Rol:");
+        jLabel7.setText("Perfil:");
 
         txt_nombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -135,7 +135,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
             }
         });
 
-        cmb_Rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Administra", "Usuario" }));
+        cmb_Rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Administra", "Operario" }));
 
         btn_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
         btn_guardar.setText("Guardar");
@@ -285,7 +285,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         } else if(roles_cmb == 2){
             roles_string = "Administra";
         } else if(roles_cmb == 3){
-            roles_string = "Usuario";
+            roles_string = "Operario";
         } 
         
         if(activo_cmb == 1){
