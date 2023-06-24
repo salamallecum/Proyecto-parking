@@ -120,6 +120,9 @@ public class EditarUsuario extends javax.swing.JFrame {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
+            public void windowDeactivated(java.awt.event.WindowEvent evt) {
+                formWindowDeactivated(evt);
+            }
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -484,6 +487,10 @@ public class EditarUsuario extends javax.swing.JFrame {
         cerrarEdicionUsuario();
     }//GEN-LAST:event_formWindowClosing
 
+    private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowDeactivated
+
     /**
      * @param args the command line arguments
      */
@@ -579,6 +586,7 @@ public class EditarUsuario extends javax.swing.JFrame {
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
+            PanelUsuarios.hayUsuarioAbierto = false;
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
         }
     }
