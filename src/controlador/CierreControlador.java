@@ -78,7 +78,7 @@ public class CierreControlador {
         PanelCaja.table_operacionParqueadero.setEnabled(false);
         limpiarTablaOperacionParqueadero(PanelCaja.table_operacionParqueadero);
         factControla.detenerHiloOperacionParqueadero();
-        parqControla.detenerHiloParqueaderosVisitantesDisponibles();
+        parqControla.detenerHiloParqueaderosVisitantesDisponiblesPanelCaja();
         
     }
     

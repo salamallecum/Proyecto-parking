@@ -159,7 +159,7 @@ public class ConvenioControlador {
             ps1.setString(1, convenioAEliminar);
             ps1.execute();
 
-            JOptionPane.showMessageDialog(null, "El parqueadero: " + convenioAEliminar + " ha sido eliminado");
+            JOptionPane.showMessageDialog(null, "El convenio: " + convenioAEliminar + " ha sido eliminado");
             cn1.close();
 
         }catch(SQLException e){

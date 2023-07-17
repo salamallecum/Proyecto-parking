@@ -64,10 +64,17 @@ public class ParqueaderoControlador implements Runnable{
    VehiculoControlador vehiControlador = new VehiculoControlador();
    DefaultTableModel modeloEstadoParq;
    Parqueadero parq = new Parqueadero();
+   
+   //Variables que regulan cuando los hilos 2 y 3 se les dio start
+   boolean hilo1YaInició = false;
+   boolean hilo2YaInició = false;
+   boolean hilo3YaInició = false;
+ 
       
    private final Logger log = Logger.getLogger(ParqueaderoControlador.class);
    private URL url = ParqueaderoControlador.class.getResource("Log4j.properties");
-   public static boolean ejecutarHiloParqueaderosVisitantesDisponibles; 
+   public static boolean ejecutarHiloParqueaderosVisitantesDisponiblesEdicionFacturas; 
+   public static boolean ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja; 
    
    //Hilo encargado del cargue del listado de parqueaderos de visitantes disponibles
     public Thread hilo1 = new Thread(this);
@@ -118,17 +125,47 @@ public class ParqueaderoControlador implements Runnable{
         } 
     }
     
-    //Metodo que se encarga de detener el hilo que detiene el hilo que muestra el listado de parqueaderos de visitantes disponibles
-    public void detenerHiloParqueaderosVisitantesDisponibles(){
-        ejecutarHiloParqueaderosVisitantesDisponibles = false;
+    //Metodo que se encarga de detener los hilos que muestran el listado de parqueaderos de visitantes disponibles enlas ventanas editarFacturaIngreso y EditarFacturaFinal
+    public void detenerHilosParqueaderosVisitantesDisponiblesEdicionFacturas(){
+        ejecutarHiloParqueaderosVisitantesDisponiblesEdicionFacturas = false;
     }
     
-    //Metodo que se encarga de ejecutar el hilo que muestra el listado de parqueaderos de visitantes disponibles
-    public void ejecutarHiloParqueaderosVisitantesDisponibles(){
-        ejecutarHiloParqueaderosVisitantesDisponibles = true;
-        hilo1.start();
-        hilo2.start();
-        hilo3.start();
+    //Metodo que se encarga de detener los hilos que muestran el listado de parqueaderos de visitantes disponibles del panel caja
+    public void detenerHiloParqueaderosVisitantesDisponiblesPanelCaja(){
+        ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja = false;
+    }
+    
+    //Metodo que se encarga de ejecutar el hilo que muestra el listado de parqueaderos de visitantes disponibles del panel caja
+    public void ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja(){
+        if(hilo1YaInició == false){
+            hilo1.start();
+            ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja = true;
+            hilo1YaInició = true;
+        }else{
+           ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja = true; 
+        }  
+    }
+    
+    //Metodo que se encarga de ejecutar el hilo que muestra el listado de parqueaderos de visitantes disponibles en la ventana EditarFacturaFinal
+    public void ejecutarHiloParqueaderosVisitantesDisponiblesEditarFacturaFinal(){
+        if(hilo2YaInició == false){
+            hilo2.start();
+            ejecutarHiloParqueaderosVisitantesDisponiblesEdicionFacturas = true;
+            hilo2YaInició = true;
+        }else{
+           ejecutarHiloParqueaderosVisitantesDisponiblesEdicionFacturas = true; 
+        }  
+    }
+    
+    //Metodo que se encarga de ejecutar el hilo que muestra el listado de parqueaderos de visitantes disponibles en la ventana EditarFacturaINgreso
+    public void ejecutarHiloParqueaderosVisitantesDisponiblesEditarFacturaIngreso(){
+        if(hilo3YaInició == false){
+            hilo3.start();
+            ejecutarHiloParqueaderosVisitantesDisponiblesEdicionFacturas = true;
+            hilo3YaInició = true;
+        }else{
+           ejecutarHiloParqueaderosVisitantesDisponiblesEdicionFacturas = true; 
+        } 
     }
         
     //Cargamos la tabla de parqueaderos de la ventana gestionarParqueaderos
@@ -636,41 +673,47 @@ public class ParqueaderoControlador implements Runnable{
     //Metodo que ejecuta el hilo que trae listado de parqueaderos visitante disponibles en tiempo real    
     @Override
     public void run() {
-        Thread ct1 = Thread.currentThread();
         
-        while(ejecutarHiloParqueaderosVisitantesDisponibles == true){
-
+        Thread ct1 = Thread.currentThread();
+        Thread ct2 = Thread.currentThread();
+        Thread ct3 = Thread.currentThread();
+                
+        while(ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja == true){          
+            
             if(ct1 == hilo1){
-                //Cargamos los datos en los combobox
-                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
-                cmb_numParqueadero.setModel(modeloParq);
-                                
+            //Cargamos los datos en los combobox
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
+            cmb_numParqueadero.setModel(modeloParq);
+
                 try{
                     ct1.sleep(100000);
                 }catch(InterruptedException e){
                     log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos visitantes disponibles: " + e); 
                 }
             }
+        }    
+        
+        while(ejecutarHiloParqueaderosVisitantesDisponiblesEdicionFacturas == true){
             
-            if(ct1 == hilo2){
+            if(ct2 == hilo2){
                 //Cargamos los datos en los combobox
-                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
+                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitante());
                 cmb_parqVisitantesFinal.setModel(modeloParq);
 
                 try{
-                    ct1.sleep(100000);
+                    ct2.sleep(100000);
                 }catch(InterruptedException e){
                     log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos visitantes disponibles en edicion factura final: " + e); 
                 }
             }
             
-            if(ct1 == hilo3){
+            if(ct3 == hilo3){
                 //Cargamos los datos en los combobox
                 DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
                 cmb_parqVisitantes.setModel(modeloParq);
 
                 try{
-                    ct1.sleep(100000);
+                    ct3.sleep(100000);
                 }catch(InterruptedException e){
                     log.fatal("ERROR - Se ha producido un error al intentar cargar el listado de parqueaderos visitantes disponibles en edicion factura ingreso: " + e); 
                 }

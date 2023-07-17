@@ -1813,6 +1813,8 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
             arqueoControla.eliminarArqueo(cierreAEditar.getCodigoArqueo());
             modelo.removeRow(Fila);
             JOptionPane.showMessageDialog(null, "Cierre de caja eliminado satisfactoriamente.");
+            GestionarCierres.hayCierreAbierto = false;
+            MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
             this.dispose();
         }
     }//GEN-LAST:event_btn_eliminarCierreCajaActionPerformed

@@ -100,7 +100,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
         });
 
         btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
-        btn_ingresar.setText("Ingresar");
+        btn_ingresar.setText("Guardar");
         btn_ingresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_ingresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,7 +183,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
             }
         });
 
-        cmb_frecuencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "DIARIO", "MENSUAL", "QUINCENAL", "SEMESTRAL", "TRIMESTRAL", "ANUAL" }));
+        cmb_frecuencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "DIARIO", "SEMANAL", "QUINCENAL", "MENSUAL", "BIMESTRAL", "TRIMESTRAL", "SEMESTRAL", "ANUAL" }));
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
@@ -596,7 +596,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.");
         }else{    
             
-            int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar parqueadero", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar convenio", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             String nombreConvenio = table_listaConvenios.getValueAt(Fila, 0).toString();
             
             if(decision == JOptionPane.YES_OPTION){

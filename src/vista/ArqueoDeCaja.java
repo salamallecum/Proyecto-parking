@@ -12,14 +12,11 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Locale;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import modelo.Arqueo;
-import modelo.Parqueadero;
 import org.apache.log4j.Logger;
-import static vista.PanelCaja.cmb_numParqueadero;
 import static vista.PanelCaja.laCajaFueAbierta;
 import static vista.PanelCaja.modeloCaja;
 import static vista.PanelCaja.parqueadero_update;
@@ -954,10 +951,10 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                    dispose();
                    
                    PanelCaja.desbloquearPanel();
-
+                   MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
                    laCajaFueAbierta = true;
                    
-                   parqControlador.ejecutarHiloParqueaderosVisitantesDisponibles();
+                   parqControlador.ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja();
                    facturaControla.ejecutarHiloOperacionparqueadero();
 
                    //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla

@@ -2,6 +2,8 @@ package controlador;
 
 import clasesDeApoyo.Conexion;
 import static controlador.FacturaControlador.rutaImgTickets;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -129,6 +131,7 @@ public class ArqueoControlador {
                //Da una vista previa del ticket
                 JasperViewer view = new JasperViewer(jprint, false);
                 view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                view.setIconImage(getIconImagePDFUser());
                 view.setTitle("Ticket de arqueo de caja");
                 view.setVisible(true);
                            
@@ -149,6 +152,12 @@ public class ArqueoControlador {
            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Arqueo de Caja, revise la conexión de la impresora o contacte al administrador!!");
            log.fatal("ERROR - Se ha producido un error al intentar generar ticket de arqueo de caja de inicio de turno: " + ex);
        }
+    }
+    
+    //Metodo que agrega el icono a la ventana de reporte PDF de arqueos
+    public Image getIconImagePDFUser() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/preview.png"));
+        return retValue;
     }
 
     //Metodo que busca un arqueo teniendo en cuenta su usuario

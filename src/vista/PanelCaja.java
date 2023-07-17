@@ -210,7 +210,7 @@ public class PanelCaja extends javax.swing.JPanel{
         jScrollPane1.setViewportView(table_operacionParqueadero);
 
         btn_generarCierreDeCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/IconoFactura.png"))); // NOI18N
-        btn_generarCierreDeCaja.setText("Generar Cierre PDF");
+        btn_generarCierreDeCaja.setText("Generar cierre");
         btn_generarCierreDeCaja.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_generarCierreDeCaja.setEnabled(false);
         btn_generarCierreDeCaja.addActionListener(new java.awt.event.ActionListener() {
@@ -220,7 +220,7 @@ public class PanelCaja extends javax.swing.JPanel{
         });
 
         btn_estadoParqueadero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icoParking.png"))); // NOI18N
-        btn_estadoParqueadero.setText("Estado de Parqueadero");
+        btn_estadoParqueadero.setText("Estado de parqueadero");
         btn_estadoParqueadero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_estadoParqueadero.setEnabled(false);
         btn_estadoParqueadero.addActionListener(new java.awt.event.ActionListener() {

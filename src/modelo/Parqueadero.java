@@ -125,10 +125,49 @@ public class Parqueadero {
 
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error al cargar listado de parqueaderos disponibles, ¡Contacte al administrador!");
-            log.fatal("ERROR - Se ha producido un error al cargar listado de parqueaderos disponibles en Panel Caja: " + ex.toString());
+            log.fatal("ERROR - Se ha producido un error al cargar listado de parqueaderos disponibles en Panel Caja o ventana EditarFacturaIngreso : " + ex.toString());
         }
         return datos;
     }  
+    
+    
+    //Agrega los valores de la tabla de parqueaderos al combobox 
+    public Vector<Parqueadero> mostrarParqueaderosTipoVisitante(){
+        
+        //Traemos todoslos parqueaderos
+        PreparedStatement pst3 = null;
+        ResultSet rs3 = null;       
+        Connection cn3 = Conexion.conectar();
+        
+        Vector<Parqueadero> datos = new Vector<Parqueadero>();
+        Parqueadero dat = null;
+
+        
+        try{
+           pst3 = cn3.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'VISITANTE'"); 
+           rs3 = pst3.executeQuery();
+           
+           dat = new Parqueadero();
+           dat.setId(0);
+           dat.setNombre("Seleccione");
+           datos.add(dat);
+           
+           while(rs3.next()){
+               dat = new Parqueadero();
+               dat.setId(rs3.getInt("Id_parqueadero"));
+               dat.setNombre(rs3.getString("Nombre_parqueadero"));
+               datos.add(dat);
+           }
+
+           rs3.close();
+
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Error al cargar listado de parqueaderos disponibles, ¡Contacte al administrador!");
+            log.fatal("ERROR - Se ha producido un error al cargar listado de parqueaderos tipo visitante: " + ex.toString());
+        }
+        return datos;
+    }  
+    
     
     //Agrega los valores de la tabla de parqueaderos al combobox de la ventana de registro y edición de vehiculos
     public Vector<Parqueadero> mostrarParqueaderosTipoResidente(){

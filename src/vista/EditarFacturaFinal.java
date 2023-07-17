@@ -277,10 +277,20 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                 cmb_tarifasItemStateChanged(evt);
             }
         });
+        cmb_tarifas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmb_tarifasKeyPressed(evt);
+            }
+        });
 
         cmb_convenios.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmb_conveniosItemStateChanged(evt);
+            }
+        });
+        cmb_convenios.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmb_conveniosKeyPressed(evt);
             }
         });
 
@@ -320,6 +330,11 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         cmb_tipVehi.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmb_tipVehiItemStateChanged(evt);
+            }
+        });
+        cmb_tipVehi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmb_tipVehiKeyPressed(evt);
             }
         });
 
@@ -521,6 +536,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
             
             if(seRealizaronValidaciones == true){
                 
+                JOptionPane.showMessageDialog(null, "Validaciones realizadas satisfactoriamente.");
                 efectivo = facturaControla.agregarFormatoMoneda(efectivo);
             
                 //Encapsulamos el objeto factura a actualizar
@@ -638,19 +654,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_placaFocusLost
 
     private void txt_placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_placaKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
-            recargarInfoOriginal();
-            seRealizaronValidaciones = false;
-            ingresoDesconocido = false;
-        }
-        
-        if(evt.getKeyCode() == KeyEvent.VK_F1){
-            String placa = txt_placa.getText();
-            if(!placa.equals(placa_back)){
-                validacionesAntesDeActualizar();
-            }
-            seRealizaronValidaciones = true;
-        }
+        eventosDelFormulario(evt);
     }//GEN-LAST:event_txt_placaKeyPressed
 
     private void cmb_tipVehiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tipVehiItemStateChanged
@@ -658,7 +662,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_tipVehiItemStateChanged
 
     private void txt_propietarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyPressed
-       
+       eventosDelFormulario(evt);
     }//GEN-LAST:event_txt_propietarioKeyPressed
 
     private void txt_propietarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyTyped
@@ -723,6 +727,18 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     private void cmb_parqVisitantesFinalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_parqVisitantesFinalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmb_parqVisitantesFinalActionPerformed
+
+    private void cmb_tipVehiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_tipVehiKeyPressed
+        eventosDelFormulario(evt);
+    }//GEN-LAST:event_cmb_tipVehiKeyPressed
+
+    private void cmb_conveniosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_conveniosKeyPressed
+        eventosDelFormulario(evt);
+    }//GEN-LAST:event_cmb_conveniosKeyPressed
+
+    private void cmb_tarifasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_tarifasKeyPressed
+        eventosDelFormulario(evt);
+    }//GEN-LAST:event_cmb_tarifasKeyPressed
 
     /**
      * @param args the command line arguments
@@ -1321,7 +1337,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
             }else{                    
                 JOptionPane.showMessageDialog(null, "Vehiculo desconocido.");
                 ingresoDesconocido = true;
-                parqControla.ejecutarHiloParqueaderosVisitantesDisponibles();
+                parqControla.ejecutarHiloParqueaderosVisitantesDisponiblesEditarFacturaFinal();
                 txt_propietario.setText("");
                 cmb_tipVehi.setSelectedIndex(0);
                 lbl_noParq.setText("");
@@ -1359,14 +1375,21 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         cmb_tarifas.setEnabled(true);
         
         
-        if(vehiculoDelBackupExiste == true){
-            txt_placa.setEditable(false);
+       if(vehiculoDelBackupExiste == true){
+            txt_placa.setEditable(true);
             txt_propietario.setEditable(false);
             cmb_tipVehi.setEnabled(false);
             cmb_convenios.setEnabled(false);
             cmb_tarifas.setEnabled(false);
             lbl_noParq.setVisible(true);
-        }
+       }else{
+           txt_placa.setEditable(true);
+            txt_propietario.setEditable(true);
+            cmb_tipVehi.setEnabled(true);
+            cmb_convenios.setEnabled(true);
+            cmb_tarifas.setEnabled(true);
+            lbl_noParq.setVisible(true);
+       }
         
         estimarConvenioOTarifa();
       
@@ -1398,6 +1421,25 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
            }
         }
         return idVerdaderoDelConv;
+    }
+    
+    //Metodo que contiene los eventos del formulario
+    public void eventosDelFormulario(java.awt.event.KeyEvent evt){
+        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
+            recargarInfoOriginal();
+            seRealizaronValidaciones = false;
+            parqControla.detenerHilosParqueaderosVisitantesDisponiblesEdicionFacturas();
+            ingresoDesconocido = false;
+        }
+        
+        if(evt.getKeyCode() == KeyEvent.VK_F1){
+            String placa = txt_placa.getText();
+            if(!placa.equals(placa_back)){
+                validacionesAntesDeActualizar();
+            }
+            
+            seRealizaronValidaciones = true;
+        }
     }
 }
 

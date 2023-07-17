@@ -322,7 +322,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         add(cmb_convenios, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 123, 271, -1));
 
         btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
-        btn_ingresar.setText("Ingresar");
+        btn_ingresar.setText("Guardar");
         btn_ingresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_ingresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
