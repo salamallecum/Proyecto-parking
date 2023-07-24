@@ -218,17 +218,17 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
             .addGroup(Panel_AdministradorLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(lbl_Imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
+                .addComponent(btn_Caja, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_vehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_Usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(btn_Caja, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
                 .addComponent(btn_Reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btn_vehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_parametros, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         Panel_Sesion.setBackground(new java.awt.Color(51, 51, 255));
@@ -613,8 +613,10 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         calendario.setTime(fechaHoraActual);
         ampm = calendario.get(Calendar.AM_PM)==Calendar.AM?"AM":"PM";
         
+        
+        
         if(ampm.equals("PM")){
-            int h = calendario.get(Calendar.HOUR_OF_DAY)-12;
+            int h = calendario.get(Calendar.HOUR_OF_DAY);
             hora = h>9?""+h:"0"+h;
         }else{
             hora = calendario.get(Calendar.HOUR_OF_DAY)>9?""+calendario.get(Calendar.HOUR_OF_DAY):"0"+calendario.get(Calendar.HOUR_OF_DAY);
