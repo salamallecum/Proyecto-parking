@@ -111,7 +111,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        lbl_AcercaDe.setText("Desarrollado por ALEJO");
+        lbl_AcercaDe.setText("Desarrollado por L.A.A.T © ");
 
         txt_clave.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
