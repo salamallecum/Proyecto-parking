@@ -128,7 +128,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Desarrollado por: ALEJO"/>
+        <Property name="text" type="java.lang.String" value="Desarrollado por: L.A.A.T"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
@@ -138,7 +138,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Dirigido a:  More Security Business Ltda"/>
+        <Property name="text" type="java.lang.String" value="Dirigido a:  More Security S.A.S"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
@@ -151,7 +151,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Telefono: 4897894 - 3112236781"/>
+        <Property name="text" type="java.lang.String" value="Telefono: 6014660687 - 3112236781"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">

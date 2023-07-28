@@ -72,16 +72,16 @@ public class AcercaDe extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("2023 -  Todos los derechos reservados.©");
 
-        jLabel4.setText("Desarrollado por: ALEJO");
+        jLabel4.setText("Desarrollado por: L.A.A.T");
 
         jLabel5.setText("Ing.  Luis Alejandro Amaya Torres");
 
-        jLabel6.setText("Dirigido a:  More Security Business Ltda");
+        jLabel6.setText("Dirigido a:  More Security S.A.S");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Versión: v1.0");
 
-        jLabel8.setText("Telefono: 4897894 - 3112236781");
+        jLabel8.setText("Telefono: 6014660687 - 3112236781");
 
         jLabel9.setText("Dirección: Carrera 71C # 63A-38  Bogotá, Colombia");
 
