@@ -50,7 +50,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     ConvenioControlador convenioControla;
     FacturaControlador facturaControla;
     
-    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     boolean elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = true;
     

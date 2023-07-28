@@ -40,8 +40,8 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     Convenio conv = new Convenio();
     Tarifa tarif = new Tarifa();
     
-    Factura facturaAEditar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
-    Factura facturaAActualizar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura facturaAEditar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaAActualizar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     FacturaControlador facturaControla = new FacturaControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();

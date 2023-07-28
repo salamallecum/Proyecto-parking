@@ -56,11 +56,12 @@ public class FacturaControlador implements Runnable {
     private String valorAPagarPorDiferenciaAdicional = "";   
     public static String rutaImgTickets = "/icons/ImgTickets.jpg";
     
-    Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
 
     //Hilo encargado del cargue de la tabla de opercaion del parqueradero en el panel caja
     public Thread hilo2 = new Thread(this);
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
+    ParametroControlador parametroControla = new ParametroControlador();
     public static boolean ejecutarHiloOpParq; 
            
     //Constructor
@@ -276,8 +277,49 @@ public class FacturaControlador implements Runnable {
     
     //Metodo que calcula el monto a pagar
     public String calcularPago(long mon, long dif){
-        long total_a_pagar = mon * dif;      
-        String total_pagar_str = Long.toString(total_a_pagar);
+        
+        //Traemos el porcentaje a cobrar por concepto de impuesto
+        String impuesto = parametroControla.consultarValorDeUnParametro("IMPUESTO");
+        int porcImp = Integer.parseInt(impuesto);
+        
+        long montoPorTiempo = mon * dif;
+        int montoDeImpuesto = ((int)montoPorTiempo * porcImp)/100;
+                
+        //Transformamos el numero para que sea monetariamnte pagable
+        String montoDeImpuesto_str = Integer.toString(montoDeImpuesto);
+                
+        char[] montoImpuestoArreglo = new char[montoDeImpuesto_str.length()];
+        
+        int ultdigito = montoDeImpuesto_str.length() - 1;
+        int penultDigito = montoDeImpuesto_str.length() - 2;
+        
+        for(int i = 0; i < montoDeImpuesto_str.length(); i++){             
+            montoImpuestoArreglo[i] = montoDeImpuesto_str.charAt(i);  
+        }
+        
+        if(montoImpuestoArreglo[ultdigito] != '0'){
+            montoImpuestoArreglo[ultdigito] = '0';
+        }
+        
+        if(montoImpuestoArreglo[penultDigito] != '0'){
+            
+            int digito = Character.getNumericValue(montoImpuestoArreglo[penultDigito]);
+            
+            if(digito < 5){
+                montoImpuestoArreglo[penultDigito] = '0';
+            }else{
+               montoImpuestoArreglo[penultDigito] = '5'; 
+            }           
+        }
+        
+        montoDeImpuesto_str = String.valueOf(montoImpuestoArreglo);
+                
+        montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str);
+        
+        //Sumamos el monto por impuesto al monto por tiempo para sacar el total a pagar
+        long totalAPagar = montoPorTiempo + (long)montoDeImpuesto;
+                        
+        String total_pagar_str = Long.toString(totalAPagar);
         return total_pagar_str;
     }
     
@@ -526,6 +568,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
                 facturaConsultada.setFechaDeSalidaVehiculo(rs.getString("Hora_salida"));
                 facturaConsultada.setDiferencia(rs.getString("Diferencia"));
+                facturaConsultada.setImpuesto(rs.getString("Impuesto"));
                 facturaConsultada.setValorAPagar(rs.getString("Valor_a_pagar"));
                 facturaConsultada.setEfectivo(rs.getString("Efectivo"));
                 facturaConsultada.setCambio(rs.getString("Cambio"));
@@ -576,11 +619,11 @@ public class FacturaControlador implements Runnable {
     
     
     //Metodo que permite liquidar una factura una vez el vehiculo sale del parqueadero
-    public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio){
+    public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio, String impuesto){
         
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"', Diferencia ='"+diferencia+"', Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
+            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"', Diferencia ='"+diferencia+"', Impuesto ='"+impuesto+"', Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
 
             pst.executeUpdate();
             cn.close();
@@ -657,7 +700,7 @@ public class FacturaControlador implements Runnable {
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getClaseDeVehiculo()+"', No_parqueadero="+facturaAActualizar.getId_parqueadero()+", Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+", Diferencia='"+facturaAActualizar.getDiferencia()+"', Valor_a_pagar='"+facturaAActualizar.getValorAPagar()+"', Efectivo='"+facturaAActualizar.getEfectivo()+"', Cambio='"+facturaAActualizar.getCambio()+"' where Id_factura ="+facturaAActualizar.getId());
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getClaseDeVehiculo()+"', No_parqueadero="+facturaAActualizar.getId_parqueadero()+", Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+", Diferencia='"+facturaAActualizar.getDiferencia()+"', Impuesto='"+facturaAActualizar.getImpuesto()+"', Valor_a_pagar='"+facturaAActualizar.getValorAPagar()+"', Efectivo='"+facturaAActualizar.getEfectivo()+"', Cambio='"+facturaAActualizar.getCambio()+"' where Id_factura ="+facturaAActualizar.getId());
 
             pst9.executeUpdate();
             cn9.close();

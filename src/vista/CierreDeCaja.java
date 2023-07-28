@@ -3,6 +3,7 @@ package vista;
 import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.CierreControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -67,6 +68,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
     Cierre nuevoCierre = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
     FacturaControlador facturaControla = new FacturaControlador();
     CierreControlador cierreControla = new CierreControlador();
+    ParametroControlador paramControla = new ParametroControlador();
             
     private final Logger log = Logger.getLogger(CierreDeCaja.class);
     private URL url = CierreDeCaja.class.getResource("Log4j.properties");
@@ -84,7 +86,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
         
         usuarioDelSistema = Login.usuario;
                         
-        String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
+        String baseDeCaja = paramControla.consultarValorDeUnParametro("BASE_CAJA");
         numFacturasGeneradas = facturaControla.contarFacturas();
                 
         //Obtenemos los valores a pagar de las facturas para hacer calculo del producido en el turno
@@ -973,7 +975,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
             nuevoCierre.setCodigoArqueo(ArqueoDeCaja.codigoArqueo);
             nuevoCierre.setFecha_cierre(cierreControla.fecha_Cierre());
             nuevoCierre.setUsuario(usuarioDelSistema);
-            nuevoCierre.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
+            nuevoCierre.setBase_caja(paramControla.consultarValorDeUnParametro("BASE_CAJA"));
             nuevoCierre.setNumBilletesDe100Mil(numBilletesDe100Mil);
             nuevoCierre.setNumBilletesDe50Mil(numBilletesDe50Mil);
             nuevoCierre.setNumBilletesDe20Mil(numBilletesDe20Mil);
@@ -1000,7 +1002,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
             nuevoCierre.setTotal_esperado(lbl_totalEnCaja.getText());
             nuevoCierre.setDinero_caja(lbl_dineroEnCaja.getText());
             nuevoCierre.setDiferencia(lbl_diferencia.getText());
-            nuevoCierre.setDineroAConsignar(cierreControla.calcularDineroAConsignar(lbl_dineroEnCaja.getText(), OtrosParametros.consultarValorDeUnParametro("BASE_CAJA")));
+            nuevoCierre.setDineroAConsignar(cierreControla.calcularDineroAConsignar(lbl_dineroEnCaja.getText(), paramControla.consultarValorDeUnParametro("BASE_CAJA")));
             nuevoCierre.setNo_facturas(numFacturasGeneradas);
             nuevoCierre.setObservaciones(nota); 
 

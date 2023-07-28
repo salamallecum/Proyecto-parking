@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TSalida" pageWidth="215" pageHeight="425" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a6f81a09-dc9b-422d-b7da-381d7376992e">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TSalida" pageWidth="215" pageHeight="453" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a6f81a09-dc9b-422d-b7da-381d7376992e">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -23,7 +23,9 @@
      facturas.`Cambio` AS facturas_Cambio,
      tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,
      parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
-     facturas.`Contabilizada` AS facturas_Contabilizada
+     facturas.`Contabilizada` AS facturas_Contabilizada,
+     facturas.`Diferencia` AS facturas_Diferencia,
+     facturas.`Impuesto` AS facturas_Impuesto
 FROM
      `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`
      INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`
@@ -47,6 +49,8 @@ WHERE
 	<field name="tarifas_Nombre_tarifa" class="java.lang.String"/>
 	<field name="parqueaderos_Nombre_parqueadero" class="java.lang.String"/>
 	<field name="facturas_Contabilizada" class="java.lang.String"/>
+	<field name="facturas_Diferencia" class="java.lang.String"/>
+	<field name="facturas_Impuesto" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -86,7 +90,7 @@ WHERE
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="260" splitType="Stretch">
+		<band height="305" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="53" height="20" uuid="49aca3e7-b0ee-4b5a-90d4-f660c3a0a0f7"/>
 				<textElement verticalAlignment="Middle">
@@ -123,7 +127,7 @@ WHERE
 				<text><![CDATA[N° Parqueadero:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="240" width="42" height="20" uuid="e5cf19cb-51d5-4c75-ae3d-414c9bea0aef"/>
+				<reportElement x="0" y="280" width="42" height="20" uuid="e5cf19cb-51d5-4c75-ae3d-414c9bea0aef"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -165,14 +169,14 @@ WHERE
 				<text><![CDATA[Hora de Salida:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="200" width="56" height="20" uuid="005e500b-5623-46b6-9774-53ea21d9a237"/>
+				<reportElement x="0" y="240" width="56" height="20" uuid="005e500b-5623-46b6-9774-53ea21d9a237"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Valor a Pagar:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="220" width="42" height="20" uuid="404cb8ef-c9c6-4b11-bfb4-a110e8830acc"/>
+				<reportElement x="0" y="260" width="42" height="20" uuid="404cb8ef-c9c6-4b11-bfb4-a110e8830acc"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -249,26 +253,61 @@ WHERE
 				<textFieldExpression><![CDATA[$F{facturas_Hora_salida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="58" y="200" width="117" height="20" uuid="23a6c243-f2ee-4403-bda1-448ba935b353"/>
+				<reportElement x="58" y="240" width="117" height="20" uuid="23a6c243-f2ee-4403-bda1-448ba935b353"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_Valor_a_pagar}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="42" y="220" width="133" height="20" uuid="a3bf32c5-3c84-4101-8f5a-cd8de908a159"/>
+				<reportElement x="42" y="260" width="133" height="20" uuid="a3bf32c5-3c84-4101-8f5a-cd8de908a159"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_Efectivo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="43" y="240" width="132" height="20" uuid="fe20e05e-11ab-4a3c-91ca-d027aa021559"/>
+				<reportElement x="43" y="280" width="132" height="20" uuid="fe20e05e-11ab-4a3c-91ca-d027aa021559"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_Cambio}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="200" width="45" height="20" uuid="768f198e-0666-4f03-8887-9d9955ce9cd8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="220" width="42" height="20" uuid="818e47cd-e2f6-45e5-9b48-96fab427a032"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Impuesto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="45" y="200" width="130" height="20" uuid="f2ee0351-e841-403b-9b52-876ca3a46b24"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Diferencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="220" width="23" height="20" uuid="0b0a3d08-0dbd-41f8-8ea8-266fd1d1cda5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_Impuesto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="65" y="220" width="3" height="20" uuid="a284c629-d336-4290-940b-df6e0cf7711c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

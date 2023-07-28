@@ -57,7 +57,7 @@ public class PanelCaja extends javax.swing.JPanel{
              
     public static DefaultTableModel modeloCaja;
     
-    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     //Declaramos un objeto tipo Parqueadero y se lo aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();   

@@ -3,6 +3,7 @@ package vista;
 import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.ArqueoControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import java.awt.Color;
 import java.awt.Image;
@@ -72,6 +73,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     FacturaControlador facturaControla = new FacturaControlador();
     ArqueoControlador arqueoControla = new ArqueoControlador();
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(ArqueoDeCaja.class);
     private URL url = ArqueoDeCaja.class.getResource("Log4j.properties");
@@ -93,7 +95,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
         //Cargamos el valor de la base que debe tener la caja
-        String baseDeCaja = OtrosParametros.consultarValorDeUnParametro("BASE_CAJA");
+        String baseDeCaja = paramControla.consultarValorDeUnParametro("BASE_CAJA");
         
         //Guardamos el valor int de la base de caja para calculos futuros 
         baseDeCajaInt = Integer.parseInt(baseDeCaja);
@@ -905,7 +907,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
             nuevoArqueo.setCodigo(codigoArqueo);
             nuevoArqueo.setFecha_arqueo(arqueoControla.fecha_Arqueo());
             nuevoArqueo.setUsuario(usuarioDelSistema);
-            nuevoArqueo.setBase_caja(OtrosParametros.consultarValorDeUnParametro("BASE_CAJA"));
+            nuevoArqueo.setBase_caja(paramControla.consultarValorDeUnParametro("BASE_CAJA"));
             nuevoArqueo.setNumBilletesDe100Mil(numBilletesDe100Mil);
             nuevoArqueo.setNumBilletesDe50Mil(numBilletesDe50Mil);
             nuevoArqueo.setNumBilletesDe20Mil(numBilletesDe20Mil);

@@ -1,6 +1,7 @@
 package vista;
 
 import clasesDeApoyo.Conexion;
+import controlador.ParametroControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -9,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.log4j.Logger;
 
 /**
@@ -19,13 +22,15 @@ public class OtrosParametros extends javax.swing.JFrame {
     
     private static final Logger log = Logger.getLogger(OtrosParametros.class);
     private URL url = OtrosParametros.class.getResource("Log4j.properties");
+    
+    ParametroControlador paramControla = new ParametroControlador();
 
     /**
      * Creates new form OtrosParametros
      */
     public OtrosParametros() {
         initComponents();
-        setSize(333, 190);
+        setSize(356, 200);
         setResizable(false);
         setTitle("Otros parámetros");
         setLocationRelativeTo(null);
@@ -35,7 +40,8 @@ public class OtrosParametros extends javax.swing.JFrame {
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
         //cargamos los valores de los parametros
-        txt_baseDeCaja.setText(consultarValorDeUnParametro("BASE_CAJA"));
+        txt_baseDeCaja.setText(paramControla.consultarValorDeUnParametro("BASE_CAJA"));
+        txt_impuesto.setText(paramControla.consultarValorDeUnParametro("IMPUESTO"));
     }
     
     @Override
@@ -78,6 +84,9 @@ public class OtrosParametros extends javax.swing.JFrame {
         txt_baseDeCaja = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         btn_actualizarParametros = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        txt_impuesto = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -299,25 +308,46 @@ public class OtrosParametros extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setText("Impuesto:");
+
+        txt_impuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_impuestoActionPerformed(evt);
+            }
+        });
+        txt_impuesto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_impuestoKeyTyped(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel11.setText("%");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Titulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+            .addComponent(jSeparator1)
+            .addComponent(lbl_Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_baseDeCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(109, 109, 109)
+                        .addComponent(txt_impuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel11))
+                    .addComponent(txt_baseDeCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_actualizarParametros)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(119, 119, 119))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,6 +360,11 @@ public class OtrosParametros extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel6)
                     .addComponent(txt_baseDeCaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel10)
+                    .addComponent(txt_impuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(btn_actualizarParametros, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -395,15 +430,21 @@ public class OtrosParametros extends javax.swing.JFrame {
     private void btn_actualizarParametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarParametrosActionPerformed
         
         String baseDeCaja = txt_baseDeCaja.getText();
+        String impuesto = txt_impuesto.getText();
         int validacion = 0;
         
         if(baseDeCaja.equals("")){
             validacion++;
         }
         
+        if(impuesto.equals("")){
+            validacion++;
+        }
+        
         if(validacion == 0){
             
-            actualizarParámetro("BASE_CAJA", baseDeCaja);
+            paramControla.actualizarParámetro("BASE_CAJA", baseDeCaja);
+            paramControla.actualizarParámetro("IMPUESTO", impuesto);
             JOptionPane.showMessageDialog(null, "Parámetros actualizados satisfactoriamente.");
             
         }else{
@@ -414,6 +455,14 @@ public class OtrosParametros extends javax.swing.JFrame {
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowDeactivated
+
+    private void txt_impuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_impuestoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_impuestoActionPerformed
+
+    private void txt_impuestoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_impuestoKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_impuestoKeyTyped
 
     /**
      * @param args the command line arguments
@@ -445,7 +494,12 @@ public class OtrosParametros extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OtrosParametros().setVisible(true);
+                try {
+                    //Esto cambia la apariencia de la app para que se acomode al Siste Operativo
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    new OtrosParametros().setVisible(true);
+                }catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                }
             }
         });
     }
@@ -458,6 +512,8 @@ public class OtrosParametros extends javax.swing.JFrame {
     public static javax.swing.JComboBox<String> cmb_usuarioActivo;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -473,6 +529,7 @@ public class OtrosParametros extends javax.swing.JFrame {
     public static javax.swing.JTextField txt_baseDeCaja;
     private javax.swing.JTextField txt_celular;
     private javax.swing.JTextField txt_clave;
+    public static javax.swing.JTextField txt_impuesto;
     private javax.swing.JTextField txt_nombreUsuario;
     private javax.swing.JTextField txt_nombres;
     private javax.swing.JTextField txt_telefono;
@@ -490,46 +547,6 @@ public class OtrosParametros extends javax.swing.JFrame {
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
             PanelParametros.btn_masParametros.setEnabled(true);
         }
-    }
-    
-    //Metodo encargado de hacer updae para cadaunode los parámetros del sistema
-    public void actualizarParámetro(String nombreParámetro, String valor){
-     
-        try{
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update parametros set Valor ='"+valor+"' where Nombre_parametro ='"+nombreParámetro+"'");
-
-            pst.executeUpdate();
-            cn.close(); 
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar usuario!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al modificar uno de los parámetros adicionales del sistema, Parámetro: " + nombreParámetro + " Error generado: "+ e);
-        }
-    }
-    
-    //Metodo que permite consultar el valor de un parametro paracargarlo en la interfaz
-    public static String consultarValorDeUnParametro(String nombreDeParametro){
-       
-        String valor = "";
-        try {
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select Valor from parametros where Nombre_parametro = '" + nombreDeParametro + "'");
-            
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                valor = rs.getString("Valor");
-                cn.close();
-           
-            } else {
-                log.fatal("ERROR - No se ha encontrado el valor del parametro " + nombreDeParametro);
-            }
-        }catch (SQLException ex){ 
-            log.fatal("ERROR - Se ha producido un error al consultar el valor del parametro " + nombreDeParametro + " en el sistema: " + ex); 
-        } 
-        return valor;
     }
 
 }

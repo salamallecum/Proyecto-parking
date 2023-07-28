@@ -29,7 +29,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
     DefaultTableModel modelo;
     int Fila;
             
-    Factura facturaAbiertaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura facturaAbiertaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
     FacturaControlador facturaControla = new FacturaControlador();
 
     ParqueaderoControlador parqControla = new ParqueaderoControlador();

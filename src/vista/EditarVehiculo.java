@@ -53,8 +53,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
    
     Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", 0, 0, 0);
     Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", 0, 0, 0);
-    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
-    Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     VehiculoControlador vehicontrolador = new VehiculoControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();

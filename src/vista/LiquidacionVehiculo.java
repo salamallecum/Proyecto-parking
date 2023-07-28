@@ -3,6 +3,7 @@ package vista;
 import com.sun.glass.events.KeyEvent;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import controlador.VehiculoControlador;
@@ -36,7 +37,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     DefaultTableModel modeloCaja;
     int Fila;
     
-    Factura facturaALiquidar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "");
+    Factura facturaALiquidar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
     Tarifa tarifaACobrar = new Tarifa(); 
     Convenio convenioAAplicar = new Convenio();
     String montoAPagarParaCalculoPago = "";
@@ -47,6 +48,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     TarifaControlador tarifaControla = new TarifaControlador();
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControla = new VehiculoControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     
     long diferenciaDeFechasEnMilisegundos;    
     
@@ -89,6 +91,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             lbl_facturadoPor.setText(facturaALiquidar.getFacturadoPor());
             lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaALiquidar.getId_convenio()));
             lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaALiquidar.getId_tarifa()));
+            lbl_impuesto.setText(paramControla.consultarValorDeUnParametro("IMPUESTO"));
             
             String fecha_ingreso = facturaALiquidar.getFechaDeIngresoVehiculo();
             
@@ -560,6 +563,9 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         lbl_tarifa = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         lbl_diferencia = new javax.swing.JLabel();
+        lbl_impuesto = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        lbl_diferencia2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -683,17 +689,26 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         lbl_diferencia.setForeground(new java.awt.Color(0, 0, 255));
         lbl_diferencia.setText("diferencia");
 
+        lbl_impuesto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbl_impuesto.setForeground(new java.awt.Color(204, 0, 153));
+        lbl_impuesto.setText("impuesto");
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel15.setText("Impuesto:");
+
+        lbl_diferencia2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbl_diferencia2.setForeground(new java.awt.Color(204, 0, 153));
+        lbl_diferencia2.setText("%");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -703,32 +718,51 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbl_codigo)
-                            .addComponent(lbl_placa)
-                            .addComponent(lbl_propietario)
-                            .addComponent(lbl_tipoVehiculo)
-                            .addComponent(lbl_facturadoPor)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txt_dineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lbl_diferencia, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                            .addComponent(lbl_noParqueadero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_tarifa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_convenio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_horaSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_horaIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_totalAPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_dineroCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lbl_codigo)
+                                        .addComponent(lbl_placa)
+                                        .addComponent(lbl_propietario)
+                                        .addComponent(lbl_tipoVehiculo)
+                                        .addComponent(lbl_facturadoPor)
+                                        .addComponent(lbl_noParqueadero, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                                        .addComponent(lbl_tarifa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_convenio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_horaSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_horaIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_diferencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txt_dineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btn_calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lbl_impuesto)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lbl_diferencia2))
+                                    .addComponent(lbl_dineroCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(lbl_totalAPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
                         .addComponent(btn_imprimirFactura)
-                        .addGap(112, 112, 112)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(91, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(337, 337, 337))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(337, 337, 337))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -777,7 +811,12 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(lbl_diferencia))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(lbl_impuesto)
+                    .addComponent(lbl_diferencia2))
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(lbl_totalAPagar))
@@ -786,13 +825,13 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(txt_dineroRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lbl_dineroCambio))
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(btn_imprimirFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -819,7 +858,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
             if(ingreso.equals("Registro 1er vez en sistema.")){
 
-                facturaControla.liquidarFacturaDeVehiculo("1990-01-01 23:59:00.0", placa, "0", "N/A", "0", "0");
+                facturaControla.liquidarFacturaDeVehiculo("1990-01-01 23:59:00.0", placa, "0", "N/A", "0", "0", lbl_impuesto.getText());
                 dispose();
                 parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
                 facturaControla.cerrarFactura(placa);
@@ -858,7 +897,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                     String dineroRecibMoney = facturaControla.agregarFormatoMoneda(dineroRecibido);
                     String cambio = lbl_dineroCambio.getText();                    
 
-                    facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, diferencia, dineroRecibMoney, cambio);
+                    facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, diferencia, dineroRecibMoney, cambio, lbl_impuesto.getText());
                     dispose();
                     
                     //Evaluamos si el vehiculo se encuentra registrado en el sistema, si es asi solo pasamos el estado parqueadero a No
@@ -987,6 +1026,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -998,10 +1038,12 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_codigo;
     private javax.swing.JLabel lbl_convenio;
     private javax.swing.JLabel lbl_diferencia;
+    private javax.swing.JLabel lbl_diferencia2;
     private javax.swing.JLabel lbl_dineroCambio;
     private javax.swing.JLabel lbl_facturadoPor;
     private javax.swing.JLabel lbl_horaIngreso;
     private javax.swing.JLabel lbl_horaSalida;
+    private javax.swing.JLabel lbl_impuesto;
     private javax.swing.JLabel lbl_noParqueadero;
     private javax.swing.JLabel lbl_placa;
     private javax.swing.JLabel lbl_propietario;

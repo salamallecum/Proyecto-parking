@@ -25,6 +25,7 @@ public class Factura {
     private int id_cierre;
     private String fechaDeSalidaVehiculo;
     private String diferencia;
+    private String impuesto;
     private String valorAPagar;
     private String efectivo;
     private String cambio;    
@@ -33,7 +34,7 @@ public class Factura {
     private final URL url = Factura.class.getResource("Log4j.properties");
     
     //Constructor
-    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, String facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String valorAPagar, String efectivo, String cambio) {
+    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, String facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String impuesto, String valorAPagar, String efectivo, String cambio) {
         this.id = id;
         this.codigo = codigo;
         this.fechaDeFactura = fechaDeFactura;
@@ -50,6 +51,7 @@ public class Factura {
         this.id_cierre = id_cierre;
         this.fechaDeSalidaVehiculo = fechaDeSalidaVehiculo;
         this.diferencia = diferencia;
+        this.impuesto = impuesto;
         this.valorAPagar = valorAPagar;
         this.efectivo = efectivo;
         this.cambio = cambio;
@@ -176,6 +178,14 @@ public class Factura {
         this.fechaDeSalidaVehiculo = fechaSalidaVehiculo;
     }
 
+    public void setImpuesto(String impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public String getImpuesto() {
+        return impuesto;
+    }
+    
     public String getValorAPagar() {
         return valorAPagar;
     }
