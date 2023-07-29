@@ -284,6 +284,8 @@ public class FacturaControlador implements Runnable {
         
         long montoPorTiempo = mon * dif;
         int montoDeImpuesto = ((int)montoPorTiempo * porcImp)/100;
+        
+        System.out.println("Monto de impuesto original: " + montoDeImpuesto);
                 
         //Transformamos el numero para que sea monetariamnte pagable
         String montoDeImpuesto_str = Integer.toString(montoDeImpuesto);
@@ -305,17 +307,36 @@ public class FacturaControlador implements Runnable {
             
             int digito = Character.getNumericValue(montoImpuestoArreglo[penultDigito]);
             
-            if(digito < 5){
-                montoImpuestoArreglo[penultDigito] = '0';
+            if(digito <= 5){
+                
+                if(digito < 2.5){
+                    montoImpuestoArreglo[penultDigito] = '0';
+                }else{
+                    montoImpuestoArreglo[penultDigito] = '5'; 
+                }
+                montoDeImpuesto_str = String.valueOf(montoImpuestoArreglo);
+                montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str);
+            
             }else{
-               montoImpuestoArreglo[penultDigito] = '5'; 
-            }           
+                if(digito == 9){
+                    montoImpuestoArreglo[penultDigito] = '0';
+                    montoDeImpuesto_str = String.valueOf(montoImpuestoArreglo);
+                    montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str);
+                    montoDeImpuesto = montoDeImpuesto + 100;
+                
+                }else{
+                    montoImpuestoArreglo[penultDigito] = '0';
+                    int digitoAntePen = Character.getNumericValue(montoImpuestoArreglo[penultDigito - 1]); 
+                    digitoAntePen = digitoAntePen + 1;
+                    montoImpuestoArreglo[penultDigito-1] = Character.forDigit(digitoAntePen, 10);
+                    montoDeImpuesto_str = String.valueOf(montoImpuestoArreglo);
+                    montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str);
+                }
+            }                        
         }
         
-        montoDeImpuesto_str = String.valueOf(montoImpuestoArreglo);
-                
-        montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str);
-        
+        System.out.println("Monto de impuesto transformado: " + montoDeImpuesto);
+              
         //Sumamos el monto por impuesto al monto por tiempo para sacar el total a pagar
         long totalAPagar = montoPorTiempo + (long)montoDeImpuesto;
                         
