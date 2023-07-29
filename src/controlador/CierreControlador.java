@@ -198,7 +198,7 @@ public class CierreControlador {
 
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "¡¡ERROR al contabilizar facturas, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar asginar un cierreafacturas contabilizadas: " + e);
+            log.fatal("ERROR - Se ha producido un error al intentar asginar un cierre a facturas contabilizadas: " + e);
         }
     }
     

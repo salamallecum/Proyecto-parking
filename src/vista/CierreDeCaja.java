@@ -1,6 +1,5 @@
 package vista;
 
-import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.CierreControlador;
 import controlador.FacturaControlador;
 import controlador.ParametroControlador;
@@ -968,7 +967,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
         
         }else{
                       
-            String codigoCierre = generadorClavesYCodigos.generarRandomString(10);
+            String codigoCierre = "CIE" + paramControla.generarConsecutivo(10);
 
             nuevoCierre.setId(0);
             nuevoCierre.setCodigo(codigoCierre);

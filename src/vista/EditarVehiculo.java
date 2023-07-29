@@ -1,8 +1,8 @@
 package vista;
 
-import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import java.awt.Color;
@@ -61,6 +61,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
     ConvenioControlador convenioControla = new ConvenioControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
     FacturaControlador facturaControla = new FacturaControlador();
+    ParametroControlador parametroControla = new ParametroControlador();
         
     //Declaramos los objetos  y se los aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
@@ -480,7 +481,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                 }else{
                     //Modelamos la factura de primer ingreso
                     nuevaFactura.setId(0);
-                    nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                    nuevaFactura.setCodigo("FAC" + parametroControla.generarConsecutivo(10));
                     nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                     nuevaFactura.setPlaca(placa);
                     nuevaFactura.setPropietario(dueño);

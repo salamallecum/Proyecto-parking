@@ -1,9 +1,9 @@
 package vista;
 
-import clasesDeApoyo.generadorClavesYCodigos;
 import com.sun.glass.events.KeyEvent;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import controlador.VehiculoControlador;
@@ -51,6 +51,7 @@ public class PanelCaja extends javax.swing.JPanel{
     TarifaControlador tarifaControlador = new TarifaControlador();
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
     VehiculoControlador vehControla = new VehiculoControlador();
+    ParametroControlador paramControla = new ParametroControlador();
        
     private final Logger log = Logger.getLogger(PanelCaja.class);
     private URL url = PanelCaja.class.getResource("Log4j.properties");
@@ -667,7 +668,7 @@ public class PanelCaja extends javax.swing.JPanel{
             if(validacion == 0){
                 
                 nuevaFactura.setId(0);
-                nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                nuevaFactura.setCodigo("FAC" + paramControla.generarConsecutivo(10));
                 nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                 nuevaFactura.setPlaca(placa);
                 nuevaFactura.setPropietario(dueño);
@@ -782,7 +783,7 @@ public class PanelCaja extends javax.swing.JPanel{
             if(validacion == 0){
                 
                 nuevaFactura.setId(0);
-                nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                nuevaFactura.setCodigo("FAC" + paramControla.generarConsecutivo(10));
                 nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                 nuevaFactura.setPlaca(placa);
                 nuevaFactura.setPropietario(dueño);

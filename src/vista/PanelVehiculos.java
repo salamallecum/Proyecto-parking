@@ -1,9 +1,9 @@
 package vista;
 
-import clasesDeApoyo.generadorClavesYCodigos;
 import modelo.Parqueadero;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import controlador.VehiculoControlador;
@@ -49,6 +49,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     TarifaControlador tarifaControla;
     ConvenioControlador convenioControla;
     FacturaControlador facturaControla;
+    ParametroControlador paramControla;
     
     Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
@@ -92,6 +93,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         convenioControla = new ConvenioControlador();
         tarifaControla = new TarifaControlador();
         facturaControla = new FacturaControlador();
+        paramControla = new ParametroControlador();
         
         hilo1.start();
         
@@ -611,7 +613,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 }else{
                     //Modelamos la factura de primer ingreso 
                     nuevaFactura.setId(0);
-                    nuevaFactura.setCodigo(generadorClavesYCodigos.generarRandomString(10));
+                    nuevaFactura.setCodigo("FAC" + paramControla.generarConsecutivo(10));
                     nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                     nuevaFactura.setPlaca(placa);
                     nuevaFactura.setPropietario(dueño);

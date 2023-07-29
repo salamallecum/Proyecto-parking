@@ -1,6 +1,5 @@
 package vista;
 
-import clasesDeApoyo.generadorClavesYCodigos;
 import controlador.ArqueoControlador;
 import controlador.FacturaControlador;
 import controlador.ParametroControlador;
@@ -901,7 +900,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         
         }else{
                       
-            codigoArqueo = generadorClavesYCodigos.generarRandomString(10);
+            codigoArqueo = "ARQ" + paramControla.generarConsecutivo(10);
 
             nuevoArqueo.setId(0);
             nuevoArqueo.setCodigo(codigoArqueo);
