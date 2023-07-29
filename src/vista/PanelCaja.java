@@ -230,7 +230,7 @@ public class PanelCaja extends javax.swing.JPanel{
             }
         });
 
-        cmb_clase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO" }));
+        cmb_clase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO", "ESPECIAL" }));
         cmb_clase.setEnabled(false);
         cmb_clase.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -470,6 +470,10 @@ public class PanelCaja extends javax.swing.JPanel{
             } else if(tipVehi_string.equals("MOTO")){
                 txt_convenio.setText("NINGUNO");
                 txt_tarifa.setText("TARIF_MOTO");
+            
+            } else if(tipVehi_string.equals("ESPECIAL")){
+                txt_convenio.setText("NINGUNO");
+                txt_tarifa.setText("TARIF_PREFERENCIAL");
             }
         }        
     }//GEN-LAST:event_cmb_claseItemStateChanged
@@ -641,6 +645,8 @@ public class PanelCaja extends javax.swing.JPanel{
             clase_string = "AUTOMOVIL";
         }else if(clase_cmb == 2){
             clase_string = "MOTO";
+        }else if(clase_cmb == 3){
+            clase_string = "ESPECIAL";
         }
 
         if(validoParqueadero==0){

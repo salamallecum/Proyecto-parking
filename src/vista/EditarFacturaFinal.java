@@ -333,7 +333,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         lbl_cambio.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbl_cambio.setText("Cambio ($):");
 
-        cmb_tipVehi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO" }));
+        cmb_tipVehi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO", "ESPECIAL" }));
         cmb_tipVehi.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmb_tipVehiItemStateChanged(evt);
@@ -557,7 +557,9 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
             tipoVehi_string = "AUTOMOVIL";
         }else if(tipVehi_cmb == 2){
             tipoVehi_string = "MOTO";
-        }
+        }else if(tipVehi_cmb == 3){
+            tipoVehi_string = "ESPECIAL";
+        } 
                              
         if(efectivo.equals("")){
             txt_efectivo.setText("0");
@@ -691,6 +693,12 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
 
     private void cmb_tipVehiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tipVehiItemStateChanged
       
+        String tipVehi_string = (String)cmb_tipVehi.getSelectedItem();
+        
+        if(tipVehi_string.equals("ESPECIAL")){
+            cmb_convenios.setSelectedIndex(buscarConvenioEnComboBox("NINGUNO"));
+            cmb_tarifas.setSelectedIndex(buscarTarifaEnComboBox("TARIF_PREFERENCIAL"));
+        }
     }//GEN-LAST:event_cmb_tipVehiItemStateChanged
 
     private void txt_propietarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyPressed

@@ -187,6 +187,9 @@ public class GestionarTarifas extends javax.swing.JFrame {
         });
 
         txt_monto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_montoKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_montoKeyTyped(evt);
             }
@@ -411,6 +414,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             btn_eliminar.setEnabled(false);
             btn_editar.setEnabled(false);
             btn_ingresar.setEnabled(true);
+            txt_nombreTarifa.setEditable(true);
         }
     }//GEN-LAST:event_txt_nombreTarifaKeyPressed
 
@@ -421,7 +425,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
                              
         String nombreTarifa = table_listaTarifas.getValueAt(Fila, 0).toString();
             
-        //No deja editar el convenio ninguno
+        //No deja editar la tarifa ninguna
         if(nombreTarifa.equals("NINGUNA")){
             JOptionPane.showMessageDialog(null, "No Permitido");
             txt_nombreTarifa.setEditable(true);
@@ -437,6 +441,14 @@ public class GestionarTarifas extends javax.swing.JFrame {
             tarifaRescatada = tarifaControla.traerUnaTarifaAlFormulario(nombreTarifa);
             
             txt_nombreTarifa.setText(tarifaRescatada.getNombreTarifa());
+            
+            //Prevenimos que el usuario no pueda modificar el nombrede tarifa de estas tarifas
+            if(nombreTarifa.equals("TARIF_AUTOMOVIL") || nombreTarifa.equals("TARIF_MOTO") || nombreTarifa.equals("TARIF_PREFERENCIAL")){
+               txt_nombreTarifa.setEditable(false);
+            }else{
+                txt_nombreTarifa.setEditable(true);
+            }
+            
             txt_monto.setText(tarifaRescatada.getMontoTarifa());
             txt_subtarifaParaAplicar.setText(tarifaRescatada.getMontoTiempoAdicional());
             
@@ -772,6 +784,16 @@ public class GestionarTarifas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
         }
     }//GEN-LAST:event_txt_subtarifaParaAplicarKeyTyped
+
+    private void txt_montoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_montoKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
+            Limpiar();
+            btn_eliminar.setEnabled(false);
+            btn_editar.setEnabled(false);
+            btn_ingresar.setEnabled(true);
+            txt_nombreTarifa.setEditable(true);
+        }
+    }//GEN-LAST:event_txt_montoKeyPressed
 
     /**
      * @param args the command line arguments
@@ -1230,7 +1252,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "La tarifa seleccionada se está implementando actualmente.");
                 }else{
                     
-                    if(nombreTarifa.equals("TARIF_AUTOMOVIL") || nombreTarifa.equals("TARIF_MOTO")){
+                    if(nombreTarifa.equals("TARIF_AUTOMOVIL") || nombreTarifa.equals("TARIF_MOTO") || nombreTarifa.equals("TARIF_PREFERENCIAL")){
                         JOptionPane.showMessageDialog(null, "No permitido.");
                     }else{
                         tarifaControla.eliminarTarifa(nombreTarifa);

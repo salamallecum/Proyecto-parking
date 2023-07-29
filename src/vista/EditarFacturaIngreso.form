@@ -247,10 +247,11 @@
     <Component class="javax.swing.JComboBox" name="cmb_tipVehi">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
+          <StringArray count="4">
             <StringItem index="0" value="Seleccione"/>
             <StringItem index="1" value="AUTOMOVIL"/>
             <StringItem index="2" value="MOTO"/>
+            <StringItem index="3" value="ESPECIAL"/>
           </StringArray>
         </Property>
       </Properties>

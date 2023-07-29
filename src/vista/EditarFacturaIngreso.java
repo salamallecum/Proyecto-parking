@@ -21,6 +21,8 @@ import modelo.Parqueadero;
 import modelo.Tarifa;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
+import static vista.PanelCaja.txt_convenio;
+import static vista.PanelCaja.txt_tarifa;
 
 
 /**
@@ -286,7 +288,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Hora Ingreso:");
 
-        cmb_tipVehi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO" }));
+        cmb_tipVehi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO", "ESPECIAL" }));
         cmb_tipVehi.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmb_tipVehiItemStateChanged(evt);
@@ -424,7 +426,10 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
             tipoVehi_string = "AUTOMOVIL";
         }else if(tipVehi_cmb == 2){
             tipoVehi_string = "MOTO";
+        }else if(tipVehi_cmb == 3){
+            tipoVehi_string = "ESPECIAL";
         } 
+        
                 
         //Validamos el verdadero id del convenio y de la tarifa en bd
         int idRealDelConvenioSeleccionado = convControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
@@ -555,6 +560,12 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
 
     private void cmb_tipVehiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tipVehiItemStateChanged
         
+        String tipVehi_string = (String)cmb_tipVehi.getSelectedItem();
+        
+        if(tipVehi_string.equals("ESPECIAL")){
+            cmb_convenios.setSelectedIndex(buscarConvenioEnComboBox("NINGUNO"));
+            cmb_tarifas.setSelectedIndex(buscarTarifaEnComboBox("TARIF_PREFERENCIAL"));
+        }
     }//GEN-LAST:event_cmb_tipVehiItemStateChanged
 
     private void txt_propietarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyPressed
