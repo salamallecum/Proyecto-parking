@@ -3,7 +3,7 @@ Código fuente del sistema MORE PARKING.
 
 - Proyecto desarrollado bajo Arquitectura MVC (Modelo, Vista, Controlador) y POO (Programación orientada a objetos).
 - Generación de tickets y reportes mediante librería JasperReport.
-- Automatización de servidor de datos mediante Programador de tareas de Windows. 
+- Automatización de servidor de base de datos mediante Programador de tareas de Windows. 
 - Seguimiento de errores y excepciones del sistema mediante libreria Log4j.
 - Perfiles del sistema:
   - Administrador: Parametriza los espacios de parqueo, convenios y tarifas a aplicar en el sistema, registra vehículos en el sistema,
