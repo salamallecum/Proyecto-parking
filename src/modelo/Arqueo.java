@@ -11,10 +11,9 @@ public class Arqueo {
         
     private int Id;
     private String codigo;
-    private String usuario;
+    private int usuario;
     private String fecha_arqueo;
     private String base_caja;
-
     private String numBilletesDe100Mil;
     private String numBilletesDe50Mil;
     private String numBilletesDe20Mil;
@@ -46,7 +45,7 @@ public class Arqueo {
     private URL url = Arqueo.class.getResource("Log4j.properties");
     
     //Constructor
-    public Arqueo(int Id, String codigo, String usuario, String fecha_arqueo, String base_caja, String numBilletesDe100Mil, String numBilletesDe50Mil, String numBilletesDe20Mil, String numBilletesDe10Mil, String numBilletesDe5Mil, String numBilletesDe2Mil, String numBilletesOMonedasDeMil, String numMonedasDe500, String numMonedasDe200, String numMonedasDe100, String numMonedasDe50, int montoEnBilletes100Mil, int montoEnBilletes50Mil, int montoEnBilletes20Mil, int montoEnBilletes10Mil, int montoEnBilletes5Mil, int montoEnBilletes2Mil, int montoEnBilletesOMonedasMil, int montoEnMonedasDe500, int montoEnMonedasDe200, int montoEnMonedasDe100, int montoEnMonedasDe50, String montoTotalCaja, String diferenciaTotal) {
+    public Arqueo(int Id, String codigo, int usuario, String fecha_arqueo, String base_caja, String numBilletesDe100Mil, String numBilletesDe50Mil, String numBilletesDe20Mil, String numBilletesDe10Mil, String numBilletesDe5Mil, String numBilletesDe2Mil, String numBilletesOMonedasDeMil, String numMonedasDe500, String numMonedasDe200, String numMonedasDe100, String numMonedasDe50, int montoEnBilletes100Mil, int montoEnBilletes50Mil, int montoEnBilletes20Mil, int montoEnBilletes10Mil, int montoEnBilletes5Mil, int montoEnBilletes2Mil, int montoEnBilletesOMonedasMil, int montoEnMonedasDe500, int montoEnMonedasDe200, int montoEnMonedasDe100, int montoEnMonedasDe50, String montoTotalCaja, String diferenciaTotal) {
         this.Id = Id;
         this.codigo = codigo;
         this.usuario = usuario;
@@ -95,11 +94,11 @@ public class Arqueo {
         this.codigo = codigo;
     }
 
-    public String getUsuario() {
+    public int getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(int usuario) {
         this.usuario = usuario;
     }
 

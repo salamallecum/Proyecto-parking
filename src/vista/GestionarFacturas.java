@@ -5,10 +5,12 @@ import controlador.FacturaControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import modelo.Usuario;
 import org.apache.log4j.Logger;
 
 
@@ -25,6 +27,8 @@ public class GestionarFacturas extends javax.swing.JFrame {
     public static boolean esFacturaAbierta = false;
     public static boolean hayFacturaVisualizandose = false;
     public static int idCierre;
+    
+    Usuario objUsuarioParaCombobox = new Usuario();
     
     FacturaControlador facturaControla = new FacturaControlador();
     
@@ -43,7 +47,13 @@ public class GestionarFacturas extends javax.swing.JFrame {
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
-                
+        
+        //Cargamos los usuarios existentes en el sistema en el combobox
+        DefaultComboBoxModel modeloUsuarios = new DefaultComboBoxModel(objUsuarioParaCombobox.listadoUsuariosDelSistema());
+        cmb_usuarios.setModel(modeloUsuarios);
+        
+        System.out.println("Listado de usuarios: "+ objUsuarioParaCombobox.listadoUsuariosDelSistema());
+                        
         if(idCierre != 1){
             facturaControla.cargarFacturasDeUnCierre(idCierre);
         }else{
@@ -73,7 +83,15 @@ public class GestionarFacturas extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txt_codigoFactura = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txt_usuario = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jDate_fechaDesde = new com.toedter.calendar.JDateChooser();
+        jDate_fechaHasta = new com.toedter.calendar.JDateChooser();
+        btn_buscar = new javax.swing.JButton();
+        cmb_usuarios = new javax.swing.JComboBox<>();
+        btn_generaPDFFacturas = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        lbl_gananciasEnFacturas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -107,7 +125,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Código", "Fecha ", "Usuario", "Valor ($)"
+                "Fecha ", "Código", "Usuario", "Valor ($)"
             }
         ) {
             Class[] types = new Class [] {
@@ -152,15 +170,29 @@ public class GestionarFacturas extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Usuario:");
 
-        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyPressed(evt);
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setText("Desde:");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setText("Hasta:");
+
+        jDate_fechaDesde.setDateFormatString("yyyy-MM-d");
+
+        jDate_fechaHasta.setDateFormatString("yyyy-MM-d");
+
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
+        btn_buscar.setText("Buscar");
+        btn_buscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
             }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyTyped(evt);
+        });
+
+        cmb_usuarios.setAutoscrolls(true);
+        cmb_usuarios.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmb_usuariosItemStateChanged(evt);
             }
         });
 
@@ -175,69 +207,111 @@ public class GestionarFacturas extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                    .addComponent(txt_codigoFactura))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(txt_codigoFactura)
+                    .addComponent(cmb_usuarios, 0, 131, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDate_fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDate_fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(btn_buscar)
+                .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_codigoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_codigoFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jDate_fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmb_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jDate_fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        btn_generaPDFFacturas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generaPDFFacturas.setText("Generar Informe PDF");
+        btn_generaPDFFacturas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generaPDFFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_generaPDFFacturasActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel17.setText("Total ganancias:");
+
+        lbl_gananciasEnFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_gananciasEnFacturas.setForeground(new java.awt.Color(0, 51, 255));
+        lbl_gananciasEnFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_gananciasEnFacturas.setText("0,00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE))
+                        .addComponent(btn_generaPDFFacturas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel17)
+                        .addGap(269, 269, 269))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_gananciasEnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(130, 130, 130)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_generaPDFFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_gananciasEnFacturas)
+                            .addComponent(jLabel17))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    private void txt_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyTyped
-        //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 10;
-        if(txt_usuario.getText().length() == numeroCaracteres){
-            evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
-            txt_usuario.setText("");
-        } 
-    }//GEN-LAST:event_txt_usuarioKeyTyped
-
     private void txt_codigoFacturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyTyped
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 10;
@@ -253,22 +327,11 @@ public class GestionarFacturas extends javax.swing.JFrame {
         facturaControla.busquedaFacturaPorCodigo(buscar);
     }//GEN-LAST:event_txt_codigoFacturaKeyReleased
 
-    private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
-        String buscar = txt_usuario.getText();
-        facturaControla.busquedaFacturaPorUsuario(buscar);
-    }//GEN-LAST:event_txt_usuarioKeyReleased
-
     private void txt_codigoFacturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
             Limpiar();                       
         }
     }//GEN-LAST:event_txt_codigoFacturaKeyPressed
-
-    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
-            Limpiar();                       
-        }
-    }//GEN-LAST:event_txt_usuarioKeyPressed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         cerrarGestorFacturas();
@@ -278,6 +341,19 @@ public class GestionarFacturas extends javax.swing.JFrame {
         int seleccion = table_listaFacturas.getSelectedRow();
         Filas = seleccion;
     }//GEN-LAST:event_table_listaFacturasMouseClicked
+
+    private void btn_generaPDFFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFFacturasActionPerformed
+        //facturaControla.generarReportePDFdeFacturasGeneradas();
+        btn_generaPDFFacturas.setEnabled(false);
+    }//GEN-LAST:event_btn_generaPDFFacturasActionPerformed
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
+    private void cmb_usuariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_usuariosItemStateChanged
+
+    }//GEN-LAST:event_cmb_usuariosItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -352,14 +428,22 @@ public class GestionarFacturas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_buscar;
+    public static javax.swing.JButton btn_generaPDFFacturas;
+    private javax.swing.JComboBox<String> cmb_usuarios;
+    private com.toedter.calendar.JDateChooser jDate_fechaDesde;
+    private com.toedter.calendar.JDateChooser jDate_fechaHasta;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbl_gananciasEnFacturas;
     public static javax.swing.JTable table_listaFacturas;
     private javax.swing.JTextField txt_codigoFactura;
-    private javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
 
     //Metodo que se invoca al cerrar el jFrame
@@ -392,7 +476,9 @@ public class GestionarFacturas extends javax.swing.JFrame {
     //Metodo que limpia el formulario en caso de ingresar tablero principal
     public void Limpiar(){
         txt_codigoFactura.setText("");
-        txt_usuario.setText("");
+        cmb_usuarios.setSelectedIndex(0);
+        jDate_fechaDesde.setDate(null);
+        jDate_fechaHasta.setDate(null);
     } 
     
 }

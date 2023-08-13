@@ -26,7 +26,7 @@ public class Convenio{
     private final Logger log = Logger.getLogger(Convenio.class);
     private URL url = Convenio.class.getResource("Log4j.properties");
     
-     public static ArrayList<String> listadoNombresConvenio = new ArrayList<String>(); 
+    public static ArrayList<String> listadoNombresConvenio = new ArrayList<String>(); 
     
     public int getId() {
         return id;

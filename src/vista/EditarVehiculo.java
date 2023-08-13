@@ -5,6 +5,7 @@ import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -53,8 +54,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
    
     Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", 0, 0, 0);
     Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", 0, 0, 0);
-    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
-    Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     VehiculoControlador vehicontrolador = new VehiculoControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -62,6 +63,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
     TarifaControlador tarifaControla = new TarifaControlador();
     FacturaControlador facturaControla = new FacturaControlador();
     ParametroControlador parametroControla = new ParametroControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
         
     //Declaramos los objetos  y se los aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();
@@ -487,7 +489,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                     nuevaFactura.setPropietario(dueño);
                     nuevaFactura.setClaseDeVehiculo(tipoVehi_string);
                     nuevaFactura.setId_parqueadero(idRealDelParqueaderoSeleccionado);
-                    nuevaFactura.setFacturadoPor(user);
+                    nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                     nuevaFactura.setEstadoDeFactura("Abierta");
                     nuevaFactura.setEstaContabilizada("No");
                     nuevaFactura.setId_convenio(idRealDelConvenioSeleccionado);

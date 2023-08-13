@@ -6,6 +6,7 @@ import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import controlador.VehiculoControlador;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -52,13 +53,14 @@ public class PanelCaja extends javax.swing.JPanel{
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
     VehiculoControlador vehControla = new VehiculoControlador();
     ParametroControlador paramControla = new ParametroControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
        
     private final Logger log = Logger.getLogger(PanelCaja.class);
     private URL url = PanelCaja.class.getResource("Log4j.properties");
              
     public static DefaultTableModel modeloCaja;
     
-    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     //Declaramos un objeto tipo Parqueadero y se lo aprovisionamos a su combobox
     Parqueadero parq = new Parqueadero();   
@@ -680,7 +682,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 nuevaFactura.setPropietario(dueño);
                 nuevaFactura.setClaseDeVehiculo(clase_string);
                 nuevaFactura.setId_parqueadero(validoParqueadero);
-                nuevaFactura.setFacturadoPor(user);
+                nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                 nuevaFactura.setEstadoDeFactura("Abierta");
                 nuevaFactura.setEstaContabilizada("No");
                 nuevaFactura.setId_convenio(convControla.consultarIdDeunConvenio(convenioAAplicar));
@@ -795,7 +797,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 nuevaFactura.setPropietario(dueño);
                 nuevaFactura.setClaseDeVehiculo(clase_string);
                 nuevaFactura.setId_parqueadero(idParq);
-                nuevaFactura.setFacturadoPor(user);
+                nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                 nuevaFactura.setEstadoDeFactura("Abierta");
                 nuevaFactura.setEstaContabilizada("No");
                 nuevaFactura.setId_convenio(idConvenio);

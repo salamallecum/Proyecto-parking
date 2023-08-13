@@ -45,7 +45,7 @@ public class CierreControlador {
    private final Logger log = Logger.getLogger(CierreControlador.class);
    private URL url = CierreControlador.class.getResource("Log4j.properties");
    
-   Cierre cierreConsultado = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
+   Cierre cierreConsultado = new Cierre(0, "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
    FacturaControlador factControla = new FacturaControlador();
    ParqueaderoControlador parqControla = new ParqueaderoControlador();
    
@@ -109,7 +109,7 @@ public class CierreControlador {
             pst3.setString(2, cier.getCodigo());
             pst3.setString(3, cier.getCodigoArqueo()); 
             pst3.setString(4, cier.getFecha_cierre());
-            pst3.setString(5, cier.getUsuario());
+            pst3.setInt(5, cier.getUsuario());
             pst3.setString(6, cier.getBase_caja());
             pst3.setString(7, cier.getNumBilletesDe100Mil());
             pst3.setString(8, cier.getNumBilletesDe50Mil());
@@ -265,7 +265,7 @@ public class CierreControlador {
                 cierreConsultado.setCodigo(rs.getString("Codigo"));
                 cierreConsultado.setCodigoArqueo(rs.getString("Codigo_arqueo"));
                 cierreConsultado.setFecha_cierre(rs.getString("Fecha_cierre"));
-                cierreConsultado.setUsuario(rs.getString("Nombre_usuario"));
+                cierreConsultado.setUsuario(rs.getInt("Id_usuario"));
                 cierreConsultado.setBase_caja(rs.getString("Base_caja"));
                 cierreConsultado.setNumBilletesDe100Mil(rs.getString("numerobilletes100mil"));
                 cierreConsultado.setNumBilletesDe50Mil(rs.getString("numerobilletes50mil"));
@@ -473,7 +473,7 @@ public class CierreControlador {
                 cierreConsultado.setCodigo(rs.getString("Codigo"));
                 cierreConsultado.setCodigoArqueo(rs.getString("Codigo_arqueo"));
                 cierreConsultado.setBase_caja(rs.getString("Base_caja"));
-                cierreConsultado.setUsuario(rs.getString("Nombre_usuario"));
+                cierreConsultado.setUsuario(rs.getInt("Id_usuario"));
                 cierreConsultado.setNumBilletesDe100Mil(rs.getString("numerobilletes100mil"));
                 cierreConsultado.setNumBilletesDe50Mil(rs.getString("numerobilletes50mil"));
                 cierreConsultado.setNumBilletesDe20Mil(rs.getString("numerobilletes20mil"));

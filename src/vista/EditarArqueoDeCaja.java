@@ -2,6 +2,7 @@ package vista;
 
 import controlador.ArqueoControlador;
 import controlador.FacturaControlador;
+import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -64,10 +65,11 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
     int montoEnMonedasDe100 = 0;
     int montoEnMonedasDe50 = 0; 
       
-    Arqueo arqueoAEditar = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
-    Arqueo arqueoAActualizar = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+    Arqueo arqueoAEditar = new Arqueo(0, "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+    Arqueo arqueoAActualizar = new Arqueo(0, "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
     ArqueoControlador arqueoControla = new ArqueoControlador();
     FacturaControlador facturaControla = new FacturaControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
             
     private final Logger log = Logger.getLogger(EditarArqueoDeCaja.class);
     private URL url = EditarArqueoDeCaja.class.getResource("Log4j.properties");
@@ -978,7 +980,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
                       
             arqueoAActualizar.setId(ID);
             arqueoAActualizar.setFecha_arqueo(arqueoControla.fecha_Arqueo());
-            arqueoAActualizar.setUsuario(usuarioDelSistema);
+            arqueoAActualizar.setUsuario(usuarioControla.consultarIdDeunUsuario(usuarioDelSistema));
             arqueoAActualizar.setBase_caja(baseDeCajaOriginal);
             arqueoAActualizar.setNumBilletesDe100Mil(numBilletesDe100Mil);
             arqueoAActualizar.setNumBilletesDe50Mil(numBilletesDe50Mil);

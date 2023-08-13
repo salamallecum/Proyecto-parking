@@ -16,7 +16,7 @@ public class Factura {
     private String propietario;
     private String claseDeVehiculo;
     private int id_parqueadero;
-    private String facturadoPor;
+    private int facturadoPor;
     private String estadoDeFactura;
     private String estaContabilizada;
     private int id_convenio;
@@ -34,7 +34,7 @@ public class Factura {
     private final URL url = Factura.class.getResource("Log4j.properties");
     
     //Constructor
-    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, String facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String impuesto, String valorAPagar, String efectivo, String cambio) {
+    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, int facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String impuesto, String valorAPagar, String efectivo, String cambio) {
         this.id = id;
         this.codigo = codigo;
         this.fechaDeFactura = fechaDeFactura;
@@ -114,11 +114,11 @@ public class Factura {
         this.id_parqueadero = id_parqueadero;
     }
 
-    public String getFacturadoPor() {
+    public int getFacturadoPor() {
         return facturadoPor;
     }
 
-    public void setFacturadoPor(String facturadoPor) {
+    public void setFacturadoPor(int facturadoPor) {
         this.facturadoPor = facturadoPor;
     }
 

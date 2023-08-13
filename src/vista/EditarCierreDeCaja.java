@@ -3,6 +3,7 @@ package vista;
 import controlador.ArqueoControlador;
 import controlador.CierreControlador;
 import controlador.FacturaControlador;
+import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -66,11 +67,12 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     int montoEnMonedasDe50 = 0; 
     String numFacturasGeneradas;
       
-    Cierre cierreAEditar = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
-    Cierre cierreAActualizar = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
+    Cierre cierreAEditar = new Cierre(0, "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
+    Cierre cierreAActualizar = new Cierre(0, "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
     CierreControlador cierreControla = new CierreControlador();
     FacturaControlador facturaControla = new FacturaControlador();
     ArqueoControlador arqueoControla = new ArqueoControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
             
     private final Logger log = Logger.getLogger(EditarCierreDeCaja.class);
     private URL url = EditarCierreDeCaja.class.getResource("Log4j.properties");
@@ -865,7 +867,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
                       
             cierreAActualizar.setId(ID);
             cierreAActualizar.setFecha_cierre(cierreControla.fecha_Cierre());
-            cierreAActualizar.setUsuario(usuarioDelSistema);
+            cierreAActualizar.setUsuario(usuarioControla.consultarIdDeunUsuario(usuarioDelSistema));
             cierreAActualizar.setBase_caja(cierreAEditar.getBase_caja());
             cierreAActualizar.setNumBilletesDe100Mil(numBilletesDe100Mil);
             cierreAActualizar.setNumBilletesDe50Mil(numBilletesDe50Mil);

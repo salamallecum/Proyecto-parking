@@ -56,7 +56,7 @@ public class FacturaControlador implements Runnable {
     private String valorAPagarPorDiferenciaAdicional = "";   
     public static String rutaImgTickets = "/icons/ImgTickets.jpg";
     
-    Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
 
     //Hilo encargado del cargue de la tabla de opercaion del parqueradero en el panel caja
     public Thread hilo2 = new Thread(this);
@@ -478,7 +478,7 @@ public class FacturaControlador implements Runnable {
             pst2.setString(6, nvaFactura.getPropietario());
             pst2.setString(7, nvaFactura.getClaseDeVehiculo());
             pst2.setInt(8, nvaFactura.getId_parqueadero());
-            pst2.setString(9, nvaFactura.getFacturadoPor());
+            pst2.setInt(9, nvaFactura.getFacturadoPor());
             pst2.setString(10, nvaFactura.getEstadoDeFactura());
             pst2.setString(11, nvaFactura.getEstaContabilizada()); 
             pst2.setInt(12, nvaFactura.getId_convenio());
@@ -549,7 +549,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
                 facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
-                facturaConsultada.setFacturadoPor(rs.getString("Facturado_por"));
+                facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
                 facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
                 facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa")); 
                 facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
@@ -583,7 +583,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
                 facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
-                facturaConsultada.setFacturadoPor(rs.getString("Facturado_por"));
+                facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
                 facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
                 facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa")); 
                 facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
@@ -623,7 +623,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
                 facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
-                facturaConsultada.setFacturadoPor(rs.getString("Facturado_por"));
+                facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
                 facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
                 facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa")); 
                 facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
@@ -835,15 +835,15 @@ public class FacturaControlador implements Runnable {
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Codigo, Fecha_Factura,  Facturado_por, Valor_a_pagar from facturas");
+                        "select Fecha_Factura, Codigo,  Facturado_por, Valor_a_pagar from facturas");
 
             ResultSet rs = pst.executeQuery();
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
 
-            modelo.addColumn("Codigo");
             modelo.addColumn("Fecha");
+            modelo.addColumn("Codigo");
             modelo.addColumn("Usuario");
             modelo.addColumn("Valor ($)");
 
@@ -1193,15 +1193,15 @@ public class FacturaControlador implements Runnable {
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Codigo, Fecha_Factura,  Facturado_por, Valor_a_pagar from facturas where Id_cierre = "+idCierre);
+                        "select Fecha_Factura, Codigo,  Facturado_por, Valor_a_pagar from facturas where Id_cierre = "+idCierre);
 
             ResultSet rs = pst.executeQuery();
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
 
-            modelo.addColumn("Codigo");
             modelo.addColumn("Fecha");
+            modelo.addColumn("Codigo");
             modelo.addColumn("Usuario");
             modelo.addColumn("Valor ($)");
 

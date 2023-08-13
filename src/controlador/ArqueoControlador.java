@@ -44,7 +44,7 @@ import static vista.GestionarArqueos.table_listaArqueos;
  */
 public class ArqueoControlador {
     
-   Arqueo arqueoConsultado = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+   Arqueo arqueoConsultado = new Arqueo(0, "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
     
    private final Logger log = Logger.getLogger(ArqueoControlador.class);
    private URL url = ArqueoControlador.class.getResource("Log4j.properties");
@@ -64,7 +64,7 @@ public class ArqueoControlador {
             pst3.setInt(1, arq.getId());
             pst3.setString(2, arq.getCodigo());
             pst3.setString(3, arq.getFecha_arqueo());
-            pst3.setString(4, arq.getUsuario());
+            pst3.setInt(4, arq.getUsuario());
             pst3.setString(5, arq.getBase_caja());
             pst3.setString(6, arq.getNumBilletesDe100Mil());
             pst3.setString(7, arq.getNumBilletesDe50Mil());
@@ -308,7 +308,7 @@ public class ArqueoControlador {
                 arqueoConsultado.setId(rs.getInt("Id_arqueo"));
                 arqueoConsultado.setCodigo(rs.getString("codigo"));
                 arqueoConsultado.setBase_caja(rs.getString("base_caja"));
-                arqueoConsultado.setUsuario(rs.getString("usuario"));
+                arqueoConsultado.setUsuario(rs.getInt("usuario"));
                 arqueoConsultado.setNumBilletesDe100Mil(rs.getString("numerobilletes100mil"));
                 arqueoConsultado.setNumBilletesDe50Mil(rs.getString("numerobilletes50mil"));
                 arqueoConsultado.setNumBilletesDe20Mil(rs.getString("numerobilletes20mil"));

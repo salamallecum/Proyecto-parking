@@ -1,6 +1,13 @@
 package modelo;
 
+import clasesDeApoyo.Conexion;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 /**
@@ -21,19 +28,6 @@ public class Usuario {
     
     private final Logger log = Logger.getLogger(Usuario.class);
     private URL url = Usuario.class.getResource("Log4j.properties");
-    
-    //Constructor   
-    public Usuario(int id, String nombres, String apellidos, String celular, String telefono, String usuario, String clave, String rol, String activo) {
-        this.id = id;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.celular = celular;
-        this.telefono = telefono;
-        this.usuario = usuario;
-        this.clave = clave;
-        this.rol = rol;
-        this.activo = activo;
-    }    
     
     //Metodos
     public int getId() {
@@ -107,4 +101,42 @@ public class Usuario {
     public void setCelular(String celular) {
         this.celular = celular;
     }
+        
+    //Agrega los valores de la tabla de usuarios a los combobox en gestor factura, cierres y arqueos  
+    public Vector<Usuario> listadoUsuariosDelSistema(){
+        
+        //Traemos los usuarios
+        PreparedStatement pst3 = null;
+        ResultSet rs3 = null;       
+        Connection cn3 = Conexion.conectar();
+        
+        Vector<Usuario> datos = new Vector<Usuario>();
+        Usuario dat = null;
+        
+        try{
+           pst3 = cn3.prepareStatement("select Id_usuario, Nombres from usuarios"); 
+           rs3 = pst3.executeQuery();
+           
+           dat = new Usuario();
+           dat.setId(0);
+           dat.setNombres("Seleccione");
+           datos.add(dat);
+           
+           while(rs3.next()){
+               dat = new Usuario();
+               dat.setId(rs3.getInt("Id_usuario"));
+               dat.setNombres(rs3.getString("Nombres"));
+               datos.add(dat);
+           }
+           
+           System.out.println(datos);
+
+           rs3.close();
+
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Error al cargar listado de usuarios del sistema, ¡Contacte al administrador!");
+            log.fatal("ERROR - Se ha producido un error al cargar listado de usuarios: " + ex.toString());
+        }
+        return datos;
+    } 
 }

@@ -6,6 +6,7 @@ import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import controlador.VehiculoControlador;
 import java.awt.Color;
 import java.awt.Image;
@@ -37,7 +38,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     DefaultTableModel modeloCaja;
     int Fila;
     
-    Factura facturaALiquidar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaALiquidar = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     Tarifa tarifaACobrar = new Tarifa(); 
     Convenio convenioAAplicar = new Convenio();
     String montoAPagarParaCalculoPago = "";
@@ -49,6 +50,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControla = new VehiculoControlador();
     ParametroControlador paramControla = new ParametroControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
     
     long diferenciaDeFechasEnMilisegundos;    
     
@@ -88,7 +90,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             lbl_propietario.setText(facturaALiquidar.getPropietario());
             lbl_tipoVehiculo.setText(facturaALiquidar.getClaseDeVehiculo());
             lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaALiquidar.getId_parqueadero()));
-            lbl_facturadoPor.setText(facturaALiquidar.getFacturadoPor());
+            lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaALiquidar.getFacturadoPor()));
             lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaALiquidar.getId_convenio()));
             lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaALiquidar.getId_tarifa()));
             lbl_impuesto.setText(paramControla.consultarValorDeUnParametro("IMPUESTO"));

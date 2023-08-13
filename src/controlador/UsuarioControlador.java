@@ -414,5 +414,53 @@ public class UsuarioControlador {
     public void cargarEstructuraDeTablasDeBaseDeDatos(){
         Conexion.cargarScriptDeEstructura();
     }
+    
+    //Metodo que permite consultar el id de un usuario
+    public int consultarIdDeunUsuario(String usuarioDeLogueo){
+       
+        int idUsuario = 0;
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            pst = cn.prepareStatement(
+                        "select Id_usuario from usuarios where Usuario = '" + usuarioDeLogueo + "'");
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                idUsuario = rs.getInt("Id_usuario");
+                cn.close();
+           
+            } else {
+                log.fatal("ERROR - No se ha encontrado el ID del usuario requerido");
+            }
+        }catch (SQLException ex){ 
+            log.fatal("ERROR - Se ha producido un error al consultar el ID de un usuario en el sistema: " + ex); 
+        } 
+        return idUsuario;
+    }
+    
+    //Metodo que permite consultar el nombre de usuario de logueo de un usuario usando su id
+    public String consultarUsuarioMedianteID(int idUsuario){
+              
+        String nombreUsuario = "";
+                
+        //Consulta el nombre de de usuario de logueo de un usuario utilizando su id
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select Usuario from usuarios where Id_usuario = " + idUsuario);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                nombreUsuario = rs.getString("Usuario");   
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar usuario!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de un usuario utilizando su ID: " + e);
+        } 
+        return nombreUsuario;
+    }
 }
 

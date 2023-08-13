@@ -5,6 +5,7 @@ import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import controlador.VehiculoControlador;
 import java.awt.Color;
 import java.awt.Image;
@@ -21,8 +22,6 @@ import modelo.Parqueadero;
 import modelo.Tarifa;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
-import static vista.PanelCaja.txt_convenio;
-import static vista.PanelCaja.txt_tarifa;
 
 
 /**
@@ -42,14 +41,15 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     Convenio conv = new Convenio();
     Tarifa tarif = new Tarifa();
     
-    Factura facturaAEditar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
-    Factura facturaAActualizar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaAEditar = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaAActualizar = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     FacturaControlador facturaControla = new FacturaControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControla = new VehiculoControlador();
+    UsuarioControlador usuControla = new UsuarioControlador();
           
     Date hora_ingr;
     String codigo_factura;
@@ -500,7 +500,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                     parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(no_parq), "Si");
                 }
                 
-                facturaAActualizar.setFacturadoPor(usuario);
+                facturaAActualizar.setFacturadoPor(usuControla.consultarIdDeunUsuario(usuario));
                 facturaAActualizar.setId_convenio(idRealDelConvenioSeleccionado);
                 facturaAActualizar.setId_tarifa(idRealDeTarifaSeleccionada);
 

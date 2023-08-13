@@ -6,6 +6,7 @@ import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import controlador.VehiculoControlador;
 import java.awt.Color;
 import java.awt.Image;
@@ -61,8 +62,8 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     Convenio convenioAAplicar = new Convenio();
     Tarifa tarif = new Tarifa();
     Tarifa tarifaACobrar = new Tarifa(); 
-    Factura facturaAEditar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
-    Factura facturaAActualizar = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaAEditar = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaAActualizar = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     FacturaControlador facturaControla = new FacturaControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -70,6 +71,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControla = new VehiculoControlador();
     ParametroControlador paramControla = new ParametroControlador();
+    UsuarioControlador usuControla = new UsuarioControlador();
     
     String vueltas = "";
     String montoAPagarParaCalculoPago = "";
@@ -616,7 +618,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                     
                 }
                 
-                facturaAActualizar.setFacturadoPor(usuario);
+                facturaAActualizar.setFacturadoPor(usuControla.consultarIdDeunUsuario(usuario));
                 facturaAActualizar.setId_convenio(idBDConvenioAAplicar);
                 facturaAActualizar.setId_tarifa(idBDTarifaAAplicar);
                 facturaAActualizar.setDiferencia(diferencia);

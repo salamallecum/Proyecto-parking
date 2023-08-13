@@ -4,6 +4,7 @@ import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import controlador.VehiculoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -34,8 +35,9 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     TarifaControlador tarifaControla = new TarifaControlador();
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControlador = new VehiculoControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
        
-    Factura facturaCerradaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaCerradaConsultada = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
         
     private final Logger log = Logger.getLogger(InformacionFacturaFinal.class);
     private URL url = InformacionFacturaFinal.class.getResource("Log4j.properties");
@@ -70,7 +72,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         lbl_propietario.setText(facturaCerradaConsultada.getPropietario());
         lbl_tipoVehiculo.setText(facturaCerradaConsultada.getClaseDeVehiculo());
         lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaCerradaConsultada.getId_parqueadero()));
-        lbl_facturadoPor.setText(facturaCerradaConsultada.getFacturadoPor());
+        lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaCerradaConsultada.getFacturadoPor()));
         lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaCerradaConsultada.getId_convenio()));
         lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaCerradaConsultada.getId_tarifa()));
         lbl_impuesto.setText(facturaCerradaConsultada.getImpuesto());

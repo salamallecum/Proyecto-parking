@@ -6,6 +6,7 @@ import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import controlador.VehiculoControlador;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -50,8 +51,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     ConvenioControlador convenioControla;
     FacturaControlador facturaControla;
     ParametroControlador paramControla;
+    UsuarioControlador usuarioControla;
     
-    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     
     boolean elvehiculoTieneFacturaPrimerIngresoPrevRegistrada = true;
     
@@ -94,6 +96,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         tarifaControla = new TarifaControlador();
         facturaControla = new FacturaControlador();
         paramControla = new ParametroControlador();
+        usuarioControla = new UsuarioControlador();
         
         hilo1.start();
         
@@ -619,7 +622,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                     nuevaFactura.setPropietario(dueño);
                     nuevaFactura.setClaseDeVehiculo(clase_string);
                     nuevaFactura.setId_parqueadero(idRealDelParqueaderoSeleccionado);
-                    nuevaFactura.setFacturadoPor(user);
+                    nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                     nuevaFactura.setEstadoDeFactura("Abierta");
                     nuevaFactura.setEstaContabilizada("No");
                     nuevaFactura.setId_convenio(idRealDelConvenioSeleccionado);

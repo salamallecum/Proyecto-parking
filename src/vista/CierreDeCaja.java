@@ -3,6 +3,7 @@ package vista;
 import controlador.CierreControlador;
 import controlador.FacturaControlador;
 import controlador.ParametroControlador;
+import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -64,10 +65,11 @@ public class CierreDeCaja extends javax.swing.JFrame{
     int montoEnMonedasDe50 = 0; 
     String numFacturasGeneradas;
       
-    Cierre nuevoCierre = new Cierre(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
+    Cierre nuevoCierre = new Cierre(0, "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
     FacturaControlador facturaControla = new FacturaControlador();
     CierreControlador cierreControla = new CierreControlador();
     ParametroControlador paramControla = new ParametroControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
             
     private final Logger log = Logger.getLogger(CierreDeCaja.class);
     private URL url = CierreDeCaja.class.getResource("Log4j.properties");
@@ -973,7 +975,7 @@ public class CierreDeCaja extends javax.swing.JFrame{
             nuevoCierre.setCodigo(codigoCierre);
             nuevoCierre.setCodigoArqueo(ArqueoDeCaja.codigoArqueo);
             nuevoCierre.setFecha_cierre(cierreControla.fecha_Cierre());
-            nuevoCierre.setUsuario(usuarioDelSistema);
+            nuevoCierre.setUsuario(usuarioControla.consultarIdDeunUsuario(usuarioDelSistema));
             nuevoCierre.setBase_caja(paramControla.consultarValorDeUnParametro("BASE_CAJA"));
             nuevoCierre.setNumBilletesDe100Mil(numBilletesDe100Mil);
             nuevoCierre.setNumBilletesDe50Mil(numBilletesDe50Mil);

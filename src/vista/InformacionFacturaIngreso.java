@@ -4,6 +4,7 @@ import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
 import controlador.VehiculoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -29,13 +30,14 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
     DefaultTableModel modelo;
     int Fila;
             
-    Factura facturaAbiertaConsultada = new Factura (0, "", "", "", "", "", 0, "", "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaAbiertaConsultada = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     FacturaControlador facturaControla = new FacturaControlador();
 
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
     ConvenioControlador convControla = new ConvenioControlador();
-    VehiculoControlador vehiControlador = new VehiculoControlador();            
+    VehiculoControlador vehiControlador = new VehiculoControlador(); 
+    UsuarioControlador usuarioControla = new UsuarioControlador();
     
     private final Logger log = Logger.getLogger(InformacionFacturaIngreso.class);
     private URL url = InformacionFacturaIngreso.class.getResource("Log4j.properties");
@@ -71,7 +73,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
         lbl_propietario.setText(facturaAbiertaConsultada.getPropietario());
         lbl_tipoVehiculo.setText(facturaAbiertaConsultada.getClaseDeVehiculo());
         lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaAbiertaConsultada.getId_parqueadero()));
-        lbl_facturadoPor.setText(facturaAbiertaConsultada.getFacturadoPor());
+        lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaAbiertaConsultada.getFacturadoPor()));
         lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaAbiertaConsultada.getId_convenio()));
         lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaAbiertaConsultada.getId_tarifa()));
         lbl_horaIngreso.setText(facturaAbiertaConsultada.getFechaDeIngresoVehiculo());

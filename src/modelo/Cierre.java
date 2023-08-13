@@ -12,7 +12,7 @@ public class Cierre {
     private int Id;
     private String codigo;
     private String codigo_arqueo;
-    private String usuario;
+    private int usuario;
     private String fecha_cierre;
     private String base_caja;
 
@@ -52,7 +52,7 @@ public class Cierre {
     private URL url = Cierre.class.getResource("Log4j.properties");
     
     //Constructor
-    public Cierre(int Id, String codigo, String codigo_arqueo, String usuario, String fecha_cierre, String base_caja, String numBilletesDe100Mil, String numBilletesDe50Mil, String numBilletesDe20Mil, String numBilletesDe10Mil, String numBilletesDe5Mil, String numBilletesDe2Mil, String numBilletesOMonedasDeMil, String numMonedasDe500, String numMonedasDe200, String numMonedasDe100, String numMonedasDe50, int montoEnBilletes100Mil, int montoEnBilletes50Mil, int montoEnBilletes20Mil, int montoEnBilletes10Mil, int montoEnBilletes5Mil, int montoEnBilletes2Mil, int montoEnBilletesOMonedasMil, int montoEnMonedasDe500, int montoEnMonedasDe200, int montoEnMonedasDe100, int montoEnMonedasDe50, String producido, String total_esperado, String dinero_caja, String diferencia, String dinero_a_consignar, String no_facturas, String observaciones) {
+    public Cierre(int Id, String codigo, String codigo_arqueo, int usuario, String fecha_cierre, String base_caja, String numBilletesDe100Mil, String numBilletesDe50Mil, String numBilletesDe20Mil, String numBilletesDe10Mil, String numBilletesDe5Mil, String numBilletesDe2Mil, String numBilletesOMonedasDeMil, String numMonedasDe500, String numMonedasDe200, String numMonedasDe100, String numMonedasDe50, int montoEnBilletes100Mil, int montoEnBilletes50Mil, int montoEnBilletes20Mil, int montoEnBilletes10Mil, int montoEnBilletes5Mil, int montoEnBilletes2Mil, int montoEnBilletesOMonedasMil, int montoEnMonedasDe500, int montoEnMonedasDe200, int montoEnMonedasDe100, int montoEnMonedasDe50, String producido, String total_esperado, String dinero_caja, String diferencia, String dinero_a_consignar, String no_facturas, String observaciones) {
         this.Id = Id;
         this.codigo = codigo;
         this.codigo_arqueo = codigo_arqueo;
@@ -107,11 +107,11 @@ public class Cierre {
         this.codigo = codigo;
     }
 
-    public String getUsuario() {
+    public int getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(int usuario) {
         this.usuario = usuario;
     }
 

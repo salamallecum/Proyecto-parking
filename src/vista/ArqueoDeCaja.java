@@ -4,6 +4,7 @@ import controlador.ArqueoControlador;
 import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
+import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -68,7 +69,8 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     int montoEnMonedasDe100 = 0;
     int montoEnMonedasDe50 = 0; 
       
-    Arqueo nuevoArqueo = new Arqueo(0, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+    Arqueo nuevoArqueo = new Arqueo(0, "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+    UsuarioControlador usuarioControla = new UsuarioControlador();
     FacturaControlador facturaControla = new FacturaControlador();
     ArqueoControlador arqueoControla = new ArqueoControlador();
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
@@ -885,7 +887,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
             nuevoArqueo.setId(0);
             nuevoArqueo.setCodigo(codigoArqueo);
             nuevoArqueo.setFecha_arqueo(arqueoControla.fecha_Arqueo());
-            nuevoArqueo.setUsuario(usuarioDelSistema);
+            nuevoArqueo.setUsuario(usuarioControla.consultarIdDeunUsuario(usuarioDelSistema));
             nuevoArqueo.setBase_caja(paramControla.consultarValorDeUnParametro("BASE_CAJA"));
             nuevoArqueo.setNumBilletesDe100Mil(numBilletesDe100Mil);
             nuevoArqueo.setNumBilletesDe50Mil(numBilletesDe50Mil);
