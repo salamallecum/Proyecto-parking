@@ -28,8 +28,8 @@ public class EditarUsuario extends javax.swing.JFrame {
     int validacion = 0;
     int ID;
         
-    Usuario usuarioConsultado = new Usuario(0, "", "", "", "", "", "", "", "");
-    Usuario usuarioAModificar = new Usuario(0, "", "", "", "", "", "", "", "");
+    Usuario usuarioConsultado = new Usuario();
+    Usuario usuarioAModificar = new Usuario();
     UsuarioControlador usuControlador = new UsuarioControlador();
       
     
@@ -190,7 +190,6 @@ public class EditarUsuario extends javax.swing.JFrame {
         lbl_iconoEditUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_iconoEditUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-user.png"))); // NOI18N
 
-        txt_nombreUsuario.setEditable(false);
         txt_nombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_nombreUsuarioKeyTyped(evt);
@@ -327,6 +326,11 @@ public class EditarUsuario extends javax.swing.JFrame {
             validacion++;
         }
         
+        if(usu.equals("")){
+            txt_nombreUsuario.setBackground(Color.red);
+            validacion++;
+        }
+        
         if(pass.equals("")){
             txt_clave.setBackground(Color.red);
             validacion++;
@@ -365,7 +369,7 @@ public class EditarUsuario extends javax.swing.JFrame {
             usuarioAModificar.setApellidos(apellidos);
             usuarioAModificar.setCelular(celular);
             usuarioAModificar.setTelefono(telefono);
-            usuarioAModificar.setUsuario(usuario_actualizado);
+            usuarioAModificar.setUsuario(usu);
             usuarioAModificar.setClave(pass);
             usuarioAModificar.setRol(roles_string);
             usuarioAModificar.setActivo(activo_string);

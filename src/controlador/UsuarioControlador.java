@@ -38,7 +38,7 @@ import static vista.PanelUsuarios.modelo;
  */
 public class UsuarioControlador {
     
-    Usuario usuarioConsultado = new Usuario(0, "", "", "", "", "", "", "", "");  
+    Usuario usuarioConsultado = new Usuario();  
        
     private final Logger log = Logger.getLogger(UsuarioControlador.class);
     private URL url = UsuarioControlador.class.getResource("/clasesDeApoyo/Log4j.properties");
@@ -103,7 +103,7 @@ public class UsuarioControlador {
         
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update usuarios set Nombres ='"+usuarioModificado.getNombres()+"',Apellidos='"+usuarioModificado.getApellidos()+"',Celular='"+usuarioModificado.getCelular()+"',Telefono='"+usuarioModificado.getTelefono()+"',Clave='"+usuarioModificado.getClave()+"',Rol='"+usuarioModificado.getRol()+"',Activo='"+usuarioModificado.getActivo()+"' where id_usuario ='"+usuarioModificado.getId()+"'");
+            PreparedStatement pst = cn.prepareStatement("update usuarios set Nombres ='"+usuarioModificado.getNombres()+"',Apellidos='"+usuarioModificado.getApellidos()+"',Celular='"+usuarioModificado.getCelular()+"',Telefono='"+usuarioModificado.getTelefono()+"',Usuario='"+usuarioModificado.getUsuario()+"',Clave='"+usuarioModificado.getClave()+"',Rol='"+usuarioModificado.getRol()+"',Activo='"+usuarioModificado.getActivo()+"' where id_usuario ='"+usuarioModificado.getId()+"'");
 
             pst.executeUpdate();
             cn.close(); 

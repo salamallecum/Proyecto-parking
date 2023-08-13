@@ -25,7 +25,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
     int Fila;
     
     UsuarioControlador usuControlador = new UsuarioControlador();
-    Usuario usuarioConsultado = new Usuario(0, "", "", "", "", "", "", "", "");
+    Usuario usuarioConsultado = new Usuario();
     
     private final Logger log = Logger.getLogger(InformacionUsuario.class);
     private URL url = InformacionUsuario.class.getResource("Log4j.properties");

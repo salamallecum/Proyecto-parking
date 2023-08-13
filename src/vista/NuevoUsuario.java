@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class NuevoUsuario extends javax.swing.JFrame {
        
-    Usuario nuevoUsuario = new Usuario(0, "", "", "", "", "", "", "", "");
+    Usuario nuevoUsuario = new Usuario();
     UsuarioControlador usuControlador = new UsuarioControlador();
     
     private final Logger log = Logger.getLogger(NuevoUsuario.class);
