@@ -17,171 +17,233 @@
 	<parameter name="codigo" class="java.lang.String"/>
 	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
-		<![CDATA[SELECT codigo,
-	usuario,
-	base_caja,
-	numerobilletes100mil,
-	numerobilletes50mil,
-	numerobilletes20mil,
-	numerobilletes10mil,
-	numerobilletes5mil,
-	numerobilletes2mil,
-	`numerobilletesMil`,
-	numeromonedas500,
-	numeromonedas200,
-	numeromonedas100,
-	numeromonedas50,
-	montoen100mil,
-	montoen50mil,
-	montoen20mil,
-	montoen10mil,
-	montoen5mil,
-	montoen2mil,
-	montoenmil,
-	montoen500,
-	montoen200,
-	montoen100,
-	montoen50,
-	total_caja,
-	diferencia
-FROM bd_sistemaparking.arqueos
-WHERE codigo = $P{codigo}]]>
+		<![CDATA[SELECT
+     usuarios.`usuario`,
+     `numerobilletesMil`,
+     arqueos.`codigo`,
+     arqueos.`base_caja`,
+     arqueos.`numerobilletes100mil`,
+     arqueos.`numerobilletes50mil`,
+     arqueos.`numerobilletes20mil`,
+     arqueos.`numerobilletes10mil`,
+     arqueos.`numerobilletes5mil`,
+     arqueos.`numerobilletes2mil`,
+     arqueos.`numeromonedas500`,
+     arqueos.`numeromonedas200`,
+     arqueos.`numeromonedas100`,
+     arqueos.`numeromonedas50`,
+     arqueos.`montoen100mil`,
+     arqueos.`montoen50mil`,
+     arqueos.`montoen20mil`,
+     arqueos.`montoen10mil`,
+     arqueos.`montoen5mil`,
+     arqueos.`montoen2mil`,
+     arqueos.`montoenmil`,
+     arqueos.`montoen500`,
+     arqueos.`montoen200`,
+     arqueos.`montoen100`,
+     arqueos.`montoen50`,
+     arqueos.`total_caja`,
+     arqueos.`diferencia`,
+     arqueos.`codigo`,
+     arqueos.`fecha_arqueo` AS arqueos_fecha_arqueo,
+     arqueos.`base_caja` AS arqueos_fecha_arqueo,
+     arqueos.`numerobilletes100mil` AS arqueos_fecha_arqueo,
+     arqueos.`numerobilletes50mil` AS arqueos_fecha_arqueo,
+     arqueos.`numerobilletes20mil` AS arqueos_fecha_arqueo,
+     arqueos.`numerobilletes10mil` AS arqueos_fecha_arqueo,
+     arqueos.`numerobilletes5mil` AS arqueos_fecha_arqueo,
+     arqueos.`numerobilletes2mil` AS arqueos_fecha_arqueo,
+     arqueos.`numerobilletesMil` AS arqueos_numerobilletesMil,
+     arqueos.`numeromonedas500` AS arqueos_numerobilletesMil,
+     arqueos.`numeromonedas200` AS arqueos_numerobilletesMil,
+     arqueos.`numeromonedas100` AS arqueos_numerobilletesMil,
+     arqueos.`numeromonedas50` AS arqueos_numerobilletesMil,
+     arqueos.`montoen100mil` AS arqueos_numerobilletesMil,
+     arqueos.`montoen50mil` AS arqueos_numerobilletesMil,
+     arqueos.`montoen20mil` AS arqueos_numerobilletesMil,
+     arqueos.`montoen10mil` AS arqueos_numerobilletesMil,
+     arqueos.`montoen5mil` AS arqueos_numerobilletesMil,
+     arqueos.`montoen2mil` AS arqueos_numerobilletesMil,
+     arqueos.`montoenmil` AS arqueos_numerobilletesMil,
+     arqueos.`montoen500` AS arqueos_numerobilletesMil,
+     arqueos.`montoen200` AS arqueos_numerobilletesMil,
+     arqueos.`montoen100` AS arqueos_numerobilletesMil,
+     arqueos.`montoen50` AS arqueos_numerobilletesMil,
+     arqueos.`total_caja` AS arqueos_numerobilletesMil,
+     arqueos.`diferencia` AS arqueos_numerobilletesMil,
+     usuarios.`Usuario` AS usuarios_Usuario
+FROM
+     `bd_sistemaparking`.`arqueos` arqueos,
+     `usuarios` usuarios
+WHERE
+     codigo = $P{codigo}]]>
 	</queryString>
-	<field name="codigo" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
-		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
 	<field name="usuario" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="usuario"/>
 		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
-	<field name="base_caja" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="base_caja"/>
-		<property name="com.jaspersoft.studio.field.label" value="base_caja"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
-	<field name="numerobilletes100mil" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="numerobilletes100mil"/>
-		<property name="com.jaspersoft.studio.field.label" value="numerobilletes100mil"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
-	<field name="numerobilletes50mil" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="numerobilletes50mil"/>
-		<property name="com.jaspersoft.studio.field.label" value="numerobilletes50mil"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
-	<field name="numerobilletes20mil" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="numerobilletes20mil"/>
-		<property name="com.jaspersoft.studio.field.label" value="numerobilletes20mil"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
-	<field name="numerobilletes10mil" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="numerobilletes10mil"/>
-		<property name="com.jaspersoft.studio.field.label" value="numerobilletes10mil"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
-	<field name="numerobilletes5mil" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="numerobilletes5mil"/>
-		<property name="com.jaspersoft.studio.field.label" value="numerobilletes5mil"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
-	</field>
-	<field name="numerobilletes2mil" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="numerobilletes2mil"/>
-		<property name="com.jaspersoft.studio.field.label" value="numerobilletes2mil"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="numerobilletesMil" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="numerobilletesMil"/>
 		<property name="com.jaspersoft.studio.field.label" value="numerobilletesMil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="base_caja" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="base_caja"/>
+		<property name="com.jaspersoft.studio.field.label" value="base_caja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numerobilletes100mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes100mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes100mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numerobilletes50mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes50mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes50mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numerobilletes20mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes20mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes20mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numerobilletes10mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes10mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes10mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numerobilletes5mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes5mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes5mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numerobilletes2mil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numerobilletes2mil"/>
+		<property name="com.jaspersoft.studio.field.label" value="numerobilletes2mil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="numeromonedas500" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="numeromonedas500"/>
 		<property name="com.jaspersoft.studio.field.label" value="numeromonedas500"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="numeromonedas200" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="numeromonedas200"/>
 		<property name="com.jaspersoft.studio.field.label" value="numeromonedas200"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="numeromonedas100" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="numeromonedas100"/>
 		<property name="com.jaspersoft.studio.field.label" value="numeromonedas100"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="numeromonedas50" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="numeromonedas50"/>
 		<property name="com.jaspersoft.studio.field.label" value="numeromonedas50"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen100mil" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen100mil"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen100mil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen50mil" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen50mil"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen50mil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen20mil" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen20mil"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen20mil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen10mil" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen10mil"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen10mil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen5mil" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen5mil"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen5mil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen2mil" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen2mil"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen2mil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoenmil" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoenmil"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoenmil"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen500" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen500"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen500"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen200" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen200"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen200"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen100" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen100"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen100"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="montoen50" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="montoen50"/>
 		<property name="com.jaspersoft.studio.field.label" value="montoen50"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_caja" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="total_caja"/>
 		<property name="com.jaspersoft.studio.field.label" value="total_caja"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="diferencia" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="diferencia"/>
 		<property name="com.jaspersoft.studio.field.label" value="diferencia"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="arqueos"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="arqueos_fecha_arqueo" class="java.sql.Timestamp"/>
+	<field name="arqueos_numerobilletesMil" class="java.lang.String"/>
+	<field name="usuarios_Usuario" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -341,13 +403,6 @@ WHERE codigo = $P{codigo}]]>
 				<text><![CDATA[Diferencia:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="50" y="0" width="100" height="14" uuid="00aa10f2-4b69-45bc-a773-16ca1ff81fbf"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="60" y="14" width="100" height="14" uuid="7ba8a1ad-edc6-4f33-95eb-9bbeb32d438b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
@@ -495,6 +550,13 @@ WHERE codigo = $P{codigo}]]>
 				<reportElement x="90" y="182" width="106" height="14" uuid="5da2db85-cb07-4ae4-8e79-724e9da8ef35"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{montoen50}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="100" height="14" uuid="3d20cf83-7e52-4802-bf43-5dc9c8623f19"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuarios_Usuario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

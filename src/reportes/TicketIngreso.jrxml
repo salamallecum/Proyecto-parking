@@ -12,29 +12,29 @@
      facturas.`Propietario` AS facturas_Propietario,
      facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,
      facturas.`No_parqueadero` AS facturas_No_parqueadero,
-     facturas.`Facturado_por` AS facturas_Facturado_por,
      facturas.`Hora_ingreso` AS facturas_Hora_ingreso,
      convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
      tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,
-     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero
+     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
+     usuarios.`Usuario` AS usuarios_Usuario
 FROM
      `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`
      INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`
      INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`
-
+     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`
 WHERE
-facturas.`Placa` = $P{placa_vehiculo}]]>
+     facturas.`Placa` = $P{placa_vehiculo}]]>
 	</queryString>
 	<field name="facturas_Codigo" class="java.lang.String"/>
 	<field name="facturas_Placa" class="java.lang.String"/>
 	<field name="facturas_Propietario" class="java.lang.String"/>
 	<field name="facturas_Tipo_vehiculo" class="java.lang.String"/>
 	<field name="facturas_No_parqueadero" class="java.lang.Integer"/>
-	<field name="facturas_Facturado_por" class="java.lang.String"/>
 	<field name="facturas_Hora_ingreso" class="java.sql.Timestamp"/>
 	<field name="convenios_Nombre_convenio" class="java.lang.String"/>
 	<field name="tarifas_Nombre_tarifa" class="java.lang.String"/>
 	<field name="parqueaderos_Nombre_parqueadero" class="java.lang.String"/>
+	<field name="usuarios_Usuario" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -181,13 +181,6 @@ facturas.`Placa` = $P{placa_vehiculo}]]>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="101" width="98" height="20" uuid="3c15b231-35f4-4313-8529-532fc64a8638"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{facturas_Facturado_por}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="46" y="121" width="98" height="20" uuid="1dd6e1c8-f45b-4b74-8e6f-d7f08082667f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -207,6 +200,13 @@ facturas.`Placa` = $P{placa_vehiculo}]]>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_Hora_ingreso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="101" width="100" height="20" uuid="48859321-e58c-434b-bdb9-ba1b9ac0fa63"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuarios_Usuario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

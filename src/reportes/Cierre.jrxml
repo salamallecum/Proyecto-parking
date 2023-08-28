@@ -19,7 +19,6 @@
 	<queryString>
 		<![CDATA[SELECT
      cierres.`Codigo` AS cierres_Codigo,
-     cierres.`Nombre_usuario` AS cierres_Nombre_usuario,
      cierres.`Producido` AS cierres_Producido,
      cierres.`Dinero_en_caja` AS cierres_Dinero_en_caja,
      cierres.`Diferencia` AS cierres_Diferencia,
@@ -50,14 +49,14 @@
      cierres.`montoen100` AS cierres_montoen100,
      cierres.`montoen50` AS cierres_montoen50,
      cierres.`Total_esperado` AS cierres_Total_esperado,
-     cierres.`Dinero_a_consignar` AS cierres_Dinero_a_consignar
+     cierres.`Dinero_a_consignar` AS cierres_Dinero_a_consignar,
+     usuarios.`Usuario` AS usuarios_Usuario
 FROM
-     `cierres` cierres
+     `usuarios` usuarios INNER JOIN `cierres` cierres ON usuarios.`Id_usuario` = cierres.`Id_usuario`
 WHERE
      cierres.`Codigo` = $P{codigo}]]>
 	</queryString>
 	<field name="cierres_Codigo" class="java.lang.String"/>
-	<field name="cierres_Nombre_usuario" class="java.lang.String"/>
 	<field name="cierres_Producido" class="java.lang.String"/>
 	<field name="cierres_Dinero_en_caja" class="java.lang.String"/>
 	<field name="cierres_Diferencia" class="java.lang.String"/>
@@ -89,6 +88,7 @@ WHERE
 	<field name="cierres_montoen50" class="java.lang.Integer"/>
 	<field name="cierres_Total_esperado" class="java.lang.String"/>
 	<field name="cierres_Dinero_a_consignar" class="java.lang.String"/>
+	<field name="usuarios_Usuario" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -304,13 +304,6 @@ WHERE
 				<textFieldExpression><![CDATA[$F{cierres_Fecha_cierre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="39" y="33" width="100" height="14" uuid="1ef0502f-444b-41c5-a95d-12a7fc64a26e"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cierres_Nombre_usuario}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="60" y="47" width="100" height="14" uuid="5232c20b-b0d8-4f1d-9686-4a7f55a848fe"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
@@ -489,6 +482,11 @@ WHERE
 				<reportElement x="80" y="314" width="116" height="14" uuid="f7ab3273-8c40-4a89-980c-debb20ddcfe8"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cierres_Dinero_a_consignar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="33" width="100" height="14" uuid="4c81cbe1-a1ae-41ea-8494-cf292d1657b4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{usuarios_Usuario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

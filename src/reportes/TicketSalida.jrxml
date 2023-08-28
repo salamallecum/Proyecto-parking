@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TSalida" pageWidth="215" pageHeight="453" columnWidth="175" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a6f81a09-dc9b-422d-b7da-381d7376992e">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="placa" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -25,11 +25,13 @@
      parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
      facturas.`Contabilizada` AS facturas_Contabilizada,
      facturas.`Diferencia` AS facturas_Diferencia,
-     facturas.`Impuesto` AS facturas_Impuesto
+     facturas.`Impuesto` AS facturas_Impuesto,
+     usuarios.`Usuario` AS usuarios_Usuario
 FROM
      `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`
      INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`
      INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`
+     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`
 WHERE
      facturas.`Placa` = $P{placa}
  AND facturas.`Estado_fctra` = 'Cerrada']]>
@@ -39,7 +41,7 @@ WHERE
 	<field name="facturas_Placa" class="java.lang.String"/>
 	<field name="facturas_Propietario" class="java.lang.String"/>
 	<field name="facturas_Tipo_vehiculo" class="java.lang.String"/>
-	<field name="facturas_Facturado_por" class="java.lang.String"/>
+	<field name="facturas_Facturado_por" class="java.lang.Integer"/>
 	<field name="facturas_Estado_fctra" class="java.lang.String"/>
 	<field name="facturas_Hora_ingreso" class="java.sql.Timestamp"/>
 	<field name="facturas_Hora_salida" class="java.sql.Timestamp"/>
@@ -51,6 +53,7 @@ WHERE
 	<field name="facturas_Contabilizada" class="java.lang.String"/>
 	<field name="facturas_Diferencia" class="java.lang.String"/>
 	<field name="facturas_Impuesto" class="java.lang.String"/>
+	<field name="usuarios_Usuario" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -218,13 +221,6 @@ WHERE
 				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="68" y="100" width="107" height="20" uuid="20f84978-6a60-4d31-81b9-4b7b43fdc340"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{facturas_Facturado_por}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="45" y="120" width="130" height="20" uuid="6c8cc605-c340-4db9-a520-47163fec2e37"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -308,6 +304,13 @@ WHERE
 				</textElement>
 				<text><![CDATA[%]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="68" y="100" width="107" height="20" uuid="5e4b0588-2851-4584-a6db-31818713d5d4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuarios_Usuario}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
