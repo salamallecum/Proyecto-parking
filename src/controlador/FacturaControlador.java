@@ -284,9 +284,7 @@ public class FacturaControlador implements Runnable {
         
         long montoPorTiempo = mon * dif;
         int montoDeImpuesto = ((int)montoPorTiempo * porcImp)/100;
-        
-        System.out.println("Monto de impuesto original: " + montoDeImpuesto);
-                
+                        
         //Transformamos el numero para que sea monetariamnte pagable
         String montoDeImpuesto_str = Integer.toString(montoDeImpuesto);
                 
@@ -334,9 +332,7 @@ public class FacturaControlador implements Runnable {
                 }
             }                        
         }
-        
-        System.out.println("Monto de impuesto transformado: " + montoDeImpuesto);
-              
+                      
         //Sumamos el monto por impuesto al monto por tiempo para sacar el total a pagar
         long totalAPagar = montoPorTiempo + (long)montoDeImpuesto;
                         

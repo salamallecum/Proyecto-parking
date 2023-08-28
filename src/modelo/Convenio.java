@@ -68,7 +68,7 @@ public class Convenio{
     //Agrega los valores de la tabla de parqueaderos al combobox 
     public Vector<Convenio> mostrarConveniosDisponibles(){
         
-        //Traemos los parqueaderos que esten disponibles
+        //Traemos los convenios que esten disponibles
         PreparedStatement pst3 = null;
         ResultSet rs3 = null;       
         Connection cn3 = Conexion.conectar();

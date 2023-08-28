@@ -103,7 +103,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         DefaultComboBoxModel modeloTarif = new DefaultComboBoxModel(tarif.mostrarTarifasDisponibles());
         cmb_tarifas.setModel(modeloTarif);
         tarif.almacenarNombresTarifa();
-                       
+                               
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
         vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(vehiculo_actualizado);
          

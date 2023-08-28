@@ -101,6 +101,11 @@ public class Usuario {
     public void setCelular(String celular) {
         this.celular = celular;
     }
+    
+    //Metodos
+    public String toString(){
+        return this.usuario;
+    }
         
     //Agrega los valores de la tabla de usuarios a los combobox en gestor factura, cierres y arqueos  
     public Vector<Usuario> listadoUsuariosDelSistema(){
@@ -114,23 +119,23 @@ public class Usuario {
         Usuario dat = null;
         
         try{
-           pst3 = cn3.prepareStatement("select Id_usuario, Nombres from usuarios"); 
+           pst3 = cn3.prepareStatement("select Id_usuario, Usuario from usuarios"); 
            rs3 = pst3.executeQuery();
+           
            
            dat = new Usuario();
            dat.setId(0);
-           dat.setNombres("Seleccione");
+           dat.setUsuario("Seleccione");
            datos.add(dat);
            
            while(rs3.next()){
                dat = new Usuario();
                dat.setId(rs3.getInt("Id_usuario"));
-               dat.setNombres(rs3.getString("Nombres"));
+               dat.setUsuario(rs3.getString("Usuario"));
                datos.add(dat);
            }
            
            System.out.println(datos);
-
            rs3.close();
 
         }catch(SQLException ex){
