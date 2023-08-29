@@ -2,9 +2,12 @@ package vista;
 
 import com.sun.glass.events.KeyEvent;
 import controlador.FacturaControlador;
+import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -27,10 +30,14 @@ public class GestionarFacturas extends javax.swing.JFrame {
     public static boolean esFacturaAbierta = false;
     public static boolean hayFacturaVisualizandose = false;
     public static int idCierre;
-    
+        
     Usuario objUsuarioParaCombobox = new Usuario();
+    String totalPorFacturas = "";
+    ArrayList valoresAPagarDeFacturas;
     
     FacturaControlador facturaControla = new FacturaControlador();
+    UsuarioControlador usuarioControla= new UsuarioControlador();
+    
     
     private final Logger log = Logger.getLogger(GestionarFacturas.class);
     private URL url = GestionarFacturas.class.getResource("Log4j.properties");
@@ -51,13 +58,23 @@ public class GestionarFacturas extends javax.swing.JFrame {
         //Cargamos los usuarios existentes en el sistema en el combobox
         DefaultComboBoxModel modeloUsuarios = new DefaultComboBoxModel(objUsuarioParaCombobox.listadoUsuariosDelSistema());
         cmb_usuarios.setModel(modeloUsuarios);
-        
-        System.out.println("Listado de usuarios: "+ objUsuarioParaCombobox.listadoUsuariosDelSistema());
-                        
+                                        
         if(idCierre != 1){
             facturaControla.cargarFacturasDeUnCierre(idCierre);
+           
+            //Calculamos el totalde ganancias por facturas teniendo en cuenta el codigo de cierre
+            //Obtenemos los valores a pagar de las facturas para hacer calculo del total por facturas
+            valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturasBajoAlgunCriterio(" AND Id_cierre = " + Integer.toString(idCierre));
+                
+            //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
+            totalPorFacturas = facturaControla.calcularProducido(valoresAPagarDeFacturas);
+            lbl_gananciasEnFacturas.setText(facturaControla.agregarFormatoMoneda(totalPorFacturas));
+            
+            //Contamos las facturas que posee el cierre
+            lbl_numeroDeFacturas.setText(facturaControla.contarFacturasQueTienenUnCriterioEspecifico(" AND Id_cierre = " + Integer.toString(idCierre)));
+            
         }else{
-            facturaControla.cargarTablaAdministradorDeFacturas();
+            cargarTablaGestorFacturas();
         }             
     }
     
@@ -92,6 +109,8 @@ public class GestionarFacturas extends javax.swing.JFrame {
         btn_generaPDFFacturas = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         lbl_gananciasEnFacturas = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        lbl_numeroDeFacturas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -176,9 +195,9 @@ public class GestionarFacturas extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Hasta:");
 
-        jDate_fechaDesde.setDateFormatString("yyyy-MM-d");
+        jDate_fechaDesde.setDateFormatString("yyyy-MM-dd");
 
-        jDate_fechaHasta.setDateFormatString("yyyy-MM-d");
+        jDate_fechaHasta.setDateFormatString("yyyy-MM-dd");
 
         btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
         btn_buscar.setText("Buscar");
@@ -261,23 +280,34 @@ public class GestionarFacturas extends javax.swing.JFrame {
         lbl_gananciasEnFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_gananciasEnFacturas.setText("0,00");
 
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel18.setText("N° de facturas:");
+
+        lbl_numeroDeFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_numeroDeFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_numeroDeFacturas.setText("0,00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_generaPDFFacturas)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel17)
-                        .addGap(269, 269, 269))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_gananciasEnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37)))
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbl_gananciasEnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbl_numeroDeFacturas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addGap(37, 37, 37)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -297,16 +327,18 @@ public class GestionarFacturas extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btn_generaPDFFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_generaPDFFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_numeroDeFacturas)
+                            .addComponent(jLabel18))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_gananciasEnFacturas)
                             .addComponent(jLabel17))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -323,13 +355,14 @@ public class GestionarFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_codigoFacturaKeyTyped
 
     private void txt_codigoFacturaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyReleased
-        String buscar = txt_codigoFactura.getText();
-        facturaControla.busquedaFacturaPorCodigo(buscar);
+
     }//GEN-LAST:event_txt_codigoFacturaKeyReleased
 
     private void txt_codigoFacturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
-            Limpiar();                       
+            Limpiar();
+            cargarTablaGestorFacturas();
+            System.out.println("variable en cuestion: "+hayFacturaVisualizandose);
         }
     }//GEN-LAST:event_txt_codigoFacturaKeyPressed
 
@@ -348,7 +381,70 @@ public class GestionarFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_generaPDFFacturasActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+       
+        String codigo = txt_codigoFactura.getText();
+        String sentenciaSQL = "SELECT facturas.Fecha_factura, facturas.Codigo, usuarios.Usuario, facturas.Valor_a_pagar FROM facturas INNER JOIN usuarios ON facturas.Facturado_por = usuarios.Id_usuario WHERE 1=1";
+        String sentenciaParaCalculoDeTotal = "";
+        int usuarios_cmb = cmb_usuarios.getSelectedIndex();
+        Date fecha_desde = jDate_fechaDesde.getDate();
+        Date fecha_hasta = jDate_fechaHasta.getDate();
+                       
+        //Validamos que ningun campo haya quedado en blanco y que almenos uno haya sido diligenciado
+        if(codigo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
+            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.");
+            cargarTablaGestorFacturas();
+        
+        }else{
+            
+            if(!codigo.equals("")){
+                //Agregamos el codigo de la factura a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND facturas.Codigo LIKE '%"+codigo+"%'";
+                sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND facturas.Codigo LIKE '%"+codigo+"%'";
+            }
+            
+            if(usuarios_cmb != 0){
+                //Capturamos el objeto usuario para validar el verdadero id en base de datos
+                Usuario usuarioSeleccionado = (Usuario)cmb_usuarios.getSelectedItem();
+                
+                //Validamos el verdadero id del parqueadero, del convenio y de la tarifa en bd
+                int idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
+                String idUsuarioReal = Integer.toString(idRealDelUsuarioSeleccionado);
+                //Agregamos el id del usuario a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND facturas.Facturado_por = " + idUsuarioReal; 
+                sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND facturas.Facturado_por = " + idUsuarioReal;
+            }
+            
+            //Ajustamos el formato de las fechas desde y hasta seleccionadas (solo si son diferentes a null)
+            if(fecha_desde != null && fecha_hasta != null){
+                long lngfecha_desde = fecha_desde.getTime();
+                long lngfecha_hasta = fecha_hasta.getTime();
+                
+                //Validamos que la fecha hasta sea mayor a la fecha desde                
+                if(lngfecha_hasta > lngfecha_desde){
+                    java.sql.Date sqldateFecha_desde = new java.sql.Date(lngfecha_desde);
+                    java.sql.Date sqldateFecha_hasta = new java.sql.Date(lngfecha_hasta);                
+                    sentenciaSQL = sentenciaSQL + " AND facturas.Fecha_factura BETWEEN '"+sqldateFecha_desde+"' AND '"+sqldateFecha_hasta+"'";
+                    sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND facturas.Fecha_factura BETWEEN '"+sqldateFecha_desde+"' AND '"+sqldateFecha_hasta+"'";
+                
+                }else{
+                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.");
+                }     
+            }
+                       
+           //Ejecutamos la sentencia SQL construida
+           facturaControla.buscarFactura(sentenciaSQL);
+           
+           //Calculamos el totalde ganancias por facturas teniendo en cuenta lasentencia sql previamente construida
+           //Obtenemos los valores a pagar de las facturas para hacer calculo del total por facturas
+           valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturasBajoAlgunCriterio(sentenciaParaCalculoDeTotal);
 
+           //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
+           totalPorFacturas = facturaControla.calcularProducido(valoresAPagarDeFacturas);
+           lbl_gananciasEnFacturas.setText(facturaControla.agregarFormatoMoneda(totalPorFacturas));
+           
+           //Contamos las facturas que cumplen con el o l os criterios de busqueda
+           lbl_numeroDeFacturas.setText(facturaControla.contarFacturasQueTienenUnCriterioEspecifico(sentenciaParaCalculoDeTotal));
+        }       
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void cmb_usuariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_usuariosItemStateChanged
@@ -434,6 +530,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser jDate_fechaDesde;
     private com.toedter.calendar.JDateChooser jDate_fechaHasta;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -442,6 +539,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbl_gananciasEnFacturas;
+    private javax.swing.JLabel lbl_numeroDeFacturas;
     public static javax.swing.JTable table_listaFacturas;
     private javax.swing.JTextField txt_codigoFactura;
     // End of variables declaration//GEN-END:variables
@@ -480,6 +578,22 @@ public class GestionarFacturas extends javax.swing.JFrame {
         jDate_fechaDesde.setDate(null);
         jDate_fechaHasta.setDate(null);
     } 
+    
+    //Metodo quecarga la tabla del administrador de facturas
+    public void cargarTablaGestorFacturas(){
+        facturaControla.cargarTablaAdministradorDeFacturas();
+            
+        //Calculamos el total de ganancias por facturas de todas las facturas del sistema
+        //Obtenemos los valores a pagar de las facturas para hacer calculo del total por facturas
+        valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturasBajoAlgunCriterio("");
+
+        //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
+        totalPorFacturas = facturaControla.calcularProducido(valoresAPagarDeFacturas);
+        lbl_gananciasEnFacturas.setText(facturaControla.agregarFormatoMoneda(totalPorFacturas));
+        
+        //Contamos las facturas
+        lbl_numeroDeFacturas.setText(facturaControla.contarFacturasQueTienenUnCriterioEspecifico(""));
+    }
     
 }
 

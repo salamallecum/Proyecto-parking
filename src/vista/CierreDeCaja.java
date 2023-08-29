@@ -88,10 +88,10 @@ public class CierreDeCaja extends javax.swing.JFrame{
         usuarioDelSistema = Login.usuario;
                         
         String baseDeCaja = paramControla.consultarValorDeUnParametro("BASE_CAJA");
-        numFacturasGeneradas = facturaControla.contarFacturas();
+        numFacturasGeneradas = facturaControla.contarFacturasQueTienenUnCriterioEspecifico(" AND Estado_fctra='Cerrada' AND Contabilizada='No'");
                 
         //Obtenemos los valores a pagar de las facturas para hacer calculo del producido en el turno
-        ArrayList valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturas();
+        ArrayList valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturasBajoAlgunCriterio(" AND Contabilizada = 'No'");
                 
         //Calculamos el producido teniendo en cuenta los valores de pagar de las facturas obtenidas
         String producido = facturaControla.calcularProducido(valoresAPagarDeFacturas);

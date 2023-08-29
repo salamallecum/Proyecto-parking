@@ -860,7 +860,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
             if(ingreso.equals("Registro 1er vez en sistema.")){
 
-                facturaControla.liquidarFacturaDeVehiculo("1990-01-01 23:59:00.0", placa, "0", "N/A", "0", "0", lbl_impuesto.getText());
+                facturaControla.liquidarFacturaDeVehiculo(usuarioControla.consultarIdDeunUsuario(usuario),"1990-01-01 23:59:00.0", placa, "0", "N/A", "0", "0", lbl_impuesto.getText());
                 dispose();
                 parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
                 facturaControla.cerrarFactura(placa);
@@ -899,7 +899,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                     String dineroRecibMoney = facturaControla.agregarFormatoMoneda(dineroRecibido);
                     String cambio = lbl_dineroCambio.getText();                    
 
-                    facturaControla.liquidarFacturaDeVehiculo(horaSalida, placa, monto_a_pagar, diferencia, dineroRecibMoney, cambio, lbl_impuesto.getText());
+                    facturaControla.liquidarFacturaDeVehiculo(usuarioControla.consultarIdDeunUsuario(usuario), horaSalida, placa, monto_a_pagar, diferencia, dineroRecibMoney, cambio, lbl_impuesto.getText());
                     dispose();
                     
                     //Evaluamos si el vehiculo se encuentra registrado en el sistema, si es asi solo pasamos el estado parqueadero a No

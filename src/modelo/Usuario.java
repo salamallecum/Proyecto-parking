@@ -135,7 +135,6 @@ public class Usuario {
                datos.add(dat);
            }
            
-           System.out.println(datos);
            rs3.close();
 
         }catch(SQLException ex){

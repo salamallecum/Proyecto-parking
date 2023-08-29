@@ -62,12 +62,11 @@ public class FacturaControlador implements Runnable {
     public Thread hilo2 = new Thread(this);
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
     ParametroControlador parametroControla = new ParametroControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
     public static boolean ejecutarHiloOpParq; 
            
     //Constructor
-    public FacturaControlador() {
-    
-    }
+    public FacturaControlador() {}
     
     //Metodo que se encarga de detener el hilo que detiene el hilo que muestra la operacion del parqueadero en la tabla del panel caja
     public void detenerHiloOperacionParqueadero(){
@@ -636,11 +635,11 @@ public class FacturaControlador implements Runnable {
     
     
     //Metodo que permite liquidar una factura una vez el vehiculo sale del parqueadero
-    public void liquidarFacturaDeVehiculo(String horaSalida, String placa, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio, String impuesto){
+    public void liquidarFacturaDeVehiculo(int idUsuario, String horaSalida, String placa, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio, String impuesto){
         
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update facturas set Hora_salida ='"+horaSalida+"', Diferencia ='"+diferencia+"', Impuesto ='"+impuesto+"', Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
+            PreparedStatement pst = cn.prepareStatement("update facturas set Facturado_por= "+idUsuario+", Hora_salida ='"+horaSalida+"', Diferencia ='"+diferencia+"', Impuesto ='"+impuesto+"', Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
 
             pst.executeUpdate();
             cn.close();
@@ -745,13 +744,13 @@ public class FacturaControlador implements Runnable {
     }
     
     //Metodo que cuenta la cantidad de facturas generadas y por contabilizar
-    public String contarFacturas(){
+    public String contarFacturasQueTienenUnCriterioEspecifico(String sql){
         
         String cantidadFacturas = "";
         try {
             Connection cn3 = Conexion.conectar();
             PreparedStatement pst3 = cn3.prepareStatement(
-                "select count(*) from facturas where Estado_fctra='Cerrada' AND Contabilizada='No'");
+                "select count(*) from facturas where 1=1" + sql);
             ResultSet rs3 = pst3.executeQuery();
 
             if(rs3.next()){
@@ -767,14 +766,14 @@ public class FacturaControlador implements Runnable {
     }
     
     //Metodo que consulta los valores a pagar de las facturas pendientes por contabilizar
-    public ArrayList obtenerValoresAPagarFacturas(){
+    public ArrayList obtenerValoresAPagarFacturasBajoAlgunCriterio(String sentenciaSQL){
         
         ArrayList totalesAPagar = new ArrayList();
         
         try {
             Connection cn2 = Conexion.conectar();
             PreparedStatement pst2 = cn2.prepareStatement(
-                "SELECT Valor_a_pagar FROM facturas WHERE Contabilizada = 'No'");
+                "SELECT Valor_a_pagar FROM facturas WHERE 1=1" + sentenciaSQL);
             ResultSet rs2 = pst2.executeQuery();
 
             while(rs2.next()){
@@ -831,7 +830,7 @@ public class FacturaControlador implements Runnable {
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Fecha_Factura, Codigo,  Facturado_por, Valor_a_pagar from facturas");
+                        "SELECT facturas.Fecha_factura, facturas.Codigo, usuarios.Usuario, facturas.Valor_a_pagar FROM facturas INNER JOIN usuarios ON facturas.Facturado_por = usuarios.Id_usuario");
 
             ResultSet rs = pst.executeQuery();
 
@@ -870,7 +869,7 @@ public class FacturaControlador implements Runnable {
         @Override
         public void mouseClicked(MouseEvent e){
             int fila_point = table_listaFacturas.rowAtPoint(e.getPoint());
-            int columna_point = 0;
+            int columna_point = 1;
 
             if(fila_point > -1){
                 codigoFactura_update = (String) modelo.getValueAt(fila_point, columna_point);
@@ -892,9 +891,7 @@ public class FacturaControlador implements Runnable {
     //Metodo que genera la informacion de una factura en el jframe, sea abierta o cerrada
     public void generarInformacionDeFacturaEnFrame(){
 
-        if(hayFacturaVisualizandose == true){
-            JOptionPane.showMessageDialog(null,"No permitido.");
-        }else{
+        if(!hayFacturaVisualizandose){
             hayFacturaVisualizandose = true;
             
             if(esFacturaAbierta == true){
@@ -902,29 +899,27 @@ public class FacturaControlador implements Runnable {
             }else{
                new InformacionFacturaFinal().setVisible(true); 
             } 
-        }    
+        }  
     } 
     
-    //Metodo que busca una factura teniendo en cuenta su usuario
-    public void busquedaFacturaPorUsuario(String texto){
+    //Metodo que busca una factura teniendo en cuenta varios criteriosde busqueda
+    public void buscarFactura(String sentenciaSql){
         
         try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = "%"+texto+"%";
-            String SQL = "select Codigo, Fecha_factura,  Facturado_por, Valor_a_pagar from facturas where Facturado_por like "+'"'+filtro+'"';
+            String [] titulos = {"Fecha", "Codigo", "Usuario", "Valor ($)"};
             modelo = new DefaultTableModel(null, titulos);
             
             Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
+            PreparedStatement pst6 = cn6.prepareStatement(sentenciaSql);
+            ResultSet rs6 = pst6.executeQuery(sentenciaSql);
             
             String[] fila = new String[4];
             
             while(rs6.next()){
-                fila[0] = rs6.getString("Codigo");
-                fila[1] = rs6.getString("Fecha_factura");
-                fila[2] = rs6.getString("Facturado_por");
-                fila[3] = rs6.getString("Valor_a_pagar");
+                fila[0] = rs6.getString("facturas.Fecha_factura");
+                fila[1] = rs6.getString("facturas.Codigo");
+                fila[2] = rs6.getString("usuarios.Usuario");
+                fila[3] = rs6.getString("facturas.Valor_a_pagar");
                 modelo.addRow(fila);
             }
             table_listaFacturas.setModel(modelo);
@@ -932,43 +927,11 @@ public class FacturaControlador implements Runnable {
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de factura por usuario!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar buscar una factura por medio de su usuario. " + ex);
+            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de facturas!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar buscar las facturas. " + ex);
         }
     }
-    
-    //Metodo que busca una factura teniendo en cuenta su codigo
-    public void busquedaFacturaPorCodigo(String texto){
-       
-        try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = "%"+texto+"%";
-            String SQL = "select Codigo, Fecha_factura,  Facturado_por, Valor_a_pagar from facturas where Codigo like "+'"'+filtro+'"';
-            modelo = new DefaultTableModel(null, titulos);
-            
-            Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
-            
-            String[] fila = new String[4];
-            
-            while(rs6.next()){               
-                fila[0]= rs6.getString("Codigo");
-                fila[1]=rs6.getString("Fecha_factura");
-                fila[2]=rs6.getString("Facturado_por");
-                fila[3]= rs6.getString("Valor_a_pagar");
-                modelo.addRow(fila);
-            }
-            table_listaFacturas.setModel(modelo);
-            rs6.close();
-            cn6.close();
-            
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de factura!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar buscar una factura por medio de su codigo. " + ex);
-        }                
-    } 
-    
+        
     //Metodo que valida el estado de la factura
     public boolean validarEstadoFactura(String codigo){
         
@@ -1189,7 +1152,7 @@ public class FacturaControlador implements Runnable {
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Fecha_Factura, Codigo,  Facturado_por, Valor_a_pagar from facturas where Id_cierre = "+idCierre);
+                        "SELECT facturas.Fecha_factura, facturas.Codigo, usuarios.Usuario, facturas.Valor_a_pagar FROM facturas INNER JOIN usuarios ON facturas.Facturado_por = usuarios.Id_usuario where Id_cierre = "+idCierre);
 
             ResultSet rs = pst.executeQuery();
 
