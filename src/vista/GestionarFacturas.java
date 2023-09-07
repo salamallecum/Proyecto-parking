@@ -4,11 +4,9 @@ import com.sun.glass.events.KeyEvent;
 import controlador.CierreControlador;
 import controlador.FacturaControlador;
 import controlador.UsuarioControlador;
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -497,7 +495,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
            
            //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
            sentenciaSQLUtilizadaTotales = sentenciaParaCalculoDeTotal;
-           facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaParaCalculoDeTotal);
+           facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
         }       
     }//GEN-LAST:event_btn_buscarActionPerformed
 
