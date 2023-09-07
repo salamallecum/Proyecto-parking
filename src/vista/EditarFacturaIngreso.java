@@ -509,8 +509,8 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
 
                 //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar facturas
                 Object Fila[] = new Object[4];
-                Fila[0] = codigo_factura;
-                Fila[1] = facturaControla.fecha_de_factura();
+                Fila[0] = facturaControla.fecha_de_factura();
+                Fila[1] = codigo_factura;
                 Fila[2] = usuario;
                 Fila[3] = "0";
 

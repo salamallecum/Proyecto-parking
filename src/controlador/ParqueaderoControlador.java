@@ -61,7 +61,7 @@ import static vista.PanelCaja.table_operacionParqueadero;
  */
 public class ParqueaderoControlador implements Runnable{
     
-   VehiculoControlador vehiControlador = new VehiculoControlador();
+   VehiculoControlador vehiControlador;
    DefaultTableModel modeloEstadoParq;
    Parqueadero parq = new Parqueadero();
    

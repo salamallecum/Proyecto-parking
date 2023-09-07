@@ -435,6 +435,10 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
             
             int filaSelec = tablaOperacionFacturas.getSelectedRow();
             modelo.removeRow(filaSelec);
+            
+            //Actualizamos los datos totales del gestor de facturas
+            facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarFacturas.sentenciaSQLUtilizadaTotales);
+            
             JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.");
             dispose();
             GestionarFacturas.hayFacturaVisualizandose = false;

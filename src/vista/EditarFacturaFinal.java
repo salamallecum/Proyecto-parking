@@ -94,7 +94,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         usuario = Login.usuario;
         filas = GestionarFacturas.Filas;
         
-        setSize(644,463);
+        setSize(644,475);
         setResizable(false);
         setTitle("Editar factura");
         setLocationRelativeTo(null);
@@ -501,7 +501,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                     .addComponent(lbl_impuesto)
                     .addComponent(jLabel16)
                     .addComponent(lbl_diferencia2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(lbl_totalAPagar))
@@ -643,14 +643,17 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                 
                 //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar facturas
                 Object Fila[] = new Object[4];
-                Fila[0] = codigo_factura;
-                Fila[1] = facturaControla.fecha_de_factura();
+                Fila[0] = facturaControla.fecha_de_factura();
+                Fila[1] = codigo_factura;
                 Fila[2] = usuario;
                 Fila[3] = valorPagar;
 
                 for(int i=0; i < tablafacturas.getColumnCount(); i++){
                     modelo.setValueAt(Fila[i], filas, i);
                 }
+                
+                //Actualizamos los datos totales del gestor de facturas
+                facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarFacturas.sentenciaSQLUtilizadaTotales);
 
                 JOptionPane.showMessageDialog(null, "Factura actualizada satisfactoriamente.");
                 this.dispose();
@@ -734,6 +737,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
 
     private void txt_efectivoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_efectivoKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            estimarConvenioOTarifa();
             calcularVueltas(txt_efectivo.getText());
         }
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
@@ -1330,6 +1334,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     //Metodo que calcula las vueltas que hay que darle al cliente
     private void calcularVueltas(String dineroRecibido){
         vueltas = facturaControla.calcularVueltas(montoAPagarParaCalculoPago, dineroRecibido);
+        System.out.println("Monto a pagar: " + montoAPagarParaCalculoPago);
         lbl_cambio.setText(facturaControla.agregarFormatoMoneda(vueltas)); 
         lbl_cambio.setVisible(true);  
     }

@@ -1,8 +1,10 @@
 package vista;
 
 import com.sun.glass.events.KeyEvent;
+import controlador.CierreControlador;
 import controlador.FacturaControlador;
 import controlador.UsuarioControlador;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -26,17 +28,16 @@ public class GestionarFacturas extends javax.swing.JFrame {
     public static DefaultTableModel modelo;
     public static int Filas;
     public static String codigoFactura_update;
-    
+    public static String sentenciaSQLUtilizadaTotales = "";
     public static boolean esFacturaAbierta = false;
     public static boolean hayFacturaVisualizandose = false;
     public static int idCierre;
         
     Usuario objUsuarioParaCombobox = new Usuario();
-    String totalPorFacturas = "";
-    ArrayList valoresAPagarDeFacturas;
-    
+        
     FacturaControlador facturaControla = new FacturaControlador();
     UsuarioControlador usuarioControla= new UsuarioControlador();
+    CierreControlador cierreControla = new CierreControlador();
     
     
     private final Logger log = Logger.getLogger(GestionarFacturas.class);
@@ -61,18 +62,8 @@ public class GestionarFacturas extends javax.swing.JFrame {
                                         
         if(idCierre != 1){
             facturaControla.cargarFacturasDeUnCierre(idCierre);
-           
-            //Calculamos el totalde ganancias por facturas teniendo en cuenta el codigo de cierre
-            //Obtenemos los valores a pagar de las facturas para hacer calculo del total por facturas
-            valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturasBajoAlgunCriterio(" AND Id_cierre = " + Integer.toString(idCierre));
-                
-            //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
-            totalPorFacturas = facturaControla.calcularProducido(valoresAPagarDeFacturas);
-            lbl_gananciasEnFacturas.setText(facturaControla.agregarFormatoMoneda(totalPorFacturas));
-            
-            //Contamos las facturas que posee el cierre
-            lbl_numeroDeFacturas.setText(facturaControla.contarFacturasQueTienenUnCriterioEspecifico(" AND Id_cierre = " + Integer.toString(idCierre)));
-            
+            sentenciaSQLUtilizadaTotales = " AND Id_cierre = " + Integer.toString(idCierre);
+            facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
         }else{
             cargarTablaGestorFacturas();
         }             
@@ -93,6 +84,15 @@ public class GestionarFacturas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btn_generaPDFCierres = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        lbl_numeroDeCierres = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        lbl_gananciasEsperadasEnCierres = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        lbl_gananciasEnCierres = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        lbl_perdidasEnCierres = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_listaFacturas = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
@@ -107,10 +107,48 @@ public class GestionarFacturas extends javax.swing.JFrame {
         btn_buscar = new javax.swing.JButton();
         cmb_usuarios = new javax.swing.JComboBox<>();
         btn_generaPDFFacturas = new javax.swing.JButton();
-        jLabel17 = new javax.swing.JLabel();
-        lbl_gananciasEnFacturas = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         lbl_numeroDeFacturas = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        lbl_gananciasEsperadasEnFacturas = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        lbl_gananciasEnFacturas = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        lbl_perdidasEnFacturas = new javax.swing.JLabel();
+
+        btn_generaPDFCierres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generaPDFCierres.setText("Generar Informe PDF");
+        btn_generaPDFCierres.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel19.setText("N° de cierres:");
+
+        lbl_numeroDeCierres.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_numeroDeCierres.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_numeroDeCierres.setText("0,00");
+
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel20.setText("Total ganancias esperado:");
+
+        lbl_gananciasEsperadasEnCierres.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_gananciasEsperadasEnCierres.setForeground(new java.awt.Color(0, 51, 255));
+        lbl_gananciasEsperadasEnCierres.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_gananciasEsperadasEnCierres.setText("0,00");
+
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel22.setText("Total ganancias:");
+
+        lbl_gananciasEnCierres.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_gananciasEnCierres.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_gananciasEnCierres.setText("0,00");
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel21.setText("Total pérdidas:");
+
+        lbl_perdidasEnCierres.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_perdidasEnCierres.setForeground(new java.awt.Color(255, 0, 0));
+        lbl_perdidasEnCierres.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_perdidasEnCierres.setText("0,00");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -272,73 +310,102 @@ public class GestionarFacturas extends javax.swing.JFrame {
             }
         });
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel17.setText("Total ganancias:");
-
-        lbl_gananciasEnFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lbl_gananciasEnFacturas.setForeground(new java.awt.Color(0, 51, 255));
-        lbl_gananciasEnFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_gananciasEnFacturas.setText("0,00");
-
-        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel18.setText("N° de facturas:");
+        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel23.setText("N° de facturas:");
 
         lbl_numeroDeFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbl_numeroDeFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_numeroDeFacturas.setText("0,00");
+
+        jLabel24.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel24.setText("Total ganancias esperado:");
+
+        lbl_gananciasEsperadasEnFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_gananciasEsperadasEnFacturas.setForeground(new java.awt.Color(0, 51, 255));
+        lbl_gananciasEsperadasEnFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_gananciasEsperadasEnFacturas.setText("0,00");
+
+        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel25.setText("Total ganancias:");
+
+        lbl_gananciasEnFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_gananciasEnFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_gananciasEnFacturas.setText("0,00");
+
+        jLabel26.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel26.setText("Total pérdidas:");
+
+        lbl_perdidasEnFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_perdidasEnFacturas.setForeground(new java.awt.Color(255, 0, 0));
+        lbl_perdidasEnFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_perdidasEnFacturas.setText("0,00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_generaPDFFacturas)
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbl_gananciasEnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel18)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbl_numeroDeFacturas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addGap(37, 37, 37)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn_generaPDFFacturas)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lbl_gananciasEnFacturas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                                .addComponent(lbl_gananciasEsperadasEnFacturas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbl_numeroDeFacturas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lbl_perdidasEnFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(130, 130, 130)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(263, 263, 263))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btn_generaPDFFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbl_numeroDeFacturas)
-                            .addComponent(jLabel18))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_generaPDFFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbl_numeroDeFacturas)
+                                    .addComponent(jLabel23))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbl_gananciasEsperadasEnFacturas)
+                                    .addComponent(jLabel24))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_gananciasEnFacturas)
-                            .addComponent(jLabel17))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                            .addComponent(jLabel25))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_perdidasEnFacturas, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -362,7 +429,6 @@ public class GestionarFacturas extends javax.swing.JFrame {
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
             Limpiar();
             cargarTablaGestorFacturas();
-            System.out.println("variable en cuestion: "+hayFacturaVisualizandose);
         }
     }//GEN-LAST:event_txt_codigoFacturaKeyPressed
 
@@ -374,11 +440,6 @@ public class GestionarFacturas extends javax.swing.JFrame {
         int seleccion = table_listaFacturas.getSelectedRow();
         Filas = seleccion;
     }//GEN-LAST:event_table_listaFacturasMouseClicked
-
-    private void btn_generaPDFFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFFacturasActionPerformed
-        //facturaControla.generarReportePDFdeFacturasGeneradas();
-        btn_generaPDFFacturas.setEnabled(false);
-    }//GEN-LAST:event_btn_generaPDFFacturasActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
        
@@ -434,22 +495,20 @@ public class GestionarFacturas extends javax.swing.JFrame {
            //Ejecutamos la sentencia SQL construida
            facturaControla.buscarFactura(sentenciaSQL);
            
-           //Calculamos el totalde ganancias por facturas teniendo en cuenta lasentencia sql previamente construida
-           //Obtenemos los valores a pagar de las facturas para hacer calculo del total por facturas
-           valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturasBajoAlgunCriterio(sentenciaParaCalculoDeTotal);
-
-           //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
-           totalPorFacturas = facturaControla.calcularProducido(valoresAPagarDeFacturas);
-           lbl_gananciasEnFacturas.setText(facturaControla.agregarFormatoMoneda(totalPorFacturas));
-           
-           //Contamos las facturas que cumplen con el o l os criterios de busqueda
-           lbl_numeroDeFacturas.setText(facturaControla.contarFacturasQueTienenUnCriterioEspecifico(sentenciaParaCalculoDeTotal));
+           //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
+           sentenciaSQLUtilizadaTotales = sentenciaParaCalculoDeTotal;
+           facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaParaCalculoDeTotal);
         }       
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void cmb_usuariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_usuariosItemStateChanged
 
     }//GEN-LAST:event_cmb_usuariosItemStateChanged
+
+    private void btn_generaPDFFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFFacturasActionPerformed
+        //facturaControla.generarReportePDFdeFacturasGeneradas();
+        btn_generaPDFFacturas.setEnabled(false);
+    }//GEN-LAST:event_btn_generaPDFFacturasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -525,12 +584,19 @@ public class GestionarFacturas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
+    public static javax.swing.JButton btn_generaPDFCierres;
     public static javax.swing.JButton btn_generaPDFFacturas;
     private javax.swing.JComboBox<String> cmb_usuarios;
     private com.toedter.calendar.JDateChooser jDate_fechaDesde;
     private com.toedter.calendar.JDateChooser jDate_fechaHasta;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -538,8 +604,14 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lbl_gananciasEnFacturas;
-    private javax.swing.JLabel lbl_numeroDeFacturas;
+    private javax.swing.JLabel lbl_gananciasEnCierres;
+    public static javax.swing.JLabel lbl_gananciasEnFacturas;
+    private javax.swing.JLabel lbl_gananciasEsperadasEnCierres;
+    public static javax.swing.JLabel lbl_gananciasEsperadasEnFacturas;
+    private javax.swing.JLabel lbl_numeroDeCierres;
+    public static javax.swing.JLabel lbl_numeroDeFacturas;
+    private javax.swing.JLabel lbl_perdidasEnCierres;
+    public static javax.swing.JLabel lbl_perdidasEnFacturas;
     public static javax.swing.JTable table_listaFacturas;
     private javax.swing.JTextField txt_codigoFactura;
     // End of variables declaration//GEN-END:variables
@@ -556,6 +628,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
                 //Avisamos que esta ventana se encuentra cerrada 
                 MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
                 new EditarCierreDeCaja().setVisible(true);
+                PanelReportes.btn_facturas.setEnabled(true);
             }
         
         }else{
@@ -582,19 +655,9 @@ public class GestionarFacturas extends javax.swing.JFrame {
     //Metodo quecarga la tabla del administrador de facturas
     public void cargarTablaGestorFacturas(){
         facturaControla.cargarTablaAdministradorDeFacturas();
-            
-        //Calculamos el total de ganancias por facturas de todas las facturas del sistema
-        //Obtenemos los valores a pagar de las facturas para hacer calculo del total por facturas
-        valoresAPagarDeFacturas = facturaControla.obtenerValoresAPagarFacturasBajoAlgunCriterio("");
-
-        //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
-        totalPorFacturas = facturaControla.calcularProducido(valoresAPagarDeFacturas);
-        lbl_gananciasEnFacturas.setText(facturaControla.agregarFormatoMoneda(totalPorFacturas));
-        
-        //Contamos las facturas
-        lbl_numeroDeFacturas.setText(facturaControla.contarFacturasQueTienenUnCriterioEspecifico(""));
-    }
-    
+        sentenciaSQLUtilizadaTotales = "";
+        facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
+    }    
 }
 
 

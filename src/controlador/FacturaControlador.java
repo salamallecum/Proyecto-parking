@@ -1,6 +1,7 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -39,6 +40,10 @@ import org.apache.log4j.Logger;
 import static vista.GestionarFacturas.codigoFactura_update;
 import static vista.GestionarFacturas.esFacturaAbierta;
 import static vista.GestionarFacturas.hayFacturaVisualizandose;
+import static vista.GestionarFacturas.lbl_gananciasEnFacturas;
+import static vista.GestionarFacturas.lbl_gananciasEsperadasEnFacturas;
+import static vista.GestionarFacturas.lbl_numeroDeFacturas;
+import static vista.GestionarFacturas.lbl_perdidasEnFacturas;
 import static vista.GestionarFacturas.modelo;
 import static vista.GestionarFacturas.table_listaFacturas;
 import vista.InformacionFacturaFinal;
@@ -60,10 +65,18 @@ public class FacturaControlador implements Runnable {
 
     //Hilo encargado del cargue de la tabla de opercaion del parqueradero en el panel caja
     public Thread hilo2 = new Thread(this);
-    ParqueaderoControlador parqControlador = new ParqueaderoControlador();
+    ParqueaderoControlador parqControlador;
     ParametroControlador parametroControla = new ParametroControlador();
     UsuarioControlador usuarioControla = new UsuarioControlador();
+    CierreControlador cierreControla = new CierreControlador();
     public static boolean ejecutarHiloOpParq; 
+    public static boolean esUnNumeroNegativo = false;
+    
+    String totalEsperadoGananciasFacturas = "";
+    String totalRealGananciasFacturas = "";
+    ArrayList valoresAPagarDeFacturas;
+    ArrayList dineroDeCambioDeFacturas;
+    int totalPerdidasFacturas;
            
     //Constructor
     public FacturaControlador() {}
@@ -518,7 +531,7 @@ public class FacturaControlador implements Runnable {
             }else{
                 int efectivo_int = Integer.parseInt(efectivoRecibido); 
                 int cuentaPagar_int = Integer.parseInt(cuentaAPagar);
-                int cambio = efectivo_int - cuentaPagar_int;
+                int cambio = cuentaPagar_int - efectivo_int;
                 cambio_str = String.valueOf(cambio);
             } 
         }
@@ -902,7 +915,7 @@ public class FacturaControlador implements Runnable {
         }  
     } 
     
-    //Metodo que busca una factura teniendo en cuenta varios criteriosde busqueda
+    //Metodo que busca una factura teniendo en cuenta uno o varios criterios de busqueda
     public void buscarFactura(String sentenciaSql){
         
         try{
@@ -1113,22 +1126,36 @@ public class FacturaControlador implements Runnable {
         
         String montoConvertido = "";
         
+        //Validamos si el numero es un numero negativo
+        if(monto.contains("(")){
+            esUnNumeroNegativo = true;
+        }else{
+            esUnNumeroNegativo = false;
+        }
+        
         //Le quitamos el formato de moneda al monto dado
-        String charsToRemove = "$.";
+        String charsToRemove = "$.(";
                 
         for (char c : charsToRemove.toCharArray()) {
             monto = monto.replace(String.valueOf(c), "");
         }
+        
         monto = monto.replaceAll(",", ".");
 
         if(monto.contains(".")){
             monto = monto.substring(0,monto.indexOf("."));
         }
         
-        montoConvertido = monto;
+        if(esUnNumeroNegativo){
+            montoConvertido = "-"+monto;
+        }else{
+            montoConvertido = monto;
+        }
         
         return montoConvertido;
     }
+
+
     
     //Arroja en formato de moneda la cantidad de dinero que se le indique
     public String agregarFormatoMoneda(String montoAConvertir){
@@ -1191,7 +1218,7 @@ public class FacturaControlador implements Runnable {
         @Override
         public void mouseClicked(MouseEvent e){
             int fila_point = table_listaFacturas.rowAtPoint(e.getPoint());
-            int columna_point = 0;
+            int columna_point = 1;
 
             if(fila_point > -1){
                 codigoFactura_update = (String) modelo.getValueAt(fila_point, columna_point);
@@ -1313,4 +1340,71 @@ public class FacturaControlador implements Runnable {
             }
         }
     }
+    
+    //Metodo que consulta los dineros de cambio de las facturas utilizando un criterio de busqueda
+    public ArrayList obtenerCambiosDeFacturasBajoAlgunCriterio(String sentenciaSQL){
+        
+        ArrayList cambios = new ArrayList();
+        
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                "SELECT Cambio FROM facturas WHERE 1=1 AND Estado_fctra = 'Cerrada' AND Cambio <> '$0,00'" + sentenciaSQL);
+            ResultSet rs2 = pst2.executeQuery();
+
+            while(rs2.next()){
+                
+                String valor = rs2.getString("Cambio");
+                
+                //Le quitamos el formato moneda a cada diferencia de factura
+                valor = quitarFormatoMoneda(valor);
+                
+                cambios.add(valor);
+            }
+            cn2.close();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener el dinero de cambio de las facturas, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar obtener el dinero de cambio de las facturas generadas en el turno. " + e);
+        }
+        return cambios;
+    }
+    
+    //Metodo que se encargade generar las estadisticas dependiendo del filtro aplicado en la busqueda de las facturas del gestor de facturas
+    public void generarEstadisticasMedianteUnCriterioDeterminado(String sentenciaSQL){
+        
+        //Calculamos el total de ganancias por facturas de todas las facturas del sistema
+        //Obtenemos los valores a pagar de las facturas para hacer calculo del total por facturas
+        valoresAPagarDeFacturas = obtenerValoresAPagarFacturasBajoAlgunCriterio(sentenciaSQL);
+
+        //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
+        totalEsperadoGananciasFacturas = calcularProducido(valoresAPagarDeFacturas);
+        lbl_gananciasEsperadasEnFacturas.setText(agregarFormatoMoneda(totalEsperadoGananciasFacturas));
+        
+        //Contamos las facturas
+        lbl_numeroDeFacturas.setText(contarFacturasQueTienenUnCriterioEspecifico(sentenciaSQL));
+        
+        //Calculamos el total de perdidas por facturas de lasfacturasque pertenecen a un cierre especifico
+        //Obtenemos las diferencias de las facturas para hacer calculo de perdidas por facturas
+        dineroDeCambioDeFacturas = obtenerCambiosDeFacturasBajoAlgunCriterio(sentenciaSQL);
+
+        //Calculamos el total de perdidas por facturas teniendo en cuenta las diferencias de las facturas obtenidas
+        totalPerdidasFacturas = cierreControla.calcularTotalPerdidas(dineroDeCambioDeFacturas);
+        lbl_perdidasEnFacturas.setText(agregarFormatoMoneda(Integer.toString(totalPerdidasFacturas)));
+
+        //Calculamos el total real de ganancias obtenidas restando del total esperado en ganancias el total por perdidas
+        totalRealGananciasFacturas = cierreControla.calcularTotalGananciasReales(totalEsperadoGananciasFacturas, Integer.toString(totalPerdidasFacturas));
+        lbl_gananciasEnFacturas.setText(agregarFormatoMoneda(totalRealGananciasFacturas));
+
+        evaluarGravedadDePerdidas();
+    }
+    
+    //Pinta de color verde el total de perdidas solo si este es menor o igual a cero pesos, de lo contrario, permanece de color rojo
+    public void evaluarGravedadDePerdidas(){
+        if(totalPerdidasFacturas <= 0){
+            lbl_perdidasEnFacturas.setForeground(Color.green);
+        }else{
+            lbl_perdidasEnFacturas.setForeground(Color.red);
+        }
+    } 
 }
