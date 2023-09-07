@@ -26,6 +26,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     String totalEsperadoDeCajaOriginal;
     int totalEsperadoDeCajaInt = 0;
     int ID;
+    int filas;
     
     String usuarioDelSistema = "";
     javax.swing.JTable tablaCierres;
@@ -91,6 +92,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         codigoCierre = GestionarCierres.codigoCierre_update;
         tablaCierres = GestionarCierres.table_listaCierres;
         modelo = GestionarCierres.modelo;
+        filas = GestionarCierres.Filas;
         
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
@@ -864,7 +866,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(null, "Por favor diligencie todos los campos.");
         
         }else{
-                      
+                                  
             cierreAActualizar.setId(ID);
             cierreAActualizar.setFecha_cierre(cierreControla.fecha_Cierre());
             cierreAActualizar.setUsuario(usuarioControla.consultarIdDeunUsuario(usuarioDelSistema));
@@ -903,19 +905,22 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
             cierreControla.actualizarCierre(cierreAActualizar);
             
             //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar cierres
-            Object Fila[] = new Object[4];  
-            Fila[0] = codigoCierre;
-            Fila[1] = cierreControla.fecha_Cierre();
-            Fila[2] = usuarioDelSistema;
-            Fila[3] = cierreAEditar.getTotal_esperado();
+            Object Fila[] = new Object[5];  
+            Fila[0] = cierreControla.fecha_Cierre();
+            Fila[1] = codigoCierre;
+            Fila[2] = usuarioControla.consultarIdDeunUsuario(usuarioDelSistema);
+            Fila[3] = cierreAEditar.getProducido();
+            Fila[4] = diferenciaTotal;
             
             for(int i=0; i < tablaCierres.getColumnCount(); i++){
-                modelo.setValueAt(Fila[i], GestionarCierres.Filas, i);
-                System.out.println("entra aqui");
+                modelo.setValueAt(Fila[i], filas, i);
             }
 
             //Imprimimos el ticket de cierre de caja
             cierreControla.generarTicketCierreDeCaja(codigoCierre, false);
+            
+            //Actualizamos los datos totales del gestor de cierres
+            cierreControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarCierres.sentenciaSQLUtilizadaTotales);
 
             ventanaEmergCopiaCierre = true;
 
@@ -1814,6 +1819,8 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
             facturaControla.eliminarFacturasDeUnCierre(ID);
             arqueoControla.eliminarArqueo(cierreAEditar.getCodigoArqueo());
             modelo.removeRow(Fila);
+            //Actualizamos los datos totales del gestor de cierres
+            cierreControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarCierres.sentenciaSQLUtilizadaTotales);
             JOptionPane.showMessageDialog(null, "Cierre de caja eliminado satisfactoriamente.");
             GestionarCierres.hayCierreAbierto = false;
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;

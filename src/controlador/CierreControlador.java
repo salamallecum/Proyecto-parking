@@ -2,6 +2,7 @@ package controlador;
 
 import clasesDeApoyo.Conexion;
 import static controlador.FacturaControlador.rutaImgTickets;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,7 +35,13 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import vista.EditarCierreDeCaja;
 import vista.GestionarCierres;
+import static vista.GestionarCierres.hayCierreAbierto;
+import static vista.GestionarCierres.lbl_gananciasEnCierres;
+import static vista.GestionarCierres.lbl_gananciasEsperadasEnCierres;
+import static vista.GestionarCierres.lbl_numeroDeCierres;
+import static vista.GestionarCierres.lbl_perdidasEnCierres;
 import static vista.GestionarCierres.modelo;
+import static vista.GestionarCierres.table_listaCierres;
 import vista.PanelCaja;
 
 /**
@@ -46,9 +54,14 @@ public class CierreControlador {
    private URL url = CierreControlador.class.getResource("Log4j.properties");
    
    Cierre cierreConsultado = new Cierre(0, "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
-   FacturaControlador factControla = new FacturaControlador();
-   ParqueaderoControlador parqControla = new ParqueaderoControlador();
-   
+   FacturaControlador factControla;
+   ParqueaderoControlador parqControla;
+   String totalEsperadoProducidoCierres = "";
+   String totalRealProducidoCierres = "";
+   int totalPerdidasCierres;
+   ArrayList producidosDeCierres;
+   ArrayList diferenciasDeCierres;
+
    //Constructor
    public CierreControlador() {}  
     
@@ -324,96 +337,64 @@ public class CierreControlador {
         }
     }
     
-    //Metodo que busca un cierre teniendo en cuenta su codigo
-    public void busquedaCierrePorCodigo(String texto){
-       
+    //Metodo que busca un cierre teniendo en cuenta uno o varios criterios de busqueda
+    public void buscarCierre(String sentenciaSql){
+        
         try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = "%"+texto+"%";
-            String SQL = "select Codigo, Fecha_cierre, Nombre_usuario, Dinero_en_caja from cierres where Codigo like "+'"'+filtro+'"';
-            GestionarCierres.modelo = new DefaultTableModel(null, titulos);
+            String [] titulos = {"Fecha", "Codigo", "Usuario", "Producido ($)", "Diferencia ($)"};
+            modelo = new DefaultTableModel(null, titulos);
             
             Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
+            PreparedStatement pst6 = cn6.prepareStatement(sentenciaSql);
+            ResultSet rs6 = pst6.executeQuery(sentenciaSql);
             
-            String[] fila = new String[4];
+            String[] fila = new String[5];
             
             while(rs6.next()){
-                fila[0] = rs6.getString("Codigo");
-                fila[1] = rs6.getString("Fecha_cierre");
-                fila[2] = rs6.getString("Nombre_usuario");
-                fila[3] = rs6.getString("Dinero_en_caja");
-                GestionarCierres.modelo.addRow(fila);
+                fila[0] = rs6.getString("cierres.Fecha_cierre");
+                fila[1] = rs6.getString("cierres.Codigo");
+                fila[2] = rs6.getString("usuarios.Usuario");
+                fila[3] = rs6.getString("cierres.Producido");
+                fila[4] = rs6.getString("cierres.Diferencia");
+                modelo.addRow(fila);
             }
-            GestionarCierres.table_listaCierres.setModel(GestionarCierres.modelo);
+            table_listaCierres.setModel(modelo);
             rs6.close();
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de cierre!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar buscar un cierre por medio de su codigo. " + ex);
-        }                
-    } 
-    
-    //Metodo que busca un cierre teniendo en cuenta su usuario
-    public void busquedaCierrePorUsuario(String texto){
-       
-        try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = "%"+texto+"%";
-            String SQL = "select Codigo, Fecha_cierre, Nombre_usuario, Dinero_en_caja from cierres where Nombre_usuario like "+'"'+filtro+'"';
-            GestionarCierres.modelo = new DefaultTableModel(null, titulos);
-            
-            Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
-            
-            String[] fila = new String[4];
-            
-            while(rs6.next()){
-                fila[0] = rs6.getString("Codigo");
-                fila[1] = rs6.getString("Fecha_cierre");
-                fila[2] = rs6.getString("Nombre_usuario");
-                fila[3] = rs6.getString("Dinero_en_caja");
-                GestionarCierres.modelo.addRow(fila);
-            }
-            GestionarCierres.table_listaCierres.setModel(GestionarCierres.modelo);
-            rs6.close();
-            cn6.close();
-            
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de cierre!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar buscar un cierre por medio de su usuario. " + ex);
-        }                
+            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de cierres!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar buscar los cierres. " + ex);
+        }
     }
-    
+        
     //Metodo que carga el contenido de la tabla del Administrador de cierres
     public void cargarTablaAdministradorDeCierres(){
         
         //Cargamos los datos de la tabla
         try {
             modelo = new DefaultTableModel();
-            GestionarCierres.table_listaCierres.setModel(modelo);
+            table_listaCierres.setModel(modelo);
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Codigo, Fecha_cierre, Nombre_usuario, Total_esperado from cierres");
+                        "SELECT cierres.Fecha_cierre, cierres.Codigo, usuarios.Usuario, cierres.Producido, cierres.Diferencia FROM cierres INNER JOIN usuarios ON cierres.Id_usuario = usuarios.Id_usuario AND Id_cierre <> 1");
 
             ResultSet rs = pst.executeQuery();
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
 
-            modelo.addColumn("Codigo");
             modelo.addColumn("Fecha");
+            modelo.addColumn("Codigo");
             modelo.addColumn("Usuario");
-            modelo.addColumn("Total esperado ($)");
+            modelo.addColumn("Producido ($)");
+            modelo.addColumn("Diferencia ($)");
 
-            int[] anchosTabla = {10,10,5,10};
+            int[] anchosTabla = {10,10,5,10,10};
 
             for(int x=0; x < cantidadColumnas; x++){
-                GestionarCierres.table_listaCierres.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+                table_listaCierres.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
             }
 
             while (rs.next()) {
@@ -428,8 +409,8 @@ public class CierreControlador {
             }
             cn.close();                    
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al llenar tabla de arqueos, ¡Contacte al administrador!");
-                log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de arqueos del Administrador de arqueos. " + e);
+                JOptionPane.showMessageDialog(null, "Error al llenar tabla de cierres, ¡Contacte al administrador!");
+                log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de cierres del Administrador de cierres. " + e);
             }
             
         //Agregamos la funcion de ver informacion de cierre al hacer click sobre el registro de la tabla
@@ -437,22 +418,20 @@ public class CierreControlador {
         @Override
         public void mouseClicked(MouseEvent e){
             int fila_point = GestionarCierres.table_listaCierres.rowAtPoint(e.getPoint());
-            int columna_point = 0;
+            int columna_point = 1;
 
             if(fila_point > -1){
                 GestionarCierres.codigoCierre_update = (String) modelo.getValueAt(fila_point, columna_point);
-                generarInformacionDeCierreEnFrame(GestionarCierres.codigoCierre_update);  
+                generarInformacionDeCierreEnFrame();  
             }
         }    
     });
     }
     
     //Metodo que genera la informacion de un cierre en el jframe
-    public void generarInformacionDeCierreEnFrame(String codCierre){
+    public void generarInformacionDeCierreEnFrame(){
 
-        if(GestionarCierres.hayCierreAbierto == true || codCierre.equals("4444")){
-            JOptionPane.showMessageDialog(null,"No permitido.");
-        }else{
+        if(!hayCierreAbierto){
             GestionarCierres.hayCierreAbierto = true;
             new EditarCierreDeCaja().setVisible(true);
         }    
@@ -506,7 +485,7 @@ public class CierreControlador {
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update cierres set Fecha_cierre ='"+cierEdit.getFecha_cierre()+"', Nombre_usuario='"+cierEdit.getUsuario()+"', base_caja='"+cierEdit.getBase_caja()+"', numerobilletes100mil='"+cierEdit.getNumBilletesDe100Mil()+"', numerobilletes50mil='"+cierEdit.getNumBilletesDe50Mil()+"', numerobilletes20mil='"+cierEdit.getNumBilletesDe20Mil()+"', numerobilletes10mil='"+cierEdit.getNumBilletesDe10Mil()+"', numerobilletes5mil='"+cierEdit.getNumBilletesDe5Mil()+"', numerobilletes2mil='"+cierEdit.getNumBilletesDe2Mil()+"', numerobilletesMil='"+cierEdit.getNumBilletesOMonedasDeMil()+"', numeromonedas500='"+cierEdit.getNumMonedasDe500()+"', numeromonedas200='"+cierEdit.getNumMonedasDe200()+"', numeromonedas100='"+cierEdit.getNumMonedasDe100()+"', numeromonedas50='"+cierEdit.getNumMonedasDe50()+"', montoen100mil="+cierEdit.getMontoEnBilletes100Mil()+", montoen50mil="+cierEdit.getMontoEnBilletes50Mil()+", montoen20mil="+cierEdit.getMontoEnBilletes20Mil()+", montoen10mil="+cierEdit.getMontoEnBilletes10Mil()+", montoen5mil="+cierEdit.getMontoEnBilletes5Mil()+", montoen2mil="+cierEdit.getMontoEnBilletes2Mil()+", montoenmil="+cierEdit.getMontoEnBilletesOMonedasMil()+", montoen500="+cierEdit.getMontoEnMonedasDe500()+", montoen200="+cierEdit.getMontoEnMonedasDe200()+", montoen100="+cierEdit.getMontoEnMonedasDe100()+", montoen50="+cierEdit.getMontoEnMonedasDe50()+", Total_esperado='"+cierEdit.getTotal_esperado()+"', Dinero_en_caja='"+cierEdit.getDinero_caja()+"', Diferencia='"+cierEdit.getDiferencia()+"', Dinero_a_consignar='"+cierEdit.getDineroAConsignar()+"', Observaciones='"+cierEdit.getObservaciones()+"' where Id_cierre ="+cierEdit.getId());
+            PreparedStatement pst9 = cn9.prepareStatement("update cierres set Fecha_cierre ='"+cierEdit.getFecha_cierre()+"', Id_usuario="+cierEdit.getUsuario()+", base_caja='"+cierEdit.getBase_caja()+"', numerobilletes100mil='"+cierEdit.getNumBilletesDe100Mil()+"', numerobilletes50mil='"+cierEdit.getNumBilletesDe50Mil()+"', numerobilletes20mil='"+cierEdit.getNumBilletesDe20Mil()+"', numerobilletes10mil='"+cierEdit.getNumBilletesDe10Mil()+"', numerobilletes5mil='"+cierEdit.getNumBilletesDe5Mil()+"', numerobilletes2mil='"+cierEdit.getNumBilletesDe2Mil()+"', numerobilletesMil='"+cierEdit.getNumBilletesOMonedasDeMil()+"', numeromonedas500='"+cierEdit.getNumMonedasDe500()+"', numeromonedas200='"+cierEdit.getNumMonedasDe200()+"', numeromonedas100='"+cierEdit.getNumMonedasDe100()+"', numeromonedas50='"+cierEdit.getNumMonedasDe50()+"', montoen100mil="+cierEdit.getMontoEnBilletes100Mil()+", montoen50mil="+cierEdit.getMontoEnBilletes50Mil()+", montoen20mil="+cierEdit.getMontoEnBilletes20Mil()+", montoen10mil="+cierEdit.getMontoEnBilletes10Mil()+", montoen5mil="+cierEdit.getMontoEnBilletes5Mil()+", montoen2mil="+cierEdit.getMontoEnBilletes2Mil()+", montoenmil="+cierEdit.getMontoEnBilletesOMonedasMil()+", montoen500="+cierEdit.getMontoEnMonedasDe500()+", montoen200="+cierEdit.getMontoEnMonedasDe200()+", montoen100="+cierEdit.getMontoEnMonedasDe100()+", montoen50="+cierEdit.getMontoEnMonedasDe50()+", Total_esperado='"+cierEdit.getTotal_esperado()+"', Dinero_en_caja='"+cierEdit.getDinero_caja()+"', Diferencia='"+cierEdit.getDiferencia()+"', Dinero_a_consignar='"+cierEdit.getDineroAConsignar()+"', Observaciones='"+cierEdit.getObservaciones()+"' where Id_cierre ="+cierEdit.getId());
             pst9.executeUpdate();
             cn9.close();
 
@@ -533,4 +512,171 @@ public class CierreControlador {
             log.fatal("ERROR - Se ha producido un error al intentar eliminar un cierre" + e);
         }   
     }
+    
+    //Metodo que consulta los producidos de los cierres utilizando un criterio de busqueda
+    public ArrayList obtenerProducidosDeCierresBajoAlgunCriterio(String sentenciaSQL){
+        
+        ArrayList producidos = new ArrayList();
+        factControla = new FacturaControlador();
+        
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                "SELECT Producido FROM cierres WHERE 1=1 AND Id_cierre <> 1" + sentenciaSQL);
+            ResultSet rs2 = pst2.executeQuery();
+
+            while(rs2.next()){
+                
+                String valor = rs2.getString("Producido");
+                
+                //Le quitamos el formato moneda a cada monto de producido
+                valor = factControla.quitarFormatoMoneda(valor);
+                
+                producidos.add(valor);
+            }
+            cn2.close();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener producidos de cierres, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar obtener los producidos de los cierres generados en el turno. " + e);
+        }
+        return producidos;
+    }
+    
+    //Metodo que calcula el valor del producido teniendo en cuenta un arreglo de producidos
+    public String calcularProducido(ArrayList producidos){
+        
+        String prod = "";
+        int resultado = 0;
+        
+        for(int i = 0; i < producidos.size(); i++){
+            
+            String producido_str = String.valueOf(producidos.get(i));
+            int producido = Integer.parseInt(producido_str);
+            resultado = resultado + producido;
+        }
+        
+        prod = Integer.toString(resultado);      
+        
+        return prod;
+    }
+    
+    //Metodo que cuenta la cantidad de cierres generados
+    public String contarCierresQueTienenUnCriterioEspecifico(String sql){
+        
+        String cantidadCierres = "";
+        try {
+            Connection cn3 = Conexion.conectar();
+            PreparedStatement pst3 = cn3.prepareStatement(
+                "select count(*) from cierres where 1=1 AND Id_cierre <> 1" + sql);
+            ResultSet rs3 = pst3.executeQuery();
+
+            if(rs3.next()){
+                int cant_cierres = rs3.getInt("count(*)");
+                cantidadCierres = Integer.toString(cant_cierres);
+            }
+            cn3.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al contar cierres generados en el turno, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al contar loc cierres generados en el turno: " + e);
+        }
+        return cantidadCierres;
+    }
+    
+    //Metodo que consulta las diferencias de los cierres utilizando un criterio de busqueda
+    public ArrayList obtenerDiferenciasDeCierresBajoAlgunCriterio(String sentenciaSQL){
+        
+        ArrayList diferencias = new ArrayList();
+        
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                "SELECT Diferencia FROM cierres WHERE 1=1 AND Id_cierre <> 1" + sentenciaSQL);
+            ResultSet rs2 = pst2.executeQuery();
+
+            while(rs2.next()){
+                
+                String valor = rs2.getString("Diferencia");
+                
+                //Le quitamos el formato moneda a cada monto de producido
+                valor = factControla.quitarFormatoMoneda(valor);
+                
+                diferencias.add(valor);
+            }
+            cn2.close();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener diferencias de cierres, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar obtener las diferencias de los cierres generados en el turno. " + e);
+        }
+        return diferencias;
+    }
+    
+    //Metodo que calcula el total en perdidas teniendo en cuenta un arreglo de diferencias de cierres o facturas
+    public int calcularTotalPerdidas(ArrayList diferencias){
+       
+        int resultado = 0;
+        
+        for(int i = 0; i < diferencias.size(); i++){
+            
+            String diferencia_str = String.valueOf(diferencias.get(i));
+            int diferencia = Integer.parseInt(diferencia_str);
+            resultado = resultado + diferencia;
+        }     
+        
+        return resultado;
+    }
+    
+    //Metodo que calcula el total obtenido de ganancias teniendo en cuenta el totalde ganancias esperado y el totalde perdidas alcanzado en un conjunto de cierres
+    public String calcularTotalGananciasReales(String totalGananciasEsperado, String totalPerdidas){
+        
+        String resultado = "";
+
+        //Convertimos las cifras obtenidas a int
+        int gananciasEsperadas = Integer.parseInt(totalGananciasEsperado);
+        int perdidas = Integer.parseInt(totalPerdidas);
+        
+        resultado = Integer.toString(gananciasEsperadas - perdidas);
+        return resultado;
+    }
+    
+    //Metodo que se encarga de generar las estadisticas dependiendo del filtro aplicado en la busqueda de los cierres del gestor de cierres
+    public void generarEstadisticasMedianteUnCriterioDeterminado(String sentenciaSQL){
+        
+        factControla = new FacturaControlador();
+        
+        //Calculamos el total de ganancias por cierres de todos los cierres del sistema
+        //Obtenemos los producidos de los cierres para hacer calculo del producido por cierres
+        producidosDeCierres = obtenerProducidosDeCierresBajoAlgunCriterio(sentenciaSQL);
+
+        //Calculamos el total por cierres teniendo en cuenta los producidos de los cierres obtenidos
+        totalEsperadoProducidoCierres = calcularProducido(producidosDeCierres);
+        lbl_gananciasEsperadasEnCierres.setText(factControla.agregarFormatoMoneda(totalEsperadoProducidoCierres));
+        
+        //Contamos los cierres
+        lbl_numeroDeCierres.setText(contarCierresQueTienenUnCriterioEspecifico(sentenciaSQL));
+        
+        //Calculamos el total de perdidas por cierres de todos los cierres del sistema
+        //Obtenemos las diferencias de los cierres para hacer calculo de perdidas por cierres
+        diferenciasDeCierres = obtenerDiferenciasDeCierresBajoAlgunCriterio(sentenciaSQL);
+        
+        //Calculamos el total de perdidas por cierres teniendo en cuenta las diferencias de los cierres obtenidos
+        totalPerdidasCierres = calcularTotalPerdidas(diferenciasDeCierres);
+        lbl_perdidasEnCierres.setText(factControla.agregarFormatoMoneda(Integer.toString(totalPerdidasCierres)));
+        
+        //Calculamos el total real de ganancias obtenidas restando del total esperado en ganancias el total por perdidas
+        totalRealProducidoCierres = calcularTotalGananciasReales(totalEsperadoProducidoCierres, Integer.toString(totalPerdidasCierres));
+        lbl_gananciasEnCierres.setText(factControla.agregarFormatoMoneda(totalRealProducidoCierres));
+        
+        evaluarGravedadDePerdidas();
+    }
+    
+    //Pinta de color verde el total de perdidas solo si este es menor o igual a cero pesos, de lo contrario, permanece de color rojo
+    public void evaluarGravedadDePerdidas(){
+        if(totalPerdidasCierres <= 0){
+            lbl_perdidasEnCierres.setForeground(Color.GREEN);
+        }else{
+            lbl_perdidasEnCierres.setForeground(Color.red);
+        }
+    }  
 }
