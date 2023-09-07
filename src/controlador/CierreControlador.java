@@ -612,7 +612,7 @@ public class CierreControlador {
         return diferencias;
     }
     
-    //Metodo que calcula el total en perdidas teniendo en cuenta un arreglo de diferencias de cierres o facturas
+    //Metodo que calcula el total en perdidas teniendo en cuenta un arreglo de diferencias de cierres, facturas o arqueos
     public int calcularTotalPerdidas(ArrayList diferencias){
        
         int resultado = 0;

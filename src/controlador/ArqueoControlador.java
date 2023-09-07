@@ -2,6 +2,7 @@ package controlador;
 
 import clasesDeApoyo.Conexion;
 import static controlador.FacturaControlador.rutaImgTickets;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +36,9 @@ import vista.EditarArqueoDeCaja;
 import vista.EditarCierreDeCaja;
 import vista.GestionarArqueos;
 import static vista.GestionarArqueos.codigoArqueo_update;
+import static vista.GestionarArqueos.hayArqueoVisualizandose;
+import static vista.GestionarArqueos.lbl_numeroDeArqueos;
+import static vista.GestionarArqueos.lbl_perdidasEnArqueos;
 import static vista.GestionarArqueos.modelo;
 import static vista.GestionarArqueos.table_listaArqueos;
 
@@ -45,7 +50,11 @@ import static vista.GestionarArqueos.table_listaArqueos;
 public class ArqueoControlador {
     
    Arqueo arqueoConsultado = new Arqueo(0, "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
-    
+   FacturaControlador factControla;
+   CierreControlador cierreControla;
+   int totalPerdidasArqueos;
+   ArrayList diferenciasDeArqueos;
+      
    private final Logger log = Logger.getLogger(ArqueoControlador.class);
    private URL url = ArqueoControlador.class.getResource("Log4j.properties");
    
@@ -159,70 +168,6 @@ public class ArqueoControlador {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/preview.png"));
         return retValue;
     }
-
-    //Metodo que busca un arqueo teniendo en cuenta su usuario
-    public void busquedaArqueoPorUsuario(String texto){
-        
-        try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = "%"+texto+"%";
-            String SQL = "select codigo, fecha_arqueo, usuario, total_caja from arqueos where usuario like "+'"'+filtro+'"';
-            modelo = new DefaultTableModel(null, titulos);
-            
-            Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
-            
-            String[] fila = new String[4];
-            
-            while(rs6.next()){
-                fila[0] = rs6.getString("codigo");
-                fila[1] = rs6.getString("fecha_arqueo");
-                fila[2] = rs6.getString("usuario");
-                fila[3] = rs6.getString("total_caja");
-                modelo.addRow(fila);
-            }
-            table_listaArqueos.setModel(modelo);
-            rs6.close();
-            cn6.close();
-            
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de arqueo por usuario!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar buscar un arqueo por medio de su usuario. " + ex);
-        }
-    }
-    
-    //Metodo que busca una factura teniendo en cuenta su codigo
-    public void busquedaArqueoPorCodigo(String texto){
-       
-        try{
-            String [] titulos = {"Codigo", "Fecha", "Usuario", "Valor ($)"};
-            String filtro = "%"+texto+"%";
-            String SQL = "select codigo, fecha_arqueo, usuario, total_caja from arqueos where codigo like "+'"'+filtro+'"';
-            modelo = new DefaultTableModel(null, titulos);
-            
-            Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
-            
-            String[] fila = new String[4];
-            
-            while(rs6.next()){
-                fila[0] = rs6.getString("codigo");
-                fila[1] = rs6.getString("fecha_arqueo");
-                fila[2] = rs6.getString("usuario");
-                fila[3] = rs6.getString("total_caja");
-                modelo.addRow(fila);
-            }
-            table_listaArqueos.setModel(modelo);
-            rs6.close();
-            cn6.close();
-            
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de factura!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar buscar una factura por medio de su codigo. " + ex);
-        }                
-    } 
     
     //Metodo que carga el contenido de la tabla del Administrador de arqueos
     public void cargarTablaAdministradorDeArqueos(){
@@ -234,17 +179,17 @@ public class ArqueoControlador {
 
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select codigo, fecha_arqueo, usuario, total_caja from arqueos");
+                        "SELECT arqueos.fecha_arqueo, arqueos.codigo, usuarios.Usuario, arqueos.diferencia FROM arqueos INNER JOIN usuarios ON arqueos.Id_usuario = usuarios.Id_usuario");
 
             ResultSet rs = pst.executeQuery();
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
 
-            modelo.addColumn("Codigo");
             modelo.addColumn("Fecha");
+            modelo.addColumn("Codigo");
             modelo.addColumn("Usuario");
-            modelo.addColumn("Valor ($)");
+            modelo.addColumn("Diferencia ($)");
 
             int[] anchosTabla = {10,10,5,10};
 
@@ -273,7 +218,7 @@ public class ArqueoControlador {
         @Override
         public void mouseClicked(MouseEvent e){
             int fila_point = table_listaArqueos.rowAtPoint(e.getPoint());
-            int columna_point = 0;
+            int columna_point = 1;
 
             if(fila_point > -1){
                 codigoArqueo_update = (String) modelo.getValueAt(fila_point, columna_point);
@@ -286,12 +231,10 @@ public class ArqueoControlador {
     //Metodo que genera la informacion de un arqueo en el jframe
     public void generarInformacionDeArqueoEnFrame(){
 
-        if(GestionarArqueos.hayArqueoVisualizandose == true){
-            JOptionPane.showMessageDialog(null,"No permitido.");
-        }else{
-            GestionarArqueos.hayArqueoVisualizandose = true;
+        if(!hayArqueoVisualizandose){
+            hayArqueoVisualizandose = true;
             new EditarArqueoDeCaja().setVisible(true);
-        }    
+        } 
     } 
 
     //Metodo que consulta la información de un arqueo
@@ -308,7 +251,7 @@ public class ArqueoControlador {
                 arqueoConsultado.setId(rs.getInt("Id_arqueo"));
                 arqueoConsultado.setCodigo(rs.getString("codigo"));
                 arqueoConsultado.setBase_caja(rs.getString("base_caja"));
-                arqueoConsultado.setUsuario(rs.getInt("usuario"));
+                arqueoConsultado.setUsuario(rs.getInt("Id_usuario"));
                 arqueoConsultado.setNumBilletesDe100Mil(rs.getString("numerobilletes100mil"));
                 arqueoConsultado.setNumBilletesDe50Mil(rs.getString("numerobilletes50mil"));
                 arqueoConsultado.setNumBilletesDe20Mil(rs.getString("numerobilletes20mil"));
@@ -337,7 +280,7 @@ public class ArqueoControlador {
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update arqueos set fecha_arqueo ='"+arqEdit.getFecha_arqueo()+"', usuario='"+arqEdit.getUsuario()+"', base_caja='"+arqEdit.getBase_caja()+"', numerobilletes100mil='"+arqEdit.getNumBilletesDe100Mil()+"', numerobilletes50mil='"+arqEdit.getNumBilletesDe50Mil()+"', numerobilletes20mil='"+arqEdit.getNumBilletesDe20Mil()+"', numerobilletes10mil='"+arqEdit.getNumBilletesDe10Mil()+"', numerobilletes5mil='"+arqEdit.getNumBilletesDe5Mil()+"', numerobilletes2mil='"+arqEdit.getNumBilletesDe2Mil()+"', numerobilletesMil='"+arqEdit.getNumBilletesOMonedasDeMil()+"', numeromonedas500='"+arqEdit.getNumMonedasDe500()+"', numeromonedas200='"+arqEdit.getNumMonedasDe200()+"', numeromonedas100='"+arqEdit.getNumMonedasDe100()+"', numeromonedas50='"+arqEdit.getNumMonedasDe50()+"', montoen100mil="+arqEdit.getMontoEnBilletes100Mil()+", montoen50mil="+arqEdit.getMontoEnBilletes50Mil()+", montoen20mil="+arqEdit.getMontoEnBilletes20Mil()+", montoen10mil="+arqEdit.getMontoEnBilletes10Mil()+", montoen5mil="+arqEdit.getMontoEnBilletes5Mil()+", montoen2mil="+arqEdit.getMontoEnBilletes2Mil()+", montoenmil="+arqEdit.getMontoEnBilletesOMonedasMil()+", montoen500="+arqEdit.getMontoEnMonedasDe500()+", montoen200="+arqEdit.getMontoEnMonedasDe200()+", montoen100="+arqEdit.getMontoEnMonedasDe100()+", montoen50="+arqEdit.getMontoEnMonedasDe50()+", total_caja='"+arqEdit.getMontoTotalCaja()+"', diferencia='"+arqEdit.getDiferenciaTotal()+"' where Id_arqueo ="+arqEdit.getId());
+            PreparedStatement pst9 = cn9.prepareStatement("update arqueos set fecha_arqueo ='"+arqEdit.getFecha_arqueo()+"', Id_usuario='"+arqEdit.getUsuario()+"', base_caja='"+arqEdit.getBase_caja()+"', numerobilletes100mil='"+arqEdit.getNumBilletesDe100Mil()+"', numerobilletes50mil='"+arqEdit.getNumBilletesDe50Mil()+"', numerobilletes20mil='"+arqEdit.getNumBilletesDe20Mil()+"', numerobilletes10mil='"+arqEdit.getNumBilletesDe10Mil()+"', numerobilletes5mil='"+arqEdit.getNumBilletesDe5Mil()+"', numerobilletes2mil='"+arqEdit.getNumBilletesDe2Mil()+"', numerobilletesMil='"+arqEdit.getNumBilletesOMonedasDeMil()+"', numeromonedas500='"+arqEdit.getNumMonedasDe500()+"', numeromonedas200='"+arqEdit.getNumMonedasDe200()+"', numeromonedas100='"+arqEdit.getNumMonedasDe100()+"', numeromonedas50='"+arqEdit.getNumMonedasDe50()+"', montoen100mil="+arqEdit.getMontoEnBilletes100Mil()+", montoen50mil="+arqEdit.getMontoEnBilletes50Mil()+", montoen20mil="+arqEdit.getMontoEnBilletes20Mil()+", montoen10mil="+arqEdit.getMontoEnBilletes10Mil()+", montoen5mil="+arqEdit.getMontoEnBilletes5Mil()+", montoen2mil="+arqEdit.getMontoEnBilletes2Mil()+", montoenmil="+arqEdit.getMontoEnBilletesOMonedasMil()+", montoen500="+arqEdit.getMontoEnMonedasDe500()+", montoen200="+arqEdit.getMontoEnMonedasDe200()+", montoen100="+arqEdit.getMontoEnMonedasDe100()+", montoen50="+arqEdit.getMontoEnMonedasDe50()+", total_caja='"+arqEdit.getMontoTotalCaja()+"', diferencia='"+arqEdit.getDiferenciaTotal()+"' where Id_arqueo ="+arqEdit.getId());
             pst9.executeUpdate();
             cn9.close();
 
@@ -363,6 +306,116 @@ public class ArqueoControlador {
             JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar arqueo de un cierre!!, contacte al administrador.");
             log.fatal("ERROR - Se ha producido un error al intentar eliminar el arqueo de un cierre: " + e);
         }   
+    }
+    
+    //Metodo que se encarga de generar las estadisticas dependiendo del filtro aplicado en la busqueda de los arqueos del gestor de arqueos
+    public void generarEstadisticasMedianteUnCriterioDeterminado(String sentenciaSQL){
+        
+        factControla = new FacturaControlador();
+        cierreControla = new CierreControlador();
+                
+        //Contamos los arqueos
+        lbl_numeroDeArqueos.setText(contarArqueosQueTienenUnCriterioEspecifico(sentenciaSQL));
+        
+        //Calculamos el total de perdidas por arqueos 
+        //Obtenemos las diferencias de los arqueos para hacer calculo de perdidas por arqueos
+        diferenciasDeArqueos = obtenerDiferenciasDeArqueosBajoAlgunCriterio(sentenciaSQL);
+        
+        //Calculamos el total de perdidas por arqueos teniendo en cuenta las diferencias de los arqueos obtenidos
+        totalPerdidasArqueos = cierreControla.calcularTotalPerdidas(diferenciasDeArqueos);
+        lbl_perdidasEnArqueos.setText(factControla.agregarFormatoMoneda(Integer.toString(totalPerdidasArqueos)));
+                
+        evaluarGravedadDePerdidas();
+    }
+    
+    //Pinta de color verde el total de perdidas solo si este es menor o igual a cero pesos, de lo contrario, permanece de color rojo
+    public void evaluarGravedadDePerdidas(){
+        if(totalPerdidasArqueos <= 0){
+            lbl_perdidasEnArqueos.setForeground(Color.GREEN);
+        }else{
+            lbl_perdidasEnArqueos.setForeground(Color.red);
+        }
+    } 
+    
+    //Metodo que cuenta la cantidad de arqueos generados
+    public String contarArqueosQueTienenUnCriterioEspecifico(String sql){
+        
+        String cantidadArqueos = "";
+        try {
+            Connection cn3 = Conexion.conectar();
+            PreparedStatement pst3 = cn3.prepareStatement(
+                "select count(*) from arqueos where 1=1" + sql);
+            ResultSet rs3 = pst3.executeQuery();
+
+            if(rs3.next()){
+                int cant_arqueos = rs3.getInt("count(*)");
+                cantidadArqueos = Integer.toString(cant_arqueos);
+            }
+            cn3.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al contar arqueos generados en el turno, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al contar loc arqueos generados en el turno: " + e);
+        }
+        return cantidadArqueos;
+    }
+    
+    //Metodo que consulta las diferencias de los arqueos utilizando un criterio de busqueda
+    public ArrayList obtenerDiferenciasDeArqueosBajoAlgunCriterio(String sentenciaSQL){
+        
+        ArrayList diferencias = new ArrayList();
+        
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                "SELECT diferencia FROM arqueos WHERE 1=1" + sentenciaSQL);
+            ResultSet rs2 = pst2.executeQuery();
+
+            while(rs2.next()){
+                
+                String valor = rs2.getString("diferencia");
+                
+                //Le quitamos el formato moneda a cada monto de diferencia
+                valor = factControla.quitarFormatoMoneda(valor);
+                
+                diferencias.add(valor);
+            }
+            cn2.close();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener diferencias de arqueos, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar obtener las diferencias de los arqueos generados en el turno. " + e);
+        }
+        return diferencias;
+    }
+    
+    //Metodo que busca un cierre teniendo en cuenta uno o varios criterios de busqueda
+    public void buscarArqueo(String sentenciaSql){
+        
+        try{
+            String [] titulos = {"Fecha", "Codigo", "Usuario", "Diferencia ($)"};
+            modelo = new DefaultTableModel(null, titulos);
+            
+            Connection cn6 = Conexion.conectar();
+            PreparedStatement pst6 = cn6.prepareStatement(sentenciaSql);
+            ResultSet rs6 = pst6.executeQuery(sentenciaSql);
+            
+            String[] fila = new String[4];
+            
+            while(rs6.next()){
+                fila[0] = rs6.getString("arqueos.fecha_arqueo");
+                fila[1] = rs6.getString("arqueos.codigo");
+                fila[2] = rs6.getString("usuarios.Usuario");
+                fila[3] = rs6.getString("arqueos.diferencia");
+                modelo.addRow(fila);
+            }
+            table_listaArqueos.setModel(modelo);
+            rs6.close();
+            cn6.close();
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de arqueos!!, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar buscar los arqueos. " + ex);
+        }
     }
 }       
 

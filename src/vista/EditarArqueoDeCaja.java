@@ -1012,10 +1012,10 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
             
             //Aqui modificamos la fila existente y que fue seleccionada en la tabla gestionar arqueos
             Object Fila[] = new Object[4];
-            Fila[0] = codigoArqueo;
-            Fila[1] = arqueoControla.fecha_Arqueo();
+            Fila[0] = arqueoControla.fecha_Arqueo();
+            Fila[1] = codigoArqueo;
             Fila[2] = usuarioDelSistema;
-            Fila[3] = montoTotalCaja;
+            Fila[3] = diferenciaTotal;
             
             for(int i=0; i < tablaArqueos.getColumnCount(); i++){
                 modelo.setValueAt(Fila[i], GestionarArqueos.Filas, i);
@@ -1023,6 +1023,9 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
 
             //Imprimimos el ticket de arqueo de caja
             arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false);
+            
+            //Actualizamos los datos totales del gestor de cierres
+            arqueoControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarArqueos.sentenciaSQLUtilizadaTotales);
 
             ventanaEmergCopiaArqueo = true;
 

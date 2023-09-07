@@ -2,13 +2,17 @@ package vista;
 
 import com.sun.glass.events.KeyEvent;
 import controlador.ArqueoControlador;
+import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import modelo.Usuario;
 import org.apache.log4j.Logger;
 
 
@@ -23,9 +27,12 @@ public class GestionarArqueos extends javax.swing.JFrame {
     public static int Filas;
     public static String codigoArqueo_update;
     
-    public static boolean hayArqueoVisualizandose = false;
-        
+    Usuario objUsuarioParaCombobox = new Usuario();
+    public static String sentenciaSQLUtilizadaTotales = "";        
     ArqueoControlador arqControla = new ArqueoControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
+    
+    public static boolean hayArqueoVisualizandose = false;
     
     private final Logger log = Logger.getLogger(GestionarArqueos.class);
     private URL url = GestionarArqueos.class.getResource("Log4j.properties");
@@ -43,7 +50,10 @@ public class GestionarArqueos extends javax.swing.JFrame {
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
-        arqControla.cargarTablaAdministradorDeArqueos();
+        //Cargamos los usuarios existentes en el sistema en el combobox
+        DefaultComboBoxModel modeloUsuarios = new DefaultComboBoxModel(objUsuarioParaCombobox.listadoUsuariosDelSistema());
+        cmb_usuarios.setModel(modeloUsuarios);  
+        cargarTablaGestorArqueos();      
                     
     }
     
@@ -69,7 +79,17 @@ public class GestionarArqueos extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txt_codigoArqueo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txt_usuario = new javax.swing.JTextField();
+        cmb_usuarios = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        jDate_fechaHasta = new com.toedter.calendar.JDateChooser();
+        jLabel11 = new javax.swing.JLabel();
+        jDate_fechaDesde = new com.toedter.calendar.JDateChooser();
+        btn_buscar = new javax.swing.JButton();
+        btn_generaPDFArqueos = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        lbl_numeroDeArqueos = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        lbl_perdidasEnArqueos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -103,7 +123,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Código", "Fecha ", "Usuario", "Valor ($)"
+                "Fecha ", "Código", "Usuario", "Diferencia ($)"
             }
         ) {
             Class[] types = new Class [] {
@@ -148,15 +168,29 @@ public class GestionarArqueos extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Usuario:");
 
-        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyPressed(evt);
+        cmb_usuarios.setAutoscrolls(true);
+        cmb_usuarios.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmb_usuariosItemStateChanged(evt);
             }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyTyped(evt);
+        });
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setText("Desde:");
+
+        jDate_fechaHasta.setDateFormatString("yyyy-MM-dd");
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel11.setText("Hasta:");
+
+        jDate_fechaDesde.setDateFormatString("yyyy-MM-dd");
+
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
+        btn_buscar.setText("Buscar");
+        btn_buscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
             }
         });
 
@@ -170,70 +204,120 @@ public class GestionarArqueos extends javax.swing.JFrame {
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                    .addComponent(txt_codigoArqueo))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_codigoArqueo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDate_fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDate_fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
+                .addComponent(btn_buscar)
+                .addGap(29, 29, 29))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_codigoArqueo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_codigoArqueo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jDate_fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14)
+                        .addComponent(jDate_fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        btn_generaPDFArqueos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generaPDFArqueos.setText("Generar Informe PDF");
+        btn_generaPDFArqueos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generaPDFArqueos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_generaPDFArqueosActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel19.setText("N° de arqueos:");
+
+        lbl_numeroDeArqueos.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_numeroDeArqueos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_numeroDeArqueos.setText("0,00");
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel21.setText("Total pérdidas:");
+
+        lbl_perdidasEnArqueos.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbl_perdidasEnArqueos.setForeground(new java.awt.Color(255, 0, 0));
+        lbl_perdidasEnArqueos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_perdidasEnArqueos.setText("0,00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btn_generaPDFArqueos)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel21))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbl_perdidasEnArqueos, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                            .addComponent(lbl_numeroDeArqueos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(130, 130, 130)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_generaPDFArqueos, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_numeroDeArqueos)
+                            .addComponent(jLabel19))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_perdidasEnArqueos)
+                            .addComponent(jLabel21))))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    private void txt_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyTyped
-        //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 10;
-        if(txt_usuario.getText().length() == numeroCaracteres){
-            evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
-            txt_usuario.setText("");
-        } 
-    }//GEN-LAST:event_txt_usuarioKeyTyped
-
     private void txt_codigoArqueoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoArqueoKeyTyped
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 10;
@@ -245,26 +329,15 @@ public class GestionarArqueos extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_codigoArqueoKeyTyped
 
     private void txt_codigoArqueoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoArqueoKeyReleased
-        String buscar = txt_codigoArqueo.getText();
-        arqControla.busquedaArqueoPorCodigo(buscar);
+        
     }//GEN-LAST:event_txt_codigoArqueoKeyReleased
-
-    private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
-        String buscar = txt_usuario.getText();
-        arqControla.busquedaArqueoPorUsuario(buscar);
-    }//GEN-LAST:event_txt_usuarioKeyReleased
 
     private void txt_codigoArqueoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoArqueoKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
-            Limpiar();                       
+            Limpiar();
+            cargarTablaGestorArqueos();
         }
     }//GEN-LAST:event_txt_codigoArqueoKeyPressed
-
-    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
-            Limpiar();                       
-        }
-    }//GEN-LAST:event_txt_usuarioKeyPressed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         cerrarGestorArqueos();
@@ -274,6 +347,76 @@ public class GestionarArqueos extends javax.swing.JFrame {
         int seleccion = table_listaArqueos.getSelectedRow();
         Filas = seleccion;
     }//GEN-LAST:event_table_listaArqueosMouseClicked
+
+    private void cmb_usuariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_usuariosItemStateChanged
+
+    }//GEN-LAST:event_cmb_usuariosItemStateChanged
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+
+        String codigo = txt_codigoArqueo.getText();
+        String sentenciaSQL = "SELECT arqueos.fecha_arqueo, arqueos.codigo, usuarios.Usuario, arqueos.diferencia FROM arqueos INNER JOIN usuarios ON arqueos.Id_usuario = usuarios.Id_usuario";
+        String sentenciaParaCalculoDeTotal = "";
+        int usuarios_cmb = cmb_usuarios.getSelectedIndex();
+        Date fecha_desde = jDate_fechaDesde.getDate();
+        Date fecha_hasta = jDate_fechaHasta.getDate();
+
+        //Validamos que ningun campo haya quedado en blanco y que almenos uno haya sido diligenciado
+        if(codigo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
+            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.");
+            cargarTablaGestorArqueos();
+
+        }else{
+
+            if(!codigo.equals("")){
+                //Agregamos el codigo del arqueo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND arqueos.codigo LIKE '%"+codigo+"%'";
+                sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND arqueos.codigo LIKE '%"+codigo+"%'";
+            }
+
+            if(usuarios_cmb != 0){
+                //Capturamos el objeto usuario para validar el verdadero id en base de datos
+                Usuario usuarioSeleccionado = (Usuario)cmb_usuarios.getSelectedItem();
+
+                //Validamos el verdadero id del usuario en bd
+                int idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
+                String idUsuarioReal = Integer.toString(idRealDelUsuarioSeleccionado);
+                //Agregamos el id del usuario a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND arqueos.Id_usuario = " + idUsuarioReal;
+                sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND arqueos.Id_usuario = " + idUsuarioReal;
+            }
+
+            //Ajustamos el formato de las fechas desde y hasta seleccionadas (solo si son diferentes a null)
+            if(fecha_desde != null && fecha_hasta != null){
+                long lngfecha_desde = fecha_desde.getTime();
+                long lngfecha_hasta = fecha_hasta.getTime();
+
+                //Validamos que la fecha hasta sea mayor a la fecha desde
+                if(lngfecha_hasta > lngfecha_desde){
+                    java.sql.Date sqldateFecha_desde = new java.sql.Date(lngfecha_desde);
+                    java.sql.Date sqldateFecha_hasta = new java.sql.Date(lngfecha_hasta);
+                    sentenciaSQL = sentenciaSQL + " AND arqueos.fecha_arqueo BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";
+                    sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND arqueos.fecha_arqueo BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";
+
+                }else{
+                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.");
+                }
+            }
+
+            //Ejecutamos la sentencia SQL construida
+            arqControla.buscarArqueo(sentenciaSQL);
+
+            //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
+            sentenciaSQLUtilizadaTotales = sentenciaParaCalculoDeTotal;
+            arqControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+        }
+        
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
+    private void btn_generaPDFArqueosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFArqueosActionPerformed
+        //facturaControla.generarReportePDFdeFacturasGeneradas();
+        btn_generaPDFArqueos.setEnabled(false);
+    }//GEN-LAST:event_btn_generaPDFArqueosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -380,14 +523,24 @@ public class GestionarArqueos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_buscar;
+    public static javax.swing.JButton btn_generaPDFArqueos;
+    private javax.swing.JComboBox<String> cmb_usuarios;
+    private com.toedter.calendar.JDateChooser jDate_fechaDesde;
+    private com.toedter.calendar.JDateChooser jDate_fechaHasta;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    public static javax.swing.JLabel lbl_numeroDeArqueos;
+    public static javax.swing.JLabel lbl_perdidasEnArqueos;
     public static javax.swing.JTable table_listaArqueos;
     private javax.swing.JTextField txt_codigoArqueo;
-    private javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
 
     //Metodo que se invoca al cerrar el jFrame
@@ -407,8 +560,17 @@ public class GestionarArqueos extends javax.swing.JFrame {
     //Metodo que limpia el formulario en caso de ingresar tablero principal
     public void Limpiar(){
         txt_codigoArqueo.setText("");
-        txt_usuario.setText("");
-    } 
+        cmb_usuarios.setSelectedIndex(0);
+        jDate_fechaDesde.setDate(null);
+        jDate_fechaHasta.setDate(null);
+    }
+    
+    //Metodo que carga la tabla del administrador de arqueos
+    public void cargarTablaGestorArqueos(){
+        arqControla.cargarTablaAdministradorDeArqueos();
+        sentenciaSQLUtilizadaTotales = "";
+        arqControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
+    }
     
 }
 

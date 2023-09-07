@@ -440,7 +440,7 @@ public class GestionarCierres extends javax.swing.JFrame{
         }else{
 
             if(!codigo.equals("")){
-                //Agregamos el codigo de la factura a la sentencia sql
+                //Agregamos el codigo del cierre a la sentencia sql
                 sentenciaSQL = sentenciaSQL + " AND cierres.Codigo LIKE '%"+codigo+"%'";
                 sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND cierres.Codigo LIKE '%"+codigo+"%'";
             }
@@ -449,7 +449,7 @@ public class GestionarCierres extends javax.swing.JFrame{
                 //Capturamos el objeto usuario para validar el verdadero id en base de datos
                 Usuario usuarioSeleccionado = (Usuario)cmb_usuarios.getSelectedItem();
 
-                //Validamos el verdadero id del parqueadero, del convenio y de la tarifa en bd
+                //Validamos el verdadero id del usuario en bd
                 int idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
                 String idUsuarioReal = Integer.toString(idRealDelUsuarioSeleccionado);
                 //Agregamos el id del usuario a la sentencia sql
