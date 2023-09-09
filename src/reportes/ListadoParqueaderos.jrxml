@@ -62,7 +62,7 @@ FROM
 					<bottomPen lineWidth="1.75"/>
 					<rightPen lineWidth="1.75"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Nombre Parq]]></text>
@@ -76,7 +76,7 @@ FROM
 					<bottomPen lineWidth="1.75"/>
 					<rightPen lineWidth="1.75"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Estado]]></text>
@@ -90,7 +90,7 @@ FROM
 					<bottomPen lineWidth="1.75"/>
 					<rightPen lineWidth="1.75"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Placa]]></text>
@@ -104,7 +104,7 @@ FROM
 					<bottomPen lineWidth="1.75"/>
 					<rightPen lineWidth="1.75"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Está en parqueadero?]]></text>
@@ -118,7 +118,7 @@ FROM
 					<bottomPen lineWidth="1.75"/>
 					<rightPen lineWidth="1.75"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Tipo Parq]]></text>
@@ -136,7 +136,7 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -148,7 +148,7 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Estado}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -160,7 +160,7 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Placa}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -172,7 +172,7 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Esta_en_parqueadero}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
@@ -184,7 +184,7 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
@@ -196,11 +196,12 @@ FROM
 		<band height="27" splitType="Stretch">
 			<textField>
 				<reportElement x="219" y="0" width="80" height="20" uuid="6ff6c58e-0ded-45a3-ae30-7f1e39b02cf3"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="299" y="0" width="40" height="20" uuid="14940172-3a41-49c8-9fd4-103267a78e91"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
