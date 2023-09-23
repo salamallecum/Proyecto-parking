@@ -1,8 +1,11 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import static controlador.FacturaControlador.rutaImgDocuments;
 import static controlador.FacturaControlador.rutaImgTickets;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -36,9 +39,6 @@ import org.apache.log4j.Logger;
 import vista.EditarCierreDeCaja;
 import vista.GestionarCierres;
 import static vista.GestionarCierres.hayCierreAbierto;
-import static vista.GestionarCierres.lbl_gananciasEnCierres;
-import static vista.GestionarCierres.lbl_gananciasEsperadasEnCierres;
-import static vista.GestionarCierres.lbl_numeroDeCierres;
 import static vista.GestionarCierres.lbl_perdidasEnCierres;
 import static vista.GestionarCierres.modelo;
 import static vista.GestionarCierres.table_listaCierres;
@@ -56,8 +56,10 @@ public class CierreControlador {
    Cierre cierreConsultado = new Cierre(0, "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
    FacturaControlador factControla;
    ParqueaderoControlador parqControla;
-   String totalEsperadoProducidoCierres = "";
-   String totalRealProducidoCierres = "";
+   public String totalEsperadoProducidoCierres = "";
+   public String totalRealProducidoCierres = "";
+   public String totalPerdidasCierres_str = "";
+   public String cantidadDeCierresSistema = "";
    int totalPerdidasCierres;
    ArrayList producidosDeCierres;
    ArrayList diferenciasDeCierres;
@@ -627,6 +629,35 @@ public class CierreControlador {
         return resultado;
     }
     
+    //Metodo que consulta los dineros consignados de los cierres utilizando un criterio de busqueda
+    public ArrayList obtenerDineroAConsignarDeCierresBajoAlgunCriterio(String sentenciaSQL){
+        
+        ArrayList dinerosAConsignar = new ArrayList();
+        
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                "SELECT Dinero_a_consignar FROM cierres WHERE 1=1 AND Id_cierre <> 1" + sentenciaSQL);
+            ResultSet rs2 = pst2.executeQuery();
+
+            while(rs2.next()){
+                
+                String valor = rs2.getString("Dinero_a_consignar");
+                
+                //Le quitamos el formato moneda a cada monto de dinero a consignar
+                valor = factControla.quitarFormatoMoneda(valor);
+                
+                dinerosAConsignar.add(valor);
+            }
+            cn2.close();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener dineros a consignar de cierres, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar obtener los dineros consignados de los cierres generados en el turno. " + e);
+        }
+        return dinerosAConsignar;
+    }
+    
     //Metodo que calcula el total obtenido de ganancias teniendo en cuenta el totalde ganancias esperado y el totalde perdidas alcanzado en un conjunto de cierres
     public String calcularTotalGananciasReales(String totalGananciasEsperado, String totalPerdidas){
         
@@ -650,11 +681,10 @@ public class CierreControlador {
         producidosDeCierres = obtenerProducidosDeCierresBajoAlgunCriterio(sentenciaSQL);
 
         //Calculamos el total por cierres teniendo en cuenta los producidos de los cierres obtenidos
-        totalEsperadoProducidoCierres = calcularProducido(producidosDeCierres);
-        lbl_gananciasEsperadasEnCierres.setText(factControla.agregarFormatoMoneda(totalEsperadoProducidoCierres));
+        totalEsperadoProducidoCierres = factControla.agregarFormatoMoneda(calcularProducido(producidosDeCierres));
         
         //Contamos los cierres
-        lbl_numeroDeCierres.setText(contarCierresQueTienenUnCriterioEspecifico(sentenciaSQL));
+        cantidadDeCierresSistema = contarCierresQueTienenUnCriterioEspecifico(sentenciaSQL);
         
         //Calculamos el total de perdidas por cierres de todos los cierres del sistema
         //Obtenemos las diferencias de los cierres para hacer calculo de perdidas por cierres
@@ -662,12 +692,11 @@ public class CierreControlador {
         
         //Calculamos el total de perdidas por cierres teniendo en cuenta las diferencias de los cierres obtenidos
         totalPerdidasCierres = calcularTotalPerdidas(diferenciasDeCierres);
-        lbl_perdidasEnCierres.setText(factControla.agregarFormatoMoneda(Integer.toString(totalPerdidasCierres)));
+        totalPerdidasCierres_str = factControla.agregarFormatoMoneda(Integer.toString(totalPerdidasCierres));
         
         //Calculamos el total real de ganancias obtenidas restando del total esperado en ganancias el total por perdidas
-        totalRealProducidoCierres = calcularTotalGananciasReales(totalEsperadoProducidoCierres, Integer.toString(totalPerdidasCierres));
-        lbl_gananciasEnCierres.setText(factControla.agregarFormatoMoneda(totalRealProducidoCierres));
-        
+        totalRealProducidoCierres = factControla.agregarFormatoMoneda(calcularTotalGananciasReales(factControla.quitarFormatoMoneda(totalEsperadoProducidoCierres), Integer.toString(totalPerdidasCierres)));
+                
         evaluarGravedadDePerdidas();
     }
     
@@ -679,4 +708,110 @@ public class CierreControlador {
             lbl_perdidasEnCierres.setForeground(Color.red);
         }
     }  
+    
+    //Metodo que genera el reporte pdf del consolidado de cierres del sistema
+    public void generarReporteConsolidadoDeCierres(String sql){
+                       
+        try{
+           
+           Connection cn3 = Conexion.conectar();
+
+           Map parametro = new HashMap();
+           parametro.clear();
+           parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgDocuments));
+           parametro.put("numcierres", cantidadDeCierresSistema);
+           parametro.put("gananciasesp", totalEsperadoProducidoCierres);
+           parametro.put("ganancias", totalRealProducidoCierres);
+           parametro.put("perdidas", totalPerdidasCierres_str);
+           parametro.put("totalconsigna", factControla.agregarFormatoMoneda(Integer.toString(calcularTotalDineroConsignado(obtenerDineroAConsignarDeCierresBajoAlgunCriterio(sql)))));
+           parametro.put("factgeneradas", Integer.toString(calcularTotalDeFacturasGeneradas(obtenerTotalDeFacturasDeCierresBajoAlgunCriterio(sql))));
+           parametro.put("sql", sql);
+                    
+           JasperReport reporte = null;
+           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ConsolidadoCierres.jasper"));
+
+           JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
+           
+            //Da una vista previa del ticket
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            view.setIconImage(getIconImagePDFUser());
+            view.setTitle("Consolidado de cierres de caja");
+            view.setVisible(true);
+
+            //Agregamos un evento para cuando el visor del reporte se cierre
+            view.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                GestionarCierres.btn_generaPDFCierres.setEnabled(true);
+            }
+            });
+           
+       }catch(JRException ex){
+           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Consolidado de Cierres de Caja, contacte al administrador!!");
+           log.fatal("ERROR - Se ha producido un error al intentar generar reporte pdf de consolidado de cierres: " + ex);
+       }
+    }
+    
+    //Metodo que agrega el icono a la ventana de reporte PDF de cierres
+    public Image getIconImagePDFUser() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/preview.png"));
+        return retValue;
+    }
+    
+    //Metodo que calcula el total en dinero consignado teniendo en cuenta un arreglo de dineros a consignar de cierres, facturas o arqueos
+    public int calcularTotalDineroConsignado(ArrayList dinerosConsig){
+       
+        int resultado = 0;
+        
+        for(int i = 0; i < dinerosConsig.size(); i++){
+            
+            String dineroConsig_str = String.valueOf(dinerosConsig.get(i));
+            int dineroConsig = Integer.parseInt(dineroConsig_str);
+            resultado = resultado + dineroConsig;
+        }     
+        
+        return resultado;
+    }
+    
+    //Metodo que consulta el total de facturas de los cierres utilizando un criterio de busqueda
+    public ArrayList obtenerTotalDeFacturasDeCierresBajoAlgunCriterio(String sentenciaSQL){
+        
+        ArrayList numDeFacturas = new ArrayList();
+        
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                "SELECT No_facturas FROM cierres WHERE 1=1 AND Id_cierre <> 1" + sentenciaSQL);
+            ResultSet rs2 = pst2.executeQuery();
+
+            while(rs2.next()){
+                
+                String valor = rs2.getString("No_facturas");
+                numDeFacturas.add(valor);
+            }
+            cn2.close();
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener numerosde facturas de cierres, contacte al administrador.");
+            log.fatal("ERROR - Se ha producido un error al intentar obtener los numerosde facturas de los cierres generados en el turno. " + e);
+        }
+        return numDeFacturas;
+    }
+    
+    //Metodo que calcula el total de facturas de los cierres teniendo en cuenta un arreglo de total de facturas de cierres, facturas o arqueos
+    public int calcularTotalDeFacturasGeneradas(ArrayList totalNumFacturas){
+       
+        int resultado = 0;
+        
+        for(int i = 0; i < totalNumFacturas.size(); i++){
+            
+            String numFacturas_str = String.valueOf(totalNumFacturas.get(i));
+            int numFacturas = Integer.parseInt(numFacturas_str);
+            resultado = resultado + numFacturas;
+        }     
+        
+        return resultado;
+    }
+        
 }

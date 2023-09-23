@@ -15,6 +15,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import modelo.Cierre;
 import org.apache.log4j.Logger;
+import static vista.GestionarCierres.lbl_gananciasEnCierres;
+import static vista.GestionarCierres.lbl_gananciasEsperadasEnCierres;
+import static vista.GestionarCierres.lbl_numeroDeCierres;
+import static vista.GestionarCierres.lbl_perdidasEnCierres;
 
 
 /**
@@ -921,6 +925,11 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
             
             //Actualizamos los datos totales del gestor de cierres
             cierreControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarCierres.sentenciaSQLUtilizadaTotales);
+            lbl_numeroDeCierres.setText(cierreControla.cantidadDeCierresSistema);
+            lbl_gananciasEsperadasEnCierres.setText(cierreControla.totalEsperadoProducidoCierres);
+            lbl_gananciasEnCierres.setText(cierreControla.totalRealProducidoCierres);            
+            lbl_perdidasEnCierres.setText(cierreControla.totalPerdidasCierres_str);
+            cierreControla.evaluarGravedadDePerdidas();
 
             ventanaEmergCopiaCierre = true;
 

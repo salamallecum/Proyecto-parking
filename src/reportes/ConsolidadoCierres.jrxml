@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsolidaArqueos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13c3da4f-d05d-4f9c-805c-806e272971f2">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
+	<parameter name="sql" class="java.lang.String"/>
+	<parameter name="perdidas" class="java.lang.String"/>
+	<parameter name="numcierres" class="java.lang.String"/>
+	<parameter name="gananciasesp" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ganancias" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalconsigna" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="factgeneradas" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     cierres.`Codigo` AS cierres_Codigo,
+     cierres.`Fecha_cierre` AS cierres_Fecha_cierre,
+     cierres.`Id_usuario` AS cierres_Id_usuario,
+     cierres.`Base_caja` AS cierres_Base_caja,
+     cierres.`Producido` AS cierres_Producido,
+     cierres.`Total_esperado` AS cierres_Total_esperado,
+     cierres.`Diferencia` AS cierres_Diferencia,
+     cierres.`Dinero_a_consignar` AS cierres_Dinero_a_consignar,
+     cierres.`No_facturas` AS cierres_No_facturas,
+     usuarios.`Usuario` AS usuarios_Usuario,
+     usuarios.`Id_usuario` AS usuarios_Id_usuario,
+     cierres.`Id_cierre` AS cierres_Id_cierre
+FROM
+     `usuarios` usuarios INNER JOIN `cierres` cierres ON usuarios.`Id_usuario` = cierres.`Id_usuario`
+WHERE 1 = 1
+AND cierres.`Id_cierre` <> 1
+$P!{sql}]]>
+	</queryString>
+	<field name="cierres_Codigo" class="java.lang.String"/>
+	<field name="cierres_Fecha_cierre" class="java.sql.Timestamp"/>
+	<field name="cierres_Id_usuario" class="java.lang.Integer"/>
+	<field name="cierres_Base_caja" class="java.lang.String"/>
+	<field name="cierres_Producido" class="java.lang.String"/>
+	<field name="cierres_Total_esperado" class="java.lang.String"/>
+	<field name="cierres_Diferencia" class="java.lang.String"/>
+	<field name="cierres_Dinero_a_consignar" class="java.lang.String"/>
+	<field name="cierres_No_facturas" class="java.lang.String"/>
+	<field name="usuarios_Usuario" class="java.lang.String"/>
+	<field name="usuarios_Id_usuario" class="java.lang.Integer"/>
+	<field name="cierres_Id_cierre" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<staticText>
+				<reportElement x="201" y="39" width="247" height="25" uuid="28307da4-f267-4b51-9233-d49fac1505ae"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Consolidado de cierres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="0" width="292" height="39" uuid="eff49b38-6b6d-431c-b567-480ce3ef8f43"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MORE PARKING]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="441" y="0" width="131" height="20" uuid="2f08db85-fda8-4a87-882c-f5c3499ca7a4"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="42" y="0" width="143" height="64" uuid="c155e0d3-7cd3-4322-9253-729d090a37c9"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="107" height="20" uuid="e58d206d-c8b0-4b9b-9b9d-375f6a2e36ee"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="0" width="69" height="20" uuid="dc29ed89-5813-4142-a4a0-3c4b77fe86e7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Usuario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="0" width="78" height="20" uuid="812ebc08-5af3-496c-82e4-e0404855e593"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Base de caja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="0" width="81" height="20" uuid="2e48fc82-7939-488c-a792-9f60ffd2ab8b"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Producido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="0" width="90" height="20" uuid="ef739ad0-1761-4924-afec-8332ec04c2ba"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total esperado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="0" width="78" height="20" uuid="98309274-0e8b-4115-8754-b9e1a13f1369"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="0" width="78" height="20" uuid="a03a3845-2da3-4db6-8164-8aac39dbed3e"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="581" y="0" width="89" height="20" uuid="298e230d-b28f-4d58-84c0-b3dbee868dce"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Dinero consignado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="82" height="20" uuid="68f7f9a3-5c0f-4af7-b6b0-03df2325e091"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[N° facturas]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="107" height="20" uuid="adc2a0fa-8b76-41d2-82b5-47bb6073931e"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_Fecha_cierre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="0" width="78" height="20" uuid="4ddc479d-774a-4c5a-ae0e-3740e35162c8"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_Codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="0" width="69" height="20" uuid="1d5c8e78-6e05-414e-b7c7-f2fbfa85e322"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuarios_Usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="0" width="78" height="20" uuid="5cd5d85a-9025-465f-94a5-da8e39f83896"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_Base_caja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="0" width="81" height="20" uuid="a9397761-0bfd-4cf9-8b9d-1b8b4b5d4b09"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_Producido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="413" y="0" width="90" height="20" uuid="7bb4d53e-98e2-49d7-89dc-edd07c8e5828"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_Total_esperado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="503" y="0" width="78" height="20" uuid="bfc02bb8-174c-400f-9dea-e98ae1d117c4"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_Diferencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="581" y="0" width="89" height="20" uuid="7c6fa3be-a9dc-48d1-aa34-657286640235"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_Dinero_a_consignar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="0" width="82" height="20" uuid="47a5a32b-7196-4ced-b040-8f3a78d45404"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cierres_No_facturas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="140" splitType="Stretch">
+			<staticText>
+				<reportElement x="503" y="9" width="135" height="20" uuid="0b42048e-7ade-4c59-9609-e8e35161ca3b"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[N° de cierres:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="29" width="135" height="20" uuid="d23271d9-a685-4136-a734-eedb4334940f"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ganancias esperadas:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="49" width="135" height="20" uuid="6eb7ec8a-1033-443c-98c4-094710648882"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total ganancias:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="69" width="135" height="20" uuid="cad5a477-ed98-430c-8e6e-d94c779415eb"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ Total pérdidas:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="89" width="135" height="20" uuid="2e3813c7-3ede-40dc-ba43-9f0912890a7d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ Total dinero consignado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="638" y="69" width="114" height="20" uuid="b6a39aa6-9005-4926-bcec-68a6128d186e"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{perdidas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="638" y="29" width="114" height="20" uuid="f16d086b-f408-41d9-bf44-789841d04bcc"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{gananciasesp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="638" y="9" width="114" height="20" uuid="c55e78c5-6f36-4aee-9bd0-cad84d2701f6"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{numcierres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="638" y="49" width="114" height="20" uuid="ae904f7e-157e-431d-8049-fc4099ad3eea"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{ganancias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="638" y="89" width="114" height="20" uuid="3bf57242-ad54-42ca-b90b-38a3ff7d33dc"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{totalconsigna}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="503" y="109" width="135" height="20" uuid="4bf40338-3d8c-4085-ad3f-7c1e93349114"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ Total facturas generadas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="638" y="109" width="114" height="20" uuid="846e44e3-91d0-4500-8b89-3d0ff8f1b91c"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{factgeneradas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="304" y="1" width="80" height="20" uuid="6c619451-0267-4043-b249-d1ed5cfa6e36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="384" y="1" width="40" height="20" uuid="be9d6319-bc30-40e8-90d9-ecc87d3677da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

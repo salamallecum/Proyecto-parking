@@ -29,6 +29,7 @@ public class GestionarCierres extends javax.swing.JFrame{
     public static int Filas;
     Thread hiloCargueTablaGestCierres;
     public static String sentenciaSQLUtilizadaTotales = "";
+    int idRealDelUsuarioSeleccionado;
         
     Usuario objUsuarioParaCombobox = new Usuario();
         
@@ -74,11 +75,6 @@ public class GestionarCierres extends javax.swing.JFrame{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btn_generaPDFFacturas = new javax.swing.JButton();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        lbl_gananciasEnFacturas = new javax.swing.JLabel();
-        lbl_numeroDeFacturas = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_listaCierres = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
@@ -101,30 +97,6 @@ public class GestionarCierres extends javax.swing.JFrame{
         jLabel21 = new javax.swing.JLabel();
         lbl_gananciasEnCierres = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-
-        btn_generaPDFFacturas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
-        btn_generaPDFFacturas.setText("Generar Informe PDF");
-        btn_generaPDFFacturas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_generaPDFFacturas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_generaPDFFacturasActionPerformed(evt);
-            }
-        });
-
-        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel18.setText("N° de facturas:");
-
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel17.setText("Total ganancias:");
-
-        lbl_gananciasEnFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lbl_gananciasEnFacturas.setForeground(new java.awt.Color(0, 51, 255));
-        lbl_gananciasEnFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_gananciasEnFacturas.setText("0,00");
-
-        lbl_numeroDeFacturas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lbl_numeroDeFacturas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_numeroDeFacturas.setText("0,00");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -480,17 +452,67 @@ public class GestionarCierres extends javax.swing.JFrame{
             //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
            sentenciaSQLUtilizadaTotales = sentenciaParaCalculoDeTotal;
            cierreControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+           lbl_numeroDeCierres.setText(cierreControla.cantidadDeCierresSistema);
+           lbl_gananciasEsperadasEnCierres.setText(cierreControla.totalEsperadoProducidoCierres);
+           lbl_gananciasEnCierres.setText(cierreControla.totalRealProducidoCierres);          
+           lbl_perdidasEnCierres.setText(cierreControla.totalPerdidasCierres_str);
+           cierreControla.evaluarGravedadDePerdidas();
         }
     }//GEN-LAST:event_btn_buscarActionPerformed
 
-    private void btn_generaPDFFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFFacturasActionPerformed
-        //facturaControla.generarReportePDFdeFacturasGeneradas();
-        btn_generaPDFFacturas.setEnabled(false);
-    }//GEN-LAST:event_btn_generaPDFFacturasActionPerformed
-
     private void btn_generaPDFCierresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFCierresActionPerformed
-        //facturaControla.generarReportePDFdeFacturasGeneradas();
-        btn_generaPDFFacturas.setEnabled(false);
+        String codigoCierre = txt_codigoCierre.getText(); 
+        int usuarios_cmb = cmb_usuarios.getSelectedIndex();
+        Date fecha_desde = jDate_fechaDesde.getDate();
+        Date fecha_hasta = jDate_fechaHasta.getDate();
+        String sentenciaSqlParaGenerarReporte = "";
+        
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(codigoCierre.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
+            cierreControla.generarReporteConsolidadoDeCierres(sentenciaSqlParaGenerarReporte);
+            
+        }else{
+            
+            if(!codigoCierre.equals("")){
+                //Agregamos el codigo del arqueo a la sentencia sql
+                sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND cierres.Codigo LIKE '%"+codigoCierre+"%'";
+            }         
+            
+            if(usuarios_cmb != 0){
+                //Capturamos el objeto usuario para validar el verdadero id en base de datos
+                Usuario usuarioSeleccionado = (Usuario)cmb_usuarios.getSelectedItem();
+
+                //Validamos el verdadero id del usuario en bd
+                idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
+                String idUsuarioReal = Integer.toString(idRealDelUsuarioSeleccionado);
+                //Agregamos el id del usuario a la sentencia sql
+                sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND cierres.Id_usuario = " + idUsuarioReal;
+               
+            }
+            
+            //Ajustamos el formato de las fechas desde y hasta seleccionadas (solo si son diferentes a null)
+            if(fecha_desde != null && fecha_hasta != null){
+                long lngfecha_desde = fecha_desde.getTime();
+                long lngfecha_hasta = fecha_hasta.getTime();
+
+                //Validamos que la fecha hasta sea mayor a la fecha desde
+                if(lngfecha_hasta > lngfecha_desde){
+                    java.sql.Date sqldateFecha_desde = new java.sql.Date(lngfecha_desde);
+                    java.sql.Date sqldateFecha_hasta = new java.sql.Date(lngfecha_hasta);
+                    sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND cierres.Fecha_cierre BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";               
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.");
+                }
+            }
+            
+            //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
+            sentenciaSQLUtilizadaTotales = sentenciaSqlParaGenerarReporte;
+            cierreControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+            
+            cierreControla.generarReporteConsolidadoDeCierres(sentenciaSqlParaGenerarReporte);
+            btn_generaPDFCierres.setEnabled(false);
+        }
     }//GEN-LAST:event_btn_generaPDFCierresActionPerformed
 
     /**
@@ -600,12 +622,9 @@ public class GestionarCierres extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;
     public static javax.swing.JButton btn_generaPDFCierres;
-    public static javax.swing.JButton btn_generaPDFFacturas;
     private javax.swing.JComboBox<String> cmb_usuarios;
     private com.toedter.calendar.JDateChooser jDate_fechaDesde;
     private com.toedter.calendar.JDateChooser jDate_fechaHasta;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
@@ -618,10 +637,8 @@ public class GestionarCierres extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     public static javax.swing.JLabel lbl_gananciasEnCierres;
-    private javax.swing.JLabel lbl_gananciasEnFacturas;
     public static javax.swing.JLabel lbl_gananciasEsperadasEnCierres;
     public static javax.swing.JLabel lbl_numeroDeCierres;
-    private javax.swing.JLabel lbl_numeroDeFacturas;
     public static javax.swing.JLabel lbl_perdidasEnCierres;
     public static javax.swing.JTable table_listaCierres;
     private javax.swing.JTextField txt_codigoCierre;
@@ -654,7 +671,12 @@ public class GestionarCierres extends javax.swing.JFrame{
     public void cargarTablaGestorCierres(){
         cierreControla.cargarTablaAdministradorDeCierres();
         sentenciaSQLUtilizadaTotales = "";
-        cierreControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
+        cierreControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+        lbl_numeroDeCierres.setText(cierreControla.cantidadDeCierresSistema);
+        lbl_gananciasEsperadasEnCierres.setText(cierreControla.totalEsperadoProducidoCierres);
+        lbl_gananciasEnCierres.setText(cierreControla.totalRealProducidoCierres);       
+        lbl_perdidasEnCierres.setText(cierreControla.totalPerdidasCierres_str);
+        cierreControla.evaluarGravedadDePerdidas(); 
     }    
 
 }
