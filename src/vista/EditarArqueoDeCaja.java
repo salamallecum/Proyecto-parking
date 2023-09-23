@@ -14,6 +14,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import modelo.Arqueo;
 import org.apache.log4j.Logger;
+import static vista.GestionarArqueos.lbl_numeroDeArqueos;
+import static vista.GestionarArqueos.lbl_perdidasEnArqueos;
 
 
 /**
@@ -1026,6 +1028,9 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
             
             //Actualizamos los datos totales del gestor de cierres
             arqueoControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarArqueos.sentenciaSQLUtilizadaTotales);
+            lbl_numeroDeArqueos.setText(arqueoControla.cantidadDeArqueosSistema);
+            lbl_perdidasEnArqueos.setText(arqueoControla.totalPerdidasArqueos_str);
+            arqueoControla.evaluarGravedadDePerdidas();
 
             ventanaEmergCopiaArqueo = true;
 

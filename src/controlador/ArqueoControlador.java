@@ -1,12 +1,14 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import static controlador.FacturaControlador.rutaImgDocuments;
 import static controlador.FacturaControlador.rutaImgTickets;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,11 +27,15 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import modelo.Arqueo;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import vista.EditarArqueoDeCaja;
@@ -53,6 +59,8 @@ public class ArqueoControlador {
    FacturaControlador factControla;
    CierreControlador cierreControla;
    int totalPerdidasArqueos;
+   public String totalPerdidasArqueos_str;
+   public String cantidadDeArqueosSistema;
    ArrayList diferenciasDeArqueos;
       
    private final Logger log = Logger.getLogger(ArqueoControlador.class);
@@ -315,17 +323,16 @@ public class ArqueoControlador {
         cierreControla = new CierreControlador();
                 
         //Contamos los arqueos
-        lbl_numeroDeArqueos.setText(contarArqueosQueTienenUnCriterioEspecifico(sentenciaSQL));
-        
+        cantidadDeArqueosSistema = contarArqueosQueTienenUnCriterioEspecifico(sentenciaSQL);
+                
         //Calculamos el total de perdidas por arqueos 
         //Obtenemos las diferencias de los arqueos para hacer calculo de perdidas por arqueos
         diferenciasDeArqueos = obtenerDiferenciasDeArqueosBajoAlgunCriterio(sentenciaSQL);
         
         //Calculamos el total de perdidas por arqueos teniendo en cuenta las diferencias de los arqueos obtenidos
         totalPerdidasArqueos = cierreControla.calcularTotalPerdidas(diferenciasDeArqueos);
-        lbl_perdidasEnArqueos.setText(factControla.agregarFormatoMoneda(Integer.toString(totalPerdidasArqueos)));
-                
-        evaluarGravedadDePerdidas();
+        totalPerdidasArqueos_str = factControla.agregarFormatoMoneda(Integer.toString(totalPerdidasArqueos));
+        
     }
     
     //Pinta de color verde el total de perdidas solo si este es menor o igual a cero pesos, de lo contrario, permanece de color rojo
@@ -416,6 +423,46 @@ public class ArqueoControlador {
             JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de arqueos!!, contacte al administrador.");
             log.fatal("ERROR - Se ha producido un error al intentar buscar los arqueos. " + ex);
         }
+    }
+    
+    //Metodo que genera el reporte pdf del consolidado de arqueos del sistema
+    public void generarReporteConsolidadoDeArqueos(String sql){
+                       
+        try{
+           
+           Connection cn3 = Conexion.conectar();
+
+           Map parametro = new HashMap();
+           parametro.clear();
+           parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgDocuments));
+           parametro.put("numarqueos", cantidadDeArqueosSistema);
+           parametro.put("perdidas", totalPerdidasArqueos_str);
+           parametro.put("sql", sql);
+                    
+           JasperReport reporte = null;
+           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ConsolidadoArqueos.jasper"));
+
+           JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
+           
+            //Da una vista previa del ticket
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            view.setIconImage(getIconImagePDFUser());
+            view.setTitle("Consolidado de arqueos de caja");
+            view.setVisible(true);
+
+            //Agregamos un evento para cuando el visor del reporte se cierre
+            view.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                GestionarArqueos.btn_generaPDFArqueos.setEnabled(true);
+            }
+            });
+           
+       }catch(JRException ex){
+           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Consolidado de Arqueos de Caja, contacte al administrador!!");
+           log.fatal("ERROR - Se ha producido un error al intentar generar reporte pdf de consolidado de arqueos: " + ex);
+       }
     }
 }       
 

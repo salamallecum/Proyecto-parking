@@ -60,6 +60,7 @@ public class FacturaControlador implements Runnable {
     private URL url = FacturaControlador.class.getResource("Log4j.properties");
     private String valorAPagarPorDiferenciaAdicional = "";   
     public static String rutaImgTickets = "/icons/ImgTickets.jpg";
+    public static String rutaImgDocuments = "/icons/ImgReporte.jpg";
     
     Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
 

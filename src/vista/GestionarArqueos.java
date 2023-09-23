@@ -26,6 +26,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
     public static DefaultTableModel modelo;
     public static int Filas;
     public static String codigoArqueo_update;
+    int idRealDelUsuarioSeleccionado;
     
     Usuario objUsuarioParaCombobox = new Usuario();
     public static String sentenciaSQLUtilizadaTotales = "";        
@@ -354,24 +355,24 @@ public class GestionarArqueos extends javax.swing.JFrame {
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
 
-        String codigo = txt_codigoArqueo.getText();
+        String codigoArqueo = txt_codigoArqueo.getText();
         String sentenciaSQL = "SELECT arqueos.fecha_arqueo, arqueos.codigo, usuarios.Usuario, arqueos.diferencia FROM arqueos INNER JOIN usuarios ON arqueos.Id_usuario = usuarios.Id_usuario";
         String sentenciaParaCalculoDeTotal = "";
         int usuarios_cmb = cmb_usuarios.getSelectedIndex();
         Date fecha_desde = jDate_fechaDesde.getDate();
         Date fecha_hasta = jDate_fechaHasta.getDate();
 
-        //Validamos que ningun campo haya quedado en blanco y que almenos uno haya sido diligenciado
-        if(codigo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(codigoArqueo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
             JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.");
             cargarTablaGestorArqueos();
 
         }else{
 
-            if(!codigo.equals("")){
+            if(!codigoArqueo.equals("")){
                 //Agregamos el codigo del arqueo a la sentencia sql
-                sentenciaSQL = sentenciaSQL + " AND arqueos.codigo LIKE '%"+codigo+"%'";
-                sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND arqueos.codigo LIKE '%"+codigo+"%'";
+                sentenciaSQL = sentenciaSQL + " AND arqueos.codigo LIKE '%"+codigoArqueo+"%'";
+                sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND arqueos.codigo LIKE '%"+codigoArqueo+"%'";
             }
 
             if(usuarios_cmb != 0){
@@ -379,7 +380,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
                 Usuario usuarioSeleccionado = (Usuario)cmb_usuarios.getSelectedItem();
 
                 //Validamos el verdadero id del usuario en bd
-                int idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
+                idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
                 String idUsuarioReal = Integer.toString(idRealDelUsuarioSeleccionado);
                 //Agregamos el id del usuario a la sentencia sql
                 sentenciaSQL = sentenciaSQL + " AND arqueos.Id_usuario = " + idUsuarioReal;
@@ -409,13 +410,66 @@ public class GestionarArqueos extends javax.swing.JFrame {
             //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
             sentenciaSQLUtilizadaTotales = sentenciaParaCalculoDeTotal;
             arqControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+            lbl_numeroDeArqueos.setText(arqControla.cantidadDeArqueosSistema);
+            lbl_perdidasEnArqueos.setText(arqControla.totalPerdidasArqueos_str);
+            arqControla.evaluarGravedadDePerdidas();
         }
         
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void btn_generaPDFArqueosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFArqueosActionPerformed
-        //facturaControla.generarReportePDFdeFacturasGeneradas();
-        btn_generaPDFArqueos.setEnabled(false);
+        String codigoArqueo = txt_codigoArqueo.getText(); 
+        int usuarios_cmb = cmb_usuarios.getSelectedIndex();
+        Date fecha_desde = jDate_fechaDesde.getDate();
+        Date fecha_hasta = jDate_fechaHasta.getDate();
+        String sentenciaSqlParaGenerarReporte = "";
+        
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(codigoArqueo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
+            arqControla.generarReporteConsolidadoDeArqueos(sentenciaSqlParaGenerarReporte);
+            
+        }else{
+            
+            if(!codigoArqueo.equals("")){
+                //Agregamos el codigo del arqueo a la sentencia sql
+                sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND arqueos.codigo LIKE '%"+codigoArqueo+"%'";
+            }         
+            
+            if(usuarios_cmb != 0){
+                //Capturamos el objeto usuario para validar el verdadero id en base de datos
+                Usuario usuarioSeleccionado = (Usuario)cmb_usuarios.getSelectedItem();
+
+                //Validamos el verdadero id del usuario en bd
+                idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
+                String idUsuarioReal = Integer.toString(idRealDelUsuarioSeleccionado);
+                //Agregamos el id del usuario a la sentencia sql
+                sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND arqueos.Id_usuario = " + idUsuarioReal;
+               
+            }
+            
+            //Ajustamos el formato de las fechas desde y hasta seleccionadas (solo si son diferentes a null)
+            if(fecha_desde != null && fecha_hasta != null){
+                long lngfecha_desde = fecha_desde.getTime();
+                long lngfecha_hasta = fecha_hasta.getTime();
+
+                //Validamos que la fecha hasta sea mayor a la fecha desde
+                if(lngfecha_hasta > lngfecha_desde){
+                    java.sql.Date sqldateFecha_desde = new java.sql.Date(lngfecha_desde);
+                    java.sql.Date sqldateFecha_hasta = new java.sql.Date(lngfecha_hasta);
+                    sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND arqueos.fecha_arqueo BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";               
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.");
+                }
+            }
+            
+            //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
+            sentenciaSQLUtilizadaTotales = sentenciaSqlParaGenerarReporte;
+            arqControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+            
+            arqControla.generarReporteConsolidadoDeArqueos(sentenciaSqlParaGenerarReporte);
+            btn_generaPDFArqueos.setEnabled(false);
+        }
     }//GEN-LAST:event_btn_generaPDFArqueosActionPerformed
 
     /**
@@ -570,6 +624,9 @@ public class GestionarArqueos extends javax.swing.JFrame {
         arqControla.cargarTablaAdministradorDeArqueos();
         sentenciaSQLUtilizadaTotales = "";
         arqControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
+        lbl_numeroDeArqueos.setText(arqControla.cantidadDeArqueosSistema);
+        lbl_perdidasEnArqueos.setText(arqControla.totalPerdidasArqueos_str);
+        arqControla.evaluarGravedadDePerdidas();
     }
     
 }
