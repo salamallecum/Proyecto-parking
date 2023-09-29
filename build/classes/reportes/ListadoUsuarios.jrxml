@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13c3da4f-d05d-4f9c-805c-806e272971f2">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoUsuarios" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13c3da4f-d05d-4f9c-805c-806e272971f2">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[SELECT
      usuarios.`Nombres` AS usuarios_Nombres,
@@ -37,15 +38,15 @@ FROM
 				<textElement textAlignment="Center">
 					<font size="24" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sistema de Parking]]></text>
+				<text><![CDATA[MORE PARKING]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="441" y="0" width="131" height="20" uuid="2f08db85-fda8-4a87-882c-f5c3499ca7a4"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="32" y="0" width="75" height="79" uuid="83f85b90-958f-4d6b-9605-7e3c5907047d"/>
-				<imageExpression><![CDATA["E:\\MIS PROYECTOS\\Java\\proyectos netbeans Java\\ProyectoParking\\src\\icons\\ImgReporte.jpg"]]></imageExpression>
+				<reportElement x="42" y="0" width="143" height="64" uuid="c155e0d3-7cd3-4322-9253-729d090a37c9"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -63,7 +64,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Nombres]]></text>
@@ -77,7 +78,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Celular]]></text>
@@ -91,7 +92,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Telefono]]></text>
@@ -105,7 +106,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Nombre de usuario]]></text>
@@ -119,7 +120,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Rol]]></text>
@@ -133,7 +134,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Apellidos]]></text>
@@ -151,7 +152,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{usuarios_Nombres}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -163,7 +164,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{usuarios_Usuario}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -175,7 +176,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{usuarios_Rol}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -187,7 +188,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{usuarios_Apellidos}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -199,7 +200,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{usuarios_Telefono}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -211,7 +212,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{usuarios_Celular}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -223,11 +224,12 @@ FROM
 		<band height="25" splitType="Stretch">
 			<textField>
 				<reportElement x="201" y="1" width="80" height="20" uuid="6c619451-0267-4043-b249-d1ed5cfa6e36"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="281" y="1" width="40" height="20" uuid="be9d6319-bc30-40e8-90d9-ecc87d3677da"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>

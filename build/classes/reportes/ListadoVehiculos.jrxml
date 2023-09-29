@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[SELECT
      vehiculos.`Id_parqueadero` AS vehiculos_Id_parqueadero,
@@ -48,8 +49,8 @@ FROM
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="41" y="0" width="132" height="66" uuid="23de90b1-ef85-4dd3-b8f8-5b02f792d81e"/>
-				<imageExpression><![CDATA["E:\\MIS PROYECTOS\\Java\\proyectos netbeans Java\\ProyectoParking\\src\\icons\\ImgReporte.jpg"]]></imageExpression>
+				<reportElement x="50" y="0" width="137" height="56" uuid="5d27c90a-7acd-4b4e-9437-df48facc4133"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -67,7 +68,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Placa]]></text>
@@ -81,7 +82,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Propietario]]></text>
@@ -95,7 +96,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Clase]]></text>
@@ -109,7 +110,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[N° Parq]]></text>
@@ -123,7 +124,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Convenio]]></text>
@@ -137,7 +138,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Tarifa]]></text>
@@ -155,7 +156,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{vehiculos_Placa}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -167,7 +168,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{vehiculos_Propietario}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -179,7 +180,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{vehiculos_Clase}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -191,7 +192,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{convenios_Nombre_convenio}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -203,7 +204,7 @@ FROM
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{tarifas_Nombre_tarifa}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -211,7 +212,7 @@ FROM
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -223,11 +224,12 @@ FROM
 		<band height="24" splitType="Stretch">
 			<textField>
 				<reportElement x="229" y="0" width="80" height="20" uuid="e915ee76-7d41-453b-ac08-01c720e4f3ed"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="309" y="0" width="40" height="20" uuid="66d8f895-05da-47ca-ae9a-eea6ca4e5a41"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
