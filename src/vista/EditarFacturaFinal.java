@@ -27,6 +27,10 @@ import modelo.Parqueadero;
 import modelo.Tarifa;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
+import static vista.GestionarFacturas.lbl_gananciasEnFacturas;
+import static vista.GestionarFacturas.lbl_gananciasEsperadasEnFacturas;
+import static vista.GestionarFacturas.lbl_numeroDeFacturas;
+import static vista.GestionarFacturas.lbl_perdidasEnFacturas;
 
 
 
@@ -654,6 +658,11 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                 
                 //Actualizamos los datos totales del gestor de facturas
                 facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarFacturas.sentenciaSQLUtilizadaTotales);
+                lbl_numeroDeFacturas.setText(facturaControla.cantidadDeFacturasSistema);
+                lbl_gananciasEsperadasEnFacturas.setText(facturaControla.totalEspGananciasFacturas);
+                lbl_gananciasEnFacturas.setText(facturaControla.totalRealGananciasFacturas);       
+                lbl_perdidasEnFacturas.setText(facturaControla.totalPerdidasFacturas_str);
+                facturaControla.evaluarGravedadDePerdidas();
 
                 JOptionPane.showMessageDialog(null, "Factura actualizada satisfactoriamente.");
                 this.dispose();

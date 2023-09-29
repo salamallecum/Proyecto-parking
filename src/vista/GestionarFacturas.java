@@ -30,6 +30,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     public static boolean esFacturaAbierta = false;
     public static boolean hayFacturaVisualizandose = false;
     public static int idCierre;
+    int idRealDelUsuarioSeleccionado;
         
     Usuario objUsuarioParaCombobox = new Usuario();
         
@@ -62,6 +63,11 @@ public class GestionarFacturas extends javax.swing.JFrame {
             facturaControla.cargarFacturasDeUnCierre(idCierre);
             sentenciaSQLUtilizadaTotales = " AND Id_cierre = " + Integer.toString(idCierre);
             facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
+            lbl_numeroDeFacturas.setText(facturaControla.cantidadDeFacturasSistema);
+            lbl_gananciasEsperadasEnFacturas.setText(facturaControla.totalEspGananciasFacturas);
+            lbl_gananciasEnFacturas.setText(facturaControla.totalRealGananciasFacturas);       
+            lbl_perdidasEnFacturas.setText(facturaControla.totalPerdidasFacturas_str);
+            facturaControla.evaluarGravedadDePerdidas(); 
         }else{
             cargarTablaGestorFacturas();
         }             
@@ -426,7 +432,19 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private void txt_codigoFacturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoFacturaKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
             Limpiar();
-            cargarTablaGestorFacturas();
+            
+            if(idCierre != 1){
+                facturaControla.cargarFacturasDeUnCierre(idCierre);
+                sentenciaSQLUtilizadaTotales = " AND Id_cierre = " + Integer.toString(idCierre);
+                facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
+                lbl_numeroDeFacturas.setText(facturaControla.cantidadDeFacturasSistema);
+                lbl_gananciasEsperadasEnFacturas.setText(facturaControla.totalEspGananciasFacturas);
+                lbl_gananciasEnFacturas.setText(facturaControla.totalRealGananciasFacturas);       
+                lbl_perdidasEnFacturas.setText(facturaControla.totalPerdidasFacturas_str);
+                facturaControla.evaluarGravedadDePerdidas(); 
+            }else{
+                cargarTablaGestorFacturas();
+            } 
         }
     }//GEN-LAST:event_txt_codigoFacturaKeyPressed
 
@@ -442,8 +460,17 @@ public class GestionarFacturas extends javax.swing.JFrame {
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
        
         String codigo = txt_codigoFactura.getText();
-        String sentenciaSQL = "SELECT facturas.Fecha_factura, facturas.Codigo, usuarios.Usuario, facturas.Valor_a_pagar FROM facturas INNER JOIN usuarios ON facturas.Facturado_por = usuarios.Id_usuario WHERE 1=1";
-        String sentenciaParaCalculoDeTotal = "";
+        String sentenciaSQL; 
+        String sentenciaParaCalculoDeTotal;
+        
+        if(idCierre != 1){
+            sentenciaSQL = "SELECT facturas.Fecha_factura, facturas.Codigo, usuarios.Usuario, facturas.Valor_a_pagar FROM facturas INNER JOIN usuarios ON facturas.Facturado_por = usuarios.Id_usuario WHERE 1=1 AND Id_cierre = " + Integer.toString(idCierre);
+            sentenciaParaCalculoDeTotal = " AND Id_cierre = " + Integer.toString(idCierre);
+        }else{
+            sentenciaSQL = "SELECT facturas.Fecha_factura, facturas.Codigo, usuarios.Usuario, facturas.Valor_a_pagar FROM facturas INNER JOIN usuarios ON facturas.Facturado_por = usuarios.Id_usuario WHERE 1=1";
+            sentenciaParaCalculoDeTotal = "";
+        }
+               
         int usuarios_cmb = cmb_usuarios.getSelectedIndex();
         Date fecha_desde = jDate_fechaDesde.getDate();
         Date fecha_hasta = jDate_fechaHasta.getDate();
@@ -496,6 +523,11 @@ public class GestionarFacturas extends javax.swing.JFrame {
            //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
            sentenciaSQLUtilizadaTotales = sentenciaParaCalculoDeTotal;
            facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+           lbl_numeroDeFacturas.setText(facturaControla.cantidadDeFacturasSistema);
+           lbl_gananciasEsperadasEnFacturas.setText(facturaControla.totalEspGananciasFacturas);
+           lbl_gananciasEnFacturas.setText(facturaControla.totalRealGananciasFacturas);       
+           lbl_perdidasEnFacturas.setText(facturaControla.totalPerdidasFacturas_str);
+           facturaControla.evaluarGravedadDePerdidas();
         }       
     }//GEN-LAST:event_btn_buscarActionPerformed
 
@@ -504,8 +536,64 @@ public class GestionarFacturas extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_usuariosItemStateChanged
 
     private void btn_generaPDFFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFFacturasActionPerformed
-        //facturaControla.generarReportePDFdeFacturasGeneradas();
-        btn_generaPDFFacturas.setEnabled(false);
+        String codigoFactura = txt_codigoFactura.getText(); 
+        int usuarios_cmb = cmb_usuarios.getSelectedIndex();
+        Date fecha_desde = jDate_fechaDesde.getDate();
+        Date fecha_hasta = jDate_fechaHasta.getDate();
+        String sentenciaSqlParaGenerarReporte;
+        
+        if(idCierre != 1){
+            sentenciaSqlParaGenerarReporte = " AND Id_cierre = " + Integer.toString(idCierre);
+        }else{
+            sentenciaSqlParaGenerarReporte = "";
+        }       
+        
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(codigoFactura.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
+            facturaControla.generarReporteConsolidadoDeFacturas(sentenciaSqlParaGenerarReporte);
+            
+        }else{
+            
+            if(!codigoFactura.equals("")){
+                //Agregamos el codigo del arqueo a la sentencia sql
+                sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND facturas.Codigo LIKE '%"+codigoFactura+"%'";
+            }         
+            
+            if(usuarios_cmb != 0){
+                //Capturamos el objeto usuario para validar el verdadero id en base de datos
+                Usuario usuarioSeleccionado = (Usuario)cmb_usuarios.getSelectedItem();
+
+                //Validamos el verdadero id del usuario en bd
+                idRealDelUsuarioSeleccionado = usuarioControla.consultarIdDeunUsuario(usuarioSeleccionado.getUsuario());
+                String idUsuarioReal = Integer.toString(idRealDelUsuarioSeleccionado);
+                //Agregamos el id del usuario a la sentencia sql
+                sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND facturas.Facturado_por = " + idUsuarioReal;
+               
+            }
+            
+            //Ajustamos el formato de las fechas desde y hasta seleccionadas (solo si son diferentes a null)
+            if(fecha_desde != null && fecha_hasta != null){
+                long lngfecha_desde = fecha_desde.getTime();
+                long lngfecha_hasta = fecha_hasta.getTime();
+
+                //Validamos que la fecha hasta sea mayor a la fecha desde
+                if(lngfecha_hasta > lngfecha_desde){
+                    java.sql.Date sqldateFecha_desde = new java.sql.Date(lngfecha_desde);
+                    java.sql.Date sqldateFecha_hasta = new java.sql.Date(lngfecha_hasta);
+                    sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND facturas.Fecha_factura BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";               
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.");
+                }
+            }
+            
+            //Guardamos la sentencia sql utilizada para los calculos totales, para cuando se requiera
+            sentenciaSQLUtilizadaTotales = sentenciaSqlParaGenerarReporte;
+            facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+            
+            facturaControla.generarReporteConsolidadoDeFacturas(sentenciaSqlParaGenerarReporte);
+            btn_generaPDFCierres.setEnabled(false);
+        }
     }//GEN-LAST:event_btn_generaPDFFacturasActionPerformed
 
     /**
@@ -654,7 +742,12 @@ public class GestionarFacturas extends javax.swing.JFrame {
     public void cargarTablaGestorFacturas(){
         facturaControla.cargarTablaAdministradorDeFacturas();
         sentenciaSQLUtilizadaTotales = "";
-        facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales); 
+        facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(sentenciaSQLUtilizadaTotales);
+        lbl_numeroDeFacturas.setText(facturaControla.cantidadDeFacturasSistema);
+        lbl_gananciasEsperadasEnFacturas.setText(facturaControla.totalEspGananciasFacturas);
+        lbl_gananciasEnFacturas.setText(facturaControla.totalRealGananciasFacturas);       
+        lbl_perdidasEnFacturas.setText(facturaControla.totalPerdidasFacturas_str);
+        facturaControla.evaluarGravedadDePerdidas(); 
     }    
 }
 

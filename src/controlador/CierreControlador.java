@@ -697,7 +697,6 @@ public class CierreControlador {
         //Calculamos el total real de ganancias obtenidas restando del total esperado en ganancias el total por perdidas
         totalRealProducidoCierres = factControla.agregarFormatoMoneda(calcularTotalGananciasReales(factControla.quitarFormatoMoneda(totalEsperadoProducidoCierres), Integer.toString(totalPerdidasCierres)));
                 
-        evaluarGravedadDePerdidas();
     }
     
     //Pinta de color verde el total de perdidas solo si este es menor o igual a cero pesos, de lo contrario, permanece de color rojo

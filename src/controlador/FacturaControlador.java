@@ -37,12 +37,10 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
+import vista.GestionarFacturas;
 import static vista.GestionarFacturas.codigoFactura_update;
 import static vista.GestionarFacturas.esFacturaAbierta;
 import static vista.GestionarFacturas.hayFacturaVisualizandose;
-import static vista.GestionarFacturas.lbl_gananciasEnFacturas;
-import static vista.GestionarFacturas.lbl_gananciasEsperadasEnFacturas;
-import static vista.GestionarFacturas.lbl_numeroDeFacturas;
 import static vista.GestionarFacturas.lbl_perdidasEnFacturas;
 import static vista.GestionarFacturas.modelo;
 import static vista.GestionarFacturas.table_listaFacturas;
@@ -73,8 +71,11 @@ public class FacturaControlador implements Runnable {
     public static boolean ejecutarHiloOpParq; 
     public static boolean esUnNumeroNegativo = false;
     
-    String totalEsperadoGananciasFacturas = "";
-    String totalRealGananciasFacturas = "";
+    public String totalEspGananciasFacturas = "";
+    String totalEsperadoGananciasFacturas;
+    public String cantidadDeFacturasSistema = "";
+    public String totalRealGananciasFacturas = "";
+    public String totalPerdidasFacturas_str = "";
     ArrayList valoresAPagarDeFacturas;
     ArrayList dineroDeCambioDeFacturas;
     int totalPerdidasFacturas;
@@ -1380,10 +1381,10 @@ public class FacturaControlador implements Runnable {
 
         //Calculamos el total por facturas teniendo en cuenta los valores de pagar de las facturas obtenidas
         totalEsperadoGananciasFacturas = calcularProducido(valoresAPagarDeFacturas);
-        lbl_gananciasEsperadasEnFacturas.setText(agregarFormatoMoneda(totalEsperadoGananciasFacturas));
+        totalEspGananciasFacturas = agregarFormatoMoneda(totalEsperadoGananciasFacturas);
         
         //Contamos las facturas
-        lbl_numeroDeFacturas.setText(contarFacturasQueTienenUnCriterioEspecifico(sentenciaSQL));
+        cantidadDeFacturasSistema = contarFacturasQueTienenUnCriterioEspecifico(sentenciaSQL);
         
         //Calculamos el total de perdidas por facturas de lasfacturasque pertenecen a un cierre especifico
         //Obtenemos las diferencias de las facturas para hacer calculo de perdidas por facturas
@@ -1391,13 +1392,11 @@ public class FacturaControlador implements Runnable {
 
         //Calculamos el total de perdidas por facturas teniendo en cuenta las diferencias de las facturas obtenidas
         totalPerdidasFacturas = cierreControla.calcularTotalPerdidas(dineroDeCambioDeFacturas);
-        lbl_perdidasEnFacturas.setText(agregarFormatoMoneda(Integer.toString(totalPerdidasFacturas)));
+        totalPerdidasFacturas_str = agregarFormatoMoneda(Integer.toString(totalPerdidasFacturas));
 
         //Calculamos el total real de ganancias obtenidas restando del total esperado en ganancias el total por perdidas
-        totalRealGananciasFacturas = cierreControla.calcularTotalGananciasReales(totalEsperadoGananciasFacturas, Integer.toString(totalPerdidasFacturas));
-        lbl_gananciasEnFacturas.setText(agregarFormatoMoneda(totalRealGananciasFacturas));
-
-        evaluarGravedadDePerdidas();
+        totalRealGananciasFacturas = agregarFormatoMoneda(cierreControla.calcularTotalGananciasReales(totalEsperadoGananciasFacturas, Integer.toString(totalPerdidasFacturas)));
+     
     }
     
     //Pinta de color verde el total de perdidas solo si este es menor o igual a cero pesos, de lo contrario, permanece de color rojo
@@ -1408,4 +1407,52 @@ public class FacturaControlador implements Runnable {
             lbl_perdidasEnFacturas.setForeground(Color.red);
         }
     } 
+    
+    //Metodo que genera el reporte pdf del consolidado de facturas del sistema
+    public void generarReporteConsolidadoDeFacturas(String sql){
+                       
+        try{
+           
+           Connection cn3 = Conexion.conectar();
+
+           Map parametro = new HashMap();
+           parametro.clear();
+           parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgDocuments));
+           parametro.put("numfacturas", cantidadDeFacturasSistema);
+           parametro.put("gananciasesp", totalEspGananciasFacturas);
+           parametro.put("ganancias", totalRealGananciasFacturas);
+           parametro.put("perdidas", totalPerdidasFacturas_str);
+           parametro.put("sql", sql);
+                    
+           JasperReport reporte = null;
+           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ConsolidadoFacturas.jasper"));
+
+           JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
+           
+            //Da una vista previa del ticket
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            view.setIconImage(getIconImagePDFUser());
+            view.setTitle("Consolidado de facturas");
+            view.setVisible(true);
+
+            //Agregamos un evento para cuando el visor del reporte se cierre
+            view.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                GestionarFacturas.btn_generaPDFFacturas.setEnabled(true);
+            }
+            });
+           
+       }catch(JRException ex){
+           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Consolidado de Facturas, contacte al administrador!!");
+           log.fatal("ERROR - Se ha producido un error al intentar generar reporte pdf de consolidado de facturas: " + ex);
+       }
+    }
+    
+     //Metodo que agrega el icono a la ventana de reporte PDF de facturas
+    public Image getIconImagePDFUser() {
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/preview.png"));
+        return retValue;
+    }
 }
