@@ -30,7 +30,7 @@ public class OtrosParametros extends javax.swing.JFrame {
      */
     public OtrosParametros() {
         initComponents();
-        setSize(356, 200);
+        setSize(356, 215);
         setResizable(false);
         setTitle("Otros parámetros");
         setLocationRelativeTo(null);
