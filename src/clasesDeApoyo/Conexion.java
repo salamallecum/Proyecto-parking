@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.sql.*;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 
 public class Conexion {
@@ -23,7 +22,7 @@ public class Conexion {
             String port = "3306";
             String db = "bd_sistemaparking";
             String user = "root";
-            String pass = "";
+            String pass = "12345";
             String url = "jdbc:mysql://" + host + ":" + port + "/" + db + "?user=" + user + "&password=" + pass + "&useSSL=false";
             Connection cn = DriverManager.getConnection(url);
             return cn;
