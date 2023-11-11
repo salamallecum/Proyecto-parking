@@ -64,11 +64,11 @@ public class FacturaControlador implements Runnable {
 
     //Hilo encargado del cargue de la tabla de opercaion del parqueradero en el panel caja
     public Thread hilo2 = new Thread(this);
-    ParqueaderoControlador parqControlador;
+    ParqueaderoControlador parqControlador = new ParqueaderoControlador();
     ParametroControlador parametroControla = new ParametroControlador();
     UsuarioControlador usuarioControla = new UsuarioControlador();
     CierreControlador cierreControla = new CierreControlador();
-    public static boolean ejecutarHiloOpParq; 
+    public static boolean ejecutarHiloOpParq = false; 
     public static boolean esUnNumeroNegativo = false;
     
     public String totalEspGananciasFacturas = "";
