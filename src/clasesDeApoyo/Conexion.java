@@ -22,7 +22,7 @@ public class Conexion {
             String port = "3306";
             String db = "bd_sistemaparking";
             String user = "root";
-            String pass = "12345";
+            String pass = "";
             String url = "jdbc:mysql://" + host + ":" + port + "/" + db + "?user=" + user + "&password=" + pass + "&useSSL=false";
             Connection cn = DriverManager.getConnection(url);
             return cn;
