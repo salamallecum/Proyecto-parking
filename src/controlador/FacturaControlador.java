@@ -1335,7 +1335,7 @@ public class FacturaControlador implements Runnable {
                 parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
 
                 try{
-                    ct1.sleep(10000);
+                    ct1.sleep(30000);
                 }catch(InterruptedException e){
                     log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos ingresados al parqueadero del panelCaja: " + e); 
                 }
