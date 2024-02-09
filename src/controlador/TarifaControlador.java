@@ -51,7 +51,7 @@ public class TarifaControlador {
                
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Nombre_tarifa, Monto_tarifa, Frecuencia_tarifa, Tarifa_anulada from tarifas");
+                        "select Nombre_tarifa, Monto_tarifa, Frecuencia_tarifa, Tarifa_anulada from tarifas where Id_tarifa <> 1");
             
             ResultSet rs = pst.executeQuery();
             

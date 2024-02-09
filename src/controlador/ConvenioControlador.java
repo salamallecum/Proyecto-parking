@@ -50,7 +50,7 @@ public class ConvenioControlador {
                
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Nombre_convenio, Monto, Frecuencia from convenios");
+                        "select Nombre_convenio, Monto, Frecuencia from convenios where Id_convenio <> 1");
             
             ResultSet rs = pst.executeQuery();
             
