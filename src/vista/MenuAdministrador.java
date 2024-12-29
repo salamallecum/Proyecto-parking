@@ -280,14 +280,13 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
             Panel_SesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_SesionLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(Panel_SesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txt_Reloj, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(Panel_SesionLayout.createSequentialGroup()
-                        .addComponent(Pnl_fotoDelPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lbl_nombreUsuario)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(Pnl_fotoDelPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lbl_nombreUsuario)
+                .addGap(81, 81, 81)
+                .addGroup(Panel_SesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txt_Reloj, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                    .addComponent(btn_cerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27))
         );
         Panel_SesionLayout.setVerticalGroup(
@@ -400,19 +399,6 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Metodo boton "Cerrar sesion"
-    private void btn_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarSesionActionPerformed
-        boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
-        
-        if(sePuedeCerrarSesion == true){
-            dispose();
-            new Login().setVisible(true);
-            log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
-        }else{
-            JOptionPane.showMessageDialog(null, "Por favor cierre la caja o las ventanas que se encuentren abiertas antes de continuar.");
-        }
-    }//GEN-LAST:event_btn_cerrarSesionActionPerformed
-
     //Metodo boton modulo "Usuarios"
     private void btn_UsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_UsuariosActionPerformed
         
@@ -436,10 +422,6 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         
     }//GEN-LAST:event_btn_UsuariosActionPerformed
     
-    private void txt_RelojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_RelojActionPerformed
-        
-    }//GEN-LAST:event_txt_RelojActionPerformed
-
     //Metodo boton modulo "Caja"
     private void btn_CajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CajaActionPerformed
         lbl_bienvenida.setVisible(false);
@@ -580,6 +562,23 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         // TODO add your handling code here:
     }//GEN-LAST:event_menuAboutMouseClicked
 
+    private void txt_RelojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_RelojActionPerformed
+
+    }//GEN-LAST:event_txt_RelojActionPerformed
+
+    //Metodo boton "Cerrar sesion"
+    private void btn_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarSesionActionPerformed
+        boolean sePuedeCerrarSesion = usuControlador.cerrarSesion(user);
+
+        if(sePuedeCerrarSesion == true){
+            dispose();
+            new Login().setVisible(true);
+            log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
+        }else{
+            JOptionPane.showMessageDialog(null, "Por favor cierre la caja o las ventanas que se encuentren abiertas antes de continuar.");
+        }
+    }//GEN-LAST:event_btn_cerrarSesionActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel_Administrador;
     private javax.swing.JPanel Panel_Sesion;
@@ -597,7 +596,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     private javax.swing.JLabel lbl_bienvenida;
     private javax.swing.JLabel lbl_buenTurno;
     private javax.swing.JLabel lbl_fotodePerfil;
-    public static javax.swing.JLabel lbl_nombreUsuario;
+    private javax.swing.JLabel lbl_nombreUsuario;
     public static javax.swing.JMenu menuAbout;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JTextField txt_Reloj;
