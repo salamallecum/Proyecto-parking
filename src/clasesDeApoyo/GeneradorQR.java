@@ -3,7 +3,6 @@ package clasesDeApoyo;
 import com.barcodelib.barcode.QRCode;
 import java.io.File;
 import java.net.URL;
-import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 /**
