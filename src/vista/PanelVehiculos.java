@@ -1,5 +1,6 @@
 package vista;
 
+import clasesDeApoyo.GeneradorQR;
 import modelo.Parqueadero;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
@@ -45,7 +46,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     
     VehiculoControlador vehicontrolador;
     Vehiculo nuevoVehiculo = new Vehiculo(0, "", "", "", 0, 0, 0);
-    
+    GeneradorQR generadorQR = new GeneradorQR();
     ParqueaderoControlador parqControla;
     TarifaControlador tarifaControla;
     ConvenioControlador convenioControla;
@@ -655,7 +656,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 }    
             }    
             
-            //Crael objeto vehiculo en el sistema
+            //Crea el objeto vehiculo en el sistema
             vehicontrolador.crearVehiculo(nuevoVehiculo);
             
             //Agregamos el objeto vehiculo a la tabla de vehiculos
@@ -669,10 +670,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             modelo.addRow(fila);
                         
             JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.");
+            //Generamos el codigo QR del vehiculo
+            generadorQR.generarQR(placa+" - "+dueño);
             Limpiar();
             Normalizar();
-            
-            log.info("INFO - Se ha registrado un nuevo vehiculo en el sistema.");
             
         }else{
             JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
@@ -690,6 +691,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             JOptionPane.showMessageDialog(null, "Seleccione el vehiculo que desea eliminar.");
         }else{    
             String placa = Table_listaVehiculos.getValueAt(Fila, 0).toString();
+            String propietario = Table_listaVehiculos.getValueAt(Fila, 1).toString();
             int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if(decision == JOptionPane.YES_OPTION){               
                 
@@ -702,6 +704,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 } 
 
                 JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado"); 
+                //Eliminamos el codigo qr del vehiculo
+                generadorQR.eliminarQr(placa+" - "+propietario);
                 modelo.removeRow(Fila);
                 parqControla.liberarParqueadero(placa);
                 Limpiar();                              

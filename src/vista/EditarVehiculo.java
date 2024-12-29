@@ -1,5 +1,6 @@
 package vista;
 
+import clasesDeApoyo.GeneradorQR;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParametroControlador;
@@ -56,6 +57,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
     Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", 0, 0, 0);
     Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    GeneradorQR generadorQR = new GeneradorQR();
     
     VehiculoControlador vehicontrolador = new VehiculoControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -532,11 +534,11 @@ public class EditarVehiculo extends javax.swing.JFrame{
             modelo.removeRow(FilaAnterior);
                         
             JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.");
+            //Actualizamos el codigo QR del vehiculo
+            generadorQR.actualizarQR(placaBack, propietariaBack, placa, dueño);
             this.dispose();  
             PanelVehiculos.hayVehiculoEnEdicion = false;
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
-            
-            log.info("INFO - Se ha actualizado un vehiculo en el sistema.");
             
         }else{
             JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos." + logError);
