@@ -79,7 +79,7 @@ public class AcercaDe extends javax.swing.JFrame {
         jLabel6.setText("Dirigido a:  More Security S.A.S");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Versión: v1.0");
+        jLabel7.setText("Versión: v1.5");
 
         jLabel8.setText("Telefono: 6014660687 - 3112236781");
 
