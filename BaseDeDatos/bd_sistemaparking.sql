@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 02-10-2023 a las 15:33:47
+-- Tiempo de generación: 11-01-2025 a las 22:56:45
 -- Versión del servidor: 5.7.40
 -- Versión de PHP: 8.0.26
 
@@ -213,7 +213,14 @@ CREATE TABLE IF NOT EXISTS `parqueaderos` (
   `Propietario` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Esta_en_parqueadero` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_parqueadero`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de parqueaderos';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de parqueaderos';
+
+--
+-- Volcado de datos para la tabla `parqueaderos`
+--
+
+INSERT INTO `parqueaderos` (`Id_parqueadero`, `Nombre_parqueadero`, `TipoParq`, `Estado`, `Placa`, `Propietario`, `Esta_en_parqueadero`) VALUES
+(1, '1A', 'RESIDENTE', 'Disponible', '', '', 'No');
 
 -- --------------------------------------------------------
 
@@ -235,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `tarifas` (
   `Monto_Tiempo_Ad` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Unidad_Tiempo_Ad` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`Id_tarifa`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de tarifas';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de tarifas';
 
 --
 -- Volcado de datos para la tabla `tarifas`
@@ -284,6 +291,7 @@ INSERT INTO `usuarios` (`Id_usuario`, `Nombres`, `Apellidos`, `Celular`, `Telefo
 DROP TABLE IF EXISTS `vehiculos`;
 CREATE TABLE IF NOT EXISTS `vehiculos` (
   `Id_vehiculo` int(50) NOT NULL AUTO_INCREMENT,
+  `Qr_consecutivo` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
   `Placa` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `Propietario` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `Clase` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
