@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 public class Vehiculo {
     
     private int id = 0;
+    private String qr_consecutivo = "";
     private String placa = "";
     private String propietario = "";
     private String clase = "";
@@ -22,8 +23,9 @@ public class Vehiculo {
     private URL url = Vehiculo.class.getResource("Log4j.properties");
     
     //Constructor
-    public Vehiculo(int id, String placa, String propietario, String clase, int id_parqueadero, int id_convenio, int id_tarifa) {
+    public Vehiculo(int id, String qr_consecutivo, String placa, String propietario, String clase, int id_parqueadero, int id_convenio, int id_tarifa) {
         this.id = id;
+        this.qr_consecutivo = qr_consecutivo;
         this.placa = placa;
         this.propietario = propietario;
         this.clase = clase;
@@ -41,6 +43,14 @@ public class Vehiculo {
         this.id = id;
     }
 
+    public String getQr_consecutivo() {
+        return qr_consecutivo;
+    }
+
+    public void setQr_consecutivo(String qr_consecutivo) {
+        this.qr_consecutivo = qr_consecutivo;
+    }
+    
     public String getPlaca() {
         return placa;
     }

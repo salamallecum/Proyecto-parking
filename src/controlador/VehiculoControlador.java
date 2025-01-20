@@ -1,9 +1,11 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import com.barcodelib.barcode.QRCode;
 import static controlador.UsuarioControlador.rutaImgReporteAColor;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,9 +18,11 @@ import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import modelo.Vehiculo;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
@@ -34,9 +38,31 @@ import static vista.PanelVehiculos.Table_listaVehiculos;
  */
 public class VehiculoControlador {
     
-    Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", 0, 0, 0);
+    Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", "", 0, 0, 0);
     ParqueaderoControlador parqControlador;
     
+    //Definimos las propiedades que tendran los codigos qr
+    int udm = 0;
+    int resol = 72;
+    float mi = 0.000f;
+    float md = 0.000f;
+    float ms = 0.000f;
+    float min = 0.000f;
+    int rot = 0;
+    float tam = 5.000f;
+    
+    //Ruta de qrs para consulta del usuario
+    String rutaQrs = new File("").getAbsolutePath()+"\\qrCodes";
+    File carpetaQrs = new File(rutaQrs);
+    //Ruta de qrs para generacion de tickets de ingreso de vehiculos
+    public static String rutaQrsTicket = "/qr";
+    //Ruta de qrs para actualizacion y eliminacion de qrs (paquete qr)
+    String rutaPaqueteQrs = "src/qr";
+    File paqueteQrs = new File(rutaPaqueteQrs);
+    //Variable que determina si ya se genero el codigo qr satisfactoriamente
+    boolean codigoQRGeneradoOK = false;
+    
+     
     private final Logger log = Logger.getLogger(VehiculoControlador.class);
     private final URL url = VehiculoControlador.class.getResource("/clasesDeApoyo/Log4j.properties");
     
@@ -77,15 +103,16 @@ public class VehiculoControlador {
         try {
             Connection cn2 = Conexion.conectar();
             PreparedStatement pst2 = cn2.prepareStatement(
-                "insert into vehiculos values (?,?,?,?,?,?,?)");
+                "insert into vehiculos values (?,?,?,?,?,?,?,?)");
 
             pst2.setInt(1, veh.getId());
-            pst2.setString(2, veh.getPlaca());
-            pst2.setString(3, veh.getPropietario());
-            pst2.setString(4, veh.getClase());
-            pst2.setInt(5, veh.getId_parqueadero());
-            pst2.setInt(6, veh.getId_convenio());
-            pst2.setInt(7, veh.getId_tarifa());
+            pst2.setString(2, veh.getQr_consecutivo());
+            pst2.setString(3, veh.getPlaca());
+            pst2.setString(4, veh.getPropietario());
+            pst2.setString(5, veh.getClase());
+            pst2.setInt(6, veh.getId_parqueadero());
+            pst2.setInt(7, veh.getId_convenio());
+            pst2.setInt(8, veh.getId_tarifa());
             
             pst2.executeUpdate();
             cn2.close();          
@@ -306,26 +333,47 @@ public class VehiculoControlador {
         }   
     }
 
-    //Metodo que consulta la ifnromación de un vehiculo para cargarlo en la ventana de edición de vehiculos
-    public Vehiculo consultarInformacionDeUnVehiculo(String placaDelVehiculo){
+    //Metodo que consulta la ifnromación de un vehiculo teniendo en cuenta su consecutivo qr o placa
+    public Vehiculo consultarInformacionDeUnVehiculo(String consecutivoQR, String placaDelVehiculo){
                
         //Hace la consulta de registros a la base de datos
         try {
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                "select * from vehiculos where Placa = '" + placaDelVehiculo + "'");
-            ResultSet rs = pst.executeQuery();
+            String sql;
+            PreparedStatement pst;
+            ResultSet rs;
             
-            if(rs.next()){
-                vehiculoConsultado.setId(rs.getInt("Id_vehiculo"));
-                vehiculoConsultado.setPlaca(rs.getString("Placa"));
-                vehiculoConsultado.setPropietario(rs.getString("Propietario"));
-                vehiculoConsultado.setClase(rs.getString("Clase"));
-                vehiculoConsultado.setId_parqueadero(rs.getInt("Id_parqueadero"));
-                vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
-                vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
-                cn.close();              
-            }
+            if(consecutivoQR != null){
+                sql = "select Id_vehiculo, Placa, Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Qr_consecutivo = '"+consecutivoQR+"'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    vehiculoConsultado.setId(rs.getInt("Id_vehiculo"));
+                    vehiculoConsultado.setQr_consecutivo(consecutivoQR);
+                    vehiculoConsultado.setPlaca(rs.getString("Placa"));
+                    vehiculoConsultado.setPropietario(rs.getString("Propietario"));
+                    vehiculoConsultado.setClase(rs.getString("Clase"));
+                    vehiculoConsultado.setId_parqueadero(rs.getInt("Id_parqueadero"));
+                    vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
+                    vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
+                    cn.close();              
+                }         
+            }else if(placaDelVehiculo != null){
+                sql = "select Id_vehiculo, SUBSTR(Qr_consecutivo,7) Consecutivo_qr, Placa, Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Placa = '"+placaDelVehiculo+ "'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    vehiculoConsultado.setId(rs.getInt("Id_vehiculo"));
+                    vehiculoConsultado.setQr_consecutivo(rs.getString("Consecutivo_qr"));
+                    vehiculoConsultado.setPlaca(rs.getString("Placa"));
+                    vehiculoConsultado.setPropietario(rs.getString("Propietario"));
+                    vehiculoConsultado.setClase(rs.getString("Clase"));
+                    vehiculoConsultado.setId_parqueadero(rs.getInt("Id_parqueadero"));
+                    vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
+                    vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
+                    cn.close();              
+                }
+            }          
             
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion del vehiculo seleccionado!!, contacte al administrador.");
@@ -381,7 +429,7 @@ public class VehiculoControlador {
         
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update vehiculos set Placa ='"+vehAActualizar.getPlaca()+"',Propietario='"+vehAActualizar.getPropietario()+"',Clase='"+vehAActualizar.getClase()+"',Id_parqueadero="+vehAActualizar.getId_parqueadero()+",Id_convenio="+vehAActualizar.getId_convenio()+",Id_tarifa="+vehAActualizar.getId_tarifa()+" where Id_vehiculo="+vehAActualizar.getId());
+            PreparedStatement pst = cn.prepareStatement("update vehiculos set Qr_consecutivo ='"+vehAActualizar.getQr_consecutivo()+"',Placa ='"+vehAActualizar.getPlaca()+"',Propietario='"+vehAActualizar.getPropietario()+"',Clase='"+vehAActualizar.getClase()+"',Id_parqueadero="+vehAActualizar.getId_parqueadero()+",Id_convenio="+vehAActualizar.getId_convenio()+",Id_tarifa="+vehAActualizar.getId_tarifa()+" where Id_vehiculo="+vehAActualizar.getId());
 
             pst.executeUpdate();
             cn.close(); 
@@ -431,5 +479,208 @@ public class VehiculoControlador {
         return idParq;
     }
     
+    //Metodo que se encarga de generar el codigo Qr de un vehiculo a partir de un texto de entrada
+    public void generarQR(String nombreArchivo, String contenido){
+               
+        //Verificamos la existencia de la carpeta que guarda los codigos qr
+        if(!carpetaQrs.exists()){
+            crearCarpetaDeQrs();
+        }
+        
+        try{
+            //Creamos el codigo qr
+            QRCode codigoQr = new QRCode();
+            //Asignamos propiedades al codigo qr
+            codigoQr.setData(contenido);
+            codigoQr.setDataMode(QRCode.MODE_BYTE);
+            codigoQr.setUOM(udm);
+            codigoQr.setLeftMargin(mi);
+            codigoQr.setResolution(resol);
+            codigoQr.setRightMargin(md);
+            codigoQr.setTopMargin(ms);
+            codigoQr.setBottomMargin(min);
+            codigoQr.setRotate(rot);
+            codigoQr.setModuleSize(tam);
+
+            String qrParaConsulta = rutaQrs+"/"+nombreArchivo+".gif";
+            String qrParaTicket = rutaPaqueteQrs+"/"+nombreArchivo+".gif";
+            codigoQr.renderBarcode(qrParaConsulta);
+            codigoQr.renderBarcode(qrParaTicket);
+
+            //Nos cersioramos de que el codigo qr creado ya se encuentre en el paquete de qrs
+            File[] listadoDeQrsApp = paqueteQrs.listFiles();
+            
+            int cantidadQrs = contarCodigosQr(listadoDeQrsApp);
+                                
+            if(cantidadQrs > 0){
+                for(File qr : listadoDeQrsApp){
+                    if(qr.isFile() && qr.getName().equals(nombreArchivo+".gif")){
+                       codigoQRGeneradoOK = true;  
+                    }
+                }
+            }
+               
+        }catch(Exception e){
+            log.fatal("ERROR - Se ha producido un error al generar el codigo qr: " + e);
+        }
+    }
     
+    //Metodo que se encarga de actualizar en la carpeta qrCodes, el codigo qr de un vehiculo
+    public void actualizarQR(String placaABuscar, String propietarioABuscar, String placa, String propietario, String contenido){
+        
+        String infoQrNvo;
+        String qrABuscar = placaABuscar+" - "+propietarioABuscar; 
+        String qrNuevo = placa+" - "+propietario;
+        int cantidadQrs;
+        File[] listadoDeQrs;
+        
+        //Validamos si el nombre del qr a buscar no es igual al que se pretende generar
+        if(!qrABuscar.equals(qrNuevo)){
+            
+            //Generamos el nuevo nombre del codigo qr a generar
+            if(!placaABuscar.equals(placa)){
+               infoQrNvo = placa+contenido;    
+            }else{
+               infoQrNvo = placaABuscar+contenido; 
+            }
+            
+            //Buscamos el codigo qr en la carpeta qrCodes para eliminarlo
+            if(carpetaQrs.exists() && carpetaQrs.isDirectory()){
+                listadoDeQrs = carpetaQrs.listFiles();
+                
+                //Contamos cuantos codigos qr tiene la carpeta de qrs
+                cantidadQrs = contarCodigosQr(listadoDeQrs);
+                                
+                if(cantidadQrs > 0){
+                    for(File qr : listadoDeQrs){
+                        if(qr.isFile() && qr.getName().equals(qrABuscar+".gif")){
+                            //Eliminamos el codigo qr previamente existente y generamos el nvo codigo
+                            qr.delete();
+                            generarQR(qrNuevo, infoQrNvo);
+                        }else{
+                            generarQR(qrNuevo, infoQrNvo);
+                        }
+                   }
+                }else{
+                    generarQR(qrNuevo, infoQrNvo);
+                }               
+            }else{
+                crearCarpetaDeQrs();
+                generarQR(qrNuevo, infoQrNvo);
+            }
+            
+            //Buscamos el codigo qr en el paquete qr de la aplicacion para eliminarlo
+            if(paqueteQrs.exists() && paqueteQrs.isDirectory()){
+                listadoDeQrs = paqueteQrs.listFiles();
+                
+                //Contamos cuantos codigos qr tiene la carpeta de qrs
+                cantidadQrs = contarCodigosQr(listadoDeQrs);
+                                
+                if(cantidadQrs > 0){
+                    for(File qr : listadoDeQrs){
+                        if(qr.isFile() && qr.getName().equals(qrABuscar+".gif")){
+                            //Eliminamos el codigo qr previamente existente y generamos el nvo codigo
+                            qr.delete();
+                            generarQR(qrNuevo, infoQrNvo);
+                        }else{
+                            generarQR(qrNuevo, infoQrNvo);
+                        }
+                   }
+                }else{
+                    generarQR(qrNuevo, infoQrNvo);
+                }
+            }
+        }
+    }
+    
+    //Metodo que crea la carpeta donde se almacenan los codigos qr de los vehiculos
+    public void crearCarpetaDeQrs(){
+        carpetaQrs.mkdir();
+    }
+    
+    //Metodo que cuenta cuantos archivos hay en las carpetas de qrs de los vehiculos
+    public int contarCodigosQr(File[] qrs){
+        int cantidad = 0;
+        for(File qr : qrs){
+            if(qr.isFile()){
+                cantidad++;
+            }
+       }
+        return cantidad;
+    }
+    
+    //Metodo que elimina un codigo qr de la carpeta de qrs de los vehiculos
+    public void eliminarQr(String texto){
+               
+        //Buscamos el codigo qr en la carpeta qrCodes para eliminarlo
+        if(carpetaQrs.exists() && carpetaQrs.isDirectory()){
+            File[] listadoDeQrs = carpetaQrs.listFiles();
+            
+            //Contamos cuantos codigos qr tiene la carpeta de qrs
+            int cantidadQrs = contarCodigosQr(listadoDeQrs);
+                                
+            if(cantidadQrs > 0){
+                for(File qr : listadoDeQrs){
+                    if(qr.isFile() && qr.getName().equals(texto+".gif")){
+                        //Eliminamos el codigo qr 
+                        qr.delete();   
+                    }
+                }
+            }
+        }
+        
+        //Buscamos el codigo qr en el paquete qr de la aplicacion para eliminarlo
+        if(paqueteQrs.exists() && paqueteQrs.isDirectory()){
+            File[] listadoDeQrsApp = paqueteQrs.listFiles();
+            
+            //Contamos cuantos codigos qr tiene la carpeta de qrs
+            int cantidadQrs = contarCodigosQr(listadoDeQrsApp);
+                                
+            if(cantidadQrs > 0){
+                for(File qr : listadoDeQrsApp){
+                    if(qr.isFile() && qr.getName().equals(texto+".gif")){
+                        //Eliminamos el codigo qr 
+                        qr.delete();   
+                    }
+                }
+            }
+        }
+    }
+    
+    //Metodo que genera el ticket del codigo qr de un vehiculo
+    public void generarTicketQrVehiculo(String nombreQr, boolean vistaPrevia){
+        
+        if(codigoQRGeneradoOK == true){
+            try{
+                //Agregamos los parametros con los cuales se generara el ticket
+                Map parametros = new HashMap ();
+                parametros.put("nombre_qr", nombreQr);
+                parametros.put("imagen", this.getClass().getResourceAsStream(rutaQrsTicket+"/"+nombreQr+".gif"));
+
+                JasperReport reporte = null;
+
+                reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/qrVehiculo.jasper"));
+
+                JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, new JREmptyDataSource());
+
+                if(vistaPrevia == true){
+                   //Da una vista previa del ticket
+                    JasperViewer view = new JasperViewer(jprint, false);
+                    view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    view.setTitle("Codigo QR de vehiculo " + nombreQr);
+                    view.setVisible(true);
+                    view.setIconImage(getIconImagePDFVehiculos());
+
+               }else{
+                    //Hace que se imprima directamente
+                   JasperPrintManager.printReport(jprint, false);
+               } 
+                codigoQRGeneradoOK = false;
+
+            }catch(JRException ex){
+                JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket qr del vehiculo, contacte al administrador!!");
+                log.fatal("ERROR - Se ha producido un error al intentar generar el ticket qr de un vehiculo: " + ex); 
+            }
+        }
+    } 
 }

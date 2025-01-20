@@ -1,6 +1,5 @@
 package vista;
 
-import clasesDeApoyo.GeneradorQR;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
 import controlador.ParametroControlador;
@@ -33,6 +32,7 @@ import org.apache.log4j.Logger;
 public class EditarVehiculo extends javax.swing.JFrame{
 
     String vehiculo_actualizado="";
+    String qrBack;
     String placaBack;
     String propietariaBack;
     int noParqueaderoBack;
@@ -53,11 +53,10 @@ public class EditarVehiculo extends javax.swing.JFrame{
     DefaultTableModel modelo;
     int seleccionParq;
    
-    Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", 0, 0, 0);
-    Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", 0, 0, 0);
+    Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", "", 0, 0, 0);
+    Vehiculo vehiculoEditado = new Vehiculo(0, "", "", "", "", 0, 0, 0);
     Factura nuevaFactura = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     Factura facturaEditada = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
-    GeneradorQR generadorQR = new GeneradorQR();
     
     VehiculoControlador vehicontrolador = new VehiculoControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -107,10 +106,11 @@ public class EditarVehiculo extends javax.swing.JFrame{
         tarif.almacenarNombresTarifa();
                                
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
-        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(vehiculo_actualizado);
+        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null,vehiculo_actualizado);
          
         //Colocamos la infromacion del objeto vehiculo en la interfaz
         ID = vehiculoConsultado.getId();
+        qrBack = vehiculoConsultado.getQr_consecutivo();
         placaBack = vehiculoConsultado.getPlaca();
         txt_placa.setText(placaBack);
         
@@ -381,7 +381,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
        
         int tipVehi_cmb, validacion = 0;
-        String placa, dueño = "";
+        String qrInfo, placa, dueño = "";
         String tipoVehi_string="";
         Parqueadero parqSeleccionado = new Parqueadero();
         Convenio convSeleccionado = new Convenio();
@@ -470,6 +470,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             
             //Encapsulamos el objeto vehiculo 
             vehiculoEditado.setId(ID);
+            vehiculoEditado.setQr_consecutivo(placa+qrBack);
             vehiculoEditado.setPlaca(placa);
             vehiculoEditado.setPropietario(dueño);
             vehiculoEditado.setClase(tipoVehi_string);
@@ -533,9 +534,10 @@ public class EditarVehiculo extends javax.swing.JFrame{
             modelo.addRow(fila);
             modelo.removeRow(FilaAnterior);
                         
-            JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.");
             //Actualizamos el codigo QR del vehiculo
-            generadorQR.actualizarQR(placaBack, propietariaBack, placa, dueño);
+            vehicontrolador.actualizarQR(placaBack, propietariaBack, placa, dueño, qrBack);
+            JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.");
+            vehicontrolador.generarTicketQrVehiculo(placa+" - "+dueño, false);
             this.dispose();  
             PanelVehiculos.hayVehiculoEnEdicion = false;
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;

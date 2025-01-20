@@ -1372,7 +1372,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                 int eleccion = JOptionPane.showOptionDialog(this, "La placa ingresada corresponde a un vehiculo previamente registrado en el sistema ¿Desea continuar?", "Mensaje", 0, 3, null, botones, this);
 
                 if(eleccion == JOptionPane.YES_OPTION){
-                    Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(placa);
+                    Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(null,placa);
                                         
                     txt_propietario.setText(infoVehiculo.getPropietario());
                     cmb_tipVehi.setSelectedItem(infoVehiculo.getClase());

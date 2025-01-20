@@ -780,7 +780,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                         JOptionPane.showMessageDialog(null, "El vehiculo ya tiene un proceso de facturación previo.");
                         txt_placa.setText(placa_back);
                     }else{
-                        Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(placa);
+                        Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(null,placa);
                                         
                         txt_propietario.setText(infoVehiculo.getPropietario());
                         cmb_tipVehi.setSelectedItem(infoVehiculo.getClase());

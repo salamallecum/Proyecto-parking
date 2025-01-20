@@ -1,6 +1,5 @@
 package vista;
 
-import clasesDeApoyo.GeneradorQR;
 import modelo.Parqueadero;
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
@@ -45,8 +44,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     String user = "";
     
     VehiculoControlador vehicontrolador;
-    Vehiculo nuevoVehiculo = new Vehiculo(0, "", "", "", 0, 0, 0);
-    GeneradorQR generadorQR = new GeneradorQR();
+    Vehiculo nuevoVehiculo = new Vehiculo(0, "", "", "", "", 0, 0, 0);
     ParqueaderoControlador parqControla;
     TarifaControlador tarifaControla;
     ConvenioControlador convenioControla;
@@ -495,7 +493,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
         
         int clase_cmb, parqueadero_cmb, validacion = 0;
-        String placa, dueño, clase_string = "";
+        String placa, dueño, qrInfo, clase_string = "";
         Parqueadero parqSeleccionado = new Parqueadero();
                         
         placa = txt_placa.getText().trim();
@@ -588,6 +586,8 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                      
             //Encapsulamos el objeto vehiculo 
             nuevoVehiculo.setId(0);
+            qrInfo = placa+paramControla.generarConsecutivo(10);
+            nuevoVehiculo.setQr_consecutivo(qrInfo);
             nuevoVehiculo.setPlaca(placa);
             nuevoVehiculo.setPropietario(dueño);
             nuevoVehiculo.setClase(clase_string);
@@ -669,9 +669,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             fila[5] = tarifSeleccionada.getNombreTarifa();
             modelo.addRow(fila);
                         
+            //Generamos el codigo QR del vehiculo y lo imprimimos
+            vehicontrolador.generarQR(placa+" - "+dueño, qrInfo);
             JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.");
-            //Generamos el codigo QR del vehiculo
-            generadorQR.generarQR(placa+" - "+dueño);
+            vehicontrolador.generarTicketQrVehiculo(placa+" - "+dueño, false);
             Limpiar();
             Normalizar();
             
@@ -705,7 +706,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
                 JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado"); 
                 //Eliminamos el codigo qr del vehiculo
-                generadorQR.eliminarQr(placa+" - "+propietario);
+                vehicontrolador.eliminarQr(placa+" - "+propietario);
                 modelo.removeRow(Fila);
                 parqControla.liberarParqueadero(placa);
                 Limpiar();                              
