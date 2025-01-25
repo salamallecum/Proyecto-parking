@@ -40,8 +40,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     int FilaAnterior;
     public static String vehiculo_update;
     public static boolean hayVehiculoEnEdicion = false;
-    //public static boolean vehiculoEnParqueadero = false;
     String user = "";
+    public static String placa;
+    public static String dueño;
     
     VehiculoControlador vehicontrolador;
     Vehiculo nuevoVehiculo = new Vehiculo(0, "", "", "", "", 0, 0, 0);
@@ -76,7 +77,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     Thread hilo1 = new Thread(this);
     Thread hilo2 = new Thread(this);
     Thread hilo3 = new Thread(this);
-    
+        
     private final Logger log = Logger.getLogger(PanelVehiculos.class);
     private URL url = PanelVehiculos.class.getResource("Log4j.properties");
     
@@ -98,12 +99,11 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         usuarioControla = new UsuarioControlador();
         
         hilo1.start();
-        
         hilo2.start();
-        
-        hilo3.start();
-                   
+        hilo3.start();           
         vehicontrolador.cargarTablaDeVehiculosPorDefault();
+        //Cargamos el proceso que se encarga de registrar el ticket qr vehicular
+        vehicontrolador.cargarProcesoDeRegistroQRVehicular();
         
         //Agregamos la funcion de editar vehiculo al hacer click sobre el registro de la tabla
         Table_listaVehiculos.addMouseListener(new MouseAdapter() {
@@ -152,8 +152,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         jLabel8 = new javax.swing.JLabel();
         txt_busquedapropietario = new javax.swing.JTextField();
         txt_busquedaPlaca = new javax.swing.JTextField();
-        btn_editar = new javax.swing.JButton();
+        btn_generarQR = new javax.swing.JButton();
         check_estaVehiculoEnParqueadero = new javax.swing.JCheckBox();
+        btn_editar = new javax.swing.JButton();
 
         btn_estadoParqueadero.setText("Estado de Parqueadero");
         btn_estadoParqueadero.addActionListener(new java.awt.event.ActionListener() {
@@ -333,7 +334,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_ingresarActionPerformed(evt);
             }
         });
-        add(btn_ingresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 0, -1, -1));
+        add(btn_ingresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 0, -1, 40));
         add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 197, 1100, 7));
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
@@ -423,6 +424,26 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(695, 44, -1, -1));
 
+        btn_generarQR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/qr.png"))); // NOI18N
+        btn_generarQR.setText("QR");
+        btn_generarQR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generarQR.setEnabled(false);
+        btn_generarQR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_generarQRActionPerformed(evt);
+            }
+        });
+        add(btn_generarQR, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, -1, -1));
+
+        check_estaVehiculoEnParqueadero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        check_estaVehiculoEnParqueadero.setText("Está en parqueadero");
+        check_estaVehiculoEnParqueadero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                check_estaVehiculoEnParqueaderoActionPerformed(evt);
+            }
+        });
+        add(check_estaVehiculoEnParqueadero, new org.netbeans.lib.awtextra.AbsoluteConstraints(494, 153, -1, -1));
+
         btn_editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-validated_40458.png"))); // NOI18N
         btn_editar.setText("Editar");
         btn_editar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -433,15 +454,6 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             }
         });
         add(btn_editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 94, -1, -1));
-
-        check_estaVehiculoEnParqueadero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        check_estaVehiculoEnParqueadero.setText("Está en parqueadero");
-        check_estaVehiculoEnParqueadero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                check_estaVehiculoEnParqueaderoActionPerformed(evt);
-            }
-        });
-        add(check_estaVehiculoEnParqueadero, new org.netbeans.lib.awtextra.AbsoluteConstraints(494, 153, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_estadoParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_estadoParqueaderoActionPerformed
@@ -493,7 +505,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
         
         int clase_cmb, parqueadero_cmb, validacion = 0;
-        String placa, dueño, qrInfo, clase_string = "";
+        String qrInfo, clase_string = "";
         Parqueadero parqSeleccionado = new Parqueadero();
                         
         placa = txt_placa.getText().trim();
@@ -583,7 +595,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int idRealDeTarifaSeleccionada = tarifaControla.consultarIdDeunaTarifa(tarifSeleccionada.getNombreTarifa());
              
         if(validacion == 0 ){
-                     
+            //Reanudamos el proceso de generacion ticket qr vehicular
+            vehicontrolador.reanudarProcesoDeRegistroQRVehicular();
+            
             //Encapsulamos el objeto vehiculo 
             nuevoVehiculo.setId(0);
             qrInfo = placa+paramControla.generarConsecutivo(10);
@@ -668,11 +682,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             fila[4] = convSeleccionado.getNombre();
             fila[5] = tarifSeleccionada.getNombreTarifa();
             modelo.addRow(fila);
-                        
+            
+            JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.");
             //Generamos el codigo QR del vehiculo y lo imprimimos
             vehicontrolador.generarQR(placa+" - "+dueño, qrInfo);
-            JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.");
-            vehicontrolador.generarTicketQrVehiculo(placa+" - "+dueño, false);
             Limpiar();
             Normalizar();
             
@@ -719,8 +732,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
     
     private void Table_listaVehiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Table_listaVehiculosMouseClicked
-        btn_eliminar.setEnabled(true);
         btn_editar.setEnabled(true);
+        btn_eliminar.setEnabled(true);
+        btn_generarQR.setEnabled(true);
     }//GEN-LAST:event_Table_listaVehiculosMouseClicked
 
     
@@ -802,9 +816,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private void txt_placaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_placaKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
             Limpiar();  
+            btn_editar.setEnabled(false);
             btn_eliminar.setEnabled(false);
             btn_ingresar.setEnabled(true);
-            btn_editar.setEnabled(false);
+            btn_generarQR.setEnabled(false);
         }
     }//GEN-LAST:event_txt_placaKeyPressed
 
@@ -813,7 +828,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             Limpiar(); 
             btn_eliminar.setEnabled(false);
             btn_ingresar.setEnabled(true);
-            btn_editar.setEnabled(false);
+            btn_generarQR.setEnabled(false);
         }
     }//GEN-LAST:event_txt_propietarioKeyPressed
 
@@ -821,8 +836,77 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
     }//GEN-LAST:event_cmb_tarifaItemStateChanged
 
-    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
+    //Metodo del boton Eliminar
+    private void btn_generarQRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarQRActionPerformed
+        Fila = Table_listaVehiculos.getSelectedRow();
+        int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
+         
+        if(cantidadFilas == 0){
+            JOptionPane.showMessageDialog(null, "Seleccione el vehiculo al que desea generar su codigo qr.");
+        }else{
+            placa = Table_listaVehiculos.getValueAt(Fila, 0).toString();
+            dueño = Table_listaVehiculos.getValueAt(Fila, 1).toString();
+            vehicontrolador.generarTicketQrVehiculo(placa+" - "+dueño, false, "");
+            JOptionPane.showMessageDialog(null, "Codigo qr generado satisfactoriamente.");
+        }
+    }//GEN-LAST:event_btn_generarQRActionPerformed
+
+    private void txt_placaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);  
+        btn_editar.setEnabled(false);
+    }//GEN-LAST:event_txt_placaFocusGained
+
+    private void txt_propietarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_propietarioFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);
+        btn_editar.setEnabled(false);
+    }//GEN-LAST:event_txt_propietarioFocusGained
+
+    private void cmb_claseFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_claseFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);
+        btn_editar.setEnabled(false);
+    }//GEN-LAST:event_cmb_claseFocusGained
+
+    private void cmb_parqueaderosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_parqueaderosFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);
+        btn_editar.setEnabled(false);
+    }//GEN-LAST:event_cmb_parqueaderosFocusGained
+
+    private void cmb_conveniosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_conveniosFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);
+        btn_editar.setEnabled(false);
+    }//GEN-LAST:event_cmb_conveniosFocusGained
+
+    private void cmb_tarifaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_tarifaFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);
+        btn_editar.setEnabled(false);
+    }//GEN-LAST:event_cmb_tarifaFocusGained
+
+    private void cmb_claseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_claseItemStateChanged
         
+    }//GEN-LAST:event_cmb_claseItemStateChanged
+
+    private void check_estaVehiculoEnParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_estaVehiculoEnParqueaderoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_check_estaVehiculoEnParqueaderoActionPerformed
+
+    private void txt_placaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusLost
+      
+    }//GEN-LAST:event_txt_placaFocusLost
+
+    //Metodo del boton Editar
+    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
         Fila = Table_listaVehiculos.getSelectedRow();
         int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
          
@@ -840,54 +924,6 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         }
     }//GEN-LAST:event_btn_editarActionPerformed
 
-    private void txt_placaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusGained
-        btn_eliminar.setEnabled(false);
-        btn_ingresar.setEnabled(true);
-        btn_editar.setEnabled(false);             
-    }//GEN-LAST:event_txt_placaFocusGained
-
-    private void txt_propietarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_propietarioFocusGained
-        btn_eliminar.setEnabled(false);
-        btn_ingresar.setEnabled(true);
-        btn_editar.setEnabled(false);
-    }//GEN-LAST:event_txt_propietarioFocusGained
-
-    private void cmb_claseFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_claseFocusGained
-        btn_eliminar.setEnabled(false);
-        btn_ingresar.setEnabled(true);
-        btn_editar.setEnabled(false);
-    }//GEN-LAST:event_cmb_claseFocusGained
-
-    private void cmb_parqueaderosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_parqueaderosFocusGained
-        btn_eliminar.setEnabled(false);
-        btn_ingresar.setEnabled(true);
-        btn_editar.setEnabled(false);
-    }//GEN-LAST:event_cmb_parqueaderosFocusGained
-
-    private void cmb_conveniosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_conveniosFocusGained
-        btn_eliminar.setEnabled(false);
-        btn_ingresar.setEnabled(true);
-        btn_editar.setEnabled(false);
-    }//GEN-LAST:event_cmb_conveniosFocusGained
-
-    private void cmb_tarifaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_tarifaFocusGained
-        btn_eliminar.setEnabled(false);
-        btn_ingresar.setEnabled(true);
-        btn_editar.setEnabled(false);
-    }//GEN-LAST:event_cmb_tarifaFocusGained
-
-    private void cmb_claseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_claseItemStateChanged
-        
-    }//GEN-LAST:event_cmb_claseItemStateChanged
-
-    private void check_estaVehiculoEnParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_estaVehiculoEnParqueaderoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_check_estaVehiculoEnParqueaderoActionPerformed
-
-    private void txt_placaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_placaFocusLost
-      
-    }//GEN-LAST:event_txt_placaFocusLost
-
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTable Table_listaVehiculos;
@@ -895,6 +931,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_estadoParqueadero;
     public static javax.swing.JButton btn_generarPDF;
+    private javax.swing.JButton btn_generarQR;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JCheckBox check_estaVehiculoEnParqueadero;
     private javax.swing.JComboBox<String> cmb_clase;
@@ -938,7 +975,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         check_estaVehiculoEnParqueadero.setBackground(Color.WHITE);
     }
     
-    //Metodo que ejecuta el hilo que trae los datos del estado de cupo de parqueadero, Convenios y tarifas en tiempo real    
+    //Metodo que ejecuta loss hilos que traen los datos del estado de cupo de parqueadero, Convenios, tarifas y generacion de codiggo qr en tiempo real    
     @Override
     public void run() {
         Thread ct = Thread.currentThread();

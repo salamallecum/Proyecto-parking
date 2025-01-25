@@ -31,15 +31,18 @@ import vista.MenuAdministrador;
 import vista.PanelVehiculos;
 import static vista.PanelVehiculos.modelo;
 import static vista.PanelVehiculos.Table_listaVehiculos;
+import static vista.PanelVehiculos.dueño;
+import static vista.PanelVehiculos.placa;
 
 /**
  *
  * @author ALEJO
  */
-public class VehiculoControlador {
+public class VehiculoControlador extends Thread{
     
     Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", "", 0, 0, 0);
     ParqueaderoControlador parqControlador;
+    
     
     //Definimos las propiedades que tendran los codigos qr
     int udm = 0;
@@ -55,14 +58,17 @@ public class VehiculoControlador {
     String rutaQrs = new File("").getAbsolutePath()+"\\qrCodes";
     File carpetaQrs = new File(rutaQrs);
     //Ruta de qrs para generacion de tickets de ingreso de vehiculos
-    public static String rutaQrsTicket = "/qr";
+    private static String rutaQrsTicket = "/qr";
     //Ruta de qrs para actualizacion y eliminacion de qrs (paquete qr)
     String rutaPaqueteQrs = "src/qr";
-    File paqueteQrs = new File(rutaPaqueteQrs);
-    //Variable que determina si ya se genero el codigo qr satisfactoriamente
-    boolean codigoQRGeneradoOK = false;
+    File paqueteQrs = new File(rutaPaqueteQrs); 
+    //Variables del proceso de registro y actualizacion de qrs vehiculares
+    Thread hilo4 = new Thread(this);
+    private boolean hiloRegistroTicketsQRSuspendido;
+    Thread hilo5 = new Thread(this);
+    private boolean hiloActualizacionTicketsQRSuspendido;
     
-     
+         
     private final Logger log = Logger.getLogger(VehiculoControlador.class);
     private final URL url = VehiculoControlador.class.getResource("/clasesDeApoyo/Log4j.properties");
     
@@ -505,20 +511,7 @@ public class VehiculoControlador {
             String qrParaConsulta = rutaQrs+"/"+nombreArchivo+".gif";
             String qrParaTicket = rutaPaqueteQrs+"/"+nombreArchivo+".gif";
             codigoQr.renderBarcode(qrParaConsulta);
-            codigoQr.renderBarcode(qrParaTicket);
-
-            //Nos cersioramos de que el codigo qr creado ya se encuentre en el paquete de qrs
-            File[] listadoDeQrsApp = paqueteQrs.listFiles();
-            
-            int cantidadQrs = contarCodigosQr(listadoDeQrsApp);
-                                
-            if(cantidadQrs > 0){
-                for(File qr : listadoDeQrsApp){
-                    if(qr.isFile() && qr.getName().equals(nombreArchivo+".gif")){
-                       codigoQRGeneradoOK = true;  
-                    }
-                }
-            }
+            codigoQr.renderBarcode(qrParaTicket);           
                
         }catch(Exception e){
             log.fatal("ERROR - Se ha producido un error al generar el codigo qr: " + e);
@@ -536,6 +529,9 @@ public class VehiculoControlador {
         
         //Validamos si el nombre del qr a buscar no es igual al que se pretende generar
         if(!qrABuscar.equals(qrNuevo)){
+            
+            //Reanudamos el proceso actualizacion de ticket qr vehicular
+            reanudarProcesoDeActualizaciónQRVehicular();
             
             //Generamos el nuevo nombre del codigo qr a generar
             if(!placaABuscar.equals(placa)){
@@ -648,38 +644,154 @@ public class VehiculoControlador {
     }
     
     //Metodo que genera el ticket del codigo qr de un vehiculo
-    public void generarTicketQrVehiculo(String nombreQr, boolean vistaPrevia){
+    public void generarTicketQrVehiculo(String nombreQr, boolean vistaPrevia, String tipoCambio){
         
-        if(codigoQRGeneradoOK == true){
-            try{
-                //Agregamos los parametros con los cuales se generara el ticket
-                Map parametros = new HashMap ();
-                parametros.put("nombre_qr", nombreQr);
-                parametros.put("imagen", this.getClass().getResourceAsStream(rutaQrsTicket+"/"+nombreQr+".gif"));
+        while(!new File(rutaPaqueteQrs+"/"+nombreQr+".gif").exists()){
+            
+            try {
+                hilo4.sleep(1000);
+            } catch (InterruptedException ex) {
+                log.fatal("ERROR - Se ha producido un error al intentar esperar que se registre el qr del vehiculo: " + ex);
+            }
+            try {
+                hilo5.sleep(1000);
+            } catch (InterruptedException ex) {
+                log.fatal("ERROR - Se ha producido un error al intentar esperar que se actualizar el qr del vehiculo: " + ex);
+            }
+        }
+        
+        try{
+            //Agregamos los parametros con los cuales se generara el ticket
+            Map parametros = new HashMap ();
+            parametros.put("nombre_qr", nombreQr);
+            parametros.put("imagen", this.getClass().getResourceAsStream(rutaQrsTicket+"/"+nombreQr+".gif"));
 
-                JasperReport reporte = null;
+            JasperReport reporte = null;
 
-                reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/qrVehiculo.jasper"));
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/qrVehiculo.jasper"));
 
-                JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, new JREmptyDataSource());
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, new JREmptyDataSource());
 
-                if(vistaPrevia == true){
-                   //Da una vista previa del ticket
-                    JasperViewer view = new JasperViewer(jprint, false);
-                    view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                    view.setTitle("Codigo QR de vehiculo " + nombreQr);
-                    view.setVisible(true);
-                    view.setIconImage(getIconImagePDFVehiculos());
+            if(vistaPrevia == true){
+               //Da una vista previa del ticket
+                JasperViewer view = new JasperViewer(jprint, false);
+                view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                view.setTitle("Codigo QR de vehiculo " + nombreQr);
+                view.setVisible(true);
+                view.setIconImage(getIconImagePDFVehiculos());
 
-               }else{
-                    //Hace que se imprima directamente
-                   JasperPrintManager.printReport(jprint, false);
-               } 
-                codigoQRGeneradoOK = false;
+           }else{
+                //Hace que se imprima directamente
+               JasperPrintManager.printReport(jprint, false);
+           } 
+            
+            if(tipoCambio.equals("REGISTRO")){
+                suspenderProcesoDeRegistroQRVehicular();
+            }else if(tipoCambio.equals("ACTUALIZACION")){
+                suspenderProcesoDeActualizacionQRVehicular();
+            }    
 
-            }catch(JRException ex){
-                JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket qr del vehiculo, contacte al administrador!!");
-                log.fatal("ERROR - Se ha producido un error al intentar generar el ticket qr de un vehiculo: " + ex); 
+        }catch(JRException ex){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket qr del vehiculo, contacte al administrador!!");
+            log.fatal("ERROR - Se ha producido un error al intentar generar el ticket qr de un vehiculo: " + ex); 
+        }   
+    } 
+
+    //Metodo que se encarga de ejecutar los hilos que registran y actualizan los tickets qr de los vehiculos
+    @Override
+    public void run() {
+        Thread ct4 = Thread.currentThread();
+        Thread ct5 = Thread.currentThread();
+        
+        while(ct4 == hilo4){
+            while(!hilo4.isInterrupted()){
+            
+                //Comprueba que el hilo de registro de qrs se encuentre suspendido
+                hiloRegistroTicketsQrEnSuspension();
+
+                try {
+                    //Cada 8 segundos ejecutará la funcion de generacion de ticket qr
+                    sleep(8000);
+                    generarTicketQrVehiculo(placa+" - "+dueño, false, "REGISTRO");
+                } catch (InterruptedException ex) {
+                    interrupt();
+                }
+            }
+        }
+        
+        while(ct5 == hilo5){
+            while(!hilo5.isInterrupted()){
+            
+                //Comprueba que el hilo de actualizacion de qrs se encuentre suspendido
+                hiloActualizacionTicketsQrEnSuspension();
+
+                try {
+                    //Cada 8 segundos ejecutará la funcion de generacion de ticket qr
+                    sleep(8000);
+                    generarTicketQrVehiculo(placa+" - "+dueño, false, "ACTUALIZACION");
+                } catch (InterruptedException ex) {
+                    interrupt();
+                }
+            }
+        }
+    }   
+    
+    //Metodo que carga en el sistema el proceso registro de tickets qr
+    public synchronized void cargarProcesoDeRegistroQRVehicular(){
+        hilo4.start();
+        hiloRegistroTicketsQRSuspendido = true;
+    }
+    
+    //Metodo que carga en el sistema el proceso actualizacion de tickets qr
+    public synchronized void cargarProcesoDeActualizacionQRVehicular(){
+        hilo5.start();
+        hiloActualizacionTicketsQRSuspendido = true;
+        System.out.println("Proceso de actualizacion qrs cargado");
+    }
+    
+    //Metodo que reanuda el hilo de generación de ticket qr para un vehiculo
+    public synchronized void reanudarProcesoDeRegistroQRVehicular(){
+        hiloRegistroTicketsQRSuspendido = false;
+        notifyAll();
+    }
+    
+    //Metodo que reanuda el hilo de actualización de ticket qr para un vehiculo
+    public synchronized void reanudarProcesoDeActualizaciónQRVehicular(){
+        hiloActualizacionTicketsQRSuspendido = false;
+        notifyAll();
+        System.out.println("Se reanudo proceso de actualizacion qrs");
+    }
+    
+    //Metodo que suspende el hilo de generación de ticket qr para un vehiculo
+    public synchronized void suspenderProcesoDeRegistroQRVehicular(){
+       hiloRegistroTicketsQRSuspendido = true;
+    }
+    
+    //Metodo que suspende el hilo de generación de ticket qr para un vehiculo
+    public synchronized void suspenderProcesoDeActualizacionQRVehicular(){
+       hiloActualizacionTicketsQRSuspendido = true;
+       System.out.println("Se suspendio proceso de actualizacion qrs");
+    }
+    
+    //Metodo que determina que hace el hilo de registro de ticket qr mientras se encuentra suspendido
+    public synchronized void hiloRegistroTicketsQrEnSuspension(){
+        while(hiloRegistroTicketsQRSuspendido){
+            try {
+                wait();
+                System.out.println("Esperando...");
+            } catch (InterruptedException ex) {
+                interrupt();
+            }
+        }
+    } 
+    
+    //Metodo que determina que hace el hilo de registro de ticket qr mientras se encuentra suspendido
+    public synchronized void hiloActualizacionTicketsQrEnSuspension(){
+        while(hiloActualizacionTicketsQRSuspendido){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                interrupt();
             }
         }
     } 

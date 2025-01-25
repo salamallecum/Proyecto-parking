@@ -23,6 +23,8 @@ import modelo.Parqueadero;
 import modelo.Tarifa;
 import modelo.Vehiculo;
 import org.apache.log4j.Logger;
+import static vista.PanelVehiculos.dueño;
+import static vista.PanelVehiculos.placa;
 
 
 /**
@@ -83,6 +85,9 @@ public class EditarVehiculo extends javax.swing.JFrame{
         tablaVehi = PanelVehiculos.Table_listaVehiculos;
         user = Login.usuario;
         modelo = PanelVehiculos.modelo;
+        
+        //Caargamos eel prroceso de actualizacion de qrs
+        vehicontrolador.cargarProcesoDeActualizacionQRVehicular();
         
         setSize(620,358);
         setResizable(false);
@@ -381,7 +386,6 @@ public class EditarVehiculo extends javax.swing.JFrame{
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
        
         int tipVehi_cmb, validacion = 0;
-        String qrInfo, placa, dueño = "";
         String tipoVehi_string="";
         Parqueadero parqSeleccionado = new Parqueadero();
         Convenio convSeleccionado = new Convenio();
@@ -464,8 +468,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             validacion++;
         }
         
-        if (validacion == 0) {
-            
+        if (validacion == 0) {           
             FilaAnterior = tablaVehi.getSelectedRow();
             
             //Encapsulamos el objeto vehiculo 
@@ -534,10 +537,10 @@ public class EditarVehiculo extends javax.swing.JFrame{
             modelo.addRow(fila);
             modelo.removeRow(FilaAnterior);
                         
-            //Actualizamos el codigo QR del vehiculo
-            vehicontrolador.actualizarQR(placaBack, propietariaBack, placa, dueño, qrBack);
+            
             JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.");
-            vehicontrolador.generarTicketQrVehiculo(placa+" - "+dueño, false);
+            //Actualizamos el codigo QR del vehiculo y lo imprimimos
+            vehicontrolador.actualizarQR(placaBack, propietariaBack, placa, dueño, qrBack);
             this.dispose();  
             PanelVehiculos.hayVehiculoEnEdicion = false;
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
