@@ -84,7 +84,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
      */
     public ArqueoDeCaja() {
         initComponents();
-        setSize(535, 400);
+        setSize(535, 406);
         setResizable(false);
         setTitle("Arqueo de caja");
         setLocationRelativeTo(null);
@@ -480,7 +480,6 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel6)
                     .addComponent(txt_numBilletes100mil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -526,11 +525,11 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(txt_numMonedas50pesos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(0, 5, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(18, 20, 182, 328);
+        jPanel1.setBounds(18, 20, 184, 340);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Totales"));
 
@@ -597,7 +596,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(210, 20, 315, 167);
+        jPanel2.setBounds(210, 20, 317, 171);
 
         btn_finalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_15107.png"))); // NOI18N
         btn_finalizar.setText("Finalizar");
