@@ -52,6 +52,7 @@ public class ArqueoControlador {
    Arqueo arqueoConsultado = new Arqueo(0, "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
    FacturaControlador factControla;
    CierreControlador cierreControla;
+   UsuarioControlador usuarioControla;
    int totalPerdidasArqueos;
    public String totalPerdidasArqueos_str;
    public String cantidadDeArqueosSistema;
@@ -121,15 +122,14 @@ public class ArqueoControlador {
     }
     
     //Metodo que imprime el ticket de cuando se realizael arqueo de caja al inicio de turno
-    public void generarTicketArqueoDeCaja(String codigoDeArqueo, boolean vistaPrevia){
+    public void generarTicketArqueoDeCaja(String codigoDeArqueo, int usuario, boolean vistaPrevia){
                
         try{
-           
            Connection cn3 = Conexion.conectar();
-
            Map parametro = new HashMap();
            parametro.clear();
            parametro.put("codigo", codigoDeArqueo);
+           parametro.put("usuario", usuario);
            parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
            
            JasperReport reporte = null;

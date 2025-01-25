@@ -966,7 +966,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
 
     private void btn_verArqueoPrevioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_verArqueoPrevioActionPerformed
         String codigo_arqueo = cierreAEditar.getCodigoArqueo();
-        arqueoControla.generarTicketArqueoDeCaja(codigo_arqueo, true);
+        arqueoControla.generarTicketArqueoDeCaja(codigo_arqueo, usuarioControla.consultarIdDeunUsuario(usuarioDelSistema), true);
         btn_verArqueoPrevio.setEnabled(false);
     }//GEN-LAST:event_btn_verArqueoPrevioActionPerformed
 

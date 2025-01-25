@@ -350,11 +350,10 @@ public class VehiculoControlador extends Thread{
             ResultSet rs;
             
             if(consecutivoQR != null){
-                sql = "select Id_vehiculo, Placa, Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Qr_consecutivo = '"+consecutivoQR+"'";
+                sql = "select Placa, Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Qr_consecutivo = '"+consecutivoQR+"'";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                 if(rs.next()){
-                    vehiculoConsultado.setId(rs.getInt("Id_vehiculo"));
                     vehiculoConsultado.setQr_consecutivo(consecutivoQR);
                     vehiculoConsultado.setPlaca(rs.getString("Placa"));
                     vehiculoConsultado.setPropietario(rs.getString("Propietario"));
@@ -388,7 +387,7 @@ public class VehiculoControlador extends Thread{
             
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion del vehiculo seleccionado!!, contacte al administrador.");
-            log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de un vehiculo para su edición: " + e);
+            log.fatal("ERROR - Se ha producido un error al intentar consultar la informacion de un vehiculo: " + e);
         }
         return vehiculoConsultado;        
     }
@@ -751,7 +750,6 @@ public class VehiculoControlador extends Thread{
     public synchronized void cargarProcesoDeActualizacionQRVehicular(){
         hilo5.start();
         hiloActualizacionTicketsQRSuspendido = true;
-        System.out.println("Proceso de actualizacion qrs cargado");
     }
     
     //Metodo que reanuda el hilo de generación de ticket qr para un vehiculo
@@ -764,7 +762,6 @@ public class VehiculoControlador extends Thread{
     public synchronized void reanudarProcesoDeActualizaciónQRVehicular(){
         hiloActualizacionTicketsQRSuspendido = false;
         notifyAll();
-        System.out.println("Se reanudo proceso de actualizacion qrs");
     }
     
     //Metodo que suspende el hilo de generación de ticket qr para un vehiculo
@@ -775,7 +772,6 @@ public class VehiculoControlador extends Thread{
     //Metodo que suspende el hilo de generación de ticket qr para un vehiculo
     public synchronized void suspenderProcesoDeActualizacionQRVehicular(){
        hiloActualizacionTicketsQRSuspendido = true;
-       System.out.println("Se suspendio proceso de actualizacion qrs");
     }
     
     //Metodo que determina que hace el hilo de registro de ticket qr mientras se encuentra suspendido
@@ -783,7 +779,6 @@ public class VehiculoControlador extends Thread{
         while(hiloRegistroTicketsQRSuspendido){
             try {
                 wait();
-                System.out.println("Esperando...");
             } catch (InterruptedException ex) {
                 interrupt();
             }

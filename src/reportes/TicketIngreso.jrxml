@@ -5,6 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="placa_vehiculo" class="java.lang.String"/>
 	<parameter name="imagen" class="java.io.InputStream"/>
+	<parameter name="codigo_factura" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      facturas.`Codigo` AS facturas_Codigo,
@@ -23,7 +24,9 @@ FROM
      INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`
      INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`
 WHERE
-     facturas.`Placa` = $P{placa_vehiculo}]]>
+     facturas.`Placa` = $P{placa_vehiculo}
+AND facturas.Estado_fctra = 'Abierta'
+AND facturas.`Codigo` = $P{codigo_factura}]]>
 	</queryString>
 	<field name="facturas_Codigo" class="java.lang.String"/>
 	<field name="facturas_Placa" class="java.lang.String"/>

@@ -928,7 +928,8 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                            dispose();
                            PanelCaja.numVehiculosLiquidandose--;
                        }
-                    }         
+                    }
+                    PanelCaja.txt_consecutivoQR.requestFocus();
                 }  
             }
         }          

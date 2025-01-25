@@ -1024,7 +1024,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
             }
 
             //Imprimimos el ticket de arqueo de caja
-            arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false);
+            arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, usuarioControla.consultarIdDeunUsuario(usuarioDelSistema), false);
             
             //Actualizamos los datos totales del gestor de cierres
             arqueoControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarArqueos.sentenciaSQLUtilizadaTotales);
@@ -1040,7 +1040,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
                int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja actualizado satisfactoriamente.", "Arqueo de caja", 0, 1, null, botones, this);
 
                if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                   arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false); 
+                   arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, usuarioControla.consultarIdDeunUsuario(usuarioDelSistema), false); 
                }
 
                if(eleccionFinalizarArqueo == JOptionPane.NO_OPTION){

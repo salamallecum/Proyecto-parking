@@ -636,7 +636,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.", "Error",JOptionPane.ERROR_MESSAGE);
         }
         
         //Cuenta la cantidad maxima de caracteres
@@ -917,7 +917,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
             arqueoControla.crearArqueo(nuevoArqueo);      
 
             //Imprimimos el ticket de aruqeo de caja
-            arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false);
+            arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, usuarioControla.consultarIdDeunUsuario(usuarioDelSistema), false);
 
             ventanaEmergCopiaArqueo = true;
 
@@ -927,7 +927,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja finalizado satisfactoriamente.", "Arqueo de caja", 0, 1, null, botones, this);
 
                if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                   arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, false); 
+                   arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, usuarioControla.consultarIdDeunUsuario(usuarioDelSistema), false); 
                }else{
                    ventanaEmergCopiaArqueo = false;
                    dispose();

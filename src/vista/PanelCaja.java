@@ -796,6 +796,7 @@ public class PanelCaja extends javax.swing.JPanel{
                        Normalizar();
                    }
                 }
+                txt_consecutivoQR.requestFocus();
                                             
             }else{
                 JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Error",JOptionPane.ERROR_MESSAGE);
@@ -944,6 +945,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 cmb_clase.setEnabled(true);
                 lbl_parqueadero.setText("");
                 lbl_parqueadero.setVisible(false);
+                txt_consecutivoQR.requestFocus();
                 
             }else {
                 JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Error",JOptionPane.ERROR_MESSAGE);
