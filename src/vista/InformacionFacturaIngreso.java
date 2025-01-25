@@ -292,7 +292,8 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
 
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
         String placa = lbl_placa.getText();
-        facturaControla.generarTicketIngreso(placa, true); 
+        String codigo = lbl_codigo.getText();
+        facturaControla.generarTicketIngreso(placa,codigo,true); 
         btn_imprimirFactura.setEnabled(false);
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
 

@@ -71,7 +71,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         lbl_totalAPagar.setVisible(false);
         lbl_dineroCambio.setVisible(false);
        
-        setSize(417, 500);
+        setSize(417, 525);
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Liquidación de vehiculo");
@@ -852,7 +852,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
         }else{
             
             boolean ventanaEmergenteCopiaTicketSalida = false;
-        
+            String codigo = lbl_codigo.getText();
             String placa = lbl_placa.getText();
             String parqueadero = lbl_noParqueadero.getText();
             String dueño = lbl_propietario.getText();
@@ -864,7 +864,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                 dispose();
                 parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
                 facturaControla.cerrarFactura(placa);
-                facturaControla.generarTicketSalida(placa, false);
+                facturaControla.generarTicketSalida(placa, codigo, false);
 
                 ventanaEmergenteCopiaTicketSalida = true;
 
@@ -874,7 +874,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                    int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
 
                    if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                       facturaControla.generarTicketSalida(placa, false); 
+                       facturaControla.generarTicketSalida(placa, codigo, false); 
                    }else{
                        ventanaEmergenteCopiaTicketSalida = false;
                        dispose();
@@ -912,7 +912,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                     }
                     
                     facturaControla.cerrarFactura(placa);
-                    facturaControla.generarTicketSalida(placa, false);
+                    facturaControla.generarTicketSalida(placa, codigo, false);
 
                     ventanaEmergenteCopiaTicketSalida = true;
 
@@ -922,7 +922,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                        int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
 
                        if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
-                           facturaControla.generarTicketSalida(placa, false); 
+                           facturaControla.generarTicketSalida(placa, codigo, false); 
                        }else{
                            ventanaEmergenteCopiaTicketSalida = false;
                            dispose();
