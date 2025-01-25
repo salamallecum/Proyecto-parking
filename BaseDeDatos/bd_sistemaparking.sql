@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 11-01-2025 a las 22:56:45
+-- Tiempo de generación: 25-01-2025 a las 22:34:23
 -- Versión del servidor: 5.7.40
 -- Versión de PHP: 8.0.26
 
@@ -213,14 +213,7 @@ CREATE TABLE IF NOT EXISTS `parqueaderos` (
   `Propietario` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Esta_en_parqueadero` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id_parqueadero`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de parqueaderos';
-
---
--- Volcado de datos para la tabla `parqueaderos`
---
-
-INSERT INTO `parqueaderos` (`Id_parqueadero`, `Nombre_parqueadero`, `TipoParq`, `Estado`, `Placa`, `Propietario`, `Esta_en_parqueadero`) VALUES
-(1, '1A', 'RESIDENTE', 'Disponible', '', '', 'No');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tabla de parqueaderos';
 
 -- --------------------------------------------------------
 
