@@ -363,7 +363,10 @@ public class VehiculoControlador extends Thread{
                     vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
                     vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
                     cn.close();              
-                }         
+                }else{
+                    vehiculoConsultado = null;
+                }
+                
             }else if(placaDelVehiculo != null){
                 sql = "select Id_vehiculo, SUBSTR(Qr_consecutivo,7) Consecutivo_qr, Placa, Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Placa = '"+placaDelVehiculo+ "'";
                 pst = cn.prepareStatement(sql);
@@ -378,6 +381,8 @@ public class VehiculoControlador extends Thread{
                     vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
                     vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
                     cn.close();              
+                }else{
+                    vehiculoConsultado = null;
                 }
             }          
             
