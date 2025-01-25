@@ -80,6 +80,7 @@ public class CierreControlador {
     public void bloquearCaja(){
         
         PanelCaja.btn_abrirCaja.setEnabled(true);
+        PanelCaja.txt_consecutivoQR.setEnabled(false);
         PanelCaja.txt_Placa.setEnabled(false);
         PanelCaja.txt_nombrePropietario.setEnabled(false);
         PanelCaja.cmb_clase.setEnabled(false);

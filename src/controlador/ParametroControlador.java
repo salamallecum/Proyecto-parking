@@ -1,6 +1,8 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import com.barcodelib.barcode.QRCode;
+import java.io.File;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -15,7 +17,7 @@ import org.apache.log4j.Logger;
  * @author ALEJO
  */
 public class ParametroControlador {
-    
+       
    private final Logger log = Logger.getLogger(ParametroControlador.class);
    private URL url = ParametroControlador.class.getResource("Log4j.properties");
     
@@ -62,7 +64,7 @@ public class ParametroControlador {
         return valor;
     }
     
-    //Metodo que se encarga de generar los consecutivos para las facturas, cierres y arqueos de caja
+    //Metodo que se encarga de generar los consecutivos para las facturas, cierres, codigos qr de vehiculos y arqueos de caja
     public String generarConsecutivo(int tamaño) {
   
         // Puede personalizar los personajes que desea agregar a las cadenas al azar
@@ -82,7 +84,6 @@ public class ParametroControlador {
 
             sb.append(rndChar);
         }
-
         return sb.toString();
     }
 }
