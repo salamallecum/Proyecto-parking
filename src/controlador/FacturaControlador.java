@@ -114,7 +114,7 @@ public class FacturaControlador implements Runnable {
     }
        
     //Metodo que genera el ticket de ingreso de un vehiculo
-    public void generarTicketIngreso(String placaVehiculo, boolean vistaPrevia){
+    public void generarTicketIngreso(String placaVehiculo, String codigoFactura, boolean vistaPrevia){
         
         try{
             Connection cn3 = Conexion.conectar();
@@ -122,6 +122,7 @@ public class FacturaControlador implements Runnable {
             //Agregamos los parametros con los cuales se generara el ticket
             Map parametros = new HashMap ();
             parametros.put("placa_vehiculo", placaVehiculo);
+            parametros.put("codigo_factura", codigoFactura);
             parametros.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
                      
             JasperReport reporte = null;
@@ -159,7 +160,7 @@ public class FacturaControlador implements Runnable {
     }
        
     //Metodo que imprime el ticket de salida de un vehiculo
-    public void generarTicketSalida(String placa_tick, boolean vistaPrevia){
+    public void generarTicketSalida(String placa_tick, String codigoFactura, boolean vistaPrevia){
         
         try{
            Connection cn3 = Conexion.conectar();
@@ -167,6 +168,7 @@ public class FacturaControlador implements Runnable {
            Map parametro = new HashMap();
            parametro.clear();
            parametro.put("placa", placa_tick);
+           parametro.put("codigo_factura", codigoFactura);
            parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
            
            JasperReport reporte = null;
