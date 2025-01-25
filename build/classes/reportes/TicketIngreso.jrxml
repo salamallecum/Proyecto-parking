@@ -35,9 +35,6 @@ WHERE
 	<field name="tarifas_Nombre_tarifa" class="java.lang.String"/>
 	<field name="parqueaderos_Nombre_parqueadero" class="java.lang.String"/>
 	<field name="usuarios_Usuario" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="60" splitType="Stretch">
 			<staticText>
@@ -67,12 +64,6 @@ WHERE
 			</image>
 		</band>
 	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
 	<detail>
 		<band height="211" splitType="Stretch">
 			<staticText>
@@ -210,13 +201,4 @@ WHERE
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>
