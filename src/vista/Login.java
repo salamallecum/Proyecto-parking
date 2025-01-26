@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.sql.Connection;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -194,7 +195,7 @@ public class Login extends javax.swing.JFrame {
         int numeroCaracteres = 10;
         if(txt_usuario.getText().length() == numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_usuario.setText("");
         }
     }//GEN-LAST:event_txt_usuarioKeyTyped
@@ -205,7 +206,7 @@ public class Login extends javax.swing.JFrame {
        int numeroCaracteres = 10;
         if(clave.length() == numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_clave.setText("");
         }   
     }//GEN-LAST:event_txt_claveKeyTyped
@@ -284,7 +285,7 @@ public class Login extends javax.swing.JFrame {
                 log.warn("ADVERTENCIA - Se intentó acceder al sistema con un usuario no activo");
             }             
         } else {
-            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }
     

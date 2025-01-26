@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -107,7 +108,7 @@ public class CierreControlador {
                 modelo.removeRow(0);
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error al intentar limpiar la tabla de operacion del parqueadero, contacte al administrador!!!.");
+            JOptionPane.showMessageDialog(null, "Error al intentar limpiar la tabla de operacion del parqueadero, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar resetear registros de la tabla de operacion del parqueadero: " + ex);
         }
     }    
@@ -161,7 +162,7 @@ public class CierreControlador {
             cn3.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al registrar cierre!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al registrar cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al crear un cierre de caja en el sistema: " + e);
         } 
     }
@@ -197,7 +198,7 @@ public class CierreControlador {
            } 
 
        }catch(JRException ex){
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Cierre de Caja, revise la conexión de la impresora o contacte al administrador!!");
+           JOptionPane.showMessageDialog(null, "¡¡Error al generar ticket de cierre de caja!!, revise la conexión de la impresora o contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
            log.fatal("ERROR - Se ha producido un error al intentar generar ticket de cierre de caja de final de turno: " + ex);
        }
     }
@@ -213,7 +214,7 @@ public class CierreControlador {
             cn.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al contabilizar facturas, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al contabilizar facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar asginar un cierre a facturas contabilizadas: " + e);
         }
     }
@@ -233,7 +234,7 @@ public class CierreControlador {
             }
             cn8.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al seleccionar cierre!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al seleccionar cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar consultar el id de un cierre: " + e);
         }
         return idDelCierre;
@@ -317,7 +318,7 @@ public class CierreControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de un cierre!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion de un cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de un cierre: " + e);
         }
         return cierreConsultado;        
@@ -335,7 +336,7 @@ public class CierreControlador {
             cn6.close();
             
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar montos finales de un cierre!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar montos finales de un cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar los montos finales de un cierre: " + e);
         }
     }
@@ -366,7 +367,7 @@ public class CierreControlador {
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de cierres!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error de busqueda de cierres!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar buscar los cierres. " + ex);
         }
     }
@@ -412,7 +413,7 @@ public class CierreControlador {
             }
             cn.close();                    
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al llenar tabla de cierres, ¡Contacte al administrador!");
+                JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de cierres!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
                 log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de cierres del Administrador de cierres. " + e);
             }
             
@@ -477,7 +478,7 @@ public class CierreControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de un cierre!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion de un cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de un cierre: " + e);
         }
         return cierreConsultado;        
@@ -493,7 +494,7 @@ public class CierreControlador {
             cn9.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al actualizar cierre, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar un cierre: " + e);  
         } 
     }
@@ -511,7 +512,7 @@ public class CierreControlador {
             cn1.close();
             
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar cierre!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar un cierre" + e);
         }   
     }
@@ -540,7 +541,7 @@ public class CierreControlador {
             cn2.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener producidos de cierres, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al obtener producidos de cierres!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar obtener los producidos de los cierres generados en el turno. " + e);
         }
         return producidos;
@@ -580,7 +581,7 @@ public class CierreControlador {
             }
             cn3.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al contar cierres generados en el turno, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al contar cierres generados en el turno!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al contar loc cierres generados en el turno: " + e);
         }
         return cantidadCierres;
@@ -609,7 +610,7 @@ public class CierreControlador {
             cn2.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener diferencias de cierres, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al obtener diferencias de cierres!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar obtener las diferencias de los cierres generados en el turno. " + e);
         }
         return diferencias;
@@ -653,7 +654,7 @@ public class CierreControlador {
             cn2.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener dineros a consignar de cierres, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al obtener dineros a consignar de cierres!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar obtener los dineros consignados de los cierres generados en el turno. " + e);
         }
         return dinerosAConsignar;
@@ -748,7 +749,7 @@ public class CierreControlador {
             });
            
        }catch(JRException ex){
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Consolidado de Cierres de Caja, contacte al administrador!!");
+           JOptionPane.showMessageDialog(null, "¡¡Error al generar Consolidado de cierres de caja!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
            log.fatal("ERROR - Se ha producido un error al intentar generar reporte pdf de consolidado de cierres: " + ex);
        }
     }
@@ -793,7 +794,7 @@ public class CierreControlador {
             cn2.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener numerosde facturas de cierres, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al obtener numeros de facturas de cierres!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar obtener los numerosde facturas de los cierres generados en el turno. " + e);
         }
         return numDeFacturas;

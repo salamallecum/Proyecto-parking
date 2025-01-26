@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -403,7 +404,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
         int numeroCaracteres = 30;
         if(txt_nombreTarifa.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Máximo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Máximo 30 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_nombreTarifa.setText("");
         } 
     }//GEN-LAST:event_txt_nombreTarifaKeyTyped
@@ -427,7 +428,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             
         //No deja editar la tarifa ninguna
         if(nombreTarifa.equals("NINGUNA")){
-            JOptionPane.showMessageDialog(null, "No Permitido");
+            JOptionPane.showMessageDialog(null, "No Permitido", "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             txt_nombreTarifa.setEditable(true);
             btn_editar.setEnabled(false);
             btn_eliminar.setEnabled(false);
@@ -570,15 +571,14 @@ public class GestionarTarifas extends javax.swing.JFrame {
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 10;
         if(txt_monto.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Máximo 10 caracteres");
+            JOptionPane.showMessageDialog(null,"Máximo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_monto.setText("");
         }
         
@@ -716,14 +716,14 @@ public class GestionarTarifas extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
             
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 2;
         if(txt_menosMinutos.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres");
+            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }//GEN-LAST:event_txt_menosMinutosKeyTyped
 
@@ -735,14 +735,14 @@ public class GestionarTarifas extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
             
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 2;
         if(txt_menosHoras.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres");
+            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }//GEN-LAST:event_txt_menosHorasKeyTyped
 
@@ -754,14 +754,14 @@ public class GestionarTarifas extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
             
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 2;
         if(txt_menosDias.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres");
+            JOptionPane.showMessageDialog(null,"Máximo 2 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }//GEN-LAST:event_txt_menosDiasKeyTyped
 
@@ -770,7 +770,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
         int numeroCaracteres = 10;
         if(txt_subtarifaParaAplicar.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_subtarifaParaAplicar.setText("");
         }
 
@@ -781,7 +781,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
 
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }//GEN-LAST:event_txt_subtarifaParaAplicarKeyTyped
 
@@ -978,13 +978,13 @@ public class GestionarTarifas extends javax.swing.JFrame {
             tarifaTieneDescuento = "Si";
             
             if(descuentoMinutos.equals("") && txt_menosMinutos.isEditable()) {
-                JOptionPane.showMessageDialog(null, "Indique el numero de minutos que desea descontar.");
+                JOptionPane.showMessageDialog(null, "Indique el numero de minutos que desea descontar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else if(descuentoHoras.equals("") && txt_menosHoras.isEditable()){
-                JOptionPane.showMessageDialog(null, "Indique el numero de horas que desea descontar.");
+                JOptionPane.showMessageDialog(null, "Indique el numero de horas que desea descontar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else if(descuentoDias.equals("") && txt_menosDias.isEditable()){
-                JOptionPane.showMessageDialog(null, "Indique el numero de días que desea descontar.");
+                JOptionPane.showMessageDialog(null, "Indique el numero de días que desea descontar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else{
                 if(!descuentoMinutos.isEmpty()){
@@ -1010,7 +1010,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             nuevaTarifa.setTarifaCobraTiempoAdicional(cobrarTiempoAdicional);
             
             if(subTarifaAAplicar.equals("")){
-                JOptionPane.showMessageDialog(null, "Indique el monto que desea aplicar para el cobro adicional.");
+                JOptionPane.showMessageDialog(null, "Indique el monto que desea aplicar para el cobro adicional.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else{              
                 unidadTiempoAdicional = "minutos";
@@ -1024,7 +1024,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             
             if(subTarifaAAplicar.equals("")){
                 txt_subtarifaParaAplicar.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "Indique el monto para el cobro adicional que desea aplicar.");
+                JOptionPane.showMessageDialog(null, "Indique el monto para el cobro adicional que desea aplicar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else{
                 unidadTiempoAdicional = "horas";
@@ -1039,7 +1039,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
         laTarifaYaExiste = tarifaControla.evaluarExistenciaDeTarifa(nombreTarifa);
         if(laTarifaYaExiste){
             txt_nombreTarifa.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "La tarifa indicada ya se encuentra registrada.");
+            JOptionPane.showMessageDialog(null, "La tarifa indicada ya se encuentra registrada.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             Normalizar();
         }else{
             if (validacion == 0) {
@@ -1064,7 +1064,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
 
                 txt_nombreTarifa.setBackground(Color.GREEN);
                 txt_subtarifaParaAplicar.setBackground(Color.GREEN);
-                JOptionPane.showMessageDialog(null, "Tarifa registrada satisfactoriamente.");
+                JOptionPane.showMessageDialog(null, "Tarifa registrada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
                 
                 tarifaControla.limpiarTarifa(nuevaTarifa);
                 
@@ -1073,7 +1073,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
                 txt_nombreTarifa.requestFocus();
                 
             }else{
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 Normalizar();
             }
         }      
@@ -1133,13 +1133,13 @@ public class GestionarTarifas extends javax.swing.JFrame {
             tarifaTieneDescuento = "Si";
             
             if(descuentoMinutos.equals("") && txt_menosMinutos.isEditable()) {
-                JOptionPane.showMessageDialog(null, "Indique el numero de minutos que desea descontar.");
+                JOptionPane.showMessageDialog(null, "Indique el numero de minutos que desea descontar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else if(descuentoHoras.equals("") && txt_menosHoras.isEditable()){
-                JOptionPane.showMessageDialog(null, "Indique el numero de horas que desea descontar.");
+                JOptionPane.showMessageDialog(null, "Indique el numero de horas que desea descontar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else if(descuentoDias.equals("") && txt_menosDias.isEditable()){
-                JOptionPane.showMessageDialog(null, "Indique el numero de días que desea descontar.");
+                JOptionPane.showMessageDialog(null, "Indique el numero de días que desea descontar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else{
                 if(!descuentoMinutos.isEmpty()){
@@ -1165,7 +1165,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             editTarifa.setTarifaCobraTiempoAdicional(cobrarTiempoAdicional);
             
             if(subTarifaAAplicar.equals("")){
-                JOptionPane.showMessageDialog(null, "Indique el monto que desea aplicar para el cobro adicional.");
+                JOptionPane.showMessageDialog(null, "Indique el monto que desea aplicar para el cobro adicional.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else{              
                 unidadTiempoAdicional = "minutos";
@@ -1179,7 +1179,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
             
             if(subTarifaAAplicar.equals("")){
                 txt_subtarifaParaAplicar.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null, "Indique el monto para el cobro adicional que desea aplicar.");
+                JOptionPane.showMessageDialog(null, "Indique el monto para el cobro adicional que desea aplicar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 validacion++;
             }else{
                 unidadTiempoAdicional = "horas";
@@ -1221,12 +1221,12 @@ public class GestionarTarifas extends javax.swing.JFrame {
 
             txt_nombreTarifa.setBackground(Color.GREEN);
             txt_subtarifaParaAplicar.setBackground(Color.GREEN);
-            JOptionPane.showMessageDialog(null, "Tarifa actualizada satisfactoriamente.");
+           JOptionPane.showMessageDialog(null, "Tarifa actualizada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
             Limpiar();
             Normalizar();
 
         } else {
-            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             Normalizar();
         }
     }
@@ -1240,8 +1240,9 @@ public class GestionarTarifas extends javax.swing.JFrame {
         if(cantidadFilas == 0){
             JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.");
         }else{
+            String botones[] = {"Si", "No"};
+            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar tarifa", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
 
-            int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar tarifa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             String nombreTarifa = table_listaTarifas.getValueAt(Fila, 0).toString();
             if(decision == JOptionPane.YES_OPTION){
                 
@@ -1249,7 +1250,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
                 boolean laTarifaSeEstaImplementando = tarifaControla.validarSiLaTarifaSeEstaImplementando(idTarifa);
                 
                 if(laTarifaSeEstaImplementando){
-                    JOptionPane.showMessageDialog(null, "La tarifa seleccionada se está implementando actualmente.");
+                    JOptionPane.showMessageDialog(null, "La tarifa seleccionada se está implementando actualmente.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 }else{
                     
                     if(nombreTarifa.equals("TARIF_AUTOMOVIL") || nombreTarifa.equals("TARIF_MOTO") || nombreTarifa.equals("TARIF_PREFERENCIAL")){
@@ -1305,7 +1306,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
     private void cerrarGestorTarifas(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de tarifas", 0, 3, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de tarifas", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

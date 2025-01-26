@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -107,7 +108,7 @@ public class ArqueoControlador {
             cn3.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al registrar arqueo!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al registrar arqueo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al crear un arqueo de caja en el sistema: " + e);
         } 
     }
@@ -160,7 +161,7 @@ public class ArqueoControlador {
            } 
 
        }catch(JRException ex){
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Arqueo de Caja, revise la conexión de la impresora o contacte al administrador!!");
+           JOptionPane.showMessageDialog(null, "¡¡Error al generar ticket de arqueo de caja, revise la conexión de la impresora o contacte al administrador!!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
            log.fatal("ERROR - Se ha producido un error al intentar generar ticket de arqueo de caja de inicio de turno: " + ex);
        }
     }
@@ -211,7 +212,7 @@ public class ArqueoControlador {
             }
             cn.close();                    
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al llenar tabla de arqueos, ¡Contacte al administrador!");
+                JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de arqueos!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
                 log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de arqueos del Administrador de arqueos. " + e);
             }
             
@@ -271,7 +272,7 @@ public class ArqueoControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion de un arqueo!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar información de un arqueo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de un arqueo: " + e);
         }
         return arqueoConsultado;        
@@ -287,7 +288,7 @@ public class ArqueoControlador {
             cn9.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al actualizar arqueo, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar arqueo!!, contacte al administrador..", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar un arqueo: " + e);  
         } 
     }
@@ -305,7 +306,7 @@ public class ArqueoControlador {
             cn1.close();
             
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar arqueo de un cierre!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar arqueo de un cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar el arqueo de un cierre: " + e);
         }   
     }
@@ -354,7 +355,7 @@ public class ArqueoControlador {
             }
             cn3.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al contar arqueos generados en el turno, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al contar arqueos generados en el turno, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al contar loc arqueos generados en el turno: " + e);
         }
         return cantidadArqueos;
@@ -383,7 +384,7 @@ public class ArqueoControlador {
             cn2.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al obtener diferencias de arqueos, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al obtener diferencias de arqueos, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar obtener las diferencias de los arqueos generados en el turno. " + e);
         }
         return diferencias;
@@ -414,7 +415,7 @@ public class ArqueoControlador {
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda de arqueos!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null,  "¡¡Error de busqueda de arqueos!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar buscar los arqueos. " + ex);
         }
     }
@@ -454,7 +455,7 @@ public class ArqueoControlador {
             });
            
        }catch(JRException ex){
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Consolidado de Arqueos de Caja, contacte al administrador!!");
+           JOptionPane.showMessageDialog(null, "¡¡Error al generar Consolidado de Arqueos de Caja!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
            log.fatal("ERROR - Se ha producido un error al intentar generar reporte pdf de consolidado de arqueos: " + ex);
        }
     }

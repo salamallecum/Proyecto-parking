@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -847,7 +848,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
         
         if(PanelCaja.laCajaFueAbierta == false){
-            JOptionPane.showMessageDialog(null, "No Permitido");
+            JOptionPane.showMessageDialog(null, "No Permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             txt_dineroRecibido.setText("");
         }else{
             
@@ -871,7 +872,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                 while(ventanaEmergenteCopiaTicketSalida == true){
                    String botones[] = {"Imprimir copia", "Cerrar"};
                    //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-                   int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
+                   int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"), botones, this);
 
                    if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                        facturaControla.generarTicketSalida(placa, codigo, false); 
@@ -888,7 +889,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
 
                 if(dineroRecibido.equals("")){
                     txt_dineroRecibido.setBackground(Color.red);
-                    JOptionPane.showMessageDialog(null, "Digite el efectivo recibido para hacer el calculo correspondiente.");
+                    JOptionPane.showMessageDialog(null, "Digite el efectivo recibido para hacer el calculo correspondiente.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                     txt_dineroRecibido.setBackground(Color.white);
 
                 }else{
@@ -919,7 +920,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                     while(ventanaEmergenteCopiaTicketSalida == true){
                        String botones[] = {"Imprimir copia", "Cerrar"};
                        //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-                       int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, 1, null, botones, this);
+                       int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo liquidado satisfactoriamente.", "Liquidar vehiculo", 0, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"), botones, this);
 
                        if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                            facturaControla.generarTicketSalida(placa, codigo, false); 
@@ -957,7 +958,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
             
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }//GEN-LAST:event_txt_dineroRecibidoKeyTyped
 

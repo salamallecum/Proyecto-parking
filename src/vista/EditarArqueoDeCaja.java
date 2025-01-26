@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -736,14 +737,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }   
             
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes100mil.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }    
     }//GEN-LAST:event_txt_numBilletes100milKeyTyped
 
@@ -758,14 +759,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();            
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes50mil.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numBilletes50milKeyTyped
 
@@ -780,14 +781,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();            
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes20mil.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numBilletes20milKeyTyped
 
@@ -802,14 +803,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes10mil.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numBilletes10milKeyTyped
 
@@ -824,14 +825,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes5mil.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numBilletes5milKeyTyped
 
@@ -846,14 +847,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();            
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes2mil.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numBilletes2milKeyTyped
 
@@ -868,14 +869,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();            
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletesOMonedasDeMil.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numBilletesOMonedasDeMilKeyTyped
 
@@ -890,14 +891,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas500pesos.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numMonedas500pesosKeyTyped
 
@@ -912,14 +913,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas200pesos.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numMonedas200pesosKeyTyped
 
@@ -934,14 +935,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas100pesos.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numMonedas100pesosKeyTyped
 
@@ -956,14 +957,14 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();            
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(null, "Ingrese sólo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas50pesos.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.");
+            JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         } 
     }//GEN-LAST:event_txt_numMonedas50pesosKeyTyped
 
@@ -976,7 +977,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
                 numBilletesDe10Mil.equals("") || numBilletesDe5Mil.equals("") || numBilletesDe2Mil.equals("") || numBilletesOMonedasDeMil.equals("") ||
                 numMonedasDe500.equals("") || numMonedasDe200.equals("") || numMonedasDe100.equals("") || numMonedasDe50.equals("")){
         
-            JOptionPane.showMessageDialog(null, "Por favor diligencie todos los campos.");
+            JOptionPane.showMessageDialog(null,"Por favor diligencie todos los campos.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         
         }else{
                       
@@ -1037,7 +1038,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
             while(ventanaEmergCopiaArqueo == true){
                String botones[] = {"Imprimir copia", "Cerrar"};
                //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja actualizado satisfactoriamente.", "Arqueo de caja", 0, 1, null, botones, this);
+               int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Arqueo de caja actualizado satisfactoriamente.", "Arqueo de caja", 0, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"), botones, this);
 
                if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                    arqueoControla.generarTicketArqueoDeCaja(codigoArqueo, usuarioControla.consultarIdDeunUsuario(usuarioDelSistema), false); 
@@ -1743,8 +1744,8 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
     private void cerrarEdicionDeArqueo(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar arqueo", 0, 3, null, botones, this);
-        
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar arqueo", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+                
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
             GestionarArqueos.hayArqueoVisualizandose = false;

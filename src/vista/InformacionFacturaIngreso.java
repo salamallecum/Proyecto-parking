@@ -9,6 +9,7 @@ import controlador.VehiculoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -303,9 +304,8 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_editarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        
-        int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        
+        String botones[] = {"Si", "No"};
+        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
         if(decision == JOptionPane.YES_OPTION){    
            
             int idParq = facturaAbiertaConsultada.getId_parqueadero();
@@ -321,7 +321,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
             
             int filaSelec = tablaOperacionFacturas.getSelectedRow();
             modelo.removeRow(filaSelec);
-            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.");
+            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
             dispose();
             GestionarFacturas.hayFacturaVisualizandose = false;
         }

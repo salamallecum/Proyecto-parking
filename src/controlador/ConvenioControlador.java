@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Convenio;
@@ -79,7 +80,7 @@ public class ConvenioControlador {
             }
             cn.close();                    
             } catch (SQLException e) {
-               JOptionPane.showMessageDialog(null, "Error al llenar tabla de convenios, ¡Contacte al administrador!");
+               JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de convenios!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
                log.fatal("ERROR - Se ha producido un error al cargar los convenios de la BD a la Tabla de convenios del sistema: " + e);
             }
     }
@@ -102,7 +103,7 @@ public class ConvenioControlador {
             cn3.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al registrar convenio!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al registrar convenio!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al crear un convenio en el sistema: " + e);
         } 
     }
@@ -127,7 +128,7 @@ public class ConvenioControlador {
                 elConvenioExiste = false;
             }
         }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar nomParquadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al comparar convenio!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al validar la existencia de un convenio en el sistema: " + ex);
         }
         return elConvenioExiste;
@@ -143,7 +144,7 @@ public class ConvenioControlador {
             pst.executeUpdate();
             cn.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar convenio!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar convenio!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar un convenio en el sistema: " + e);
         }  
     }
@@ -163,7 +164,7 @@ public class ConvenioControlador {
             cn1.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar convenio!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar convenio!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar un convenio: " + e);
         }
     }
@@ -238,7 +239,7 @@ public class ConvenioControlador {
             cn1.close();
 
         }catch(SQLException e){
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al seleccionar convenio!!, contacte al administrador.");
+           JOptionPane.showMessageDialog(null, "¡¡ERROR al seleccionar convenio!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
            log.fatal("ERROR - Se ha producido un error al seleccionar un convenio de la tabla de convenios del sistema: " + e); 
         }
         return convenioRescatado;
@@ -261,7 +262,7 @@ public class ConvenioControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar convenio!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al consultar nombre de un convenio!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de un convenio utilizando su ID: " + e);
         } 
         return nombreConvenio;
@@ -285,7 +286,7 @@ public class ConvenioControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar tarifa!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar convenio mediante su Id !!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar la informacion total de un convenio utilizando su ID: " + e);
         } 
         return convenioConsultado;

@@ -12,6 +12,7 @@ import java.awt.Color;
 import javax.swing.JOptionPane;
 import modelo.Parqueadero;
 import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import modelo.Factura;
 import modelo.Vehiculo;
@@ -46,6 +47,7 @@ public class PanelCaja extends javax.swing.JPanel{
     public static boolean laCajaFueAbierta = false;
     public static int numVehiculosLiquidandose = 0;
     public static String parqueadero_update;
+    String botones[] = {"Si", "No"};
     
     FacturaControlador facturaControla = new FacturaControlador();    
     ConvenioControlador convControla = new ConvenioControlador();
@@ -401,7 +403,7 @@ public class PanelCaja extends javax.swing.JPanel{
         int numeroCaracteres = 6;
         if(txt_Placa.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 6 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 6 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_Placa.setText("");
         }    
         //Forza aescribir en mayuscula
@@ -447,7 +449,7 @@ public class PanelCaja extends javax.swing.JPanel{
         if(placa.length() == 0){}
         
         if(placa.length() >= 1 && placa.length() < 6){
-            JOptionPane.showMessageDialog(null,"Placa no válida.");
+            JOptionPane.showMessageDialog(null,"Placa no válida.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_Placa.requestFocus();
             txt_Placa.setText("");
         }else{
@@ -502,12 +504,12 @@ public class PanelCaja extends javax.swing.JPanel{
     }//GEN-LAST:event_cmb_claseItemStateChanged
 
     private void btn_abrirCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_abrirCajaActionPerformed
-        
-        int decision = JOptionPane.showConfirmDialog(this, "¿Desea aperturar la Caja?.", "Apertura de caja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        int decision = JOptionPane.showOptionDialog(this, "¿Desea aperturar la Caja?.", "Apertura de caja", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
                             
         //Aperturamos la caja
         if(decision == JOptionPane.YES_OPTION){
-            int decision_conteoDeCaja = JOptionPane.showConfirmDialog(this, "¿Desea realizar un arqueo de caja?.", "Arqueo de caja", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int decision_conteoDeCaja = JOptionPane.showOptionDialog(this, "¿Desea realizar un arqueo de caja?.", "Arqueo de caja",  0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
             if(decision_conteoDeCaja == JOptionPane.YES_OPTION){ 
                 //Se abre el jFrame para realizar el arqueo de caja
                 new ArqueoDeCaja().setVisible(true);
@@ -576,7 +578,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 if(elVehiculoSeEncuentraEnParqueadero == true){
 
                     txt_consecutivoQR.setBackground(Color.green);
-                    decisionLiquidacion = JOptionPane.showConfirmDialog(this, "El vehiculo indicado ya se encuentra en el parqueadero, ¿Generar Liquidación?", "Liquidar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    decisionLiquidacion = JOptionPane.showOptionDialog(this, "El vehiculo indicado ya se encuentra en el parqueadero, ¿Generar Liquidación?", "Liquidar vehiculo",  0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
 
                     if(decisionLiquidacion == JOptionPane.YES_OPTION){ 
                         generarLiquidacion(placa);
@@ -592,13 +594,13 @@ public class PanelCaja extends javax.swing.JPanel{
                 }    
                           
             }else{
-                JOptionPane.showMessageDialog(null,"Código QR no válido.", "Error",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Código QR no válido.", "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
                 txt_consecutivoQR.setText("");
                 txt_consecutivoQR.requestFocus();
             }
                 
         }else if(placa.length() >= 1 && placa.length() < 6){
-            JOptionPane.showMessageDialog(null,"Placa no válida.", "Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Placa no válida.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_Placa.requestFocus();
         }
         else{
@@ -608,7 +610,7 @@ public class PanelCaja extends javax.swing.JPanel{
             if(elVehiculoSeEncuentraEnParqueadero == true){
                 
                 txt_Placa.setBackground(Color.green);
-                decisionLiquidacion = JOptionPane.showConfirmDialog(this, "El vehiculo indicado ya se encuentra en el parqueadero, ¿Generar Liquidación?", "Liquidar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                decisionLiquidacion = JOptionPane.showOptionDialog(this, "El vehiculo indicado ya se encuentra en el parqueadero, ¿generar liquidación?", "Liquidar vehiculo", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
 
                 if(decisionLiquidacion == JOptionPane.YES_OPTION){ 
                     //generarLiquidacion();
@@ -627,8 +629,8 @@ public class PanelCaja extends javax.swing.JPanel{
                 
                 if(elvehiculoYaEstapreviamenteRegistrado == true){
                 
-                    int decision = JOptionPane.showConfirmDialog(this, "El vehiculo está registrado, ¿Generar ingreso?", "Ingresar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            
+                    int decision = JOptionPane.showOptionDialog(this, "El vehiculo está registrado, ¿generar ingreso?", "Ingresar vehiculo", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+                    
                     //Obtenemos los datos del vehiculo registrado
                     if(decision == JOptionPane.YES_OPTION){  
                         
@@ -659,7 +661,7 @@ public class PanelCaja extends javax.swing.JPanel{
                     }
                 
                 }else{
-                    JOptionPane.showMessageDialog(null, "Vehiculo desconocido.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vehiculo desconocido.", "Mensaje", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/informacion.png"));
                     LimpiezaSinPlaca();
                     txt_nombrePropietario.setEditable(true);
                     cmb_clase.setEnabled(true);
@@ -724,7 +726,7 @@ public class PanelCaja extends javax.swing.JPanel{
 
         if(txt_Placa.getText().length() < minimoCaracteres){
             txt_Placa.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null,"Placa no válida.", "Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Placa no válida.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_Placa.setText("");
             txt_Placa.requestFocus();
             validacion++;
@@ -734,7 +736,7 @@ public class PanelCaja extends javax.swing.JPanel{
         
         if(elParqSeleccionadoEstaOcupado ==  true){
             cmb_numParqueadero.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "El parqueadero indicado se encuentra ocupado.", "Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El parqueadero indicado se encuentra ocupado.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             cmb_numParqueadero.setSelectedIndex(0);
             
         }else{
@@ -782,10 +784,10 @@ public class PanelCaja extends javax.swing.JPanel{
                 ventanaEmergCopiaIngresoVehiculoDesconocido = true;
 
                 while(ventanaEmergCopiaIngresoVehiculoDesconocido == true){
-                   String botones[] = {"Imprimir copia", "Cerrar"};
+                   String opciones[] = {"Imprimir copia", "Cerrar"};
                    //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-                   int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo ingresado satisfactoriamente.", "Ingreso de vehiculo", 0, 1, null, botones, this);
-
+                   int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo ingresado satisfactoriamente.", "Ingreso de vehiculo", 0,JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/exitoso.png"), opciones, this);
+  
                    if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                        facturaControla.generarTicketIngreso(placa, codigoDeFactura, false); 
                    }
@@ -799,7 +801,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 txt_consecutivoQR.requestFocus();
                                             
             }else{
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Error",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 Normalizar(); 
             }
         }   
@@ -848,7 +850,7 @@ public class PanelCaja extends javax.swing.JPanel{
 
             if(txt_Placa.getText().length() < minimoCaracteres){
                 txt_Placa.setBackground(Color.red);
-                JOptionPane.showMessageDialog(null,"Placa no válida.", "Error",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Placa no válida.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 txt_Placa.setText("");
                 txt_Placa.requestFocus();
                 validacion++;
@@ -859,7 +861,7 @@ public class PanelCaja extends javax.swing.JPanel{
         
         if(elVehiculoTieneUnaFacturaciónAbierta == true){
             txt_Placa.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "El vehiculo ya ingresó previamente al parqueadero.", "Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El vehiculo ya ingresó previamente al parqueadero.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             Limpiar();
             Normalizar();
         }else{
@@ -925,9 +927,9 @@ public class PanelCaja extends javax.swing.JPanel{
                 ventanaEmergCopiaIngresoVehiculoRegistrado = true;
 
                 while(ventanaEmergCopiaIngresoVehiculoRegistrado == true){
-                    String botones[] = {"Imprimir copia", "Cerrar"};
-                    //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-                    int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo ingresado satisfactoriamente.", "Ingreso de vehiculo", 0, 1, null, botones, this);
+                    String opciones[] = {"Imprimir copia", "Cerrar"};
+                   //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
+                   int eleccionFinalizarArqueo = JOptionPane.showOptionDialog(this, "Vehiculo ingresado satisfactoriamente.", "Ingreso de vehiculo", 0,JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/exitoso.png"), opciones, this);
 
                     if(eleccionFinalizarArqueo == JOptionPane.YES_OPTION){
                         facturaControla.generarTicketIngreso(placa, codigoDeFactura, false); 
@@ -948,7 +950,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 txt_consecutivoQR.requestFocus();
                 
             }else {
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Error",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 Normalizar();
             }      
         }
@@ -1006,7 +1008,7 @@ public class PanelCaja extends javax.swing.JPanel{
     public void generarLiquidacion(String placaDeVehiculo){
 
         if(numVehiculosLiquidandose > 0){
-            JOptionPane.showMessageDialog(null,"No permitido.", "Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"No permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
         }else{
             numVehiculosLiquidandose++;
             parqueadero_update = placaDeVehiculo;

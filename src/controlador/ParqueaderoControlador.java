@@ -26,6 +26,7 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -97,13 +98,13 @@ public class ParqueaderoControlador implements Runnable{
             ResultSet rs5 = pst5.executeQuery();
 
             if (rs5.next()) {
-                JOptionPane.showMessageDialog(null, "El parqueadero indicado se encuentra ocupado.");
+                JOptionPane.showMessageDialog(null, "El parqueadero indicado se encuentra ocupado.", "Estado parqueadero", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 cn5.close();
             } else {  
                 vehiControlador.crearVehiculo(vehi);
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al revisar cupo!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al revisar cupo de parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al revisar cupo del parqueadero" + ex);
         }
     }
@@ -120,7 +121,7 @@ public class ParqueaderoControlador implements Runnable{
             cn3.close();
            
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al pasar de Disponible a Ocupado un parqueadero" + ex);
         } 
     }
@@ -220,7 +221,7 @@ public class ParqueaderoControlador implements Runnable{
             }
             cn.close();                    
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al llenar tabla de parqueaderos, ¡Contacte al administrador!");
+                JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de parqueaderos!!, contacte al administrador", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
                 log.fatal("ERROR - Se ha producido un error al cargar los parqueaderos de la BD a la Tabla de parqueaderos: " + e);
             }
     }
@@ -247,7 +248,6 @@ public class ParqueaderoControlador implements Runnable{
             view.setVisible(true);
             view.setIconImage(obtenerIconoReportePDFParqueaderos());
             view.setTitle("Reporte de parqueaderos registrados");
-            log.info("INFO - Reporte de parqueaderos registrados generado satisfactoriamente.");
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
             
             //Agregamos un evento para cuando el visor del reporte se cierre
@@ -260,8 +260,7 @@ public class ParqueaderoControlador implements Runnable{
             });
 
         }catch(JRException ex){
-            //Logger.getLogger(PanelUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Reporte!!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al generar reporte de parqueaderos registrados!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar generar reporte PDF de los parqueaderos del sistema: " + ex);
         }
     }
@@ -293,7 +292,7 @@ public class ParqueaderoControlador implements Runnable{
             cn3.close();
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al registrar parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al registrar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al crear un parqueadero en el sistema: " + e);
         } 
     }
@@ -318,7 +317,7 @@ public class ParqueaderoControlador implements Runnable{
                 elParqueaderoExiste = false;
             }
         }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar nombre de Parquadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al comparar nombre de Parquadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al validar la existencia de un parqueadero en el sistema: " + ex);
         }
         return elParqueaderoExiste;
@@ -339,7 +338,7 @@ public class ParqueaderoControlador implements Runnable{
             cn1.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar un parqueadero: " + e);
         }
     }
@@ -361,7 +360,7 @@ public class ParqueaderoControlador implements Runnable{
             propietarioEstaEnParqueadero = rs.next();
             
         }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al verificar cupo de parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al verificar cupo de parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al validar si un propietario estaba en parqueadero: " + e);
         }
         return propietarioEstaEnParqueadero;    
@@ -379,7 +378,7 @@ public class ParqueaderoControlador implements Runnable{
             cn3.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al liberar parqueadero, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al liberar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al dar disponibilidad al parqueadero que utilizaba el vehiculo: "+ placaL + e);
         }
     }
@@ -408,7 +407,7 @@ public class ParqueaderoControlador implements Runnable{
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar vehiculo!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al consultar disponibilidad de parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar si la disponibilidad de un parquadero utilizando su ID: " + e);
         } 
         return parqueaderoOcupado;
@@ -431,7 +430,7 @@ public class ParqueaderoControlador implements Runnable{
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al comparar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de un parquadero utilizando su ID: " + e);
         } 
         return nombreParqueadero;
@@ -559,7 +558,7 @@ public class ParqueaderoControlador implements Runnable{
                 cn.close();        
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al mostrar información del parqueadero en tiempo real, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al mostrar información del parqueadero en tiempo real!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos en el parqueadero en tiempo real: " + e);
         }
     }
@@ -604,7 +603,7 @@ public class ParqueaderoControlador implements Runnable{
             cn.close();                    
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al mostrar operación del Parqueadero, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al mostrar operación del parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar visualizar la operación del Parqueadero: " + e); 
         }
     }
@@ -626,7 +625,7 @@ public class ParqueaderoControlador implements Runnable{
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al comparar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar el id de un parquadero utilizando su nombre: " + e);
         } 
         return idParqueadero;   
@@ -643,7 +642,7 @@ public class ParqueaderoControlador implements Runnable{
             cn3.close();
            
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar informacion en parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar informacion en parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al actualizar info del propietario de un parqueadero" + ex);
         } 
     }
@@ -664,7 +663,7 @@ public class ParqueaderoControlador implements Runnable{
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar tipo parqueadero!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al consultar tipo parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar el tipo de un parquadero utilizando su ID: " + e);
         } 
         return tipoParq;
@@ -720,5 +719,4 @@ public class ParqueaderoControlador implements Runnable{
             }
         }
     }
-    
 }

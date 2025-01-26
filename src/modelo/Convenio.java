@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
@@ -91,7 +92,7 @@ public class Convenio{
            rs3.close();
 
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Error al cargar listado de convenios disponibles, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de convenios disponibles!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al al cargar listado de convenios disponibles: " + ex.toString());
         }
         return datos;

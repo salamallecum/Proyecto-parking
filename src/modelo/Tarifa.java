@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
@@ -153,7 +154,7 @@ public class Tarifa {
            rs3.close();
 
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Error al cargar listado de tarifas disponibles, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de tarifas disponibles!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al al cargar listado de tarifas disponibles: " + ex.toString());
         }
         return datos;
@@ -184,6 +185,7 @@ public class Tarifa {
            rs4.close();
           
         }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Error - Se ha producido un error al armar Arraylist de nombres de parqueaderos: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al armar Arraylist de nombres de parqueaderos: " + ex.toString());
         }    
     } 
@@ -206,6 +208,7 @@ public class Tarifa {
             }
             
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error - Se ha producido un error al contar la cantidad de tarifas registradas en el sistema: " + e, "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al contar la cantidad de tarifas registradas en el sistema: " + e);
         } 
         return numTarif;

@@ -4,6 +4,7 @@ import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -267,13 +268,13 @@ public class InformacionUsuario extends javax.swing.JFrame {
     
     //Metodo boton Eliminar
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        
-        int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar usuario", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        
+        String botones[] = {"Si", "No"};
+        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar usuario", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+               
         if(decision == JOptionPane.YES_OPTION){
             String usuarioAEliminar = usuarioConsultado.getNombres();
             usuControlador.eliminarUsuario(usuarioAEliminar);
-            log.info("INFO - Se edita el usuario del sistema satisfactoriamente.");
+            JOptionPane.showMessageDialog(null, "El usuario: " + usuarioAEliminar + " ha sido eliminado.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));  
             dispose();      
         }             
     }//GEN-LAST:event_btn_eliminarActionPerformed

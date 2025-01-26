@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import java.util.Vector;
+import javax.swing.ImageIcon;
 
 
 /**
@@ -162,7 +163,7 @@ public class Parqueadero {
            rs3.close();
 
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Error al cargar listado de parqueaderos disponibles, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de parqueaderos disponibles!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al cargar listado de parqueaderos tipo visitante: " + ex.toString());
         }
         return datos;
@@ -198,7 +199,7 @@ public class Parqueadero {
            rs4.close();
            
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Error al cargar listado de parqueaderos, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de parqueaderos de residentes!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al al cargar listado de parqueaderos: " + ex.toString());
         }
         return datosPrueba;
@@ -229,6 +230,7 @@ public class Parqueadero {
            rs4.close();
           
         }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "ERROR - Se ha producido un error al armar Arraylist de nombres de parqueaderos: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al armar Arraylist de nombres de parqueaderos: " + ex.toString());
         }    
     } 
@@ -251,6 +253,7 @@ public class Parqueadero {
             }
             
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR - Se ha producido un error al contar la cantidad de parqueaderos registrados en el sistema: " + e, "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al contar la cantidad de parqueaderos registrados en el sistema: " + e);
         }    
         return numParq;

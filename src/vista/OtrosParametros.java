@@ -1,14 +1,10 @@
 package vista;
 
-import clasesDeApoyo.Conexion;
 import controlador.ParametroControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -390,14 +386,14 @@ public class OtrosParametros extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
             
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo numeros.");
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 30;
         if(txt_baseDeCaja.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_baseDeCaja.setText("");
         }  
     }//GEN-LAST:event_txt_baseDeCajaKeyTyped
@@ -445,10 +441,10 @@ public class OtrosParametros extends javax.swing.JFrame {
             
             paramControla.actualizarParámetro("BASE_CAJA", baseDeCaja);
             paramControla.actualizarParámetro("IMPUESTO", impuesto);
-            JOptionPane.showMessageDialog(null, "Parámetros actualizados satisfactoriamente.");
+            JOptionPane.showMessageDialog(null, "Parámetros actualizados satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
             
         }else{
-            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }//GEN-LAST:event_btn_actualizarParametrosActionPerformed
 
@@ -539,7 +535,7 @@ public class OtrosParametros extends javax.swing.JFrame {
     private void cerrarOtrosParametros(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parámetros", 0, 3, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parámetros", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

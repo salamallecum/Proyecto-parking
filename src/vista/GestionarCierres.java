@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.net.URL;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -381,7 +382,7 @@ public class GestionarCierres extends javax.swing.JFrame{
         int numeroCaracteres = 10;
         if(txt_codigoCierre.getText().length() == numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_codigoCierre.setText("");
         }
     }//GEN-LAST:event_txt_codigoCierreKeyTyped
@@ -406,7 +407,7 @@ public class GestionarCierres extends javax.swing.JFrame{
 
         //Validamos que ningun campo haya quedado en blanco y que almenos uno haya sido diligenciado
         if(codigo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
-            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.");
+            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             cargarTablaGestorCierres();
 
         }else{
@@ -442,7 +443,7 @@ public class GestionarCierres extends javax.swing.JFrame{
                     sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND cierres.Fecha_cierre BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";
 
                 }else{
-                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.");
+                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 }
             }
 
@@ -502,7 +503,7 @@ public class GestionarCierres extends javax.swing.JFrame{
                     sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND cierres.Fecha_cierre BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";               
                     
                 }else{
-                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.");
+                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                 }
             }
             
@@ -657,7 +658,8 @@ public class GestionarCierres extends javax.swing.JFrame{
     private void cerrarGestorCierres(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de cierres", 0, 3, null, botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de cierres", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

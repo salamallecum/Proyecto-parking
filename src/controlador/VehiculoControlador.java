@@ -14,6 +14,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -95,7 +96,7 @@ public class VehiculoControlador extends Thread{
             } 
             
         }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar placa!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al evaluae existencia del vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al validar la existencia de un vehiculo en el sistema: " + ex); 
         }
         
@@ -124,7 +125,7 @@ public class VehiculoControlador extends Thread{
             cn2.close();          
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al crear vehiculo!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al crear vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al crear un vehiculo en el sistema: " + e);
         }
     }
@@ -165,7 +166,7 @@ public class VehiculoControlador extends Thread{
             
 
         }catch(JRException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Reporte de Vehiculos, contacte al administrador!!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al generar reporte de vehiculos!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar generar reporte PDF de los vehiculos del sistema: " + ex);
         }
     }
@@ -205,7 +206,7 @@ public class VehiculoControlador extends Thread{
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda por placa!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al buscar vehiculo por placa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar buscar un vehiculo por medio de su placa: " + ex);
         }
     }
@@ -238,7 +239,7 @@ public class VehiculoControlador extends Thread{
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR de busqueda por propietario!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al buscar vehiculo por propietario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar buscar un vehiculo por medio de su propietario: " + ex);
         }
     }
@@ -290,7 +291,7 @@ public class VehiculoControlador extends Thread{
             }
             cn.close();                    
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al llenar tabla de vehiculos, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de vehiculos!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la tabla de vehiculos por default: " + ex);
         }
     }
@@ -314,7 +315,7 @@ public class VehiculoControlador extends Thread{
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar vehiculo!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al verficar si el vehiculo esta en el parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar si el vehiculo esta en parqueadero: " + e);
         } 
         
@@ -334,7 +335,7 @@ public class VehiculoControlador extends Thread{
             cn1.close();
             
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar el vehiculo: "+ placa + e);
         }   
     }
@@ -386,7 +387,7 @@ public class VehiculoControlador extends Thread{
             }          
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar informacion del vehiculo seleccionado!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion del vehiculo seleccionado!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar consultar la informacion de un vehiculo: " + e);
         }
         return vehiculoConsultado;        
@@ -404,7 +405,7 @@ public class VehiculoControlador extends Thread{
             cn3.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al liberar vehiculo, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al liberar vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al liberar un vehiculo: " + e);
         }
     }
@@ -427,7 +428,7 @@ public class VehiculoControlador extends Thread{
             }
             
         } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "ERROR al revisar facturación abierta de vehiculo, contacte al administrador.");
+           JOptionPane.showMessageDialog(null, "¡¡Error al revisar facturación abierta de vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
            log.fatal("ERROR - Se ha producido un error al intentar revisar facturación abierta de vehiculo: " + ex);
         }
         
@@ -444,7 +445,7 @@ public class VehiculoControlador extends Thread{
             pst.executeUpdate();
             cn.close(); 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar vehiculo!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al modificar un vehiculo del sistema: " + e);
         } 
     }
@@ -460,7 +461,7 @@ public class VehiculoControlador extends Thread{
             cn9.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al recargar vehiculo, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al recargar vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
         } 
     }
     
@@ -484,6 +485,7 @@ public class VehiculoControlador extends Thread{
                 log.fatal("ERROR - No se ha encontrado el ID del parqueadero que ocupa un vehiculo");
             }
         }catch (SQLException ex){ 
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar parqueadero que ocupa un vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al consultar el ID del parqueadero que ocupa un vehiculo: " + ex); 
         } 
         return idParq;
@@ -518,6 +520,7 @@ public class VehiculoControlador extends Thread{
             codigoQr.renderBarcode(qrParaTicket);           
                
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar codigo qr de vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al generar el codigo qr: " + e);
         }
     }
@@ -696,7 +699,7 @@ public class VehiculoControlador extends Thread{
             }    
 
         }catch(JRException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket qr del vehiculo, contacte al administrador!!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al generar Ticket qr del vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar generar el ticket qr de un vehiculo: " + ex); 
         }   
     } 

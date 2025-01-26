@@ -11,6 +11,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -65,7 +66,7 @@ public class UsuarioControlador {
                 usuarioExiste = false;
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar usuario!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al comparar usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al validar la existencia de un usuario en el sistema: " + e);   
         }
         return usuarioExiste;
@@ -93,7 +94,7 @@ public class UsuarioControlador {
             pst2.executeUpdate();
             cn2.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al crear usuario!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al crear usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al crear un usuario en el sistema: " + e);
         }
     }
@@ -108,7 +109,7 @@ public class UsuarioControlador {
             pst.executeUpdate();
             cn.close(); 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar usuario!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al modificar un usuario del sistema: " + e);
         }   
     }
@@ -136,7 +137,7 @@ public class UsuarioControlador {
             }
             cn.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al cargar información de usuario!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar información de usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al consultar un usuario en el sistema: " + e);
         }
         return usuarioConsultado;
@@ -153,12 +154,10 @@ public class UsuarioControlador {
             int filaSelec = PanelUsuarios.Table_listaUsuarios.getSelectedRow();
             PanelUsuarios.Table_listaUsuarios.getValueAt(filaSelec, 0).toString();
 
-            modelo.removeRow(filaSelec);
-
-            JOptionPane.showMessageDialog(null, "El usuario: " + usu + " ha sido eliminado.");            
+            modelo.removeRow(filaSelec);          
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al eliminar!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar el usuario " + usu +" : " + e);
         }
     }
@@ -202,21 +201,19 @@ public class UsuarioControlador {
                     }
                 
                 }else {
-                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Login", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
                     txt_usuario.setText("");
                     txt_clave.setText("");
-                    log.warn("ADVERTENCIA - Se intentó acceder al sistema con datos erróneos");
                 }                 
                 
             } else {
-                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+                 JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Login", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
                 txt_usuario.setText("");
                 txt_clave.setText("");
-                log.warn("ADVERTENCIA - Se intentó acceder al sistema con datos erróneos");
             }          
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al iniciar aplicación!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al iniciar aplicación!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error en el Login del sistema: " + e);
         }
         return login;
@@ -237,7 +234,7 @@ public class UsuarioControlador {
                 nombre_usuario = rs.getString("Nombres");
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error de conexión desde la interfaz Administrador");
+            JOptionPane.showMessageDialog(null, "Error de conexión desde la interfaz Administrador, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al cargar los nombres del usuario en la ventana administrador: " + e);
         }
         return nombre_usuario;
@@ -251,7 +248,7 @@ public class UsuarioControlador {
         //Evaluamos si la caja se encuentra abierta
         if(PanelCaja.laCajaFueAbierta == true){
             sePuedeCerrarSesion = false;
-            JOptionPane.showMessageDialog(null, "La Caja se encuentra abierta, debe generar el cierre!!");
+            JOptionPane.showMessageDialog(null, "La Caja se encuentra abierta, debe generar el cierre!!", "Caja", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             log.warn("ADVERTENCIA - El usuario " + usu +" intentó cerrar la caja estando esta aún abierta");
                  
         //Evaluamos si hay alguna ventana abierta del sistema para el rol administrador    
@@ -298,7 +295,7 @@ public class UsuarioControlador {
             });
                                 
         }catch(JRException ex){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Reporte de Usuarios, contacte al administrador!!");
+            JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Reporte de Usuarios!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar generar reporte PDF de los usuarios del sistema: " + ex);
         } 
     }
@@ -337,7 +334,7 @@ public class UsuarioControlador {
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "ERROR en la busqueda del usuario, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error en la busqueda del usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al buscar el usuario: " + texto +" "+ ex);
         }
     }  
@@ -394,7 +391,7 @@ public class UsuarioControlador {
                 cn.close();        
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al llenar tabla de usuarios, ¡Contacte al administrador!");
+            JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de usuarios!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al cargar los usuarios de la BD a la Tabla de usuarios: " + e);
         }
     }
@@ -457,7 +454,7 @@ public class UsuarioControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al comparar usuario!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al comparar usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de un usuario utilizando su ID: " + e);
         } 
         return nombreUsuario;

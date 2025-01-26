@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.table.DefaultTableModel;
@@ -473,7 +474,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int numeroCaracteres = 5;
         if(txt_placa.getText().length()> numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 6 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 6 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Forza a escribir en mayuscula
@@ -490,7 +491,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int numeroCaracteres = 29;
         if(txt_propietario.getText().length()> numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
 
         //Forza a escribir en mayuscula
@@ -554,13 +555,13 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                       
         if(txt_placa.getText().length() < minimoCaracteres){
             txt_placa.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null,"Placa no válida.");
+            JOptionPane.showMessageDialog(null,"Placa no válida.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_placa.setText("");
             validacion++;
         }
         
         if(hayVehiculoEnEdicion == true){
-            JOptionPane.showMessageDialog(null, "No Permitido, cierre la ventana de edición de vehiculos para continuar.");
+            JOptionPane.showMessageDialog(null, "No Permitido, cierre la ventana de edición de vehiculos para continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_placa.requestFocus();
             validacion++;
         }
@@ -574,7 +575,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         boolean vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(placa);
         
         if(vehiculoYaPreviamenteRegistrado == true){
-            JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.");
+            JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_placa.setText("");
             validacion++;
         }      
@@ -585,7 +586,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado);
         
         if(parqueaderoEstaOcupado == true){
-            JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.");
+            JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             cmb_parqueaderos.setSelectedIndex(0);
             validacion++;
         } 
@@ -683,14 +684,14 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             fila[5] = tarifSeleccionada.getNombreTarifa();
             modelo.addRow(fila);
             
-            JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.");
+            JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
             //Generamos el codigo QR del vehiculo y lo imprimimos
             vehicontrolador.generarQR(placa+" - "+dueño, qrInfo);
             Limpiar();
             Normalizar();
             
         }else{
-            JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.");
+            JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             Normalizar();
         } 
     }//GEN-LAST:event_btn_ingresarActionPerformed
@@ -702,11 +703,13 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
          
         if(cantidadFilas == 0){
-            JOptionPane.showMessageDialog(null, "Seleccione el vehiculo que desea eliminar.");
+            JOptionPane.showMessageDialog(null, "Seleccione el vehiculo que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }else{    
             String placa = Table_listaVehiculos.getValueAt(Fila, 0).toString();
             String propietario = Table_listaVehiculos.getValueAt(Fila, 1).toString();
-            int decision = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar?", "Eliminar vehiculo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            String botones[] = {"Si", "No"};
+            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar vehiculo", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+            
             if(decision == JOptionPane.YES_OPTION){               
                 
                 vehicontrolador.eliminarVehiculo(placa);
@@ -717,7 +720,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                     facturaControla.eliminarFacturaAbierta(placa);
                 } 
 
-                JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado"); 
+                JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png")); 
                 //Eliminamos el codigo qr del vehiculo
                 vehicontrolador.eliminarQr(placa+" - "+propietario);
                 modelo.removeRow(Fila);
@@ -777,7 +780,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int numeroCaracteres = 5;
         if(txt_placa.getText().length()> numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 6 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 6 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
         
         //Forza a escribir en mayuscula
@@ -805,7 +808,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int numeroCaracteres = 30;
         if(txt_placa.getText().length()> numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
     }//GEN-LAST:event_txt_busquedapropietarioKeyTyped
 
@@ -842,12 +845,12 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
          
         if(cantidadFilas == 0){
-            JOptionPane.showMessageDialog(null, "Seleccione el vehiculo al que desea generar su codigo qr.");
+            JOptionPane.showMessageDialog(null, "Seleccione el vehiculo al que desea generar su codigo qr.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }else{
             placa = Table_listaVehiculos.getValueAt(Fila, 0).toString();
             dueño = Table_listaVehiculos.getValueAt(Fila, 1).toString();
             vehicontrolador.generarTicketQrVehiculo(placa+" - "+dueño, false, "");
-            JOptionPane.showMessageDialog(null, "Codigo qr generado satisfactoriamente.");
+            JOptionPane.showMessageDialog(null, "Codigo qr generado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
         }
     }//GEN-LAST:event_btn_generarQRActionPerformed
 
@@ -911,11 +914,11 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
          
         if(cantidadFilas == 0){
-            JOptionPane.showMessageDialog(null, "Seleccione el vehiculo que desea editar.");
+            JOptionPane.showMessageDialog(null, "Seleccione el vehiculo que desea editar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }else{    
             
             if(hayVehiculoEnEdicion == true){
-                JOptionPane.showMessageDialog(null, "No Permitido");
+                JOptionPane.showMessageDialog(null, "No Permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             }else{
                 hayVehiculoEnEdicion = true;
                 vehiculo_update = Table_listaVehiculos.getValueAt(Fila, 0).toString();

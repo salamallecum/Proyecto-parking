@@ -17,6 +17,7 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import controlador.VehiculoControlador;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import modelo.Convenio;
 import modelo.Factura;
 import modelo.Parqueadero;
@@ -436,7 +437,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                      
         if(txt_placa.getText().length() < minimoCaracteres){
             txt_placa.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null,"Placa no válida.");
+            JOptionPane.showMessageDialog(null, "Placa no válida.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_placa.setText("");
             validacion++;
         }
@@ -450,7 +451,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         boolean vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(placa);
         
         if(vehiculoYaPreviamenteRegistrado == true){
-            JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.");
+            JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             txt_placa.setText("");
             validacion++;
         }   
@@ -463,8 +464,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado);
                
         if(parqueaderoEstaOcupado == true){
-            JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.");
-            cmb_noParqueadero.setSelectedIndex(0);
+            JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             validacion++;
         }
         
@@ -517,7 +517,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                         int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa);
                         facturaControla.actualizarFacturaAbierta(idFctra, placa, dueño, tipoVehi_string, idRealDelParqueaderoSeleccionado, idRealDelConvenioSeleccionado, idRealDeTarifaSeleccionada);
                         vehiculoEstaEnParqueo = "Si";
-                        JOptionPane.showMessageDialog(null, "El vehiculo si está en parqueadero, tiene un proceso de liquidación pendiente.");
+                        JOptionPane.showMessageDialog(null, "El vehiculo si está en parqueadero, pero tiene un proceso de liquidación pendiente.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
                     }   
                 }
             }  
@@ -538,7 +538,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             modelo.removeRow(FilaAnterior);
                         
             
-            JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.");
+            JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
             //Actualizamos el codigo QR del vehiculo y lo imprimimos
             vehicontrolador.actualizarQR(placaBack, propietariaBack, placa, dueño, qrBack);
             this.dispose();  
@@ -546,7 +546,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
             
         }else{
-            JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos." + logError);
+            JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
             Normalizar();
         } 
 
@@ -559,7 +559,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         int numeroCaracteres = 6;
         if(txt_placa.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 6 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 6 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
 
         ///Forza a escribir en mayuscula
@@ -575,7 +575,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         int numeroCaracteres = 30;
         if(txt_dueño.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres");
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
         }
 
 
@@ -698,8 +698,8 @@ public class EditarVehiculo extends javax.swing.JFrame{
     private void cerrarEdicionVehiculo(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar vehiculo", 0, 3, null, botones, this);
-        
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar vehiculo", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+               
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;

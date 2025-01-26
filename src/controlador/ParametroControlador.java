@@ -1,14 +1,13 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
-import com.barcodelib.barcode.QRCode;
-import java.io.File;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
@@ -34,7 +33,7 @@ public class ParametroControlador {
             pst.executeUpdate();
             cn.close(); 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡ERROR al actualizar usuario!!, contacte al administrador.");
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
             log.fatal("ERROR - Se ha producido un error al modificar uno de los parámetros adicionales del sistema, Parámetro: " + nombreParámetro + " Error generado: "+ e);
         }
     }
