@@ -3,6 +3,7 @@ package vista;
 import com.sun.glass.events.KeyEvent;
 import controlador.CierreControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -38,6 +39,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
     FacturaControlador facturaControla = new FacturaControlador();
     UsuarioControlador usuarioControla= new UsuarioControlador();
     CierreControlador cierreControla = new CierreControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     
     
     private final Logger log = Logger.getLogger(GestionarFacturas.class);
@@ -421,7 +423,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
         int numeroCaracteres = 10;
         if(txt_codigoFactura.getText().length() == numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_codigoFactura.setText("");
         } 
     }//GEN-LAST:event_txt_codigoFacturaKeyTyped
@@ -478,7 +480,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
                        
         //Validamos que ningun campo haya quedado en blanco y que almenos uno haya sido diligenciado
         if(codigo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
-            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             cargarTablaGestorFacturas();
         
         }else{
@@ -514,7 +516,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
                     sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND facturas.Fecha_factura BETWEEN '"+sqldateFecha_desde+"' AND '"+sqldateFecha_hasta+"'";
                 
                 }else{
-                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }     
             }
                        
@@ -584,7 +586,7 @@ public class GestionarFacturas extends javax.swing.JFrame {
                     sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND facturas.Fecha_factura BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";               
                     
                 }else{
-                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }
             }
             

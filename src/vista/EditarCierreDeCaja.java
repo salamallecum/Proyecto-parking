@@ -3,13 +3,13 @@ package vista;
 import controlador.ArqueoControlador;
 import controlador.CierreControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -79,6 +79,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     FacturaControlador facturaControla = new FacturaControlador();
     ArqueoControlador arqueoControla = new ArqueoControlador();
     UsuarioControlador usuarioControla = new UsuarioControlador();
+    ParametroControlador paramControla = new ParametroControlador();
             
     private final Logger log = Logger.getLogger(EditarCierreDeCaja.class);
     private URL url = EditarCierreDeCaja.class.getResource("Log4j.properties");
@@ -868,7 +869,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
                 numBilletesDe10Mil.equals("") || numBilletesDe5Mil.equals("") || numBilletesDe2Mil.equals("") || numBilletesOMonedasDeMil.equals("") ||
                 numMonedasDe500.equals("") || numMonedasDe200.equals("") || numMonedasDe100.equals("") || numMonedasDe50.equals("") || observaciones.equals("")){
         
-            JOptionPane.showMessageDialog(null,"Por favor diligencie todos los campos.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Por favor diligencie todos los campos.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         
         }else{
                                   
@@ -937,7 +938,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
             while(ventanaEmergCopiaCierre == true){
                String botones[] = {"Imprimir copia", "Cerrar"};
                //El segundo atributo numerico (el numero 1)representa el icono de tipo de mensaje, es decir puede ser informativo de advertencia de error o sin icono
-               int eleccionFinalizarCierre = JOptionPane.showOptionDialog(this, "Cierre de caja actualizado satisfactoriamente.", "Cierre de caja", 0, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"), botones, this);
+               int eleccionFinalizarCierre = JOptionPane.showOptionDialog(this, "Cierre de caja actualizado satisfactoriamente.", "Cierre de caja", 0, JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32), botones, this);
 
                if(eleccionFinalizarCierre == JOptionPane.YES_OPTION){
                    cierreControla.generarTicketCierreDeCaja(codigoCierre, false); 
@@ -961,7 +962,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         int numeroCaracteres = 40;
         if(jTextArea_observaciones.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo 40 caracteres.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Solo 40 caracteres.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_jTextArea_observacionesKeyTyped
 
@@ -1018,14 +1019,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes100mil.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         } 
     }//GEN-LAST:event_txt_numBilletes100milKeyTyped
 
@@ -1096,14 +1097,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes50mil.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         } 
     }//GEN-LAST:event_txt_numBilletes50milKeyTyped
 
@@ -1175,14 +1176,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes20mil.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numBilletes20milKeyTyped
 
@@ -1254,14 +1255,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes10mil.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numBilletes10milKeyTyped
 
@@ -1333,14 +1334,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes5mil.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numBilletes5milKeyTyped
 
@@ -1412,14 +1413,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletes2mil.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numBilletes2milKeyTyped
 
@@ -1491,14 +1492,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numBilletesOMonedasDeMil.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numBilletesOMonedasDeMilKeyTyped
 
@@ -1570,14 +1571,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas500pesos.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numMonedas500pesosKeyTyped
 
@@ -1649,14 +1650,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas200pesos.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numMonedas200pesosKeyTyped
 
@@ -1728,14 +1729,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas100pesos.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numMonedas100pesosKeyTyped
 
@@ -1807,14 +1808,14 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 4;
         if(txt_numMonedas50pesos.getText().length()== numeroCaracteres){
             evt.consume();
-           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+           JOptionPane.showMessageDialog(null,"No se permiten mas de 4 caracteres.","Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_numMonedas50pesosKeyTyped
 
@@ -1968,7 +1969,7 @@ public class EditarCierreDeCaja extends javax.swing.JFrame{
     private void cerrarCierreDeCaja(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Cierre de caja", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Cierre de caja", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
                 
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

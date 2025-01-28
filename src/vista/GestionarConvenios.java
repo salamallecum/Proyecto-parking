@@ -2,6 +2,7 @@ package vista;
 
 import com.sun.glass.events.KeyEvent;
 import controlador.ConvenioControlador;
+import controlador.ParametroControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -28,6 +29,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
     int FilaAnterior;
     
     ConvenioControlador convenioControla = new ConvenioControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     Convenio nuevoConvenio = new Convenio();
     Convenio editConvenio = new Convenio();
     
@@ -270,7 +272,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
         int numeroCaracteres = 30;
         if(txt_nombreConvenio.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_nombreConvenio.setText("");
         }    
     }//GEN-LAST:event_txt_nombreConvenioKeyTyped
@@ -284,7 +286,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
             
         //No deja editar el convenio ninguno
         if(nombreConvenio.equals("NINGUNO")){
-            JOptionPane.showMessageDialog(null, "No Permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "No Permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             btn_editar.setEnabled(false);
             btn_eliminar.setEnabled(false);
             btn_ingresar.setEnabled(true);
@@ -320,7 +322,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
         int numeroCaracteres = 10;
         if(txt_monto.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 20 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 20 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_monto.setText("");
         }
         
@@ -330,7 +332,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_montoKeyTyped
 
@@ -475,7 +477,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
         
         if(elConvenioYaExiste){
             txt_nombreConvenio.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "El convenio indicado ya se encuentra registrado.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "El convenio indicado ya se encuentra registrado.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             Limpiar();
             Normalizar();
         }else{
@@ -498,12 +500,12 @@ public class GestionarConvenios extends javax.swing.JFrame {
                 txt_nombreConvenio.setBackground(Color.GREEN);
                 txt_monto.setBackground(Color.GREEN);
                 cmb_frecuencia.setBackground(Color.GREEN);
-                JOptionPane.showMessageDialog(null, "Convenio registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+                JOptionPane.showMessageDialog(null, "Convenio registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
                 Limpiar();
                 Normalizar(); 
             
             }else{
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 Normalizar();
             }
         }          
@@ -575,12 +577,12 @@ public class GestionarConvenios extends javax.swing.JFrame {
             txt_nombreConvenio.setBackground(Color.GREEN);
             txt_monto.setBackground(Color.GREEN);
             cmb_frecuencia.setBackground(Color.GREEN);
-            JOptionPane.showMessageDialog(null, "Convenio actualizado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+            JOptionPane.showMessageDialog(null, "Convenio actualizado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
             Limpiar();
             Normalizar();   
 
         } else {
-            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             Normalizar();
         }
     }
@@ -593,11 +595,11 @@ public class GestionarConvenios extends javax.swing.JFrame {
         
                  
         if(cantidadFilas == 0){
-            JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }else{    
             
             String botones[] = {"Si", "No"};
-            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar convenio", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar convenio", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
         
             String nombreConvenio = table_listaConvenios.getValueAt(Fila, 0).toString();
             
@@ -607,7 +609,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
                 boolean convenioEnUso = convenioControla.evaluarSiElConvenioEstaEnUso(idDelConvenio);
                 
                 if(convenioEnUso){
-                    JOptionPane.showMessageDialog(null, "El convenio indicado está siendo implementado actualmente.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                    JOptionPane.showMessageDialog(null, "El convenio indicado está siendo implementado actualmente.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }else{
                     convenioControla.eliminarConvenio(nombreConvenio);
                     modeloTablaConvenios.removeRow(Fila);
@@ -638,7 +640,7 @@ public class GestionarConvenios extends javax.swing.JFrame {
     private void cerrarGestorConvenios(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de convenios", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de convenios", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
                 
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();

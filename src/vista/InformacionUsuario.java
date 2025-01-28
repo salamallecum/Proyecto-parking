@@ -1,10 +1,10 @@
 package vista;
 
+import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -25,6 +25,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
     DefaultTableModel modelo;
     int Fila;
     
+    ParametroControlador paramControla = new ParametroControlador();
     UsuarioControlador usuControlador = new UsuarioControlador();
     Usuario usuarioConsultado = new Usuario();
     
@@ -269,12 +270,12 @@ public class InformacionUsuario extends javax.swing.JFrame {
     //Metodo boton Eliminar
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         String botones[] = {"Si", "No"};
-        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar usuario", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar usuario", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
                
         if(decision == JOptionPane.YES_OPTION){
             String usuarioAEliminar = usuarioConsultado.getNombres();
             usuControlador.eliminarUsuario(usuarioAEliminar);
-            JOptionPane.showMessageDialog(null, "El usuario: " + usuarioAEliminar + " ha sido eliminado.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));  
+            JOptionPane.showMessageDialog(null, "El usuario: " + usuarioAEliminar + " ha sido eliminado.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));  
             dispose();      
         }             
     }//GEN-LAST:event_btn_eliminarActionPerformed

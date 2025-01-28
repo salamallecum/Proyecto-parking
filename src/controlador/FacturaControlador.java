@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -108,7 +107,7 @@ public class FacturaControlador implements Runnable {
             cn9.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);
             
         } 
@@ -155,7 +154,7 @@ public class FacturaControlador implements Runnable {
            }          
 
         }catch(JRException ex){
-            JOptionPane.showMessageDialog(null, "¡¡Error al generar Ticket de ingreso!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al generar Ticket de ingreso!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar generar el ticket de ingreso de un vehiculo: " + ex); 
         }
     }
@@ -201,7 +200,7 @@ public class FacturaControlador implements Runnable {
            }
 
        }catch(JRException ex){
-           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Salida!!, revise la conexión de la impresora o contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+           JOptionPane.showMessageDialog(null, "¡¡ERROR al generar Ticket de Salida!!, revise la conexión de la impresora o contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
            log.fatal("ERROR - Se ha producido un error al intentar generar ticket de salida para un vehiculo: " + ex);
        }
     }
@@ -502,7 +501,7 @@ public class FacturaControlador implements Runnable {
             cn2.close();
         
         }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al ingresar factura en el sistema!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al ingresar factura en el sistema!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al crear una factura en el sistema: " + e);
         }
     }
@@ -517,7 +516,7 @@ public class FacturaControlador implements Runnable {
             cn.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al cerrar factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al cerrar factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar cerrar la factura de un vehiculo: " + e);
         } 
     }
@@ -528,7 +527,7 @@ public class FacturaControlador implements Runnable {
         String cambio_str = "";
         
         if(efectivoRecibido.equals("")){
-            JOptionPane.showMessageDialog(null, "Ingrese el dinero recibido para calcular.", "Calcular vueltas", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese el dinero recibido para calcular.", "Calcular vueltas", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/advertencia.png", 32, 32));
         }else{            
             
             if(cuentaAPagar.equals("") || cuentaAPagar.equals("0")){
@@ -571,7 +570,7 @@ public class FacturaControlador implements Runnable {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al cargar información de una factura abierta!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar información de una factura abierta!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de una factura abierta: " + e);
         }
         return facturaConsultada;        
@@ -611,7 +610,7 @@ public class FacturaControlador implements Runnable {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion de una factura cerrada!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion de una factura cerrada!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de una factura cerrada: " + e);
         }
         return facturaConsultada;        
@@ -645,7 +644,7 @@ public class FacturaControlador implements Runnable {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion de una factura abierta!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion de una factura abierta!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar cargar la informacion de una factura abierta: " + e);
         }
         return facturaConsultada;        
@@ -663,7 +662,7 @@ public class FacturaControlador implements Runnable {
             cn.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al ingresar liquidación de vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al ingresar liquidación de vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar registrar la liquidación de un vehiculo: " + e);
         }
     }
@@ -686,7 +685,7 @@ public class FacturaControlador implements Runnable {
             }
             
         } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "Error al revisar facturación de registro o edición de vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+           JOptionPane.showMessageDialog(null, "Error al revisar facturación de registro o edición de vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
            log.fatal("ERROR - Se ha producido un error al intentar revisar facturación de registro o edicion de un vehiculo: " + ex);
         }
         
@@ -706,7 +705,7 @@ public class FacturaControlador implements Runnable {
             cn1.close();
             
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar factura abierta!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar factura abierta!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar la factura abierta del vehiculo: "+ placa +" " + e);
         }   
     }
@@ -724,7 +723,7 @@ public class FacturaControlador implements Runnable {
             cn1.close();
             
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar facturas de un cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar facturas de un cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar las facturas de  un cierre: " + e);
         }   
     }
@@ -740,7 +739,7 @@ public class FacturaControlador implements Runnable {
             cn9.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar factura de salida!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar factura de salida!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura de salida de un vehiculo: " + e);  
         } 
     }
@@ -756,7 +755,7 @@ public class FacturaControlador implements Runnable {
             cn9.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar factura de ingreso!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar factura de ingreso!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura de ingreso de un vehiculo: " + e);  
         } 
     }
@@ -777,7 +776,7 @@ public class FacturaControlador implements Runnable {
             }
             cn3.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al contar facturas generadas en el turno!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al contar facturas generadas en el turno!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al contar las facturas generadas en el turno: " + e);
         }
         return cantidadFacturas;
@@ -814,7 +813,7 @@ public class FacturaControlador implements Runnable {
             cn2.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al obtener totales a pagar de facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al obtener totales a pagar de facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar obenter los totales a pagar de las facturas generadas en el turno. " + e);
         }
         return totalesAPagar;
@@ -878,7 +877,7 @@ public class FacturaControlador implements Runnable {
             }
             cn.close();                    
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+                JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
                 log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de facturas del Administrador de facturas. " + e);
             }
             
@@ -945,7 +944,7 @@ public class FacturaControlador implements Runnable {
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡Error de busqueda de facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error de busqueda de facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar buscar las facturas. " + ex);
         }
     }
@@ -973,7 +972,7 @@ public class FacturaControlador implements Runnable {
                 }
             }       
         }catch (SQLException e) {
-           JOptionPane.showMessageDialog(null, "¡¡Error al validar estado de factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+           JOptionPane.showMessageDialog(null, "¡¡Error al validar estado de factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
            log.fatal("ERROR - Se ha producido un error al intentar validar el estado de una factura. " + e);
         }
         return estadoFactura;
@@ -1002,7 +1001,7 @@ public class FacturaControlador implements Runnable {
             }
             cn3.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al validar contabilidad de factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al validar contabilidad de factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar validar si una factura ya esta contabilizada. " + e);
         }
         return facturaContabilizada;
@@ -1018,7 +1017,7 @@ public class FacturaControlador implements Runnable {
             pst.executeUpdate(); 
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar una factura. " + e);
         }
     }
@@ -1100,7 +1099,7 @@ public class FacturaControlador implements Runnable {
             }
             cn8.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al consultar el total a pagar!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al consultar el total a pagar!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar consultar el total a pagar de una factura usando un codigo de factura: " + e);
         }
         return valorPag;
@@ -1121,7 +1120,7 @@ public class FacturaControlador implements Runnable {
             }
             cn8.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al seleccionar cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al seleccionar cierre!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar consultar el id de un cierre usando un codigo de factura: " + e);
         }
         return idDelCierre;
@@ -1214,7 +1213,7 @@ public class FacturaControlador implements Runnable {
             }
             cn.close();                    
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al llenar tabla de facturas con las facturas de un cierre, ¡Contacte al administrador!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+                JOptionPane.showMessageDialog(null, "Error al llenar tabla de facturas con las facturas de un cierre, ¡Contacte al administrador!", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
                 log.fatal("ERROR - Se ha producido un error al intentar llenar la tabla de facturas del Administrador de facturascon las facturas de cierre. " + e);
             }
             
@@ -1369,7 +1368,7 @@ public class FacturaControlador implements Runnable {
             cn2.close();
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al obtener el dinero de cambio de las facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al obtener el dinero de cambio de las facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar obtener el dinero de cambio de las facturas generadas en el turno. " + e);
         }
         return cambios;
@@ -1448,7 +1447,7 @@ public class FacturaControlador implements Runnable {
             });
            
        }catch(JRException ex){
-           JOptionPane.showMessageDialog(null, "¡¡Error al generar Consolidado de Facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+           JOptionPane.showMessageDialog(null, "¡¡Error al generar Consolidado de Facturas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
            log.fatal("ERROR - Se ha producido un error al intentar generar reporte pdf de consolidado de facturas: " + ex);
        }
     }

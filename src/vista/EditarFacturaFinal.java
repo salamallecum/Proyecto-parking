@@ -16,7 +16,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -576,7 +575,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
             
             if(seRealizaronValidaciones == true){
                 
-                JOptionPane.showMessageDialog(null, "Validaciones realizadas satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+                JOptionPane.showMessageDialog(null, "Validaciones realizadas satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
                 efectivo = facturaControla.agregarFormatoMoneda(efectivo);
             
                 //Encapsulamos el objeto factura a actualizar
@@ -665,17 +664,17 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                 lbl_perdidasEnFacturas.setText(facturaControla.totalPerdidasFacturas_str);
                 facturaControla.evaluarGravedadDePerdidas();
 
-                JOptionPane.showMessageDialog(null, "Factura actualizada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+                JOptionPane.showMessageDialog(null, "Factura actualizada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
                 this.dispose();
                 new InformacionFacturaFinal().setVisible(true);
                 
             }else{
-                JOptionPane.showMessageDialog(null, "Presione la tecla F1 para continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                JOptionPane.showMessageDialog(null, "Presione la tecla F1 para continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 txt_placa.requestFocus();
             }
         
         }else{
-            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             Normalizar();
         } 
     }//GEN-LAST:event_btn_actualizarActionPerformed
@@ -687,7 +686,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         char validar = evt.getKeyChar();
         if(txt_placa.getText().length()== numeroCaracteres && !Character.isISOControl(validar)){
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo 6 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Solo 6 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
 
         ////Forza a escribir en mayuscula
@@ -726,7 +725,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         int numeroCaracteres = 30;
         if(txt_propietario.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
 
         //Forza aescribir en mayuscula
@@ -768,7 +767,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
         if(Character.isLetter(validar)){
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_efectivoKeyTyped
 
@@ -891,7 +890,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
     private void cerrarEdicionDeFacturaFinal(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar factura", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Editar factura", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
@@ -1370,7 +1369,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
             if(vehiculoYaExisteEnSistema == true){
                  
                 String botones[] = {"Si", "No"};
-                int eleccion = JOptionPane.showOptionDialog(this, "La placa ingresada corresponde a un vehiculo previamente registrado en el sistema ¿Desea continuar?", "Mensaje", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+                int eleccion = JOptionPane.showOptionDialog(this, "La placa ingresada corresponde a un vehiculo previamente registrado en el sistema ¿Desea continuar?", "Mensaje", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
                 
                 if(eleccion == JOptionPane.YES_OPTION){
                     Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(null,placa);
@@ -1395,7 +1394,7 @@ public class EditarFacturaFinal extends javax.swing.JFrame {
                 }
             
             }else{                    
-                JOptionPane.showMessageDialog(null, "Vehiculo desconocido.", "Mensaje", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/informacion.png"));
+                JOptionPane.showMessageDialog(null, "Vehiculo desconocido.", "Mensaje", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/informacion.png", 32, 32));
                 ingresoDesconocido = true;
                 parqControla.ejecutarHiloParqueaderosVisitantesDisponiblesEditarFacturaFinal();
                 txt_propietario.setText("");

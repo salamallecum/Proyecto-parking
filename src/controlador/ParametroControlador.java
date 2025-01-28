@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
@@ -33,7 +34,7 @@ public class ParametroControlador {
             pst.executeUpdate();
             cn.close(); 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar usuario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al modificar uno de los parámetros adicionales del sistema, Parámetro: " + nombreParámetro + " Error generado: "+ e);
         }
     }
@@ -84,6 +85,11 @@ public class ParametroControlador {
             sb.append(rndChar);
         }
         return sb.toString();
+    }
+    
+    //Metodo que se encarga de ponerle el icono a las alertas JOptionPane del sistema.
+    public Icon getIcon(String path, int w, int h){
+        return new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage().getScaledInstance(w, h, 0));
     }
 }
 

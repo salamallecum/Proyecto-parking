@@ -2,13 +2,13 @@ package vista;
 
 import com.sun.glass.events.KeyEvent;
 import controlador.ArqueoControlador;
+import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -33,6 +33,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
     public static String sentenciaSQLUtilizadaTotales = "";        
     ArqueoControlador arqControla = new ArqueoControlador();
     UsuarioControlador usuarioControla = new UsuarioControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     
     public static boolean hayArqueoVisualizandose = false;
     
@@ -325,7 +326,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
         int numeroCaracteres = 10;
         if(txt_codigoArqueo.getText().length() == numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_codigoArqueo.setText("");
         } 
     }//GEN-LAST:event_txt_codigoArqueoKeyTyped
@@ -365,7 +366,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
 
         //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
         if(codigoArqueo.equals("") && usuarios_cmb == 0 && fecha_desde == null && fecha_hasta == null){
-            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             cargarTablaGestorArqueos();
 
         }else{
@@ -401,7 +402,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
                     sentenciaParaCalculoDeTotal = sentenciaParaCalculoDeTotal + " AND arqueos.fecha_arqueo BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";
 
                 }else{
-                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                    JOptionPane.showMessageDialog(null,"La fecha hasta debe ser mayor a la fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }
             }
 
@@ -460,7 +461,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
                     sentenciaSqlParaGenerarReporte = sentenciaSqlParaGenerarReporte + " AND arqueos.fecha_arqueo BETWEEN '"+sqldateFecha_desde+" 00:00:00' AND '"+sqldateFecha_hasta+" 23:59:59'";               
                     
                 }else{
-                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                    JOptionPane.showMessageDialog(null,"La Fecha hasta debe ser mayor a la Fecha desde.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }
             }
             
@@ -602,7 +603,7 @@ public class GestionarArqueos extends javax.swing.JFrame {
     private void cerrarGestorArqueos(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de arqueos", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de arqueos", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
         
         
         if(eleccion == JOptionPane.YES_OPTION){

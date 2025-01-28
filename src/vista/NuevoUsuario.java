@@ -1,5 +1,6 @@
 package vista;
 
+import controlador.ParametroControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -19,6 +20,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
        
     Usuario nuevoUsuario = new Usuario();
     UsuarioControlador usuControlador = new UsuarioControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(NuevoUsuario.class);
     private URL url = NuevoUsuario.class.getResource("Log4j.properties");
@@ -305,7 +307,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         
         if(elUsuarioExiste){
             txt_nombreUsuario.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             Normalizar();
         }else{
             
@@ -341,7 +343,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                 txt_nombreUsuario.setBackground(Color.green);
                 txt_clave.setBackground(Color.green);
 
-                JOptionPane.showMessageDialog(null, "Usuario registrado satisfactoriamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+                JOptionPane.showMessageDialog(null, "Usuario registrado satisfactoriamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
                 Limpiar();
                 this.dispose();
                 panelUsu.setVisible(true);
@@ -349,7 +351,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                 MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
                 
             } else {
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 Normalizar();
             }
         }   
@@ -366,7 +368,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         int numeroCaracteres = 29;
         if(txt_nombres.getText().length() > numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
         
     }//GEN-LAST:event_txt_nombresKeyTyped
@@ -382,7 +384,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         int numeroCaracteres = 29;
         if(txt_apellidos.getText().length() > numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));  
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));  
         }
     }//GEN-LAST:event_txt_apellidosKeyTyped
 
@@ -391,7 +393,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         int numeroCaracteres = 9;
         if(txt_celular.getText().length() > numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));  
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));  
         }
         
         //Evalua que se digiten numeros no letras
@@ -401,7 +403,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
             
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_celularKeyTyped
 
@@ -410,7 +412,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         int numeroCaracteres = 9;
         if(txt_telefono.getText().length() > numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));  
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));  
         }
         
         //Evalua que se digiten numeros no letras
@@ -420,7 +422,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
             getToolkit().beep();
             evt.consume();
             
-            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(rootPane, "Ingrese solo números.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_txt_telefonoKeyTyped
 
@@ -429,7 +431,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         int numeroCaracteres = 9;
         if(txt_nombreUsuario.getText().length() > numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));  
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));  
         }
     }//GEN-LAST:event_txt_nombreUsuarioKeyTyped
 
@@ -438,7 +440,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         int numeroCaracteres = 9;
         if(txt_clave.getText().length() > numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));  
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));  
         }
     }//GEN-LAST:event_txt_claveKeyTyped
 

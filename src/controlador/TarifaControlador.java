@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Tarifa;
@@ -22,6 +21,7 @@ import static vista.GestionarTarifas.table_listaTarifas;
 public class TarifaControlador {
     
     Tarifa tarifaConsultada = new Tarifa();
+    ParametroControlador paramControla;
     
     private final Logger log = Logger.getLogger(TarifaControlador.class);
     private URL url = TarifaControlador.class.getResource("Log4j.properties");
@@ -81,7 +81,7 @@ public class TarifaControlador {
             }
             cn.close();                    
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de tarifas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+                JOptionPane.showMessageDialog(null, "¡¡Error al llenar tabla de tarifas!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
                 log.fatal("ERROR - Se ha producido un error al cargar las tarifas de la BD a la Tabla de tarifas: " + e);
             }
     }
@@ -106,7 +106,7 @@ public class TarifaControlador {
                 laTarifaExiste = false;
             }
         }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al comparar nomParquadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al comparar nomParquadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al validar la existencia de una tarifa en el sistema: " + ex);
         }
         return laTarifaExiste;
@@ -136,7 +136,7 @@ public class TarifaControlador {
             pst3.executeUpdate();
             cn3.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al registrar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al registrar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al crear una tarifa en el sistema: " + e);
         } 
     }
@@ -168,7 +168,7 @@ public class TarifaControlador {
             cn1.close();
 
         }catch(SQLException e){
-           JOptionPane.showMessageDialog(null, "¡¡Error al seleccionar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+           JOptionPane.showMessageDialog(null, "¡¡Error al seleccionar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
            log.fatal("ERROR - Se ha producido un error al seleccionar una tarifa de la tabla de tarifas del sistema: " + e); 
         }
         return tarifaRescatada;
@@ -184,7 +184,7 @@ public class TarifaControlador {
             pst.executeUpdate();
             cn.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al actualizar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar actualizar una tarifa en el sistema: " + e);
         }  
     }
@@ -236,7 +236,7 @@ public class TarifaControlador {
                 cn.close();
             }
         }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al verificar uso de tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al verificar uso de tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al validar el uso de una tarifa en el sistema: " + ex);
         }
         return laTarifaSeEstaImplementando;
@@ -253,11 +253,11 @@ public class TarifaControlador {
             ps1.setString(1, tarifaAEliminar);
             ps1.execute();
 
-            JOptionPane.showMessageDialog(null, "La tarifa: " + tarifaAEliminar + " ha sido eliminada", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+            JOptionPane.showMessageDialog(null, "La tarifa: " + tarifaAEliminar + " ha sido eliminada", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
             cn1.close();
 
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar una tarifa: " + e);
         }
     }
@@ -294,7 +294,7 @@ public class TarifaControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al consultar nombre de tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al consultar nombre de tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar validar el nombre de una tarifa utilizando su ID: " + e);
         } 
         return nombreTarifa;
@@ -326,7 +326,7 @@ public class TarifaControlador {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al consultar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al consultar tarifa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar validar la informacion total de una tarifa utilizando su ID: " + e);
         } 
         return tarifaConsultada;

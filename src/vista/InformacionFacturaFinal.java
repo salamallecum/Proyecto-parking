@@ -2,6 +2,7 @@ package vista;
 
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import controlador.UsuarioControlador;
@@ -37,6 +38,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControlador = new VehiculoControlador();
     UsuarioControlador usuarioControla = new UsuarioControlador();
+    ParametroControlador paramControla = new ParametroControlador();
        
     Factura facturaCerradaConsultada = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
         
@@ -421,7 +423,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         String botones[] = {"Si", "No"};
-        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
         String placa = lbl_placa.getText();
         
         if(decision == JOptionPane.YES_OPTION){    
@@ -441,7 +443,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
             //Actualizamos los datos totales del gestor de facturas
             facturaControla.generarEstadisticasMedianteUnCriterioDeterminado(GestionarFacturas.sentenciaSQLUtilizadaTotales);
             
-            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
             dispose();
             GestionarFacturas.hayFacturaVisualizandose = false;
         }

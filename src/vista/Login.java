@@ -1,6 +1,7 @@
 package vista;
 
 import com.sun.glass.events.KeyEvent;
+import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -27,7 +28,7 @@ public class Login extends javax.swing.JFrame {
     String clave = "";
        
     UsuarioControlador usuControlador = new UsuarioControlador();
-    
+    ParametroControlador paramControla = new ParametroControlador();
     private final Logger log = Logger.getLogger(Login.class);
     private URL url = Login.class.getResource("/clasesDeApoyo/Log4j.properties");
     
@@ -195,7 +196,7 @@ public class Login extends javax.swing.JFrame {
         int numeroCaracteres = 10;
         if(txt_usuario.getText().length() == numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_usuario.setText("");
         }
     }//GEN-LAST:event_txt_usuarioKeyTyped
@@ -206,7 +207,7 @@ public class Login extends javax.swing.JFrame {
        int numeroCaracteres = 10;
         if(clave.length() == numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 10 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_clave.setText("");
         }   
     }//GEN-LAST:event_txt_claveKeyTyped
@@ -285,7 +286,7 @@ public class Login extends javax.swing.JFrame {
                 log.warn("ADVERTENCIA - Se intentó acceder al sistema con un usuario no activo");
             }             
         } else {
-            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }
     

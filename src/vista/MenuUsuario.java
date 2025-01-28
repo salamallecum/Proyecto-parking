@@ -1,5 +1,6 @@
 package vista;
 
+import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
@@ -33,6 +34,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
     private final Logger log = Logger.getLogger(MenuUsuario.class);
     private URL url = MenuUsuario.class.getResource("Log4j.properties");
     
+    ParametroControlador paramControla = new ParametroControlador();
     UsuarioControlador usuControlador = new UsuarioControlador();
     public static boolean menuUsuario = false;
     
@@ -308,7 +310,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
             new Login().setVisible(true);
             log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
         }else{
-            JOptionPane.showMessageDialog(null, "Por favor cierre la caja o las ventanas que se encuentren abiertas antes de continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Por favor cierre la caja o las ventanas que se encuentren abiertas antes de continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_btn_cerrarSesionActionPerformed
 

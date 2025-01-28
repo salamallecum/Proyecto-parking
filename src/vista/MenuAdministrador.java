@@ -1,5 +1,6 @@
 package vista;
 
+import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
@@ -8,7 +9,6 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import org.apache.log4j.Logger;
@@ -24,6 +24,8 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     Calendar calendario;
     Date fechaHoraActual;
     Thread h1; 
+    
+    ParametroControlador paramControla;
     
     //Variables que monitorean las ventanas del sistema que estanabiertas y cerradas  
     public static boolean hayAlgunaVentanaAbiertaDelSistema = false;
@@ -576,7 +578,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
             new Login().setVisible(true);
             log.info("INFO - El usuario ha cerrado sesión satisfactoriamente");
         }else{
-            JOptionPane.showMessageDialog(null, "Por favor cierre la caja o las ventanas que se encuentren abiertas antes de continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Por favor cierre la caja o las ventanas que se encuentren abiertas antes de continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
     }//GEN-LAST:event_btn_cerrarSesionActionPerformed
 

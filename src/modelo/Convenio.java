@@ -1,6 +1,7 @@
 package modelo;
 
 import clasesDeApoyo.Conexion;
+import controlador.ParametroControlador;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
@@ -23,6 +23,7 @@ public class Convenio{
     private String nombre;
     private String monto;
     private String frecuencia;
+    ParametroControlador paramControla;
     
     private final Logger log = Logger.getLogger(Convenio.class);
     private URL url = Convenio.class.getResource("Log4j.properties");
@@ -92,7 +93,7 @@ public class Convenio{
            rs3.close();
 
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de convenios disponibles!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de convenios disponibles!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al al cargar listado de convenios disponibles: " + ex.toString());
         }
         return datos;

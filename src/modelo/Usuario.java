@@ -1,13 +1,13 @@
 package modelo;
 
 import clasesDeApoyo.Conexion;
+import controlador.ParametroControlador;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
@@ -26,6 +26,8 @@ public class Usuario {
     private String clave;
     private String rol;
     private String activo;
+    
+    ParametroControlador paramControla;
     
     private final Logger log = Logger.getLogger(Usuario.class);
     private URL url = Usuario.class.getResource("Log4j.properties");
@@ -139,7 +141,7 @@ public class Usuario {
            rs3.close();
 
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de usuarios del sistema!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar listado de usuarios del sistema!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al cargar listado de usuarios: " + ex.toString());
         }
         return datos;

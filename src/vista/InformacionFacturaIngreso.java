@@ -2,6 +2,7 @@ package vista;
 
 import controlador.ConvenioControlador;
 import controlador.FacturaControlador;
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.TarifaControlador;
 import controlador.UsuarioControlador;
@@ -9,7 +10,6 @@ import controlador.VehiculoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -33,12 +33,12 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
             
     Factura facturaAbiertaConsultada = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
     FacturaControlador facturaControla = new FacturaControlador();
-
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
     TarifaControlador tarifaControla = new TarifaControlador();
     ConvenioControlador convControla = new ConvenioControlador();
     VehiculoControlador vehiControlador = new VehiculoControlador(); 
     UsuarioControlador usuarioControla = new UsuarioControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(InformacionFacturaIngreso.class);
     private URL url = InformacionFacturaIngreso.class.getResource("Log4j.properties");
@@ -305,7 +305,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         String botones[] = {"Si", "No"};
-        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
         if(decision == JOptionPane.YES_OPTION){    
            
             int idParq = facturaAbiertaConsultada.getId_parqueadero();
@@ -321,7 +321,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
             
             int filaSelec = tablaOperacionFacturas.getSelectedRow();
             modelo.removeRow(filaSelec);
-            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+            JOptionPane.showMessageDialog(null, "La factura ha sido eliminada satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
             dispose();
             GestionarFacturas.hayFacturaVisualizandose = false;
         }

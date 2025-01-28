@@ -1,11 +1,11 @@
 package vista;
 
+import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -22,6 +22,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
       
     Parqueadero nuevoParqueadero = new Parqueadero();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     
     public static DefaultTableModel modeloParq;
     int Fila;
@@ -236,10 +237,10 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         
                  
         if(cantidadFilas == 0){
-            JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }else{    
             String botones[] = {"Si", "No"};
-            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar parqueadero", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar parqueadero", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
             String nombreParqueadero = table_listaParqueaderos.getValueAt(Fila, 0).toString();
             
             if(decision == JOptionPane.YES_OPTION){
@@ -247,7 +248,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                 boolean propietarioEnParqueadero = parqControla.evaluarSiEstaPropietarioEnParqueadero(nombreParqueadero);
                 
                 if(propietarioEnParqueadero){
-                    JOptionPane.showMessageDialog(null, "El parqueadero indicado tiene cupo actualmente en parqueadero.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                    JOptionPane.showMessageDialog(null, "El parqueadero indicado tiene cupo actualmente en parqueadero.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }else{
                     parqControla.eliminarParqueadero(nombreParqueadero);
                     modeloParq.removeRow(Fila);
@@ -272,7 +273,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         int numeroCaracteres = 15;
         if(txt_nombreParqueadero.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 15 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null,"Solo 15 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_nombreParqueadero.setText("");
         } 
     }//GEN-LAST:event_txt_nombreParqueaderoKeyTyped
@@ -405,7 +406,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         
         if(elParqueaderoExiste){
             txt_nombreParqueadero.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "Nombre de parqueadero no disponible.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+            JOptionPane.showMessageDialog(null, "Nombre de parqueadero no disponible.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             Normalizar();
         }else{
             
@@ -426,13 +427,13 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                 fila[2] = tipo_parqstr;
                 modeloParq.addRow(fila);
 
-                JOptionPane.showMessageDialog(null, "Parqueadero registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/exitoso.png"));
+                JOptionPane.showMessageDialog(null, "Parqueadero registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
                 Limpiar();
                 Normalizar();
                 txt_nombreParqueadero.requestFocus();
             
             }else {
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/advertencia.png"));
+                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 Normalizar();
             }
         }           
@@ -453,7 +454,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     private void cerrarGestorParqueaderos(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parqueaderos", 0, JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/icons/pregunta.png"), botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parqueaderos", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
