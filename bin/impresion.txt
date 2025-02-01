@@ -3,9 +3,31 @@
                                               
  Estado  |  No Parq  |  Placa  |  Parqueado?  
 ----------------------------------------------
- Ocupado  |  PARQ 1  |  JNU086  |  No         
- Disponible  |  PARQ 3  |    |                
- Ocupado  |  PARQ 4  |  HTV890  |  Si         
+ Ocupado  |  1A  |  CSA503  |  No             
+ Ocupado  |  2A  |  ABA900  |  No             
+ Ocupado  |  3A  |  TTX852  |  No             
+ Ocupado  |  4A  |  GGG667  |  No             
+ Ocupado  |  5A  |  FFF633  |  No             
+ Ocupado  |  6A  |  WWO521  |  No             
+ Ocupado  |  7A  |  ABC568  |  No             
+ Disponible  |  8A  |    |                    
+ Ocupado  |  9A  |  TUV998  |  No             
+ Ocupado  |  10A  |  QVC850  |  No            
+ Ocupado  |  11A  |  CVC500  |  No            
+ Ocupado  |  12A  |  VBK850  |  No            
+ Ocupado  |  13A  |  ERF89G  |  No            
+ Ocupado  |  14A  |  AAA800  |  No            
+ Ocupado  |  15A  |  ERA520  |  No            
+ Ocupado  |  16A  |  WSC850  |  No            
+ Ocupado  |  17A  |  ZXC244  |  No            
+ Ocupado  |  18A  |  XXX300  |  No            
+ Ocupado  |  19A  |  AWS812  |  No            
+ Ocupado  |  20A  |  ALA999  |  No            
+ Ocupado  |  21A  |  QCV222  |  No            
+ Ocupado  |  22A  |  HHH555  |  No            
+ Ocupado  |  23A  |  WAL891  |  No            
+ Ocupado  |  24A  |  VBN900  |  No            
+ Ocupado  |  25A  |  ZZZ123  |  No            
                                               
         Todos los derechos reservados         
                                               

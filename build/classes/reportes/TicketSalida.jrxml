@@ -7,6 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="imagen" class="java.io.InputStream"/>
+	<parameter name="codigo_factura" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
@@ -34,7 +35,8 @@ FROM
      INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`
 WHERE
      facturas.`Placa` = $P{placa}
- AND facturas.`Estado_fctra` = 'Cerrada']]>
+ AND facturas.`Estado_fctra` = 'Cerrada'
+AND facturas.`Codigo` = $P{codigo_factura}]]>
 	</queryString>
 	<field name="convenios_Nombre_convenio" class="java.lang.String"/>
 	<field name="facturas_Codigo" class="java.lang.String"/>
