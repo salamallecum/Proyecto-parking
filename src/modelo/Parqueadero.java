@@ -22,7 +22,8 @@ public class Parqueadero {
     private int id;
     private String nombre;
     private String estado;
-    private String tipoParqueadero;
+    private String claseParqueadero;
+    private String tipoVehiculo;
     private String placa;
     private String propietario;
     private String estaEnParqueo;
@@ -82,15 +83,22 @@ public class Parqueadero {
         this.estaEnParqueo = estaEnParqueo;
     }
 
-    public String getTipoParqueadero() {
-        return tipoParqueadero;
+    public String getClaseParqueadero() {
+        return claseParqueadero;
     }
 
-    public void setTipoParqueadero(String tipoParqueadero) {
-        this.tipoParqueadero = tipoParqueadero;
+    public void setClaseParqueadero(String claseParqueadero) {
+        this.claseParqueadero = claseParqueadero;
     }
-      
-        
+
+    public String getTipoVehiculo() {
+        return tipoVehiculo;
+    }
+
+    public void setTipoVehiculo(String tipoVehiculo) {
+        this.tipoVehiculo = tipoVehiculo;
+    }
+             
     //Metodos
     public String toString(){
         return this.nombre;

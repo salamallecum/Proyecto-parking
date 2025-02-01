@@ -35,7 +35,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
      */
     public GestionarParqueaderos() {       
         initComponents();
-        setSize(713, 535);
+        setSize(745, 600);
         setResizable(false);
         setTitle("Gestionar parqueaderos");
         setLocationRelativeTo(null);
@@ -62,15 +62,27 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-        btn_eliminar = new javax.swing.JButton();
-        btn_ingresar = new javax.swing.JButton();
-        txt_nombreParqueadero = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_listaParqueaderos = new javax.swing.JTable();
         btn_generaPDF = new javax.swing.JButton();
+        jTabbedPane3 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        txt_nombreParqueadero = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        btn_ingresar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        cmb_tipoParq = new javax.swing.JComboBox<>();
+        cmb_claseParq = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        cmb_tipoVehiculo = new javax.swing.JComboBox<>();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        cmb_claseParqBusqueda = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        cmb_tipoVehiculoBusqueda = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        cmb_estadosParqueaderoBusqueda = new javax.swing.JComboBox<>();
+        btn_buscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -83,24 +95,57 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Nombre de parqueadero:");
+        table_listaParqueaderos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Estado", "Nombre", "Tipo", "Placa/Identificación", "Propietario"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
-        btn_eliminar.setText("Eliminar");
-        btn_eliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_eliminarActionPerformed(evt);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        table_listaParqueaderos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane1.setViewportView(table_listaParqueaderos);
 
-        btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
-        btn_ingresar.setText("Guardar");
-        btn_ingresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_ingresar.addActionListener(new java.awt.event.ActionListener() {
+        btn_generaPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generaPDF.setText("Generar Informe PDF");
+        btn_generaPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generaPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_ingresarActionPerformed(evt);
+                btn_generaPDFActionPerformed(evt);
             }
         });
 
@@ -123,175 +168,208 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
             }
         });
 
-        table_listaParqueaderos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Nombre", "Estado", "Tipo", "Placa", "Propietario", "Está en parqueo"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Nombre de parqueadero:");
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
+        btn_ingresar.setText("Guardar");
+        btn_ingresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_ingresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ingresarActionPerformed(evt);
             }
         });
-        jScrollPane1.setViewportView(table_listaParqueaderos);
 
-        btn_generaPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
-        btn_generaPDF.setText("Generar Informe PDF");
-        btn_generaPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_generaPDF.addActionListener(new java.awt.event.ActionListener() {
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_generaPDFActionPerformed(evt);
+                btn_eliminarActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText("Tipo:");
+        jLabel4.setText("Clase:");
 
-        cmb_tipoParq.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "RESIDENTE", "VISITANTE" }));
+        cmb_claseParq.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "RESIDENTE", "VISITANTE" }));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Tipo de vehiculo:");
+
+        cmb_tipoVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO", "BICICLETA", "PATINETA", "OTRO" }));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_nombreParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cmb_claseParq, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.Alignment.LEADING, 0, 153, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(btn_ingresar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_eliminar)
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_nombreParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_claseParq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane3.addTab("Registro", jPanel1);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setText("Clase:");
+
+        cmb_claseParqBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "RESIDENTE", "VISITANTE" }));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("Tipo de vehiculo:");
+
+        cmb_tipoVehiculoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO", "BICICLETA", "PATINETA", "OTRO" }));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setText("Estado:");
+
+        cmb_estadosParqueaderoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Disponible", "Ocupado" }));
+
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
+        btn_buscar.setText("Buscar");
+        btn_buscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(cmb_claseParqBusqueda, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmb_estadosParqueaderoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_buscar))
+                .addContainerGap(158, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_claseParqBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmb_estadosParqueaderoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
+        );
+
+        jTabbedPane3.addTab("Buscar", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_generaPDF)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txt_nombreParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn_ingresar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn_eliminar))
-                            .addComponent(cmb_tipoParq, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btn_generaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1)
+                        .addComponent(jTabbedPane3)))
+                .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_nombreParqueadero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_tipoParq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_generaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    //Metodo del boton cancelar
-    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        
-        Fila = table_listaParqueaderos.getSelectedRow();
-        int cantidadFilas = table_listaParqueaderos.getSelectedRowCount();
-        
-                 
-        if(cantidadFilas == 0){
-            JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
-        }else{    
-            String botones[] = {"Si", "No"};
-            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar parqueadero", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
-            String nombreParqueadero = table_listaParqueaderos.getValueAt(Fila, 0).toString();
-            
-            if(decision == JOptionPane.YES_OPTION){
-                
-                boolean propietarioEnParqueadero = parqControla.evaluarSiEstaPropietarioEnParqueadero(nombreParqueadero);
-                
-                if(propietarioEnParqueadero){
-                    JOptionPane.showMessageDialog(null, "El parqueadero indicado tiene cupo actualmente en parqueadero.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
-                }else{
-                    parqControla.eliminarParqueadero(nombreParqueadero);
-                    modeloParq.removeRow(Fila);
-                }
-            }else if(decision == JOptionPane.NO_OPTION){}
-        }       
-    }//GEN-LAST:event_btn_eliminarActionPerformed
-
-    //Metodo boton Ingresar
-    private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
-        registrarParqueadero();
-    }//GEN-LAST:event_btn_ingresarActionPerformed
-
-    private void txt_nombreParqueaderoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoKeyTyped
-        //Forza aescribir en mayuscula
-        char c=evt.getKeyChar();
-        if(Character.isLowerCase(c)){
-            evt.setKeyChar(Character.toUpperCase(c));
-        }
-        
-        //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 15;
-        if(txt_nombreParqueadero.getText().length()== numeroCaracteres){
-            evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 15 caracteres", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
-            txt_nombreParqueadero.setText("");
-        } 
-    }//GEN-LAST:event_txt_nombreParqueaderoKeyTyped
-
-    //Metodo boton generar pdf
+    //Metodo boton generar pdf del reporte de parqueaderos
     private void btn_generaPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFActionPerformed
-        parqControla.generarPDFParqueaderosRegistrados();
-        btn_generaPDF.setEnabled(false);
+        
+        String sentenciaSQLParaReporte = "";
+        int clase_cmb = cmb_claseParqBusqueda.getSelectedIndex();
+        String clase_str = (String) cmb_claseParqBusqueda.getSelectedItem();
+        int tipoVehiculo_cmb = cmb_tipoVehiculoBusqueda.getSelectedIndex();
+        String tipoVehiculo_str = (String) cmb_tipoVehiculoBusqueda.getSelectedItem();
+        int estado_cmb = cmb_estadosParqueaderoBusqueda.getSelectedIndex();
+        String estado_str = (String) cmb_estadosParqueaderoBusqueda.getSelectedItem();
+        
+     
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(clase_cmb == 0 && tipoVehiculo_cmb == 0 && estado_cmb == 0){
+            parqControla.generarPDFParqueaderosRegistrados(sentenciaSQLParaReporte);
+        }else{
+
+            if(clase_cmb != 0){
+                //Agregamos la clase de parqueadero a la sentencia sql
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND TipoParq = '"+clase_str+"'";
+            }
+
+            if(tipoVehiculo_cmb != 0){
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND TipoVehiculo = '"+tipoVehiculo_str+"'";
+            }
+
+            if(estado_cmb != 0){
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND Estado = '"+estado_str+"'";
+            }
+            //Ejecutamos la sentencia SQL construida
+            parqControla.generarPDFParqueaderosRegistrados(sentenciaSQLParaReporte);
+            btn_generaPDF.setEnabled(false);
+        } 
     }//GEN-LAST:event_btn_generaPDFActionPerformed
-
-    private void txt_nombreParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_nombreParqueaderoActionPerformed
-
-    private void txt_nombreParqueaderoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoFocusGained
-        btn_eliminar.setEnabled(false);
-        btn_ingresar.setEnabled(true);
-    }//GEN-LAST:event_txt_nombreParqueaderoFocusGained
 
     //Aqui programamos lo que queremos quehaga al cerrar el jframe
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -302,9 +380,101 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowActivated
 
+    private void txt_nombreParqueaderoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+    }//GEN-LAST:event_txt_nombreParqueaderoFocusGained
+
     private void txt_nombreParqueaderoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoFocusLost
         btn_eliminar.setEnabled(true);
     }//GEN-LAST:event_txt_nombreParqueaderoFocusLost
+
+    private void txt_nombreParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_nombreParqueaderoActionPerformed
+
+    private void txt_nombreParqueaderoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombreParqueaderoKeyTyped
+        //Forza aescribir en mayuscula
+        char c=evt.getKeyChar();
+        if(Character.isLowerCase(c)){
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 30;
+        if(txt_nombreParqueadero.getText().length()== numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            txt_nombreParqueadero.setText("");
+        }
+    }//GEN-LAST:event_txt_nombreParqueaderoKeyTyped
+
+    private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
+        registrarParqueadero();
+    }//GEN-LAST:event_btn_ingresarActionPerformed
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+
+        Fila = table_listaParqueaderos.getSelectedRow();
+        int cantidadFilas = table_listaParqueaderos.getSelectedRowCount();
+
+        if(cantidadFilas == 0){
+            JOptionPane.showMessageDialog(null, "Seleccione el parqueadero que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+        }else{
+            String botones[] = {"Si", "No"};
+            int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar parqueadero", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
+            String nombreParqueadero = table_listaParqueaderos.getValueAt(Fila, 1).toString();
+
+            if(decision == JOptionPane.YES_OPTION){
+
+                boolean propietarioEnParqueadero = parqControla.evaluarSiEstaPropietarioEnParqueadero(nombreParqueadero);
+
+                if(propietarioEnParqueadero){
+                    JOptionPane.showMessageDialog(null, "El parqueadero indicado tiene cupo actualmente en parqueadero.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+                }else{
+                    parqControla.eliminarParqueadero(nombreParqueadero);
+                    modeloParq.removeRow(Fila);
+                }
+            }else if(decision == JOptionPane.NO_OPTION){}
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+
+        String sentenciaSQL = "SELECT Estado, Nombre_parqueadero, TipoVehiculo, Placa, Propietario FROM parqueaderos WHERE 1=1";
+        int clase_cmb = cmb_claseParqBusqueda.getSelectedIndex();
+        String clase_str = (String) cmb_claseParqBusqueda.getSelectedItem();
+        int tipoVehiculo_cmb = cmb_tipoVehiculoBusqueda.getSelectedIndex();
+        String tipoVehiculo_str = (String) cmb_tipoVehiculoBusqueda.getSelectedItem();
+        int estado_cmb = cmb_estadosParqueaderoBusqueda.getSelectedIndex();
+        String estado_str = (String) cmb_estadosParqueaderoBusqueda.getSelectedItem();
+        
+     
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(clase_cmb == 0 && tipoVehiculo_cmb == 0 && estado_cmb == 0){
+            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            parqControla.cargarTablaDeParqueaderos();
+
+        }else{
+
+            if(clase_cmb != 0){
+                //Agregamos la clase de parqueadero a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND TipoParq = '"+clase_str+"'";
+            }
+
+            if(tipoVehiculo_cmb != 0){
+                sentenciaSQL = sentenciaSQL + " AND TipoVehiculo = '"+tipoVehiculo_str+"'";
+            }
+
+            if(estado_cmb != 0){
+                sentenciaSQL = sentenciaSQL + " AND Estado = '"+estado_str+"'";
+            }
+
+            //Ejecutamos la sentencia SQL construida
+            parqControla.buscarParqueaderos(sentenciaSQL);
+
+        }
+    }//GEN-LAST:event_btn_buscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -364,13 +534,25 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_eliminar;
     public static javax.swing.JButton btn_generaPDF;
     private javax.swing.JButton btn_ingresar;
-    private javax.swing.JComboBox<String> cmb_tipoParq;
+    private javax.swing.JComboBox<String> cmb_claseParq;
+    private javax.swing.JComboBox<String> cmb_claseParqBusqueda;
+    private javax.swing.JComboBox<String> cmb_estadosParqueaderoBusqueda;
+    private javax.swing.JComboBox<String> cmb_tipoVehiculo;
+    private javax.swing.JComboBox<String> cmb_tipoVehiculoBusqueda;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane3;
     public static javax.swing.JTable table_listaParqueaderos;
     private javax.swing.JTextField txt_nombreParqueadero;
     // End of variables declaration//GEN-END:variables
@@ -380,28 +562,47 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
        
         int validacion = 0;
         String nombreParqueadero;
-        String tipo_parqstr = "";
+        String clase_parqstr = "";
+        String tipo_vehistr = "";
         
         nombreParqueadero = txt_nombreParqueadero.getText().trim();
-        int tipo_parq = cmb_tipoParq.getSelectedIndex();
+        int clase_parq = cmb_claseParq.getSelectedIndex();
+        int tipo_vehiculo = cmb_tipoVehiculo.getSelectedIndex();
                        
         if(nombreParqueadero.equals("")){
             txt_nombreParqueadero.setBackground(Color.red);
             validacion++;
         }
         
-        if(tipo_parq == 0){
-            tipo_parqstr = "Seleccione";
-            cmb_tipoParq.setBackground(Color.red);
+        if(clase_parq == 0){
+            clase_parqstr = "Seleccione";
+            cmb_claseParq.setBackground(Color.red);
             validacion++;
         }        
-        else if(tipo_parq == 1){
-            tipo_parqstr = "RESIDENTE";
-        }else if(tipo_parq == 2){
-            tipo_parqstr = "VISITANTE";
+        else if(clase_parq == 1){
+            clase_parqstr = "RESIDENTE";
+        }else if(clase_parq == 2){
+            clase_parqstr = "VISITANTE";
         }
         
-        //Valida si el usuario en cuestion ya fue creado con anterioridad
+        if(tipo_vehiculo == 0){
+            clase_parqstr = "Seleccione";
+            cmb_tipoVehiculo.setBackground(Color.red);
+            validacion++;
+        }        
+        else if(tipo_vehiculo == 1){
+            tipo_vehistr = "AUTOMOVIL";
+        }else if(tipo_vehiculo == 2){
+             tipo_vehistr = "MOTO";
+        }else if(tipo_vehiculo == 3){
+             tipo_vehistr = "BICICLETA";
+        }else if(tipo_vehiculo == 4){
+             tipo_vehistr = "PATINETA";
+        }else if(tipo_vehiculo == 5){
+             tipo_vehistr = "OTRO";
+        }
+                
+        //Valida si el parquedero en cuestion ya fue creado con anterioridad
         boolean elParqueaderoExiste = parqControla.evaluarExistenciaDeParqueadero(nombreParqueadero);
         
         if(elParqueaderoExiste){
@@ -414,17 +615,18 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                 //Encapsulamos el objeto Parqueadero
                 nuevoParqueadero.setId(0);
                 nuevoParqueadero.setNombre(nombreParqueadero);
-                nuevoParqueadero.setTipoParqueadero(tipo_parqstr);
+                nuevoParqueadero.setClaseParqueadero(clase_parqstr);
+                nuevoParqueadero.setTipoVehiculo(tipo_vehistr);
                 nuevoParqueadero.setEstado("Disponible");
                 nuevoParqueadero.setPlaca("");
                 nuevoParqueadero.setEstaOcupado("");
                 
                 parqControla.crearParqueadero(nuevoParqueadero);
                 
-                Object[] fila = new Object[6];
-                fila[0] = nombreParqueadero;
-                fila[1] = "Disponible";
-                fila[2] = tipo_parqstr;
+                Object[] fila = new Object[5];
+                fila[0] = "Disponible";
+                fila[1] = nombreParqueadero;
+                fila[2] = tipo_vehistr;
                 modeloParq.addRow(fila);
 
                 JOptionPane.showMessageDialog(null, "Parqueadero registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
@@ -442,7 +644,8 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
     //Metodo que limpia el formulario en caso de ingresar tablero principal
     public void Limpiar(){
         txt_nombreParqueadero.setText("");
-        cmb_tipoParq.setSelectedIndex(0);
+        cmb_claseParq.setSelectedIndex(0);
+        cmb_tipoVehiculo.setSelectedIndex(0);
     }
     
     //Metodo que normaliza el formulario en caso tablero compartido

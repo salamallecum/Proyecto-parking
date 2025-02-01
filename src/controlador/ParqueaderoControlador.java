@@ -189,33 +189,27 @@ public class ParqueaderoControlador implements Runnable{
                
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Nombre_parqueadero, Estado, TipoParq, Placa, Propietario, Esta_en_parqueadero from parqueaderos");
+                        "select Estado, Nombre_parqueadero, TipoVehiculo, Placa, Propietario from parqueaderos");
             
             ResultSet rs = pst.executeQuery();
             
             ResultSetMetaData rsmd = rs.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
            
-            modeloParq.addColumn("Nombre");
             modeloParq.addColumn("Estado");
-            modeloParq.addColumn("TipoParq");
-            modeloParq.addColumn("Placa");
+            modeloParq.addColumn("Nombre");
+            modeloParq.addColumn("Tipo de vehiculo");
+            modeloParq.addColumn("Placa/Identificación");
             modeloParq.addColumn("Propietario");
-            modeloParq.addColumn("Está en parqueo?");
             
-            int[] anchosTabla = {10,10,5,5,20,5};
-            
-            for(int x=0; x < cantidadColumnas; x++){
-                table_listaParqueaderos.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
-            }
+            ajustarTamañoColumnasTablaParqueaderos();
             
             while (rs.next()) {
                 
                 Object[] filas = new Object[cantidadColumnas];
                 
                 for (int i = 0; i < cantidadColumnas; i++) {
-                    
-                        filas[i] = rs.getObject(i + 1); 
+                   filas[i] = rs.getObject(i + 1); 
                 }
                 modeloParq.addRow(filas);
             }
@@ -227,22 +221,19 @@ public class ParqueaderoControlador implements Runnable{
     }
 
     //Metodo que genera el reporte PDF de los parqueaderos registrados
-    public void generarPDFParqueaderosRegistrados(){
-        
-        //Enviamos el paramtetro con la ruta que traera la img del reporte
-        Map parametroImg = new HashMap();
-        parametroImg.put("imagen", this.getClass().getResourceAsStream(rutaImgReporteAColor));
-        
+    public void generarPDFParqueaderosRegistrados(String sql){
+               
         try{
             Connection cn3 = Conexion.conectar();
-
+            
+            Map parametro = new HashMap();
+            parametro.clear();            
+            parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgReporteAColor));
+            parametro.put("sql", sql);
+            
             JasperReport reporte = null;
-            //String path = "src\\Reportes\\ListadoParqueaderos.jasper";
-
             reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ListadoParqueaderos.jasper"));
-
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametroImg, cn3);
-
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             view.setVisible(true);
@@ -278,14 +269,15 @@ public class ParqueaderoControlador implements Runnable{
         try {
             Connection cn3 = Conexion.conectar();
             PreparedStatement pst3 = cn3.prepareStatement(
-                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, TipoParq, Estado, Placa, Esta_en_parqueadero) values (?,?,?,?,?,?)");
+                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, TipoParq, TipoVehiculo, Estado, Placa, Esta_en_parqueadero) values (?,?,?,?,?,?,?)");
 
             pst3.setInt(1, nvoParq.getId());
             pst3.setString(2, nvoParq.getNombre());
-            pst3.setString(3, nvoParq.getTipoParqueadero());
-            pst3.setString(4, nvoParq.getEstado());
-            pst3.setString(5, nvoParq.getPlaca());
-            pst3.setString(6, nvoParq.getEstaOcupado());
+            pst3.setString(3, nvoParq.getClaseParqueadero());
+            pst3.setString(4, nvoParq.getTipoVehiculo());
+            pst3.setString(5, nvoParq.getEstado());
+            pst3.setString(6, nvoParq.getPlaca());
+            pst3.setString(7, nvoParq.getEstaOcupado());
 
 
             pst3.executeUpdate();
@@ -718,5 +710,55 @@ public class ParqueaderoControlador implements Runnable{
                 }
             }
         }
+    }
+    
+    //Metodo que busca parqueaderos teniendo en cuenta uno o varios criterios de busqueda
+    public void buscarParqueaderos(String sentenciaSql){
+        
+        try{
+            String [] titulos = {"Estado", "Nombre", "Tipo", "Placa/Identificación", "Propietario"};
+            modeloParq = new DefaultTableModel(null, titulos);
+            
+            
+            Connection cn6 = Conexion.conectar();
+            PreparedStatement pst6 = cn6.prepareStatement(sentenciaSql);
+            ResultSet rs6 = pst6.executeQuery(sentenciaSql);
+            
+            String[] fila = new String[5];
+            
+            
+            while(rs6.next()){
+                fila[0] = rs6.getString("Estado");
+                fila[1] = rs6.getString("Nombre_parqueadero");
+                fila[2] = rs6.getString("TipoVehiculo");
+                fila[3] = rs6.getString("Placa");
+                fila[4] = rs6.getString("Propietario");
+                modeloParq.addRow(fila);
+            }
+            table_listaParqueaderos.setModel(modeloParq);
+            ajustarTamañoColumnasTablaParqueaderos();
+            rs6.close();
+            cn6.close();
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "¡¡Error de busqueda de parqueaderos!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
+            log.fatal("ERROR - Se ha producido un error al intentar buscar los parqueaderos. " + ex);
+        }
+    }
+    
+    public void ajustarTamañoColumnasTablaParqueaderos(){
+        //Obtenemos las columnas de la tabla
+        TableColumn col1 = table_listaParqueaderos.getColumnModel().getColumn(0);
+        TableColumn col2 = table_listaParqueaderos.getColumnModel().getColumn(1);
+        TableColumn col3 = table_listaParqueaderos.getColumnModel().getColumn(2);
+        TableColumn col4 = table_listaParqueaderos.getColumnModel().getColumn(3);
+        TableColumn col5 = table_listaParqueaderos.getColumnModel().getColumn(4);
+
+        //Establecemos el ancho de las columnas
+        col1.setPreferredWidth(70);
+        col2.setPreferredWidth(200);
+        col3.setPreferredWidth(100);
+        col4.setPreferredWidth(120);
+        col5.setPreferredWidth(270);
     }
 }

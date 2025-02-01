@@ -4,24 +4,28 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="imagen" class="java.io.InputStream"/>
+	<parameter name="sql" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
      parqueaderos.`Estado` AS parqueaderos_Estado,
      parqueaderos.`Placa` AS parqueaderos_Placa,
      parqueaderos.`Esta_en_parqueadero` AS parqueaderos_Esta_en_parqueadero,
-     parqueaderos.`TipoParq` AS parqueaderos_TipoParq
+     parqueaderos.`TipoParq` AS parqueaderos_TipoParq,
+     parqueaderos.`TipoVehiculo` AS parqueaderos_TipoVehiculo,
+     parqueaderos.`Propietario` AS parqueaderos_Propietario
 FROM
-     `parqueaderos` parqueaderos]]>
+     `parqueaderos` parqueaderos
+WHERE 1=1
+$P!{sql}]]>
 	</queryString>
 	<field name="parqueaderos_Nombre_parqueadero" class="java.lang.String"/>
 	<field name="parqueaderos_Estado" class="java.lang.String"/>
 	<field name="parqueaderos_Placa" class="java.lang.String"/>
 	<field name="parqueaderos_Esta_en_parqueadero" class="java.lang.String"/>
 	<field name="parqueaderos_TipoParq" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
+	<field name="parqueaderos_TipoVehiculo" class="java.lang.String"/>
+	<field name="parqueaderos_Propietario" class="java.lang.String"/>
 	<title>
 		<band height="92" splitType="Stretch">
 			<staticText>
@@ -48,13 +52,10 @@ FROM
 			</image>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="10" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="139" height="20" uuid="409975d6-feca-473e-9494-dd34a879f742"/>
+				<reportElement x="0" y="0" width="65" height="20" uuid="4b1d8feb-8f13-464d-8971-d1ba164dab32"/>
 				<box>
 					<pen lineWidth="1.75"/>
 					<topPen lineWidth="1.75"/>
@@ -63,26 +64,12 @@ FROM
 					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Nombre Parq]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="139" y="0" width="100" height="20" uuid="4b1d8feb-8f13-464d-8971-d1ba164dab32"/>
-				<box>
-					<pen lineWidth="1.75"/>
-					<topPen lineWidth="1.75"/>
-					<leftPen lineWidth="1.75"/>
-					<bottomPen lineWidth="1.75"/>
-					<rightPen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font size="8" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Estado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="349" y="0" width="111" height="20" uuid="5ba07696-8078-4579-ab2f-20eb912eb654"/>
+				<reportElement x="289" y="0" width="101" height="20" uuid="5ba07696-8078-4579-ab2f-20eb912eb654"/>
 				<box>
 					<pen lineWidth="1.75"/>
 					<topPen lineWidth="1.75"/>
@@ -91,12 +78,12 @@ FROM
 					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font size="8" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Placa]]></text>
+				<text><![CDATA[Placa/Identificación]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="460" y="0" width="110" height="20" uuid="c2d25b8e-c6d6-45ae-97a1-8eeac2ed0414"/>
+				<reportElement x="483" y="0" width="87" height="20" uuid="c2d25b8e-c6d6-45ae-97a1-8eeac2ed0414"/>
 				<box>
 					<pen lineWidth="1.75"/>
 					<topPen lineWidth="1.75"/>
@@ -105,12 +92,12 @@ FROM
 					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font size="8" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Está en parqueadero?]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="239" y="0" width="110" height="20" uuid="e94051c4-7395-4b0f-8a85-a37b85355549"/>
+				<reportElement x="219" y="0" width="70" height="20" uuid="e94051c4-7395-4b0f-8a85-a37b85355549"/>
 				<box>
 					<pen lineWidth="1.75"/>
 					<topPen lineWidth="1.75"/>
@@ -119,16 +106,44 @@ FROM
 					<rightPen lineWidth="1.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font size="8" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Tipo Parq]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="0" width="154" height="20" uuid="409975d6-feca-473e-9494-dd34a879f742"/>
+				<box>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Nombre Parq]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="93" height="20" uuid="c87b5e2d-b400-4e45-8b4d-b5719370fd0a"/>
+				<box>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de vehiculo]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="139" height="20" uuid="1ce95b1a-e7ce-4af6-8c7d-20f784df004b"/>
+				<reportElement x="0" y="1" width="65" height="20" backcolor="#000000" uuid="03d636d6-0733-4a07-a4d1-9a1f2b1dcfc0"/>
 				<box>
 					<pen lineWidth="1.5"/>
 					<topPen lineWidth="1.5"/>
@@ -136,23 +151,13 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="139" y="0" width="100" height="20" backcolor="#000000" uuid="03d636d6-0733-4a07-a4d1-9a1f2b1dcfc0"/>
-				<box>
-					<pen lineWidth="1.5"/>
-					<topPen lineWidth="1.5"/>
-					<leftPen lineWidth="1.5"/>
-					<bottomPen lineWidth="1.5"/>
-					<rightPen lineWidth="1.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Estado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="349" y="0" width="111" height="20" uuid="debdcdfe-5ff5-41fc-a496-d76b95ba43e2"/>
+				<reportElement x="289" y="1" width="101" height="20" uuid="debdcdfe-5ff5-41fc-a496-d76b95ba43e2"/>
 				<box>
 					<pen lineWidth="1.5"/>
 					<topPen lineWidth="1.5"/>
@@ -160,11 +165,13 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Placa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="460" y="0" width="110" height="20" uuid="d88fb8fc-8b52-4a4e-9577-425e123faa3c"/>
+				<reportElement x="483" y="0" width="87" height="20" uuid="d88fb8fc-8b52-4a4e-9577-425e123faa3c"/>
 				<box>
 					<pen lineWidth="1.5"/>
 					<topPen lineWidth="1.5"/>
@@ -172,11 +179,13 @@ FROM
 					<bottomPen lineWidth="1.5"/>
 					<rightPen lineWidth="1.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{parqueaderos_Esta_en_parqueadero}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="239" y="0" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="feeb3c0a-8466-42f4-baba-aa97e5cc53ef"/>
+				<reportElement mode="Transparent" x="219" y="1" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="feeb3c0a-8466-42f4-baba-aa97e5cc53ef"/>
 				<box>
 					<pen lineWidth="1.5"/>
 					<topPen lineWidth="1.5"/>
@@ -185,10 +194,38 @@ FROM
 					<rightPen lineWidth="1.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{parqueaderos_TipoParq}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="1" width="154" height="20" uuid="1ce95b1a-e7ce-4af6-8c7d-20f784df004b"/>
+				<box>
+					<pen lineWidth="1.5"/>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="93" height="20" uuid="f563b178-f71c-4307-a679-b77a6da926fd"/>
+				<box>
+					<pen lineWidth="1.75"/>
+					<topPen lineWidth="1.75"/>
+					<leftPen lineWidth="1.75"/>
+					<bottomPen lineWidth="1.75"/>
+					<rightPen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parqueaderos_TipoVehiculo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -206,10 +243,4 @@ FROM
 			</textField>
 		</band>
 	</columnFooter>
-	<pageFooter>
-		<band height="7" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="3" splitType="Stretch"/>
-	</summary>
 </jasperReport>
