@@ -903,9 +903,9 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
                     dispose();
                     
                     //Evaluamos si el vehiculo se encuentra registrado en el sistema, si es asi solo pasamos el estado parqueadero a No
-                    boolean vehiculoRegistrado = vehiControla.evaluarExistenciaDelVehiculo(placa);
+                    int vehiculoRegistrado = vehiControla.evaluarExistenciaDelVehiculo(null, placa);
                     
-                    if(vehiculoRegistrado == true){
+                    if(vehiculoRegistrado == 1){
                         parqControla.actualizarEstadoDeParqueadero(placa, dueño, parqControla.consultarIdParqueadero(parqueadero), "No");
                     }else{
                         parqControla.liberarParqueadero(placa);

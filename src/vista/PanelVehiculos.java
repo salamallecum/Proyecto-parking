@@ -572,9 +572,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             vehiculoEstaEnParqueo = "No";
         }
                 
-        boolean vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(placa);
+        int vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(null, placa);
         
-        if(vehiculoYaPreviamenteRegistrado == true){
+        if(vehiculoYaPreviamenteRegistrado == 1){
             JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_placa.setText("");
             validacion++;

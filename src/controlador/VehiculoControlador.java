@@ -71,31 +71,43 @@ public class VehiculoControlador extends Thread{
     //Constructor
     public VehiculoControlador() {}   
     
-    //Metodo que evalua la existencia de un vehiculo previamente en el sistema
-    public boolean evaluarExistenciaDelVehiculo(String placa){
-        
-        boolean elvehiculoYaExiste = false;
-        
-        //Valida que el vehiculo ingresado no exista previamente en la BD  
+    //Metodo que evalua la existencia de un vehiculo previamente en el sistema (devuelve 1 si el vehiculo existe y 0 si es lo contrario)
+    public int evaluarExistenciaDelVehiculo(String consecutivoQr, String placa){
+               
+        int resultado = 0;
+        //Valida si el vehiculo ingresado existe previamente en la BD  
         try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select Placa from vehiculos where Placa = '" + placa + "'");
-            
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                elvehiculoYaExiste = true;
-                cn.close();
-            } 
-            
+            ResultSet rs;
+            String sql;
+            if(consecutivoQr != null){
+                sql = "select 1 resultado from vehiculos where Qr_consecutivo= '"+consecutivoQr+"'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    resultado = rs.getInt("resultado");
+                    cn.close();              
+                }else{
+                    resultado = 0;
+                }  
+            }else if(placa != null){
+                sql = "select 1 resultado from vehiculos where Placa= '"+placa+"'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    resultado = rs.getInt("resultado");
+                    cn.close();              
+                }else{
+                    resultado = 0;
+                }
+            }
         }catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "¡¡Error al evaluae existencia del vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al validar la existencia de un vehiculo en el sistema: " + ex); 
         }
         
-        return elvehiculoYaExiste;
+        return resultado;
     }
         
     //Metodo que registra un vehiculo en el sistema
@@ -337,7 +349,7 @@ public class VehiculoControlador extends Thread{
 
     //Metodo que consulta la ifnromación de un vehiculo teniendo en cuenta su consecutivo qr o placa
     public Vehiculo consultarInformacionDeUnVehiculo(String consecutivoQR, String placaDelVehiculo){
-               
+        
         //Hace la consulta de registros a la base de datos
         try {
             Connection cn = Conexion.conectar();

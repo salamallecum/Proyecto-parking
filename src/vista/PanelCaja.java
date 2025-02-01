@@ -564,11 +564,13 @@ public class PanelCaja extends javax.swing.JPanel{
         int decisionLiquidacion;
         
         if(consecutivoQr != null){
-            //Consultamos la informacion del vehiculo que tiene ese qr
-            vehiculoRegistrado = vehControla.consultarInformacionDeUnVehiculo(consecutivoQr, null);
+            
+            int elVehiculoEstaRegistrado = vehControla.evaluarExistenciaDelVehiculo(consecutivoQr, null);
             
             //Validamos si el vehiculo esta registrado en el sistema
-            if(vehiculoRegistrado != null){
+            if(elVehiculoEstaRegistrado == 1){
+                //Consultamos la informacion del vehiculo que tiene ese qr
+                vehiculoRegistrado = vehControla.consultarInformacionDeUnVehiculo(consecutivoQr, null);
                 placa = vehiculoRegistrado.getPlaca();
                 
                 //Validamos si el vehiculo ya se encuentra en el parqueadero 
@@ -585,6 +587,7 @@ public class PanelCaja extends javax.swing.JPanel{
                         Limpiar();
                     }else if(decisionLiquidacion == JOptionPane.NO_OPTION){
                         Limpiar();
+                        txt_consecutivoQR.setBackground(Color.WHITE);
                         txt_consecutivoQR.requestFocus();
                     }
                 }else{
@@ -593,8 +596,10 @@ public class PanelCaja extends javax.swing.JPanel{
                 }    
                           
             }else{
+                txt_consecutivoQR.setBackground(Color.red);
                 JOptionPane.showMessageDialog(null,"Código QR no válido.", "Error", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
                 txt_consecutivoQR.setText("");
+                txt_consecutivoQR.setBackground(Color.WHITE);
                 txt_consecutivoQR.requestFocus();
             }
                 
@@ -624,9 +629,9 @@ public class PanelCaja extends javax.swing.JPanel{
                 
             }else{
                 
-                boolean elvehiculoYaEstapreviamenteRegistrado = vehControla.evaluarExistenciaDelVehiculo(placa);
+                int elvehiculoYaEstapreviamenteRegistrado = vehControla.evaluarExistenciaDelVehiculo(null, placa);
                 
-                if(elvehiculoYaEstapreviamenteRegistrado == true){
+                if(elvehiculoYaEstapreviamenteRegistrado == 1){
                 
                     int decision = JOptionPane.showOptionDialog(this, "El vehiculo está registrado, ¿generar ingreso?", "Ingresar vehiculo", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
                     

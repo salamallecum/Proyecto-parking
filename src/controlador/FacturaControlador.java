@@ -344,7 +344,7 @@ public class FacturaControlador implements Runnable {
                     digitoAntePen = digitoAntePen + 1;
                     montoImpuestoArreglo[penultDigito-1] = Character.forDigit(digitoAntePen, 10);
                     montoDeImpuesto_str = String.valueOf(montoImpuestoArreglo);
-                    montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str);
+                    montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str.trim());
                 }
             }                        
         }

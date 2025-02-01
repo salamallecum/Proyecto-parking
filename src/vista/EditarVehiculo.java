@@ -447,9 +447,9 @@ public class EditarVehiculo extends javax.swing.JFrame{
             vehiculoEstaEnParqueo = "No";
         }
         
-        boolean vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(placa);
+        int vehiculoYaPreviamenteRegistrado = vehicontrolador.evaluarExistenciaDelVehiculo(null, placa);
         
-        if(vehiculoYaPreviamenteRegistrado == true){
+        if(vehiculoYaPreviamenteRegistrado == 1){
             JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.", "Validación", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_placa.setText("");
             validacion++;

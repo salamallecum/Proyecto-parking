@@ -63,7 +63,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
     int filas;
     int tarifaBack;
     int convenioBack;
-    boolean vehiculoDelBackupExiste = false;
+    int vehiculoDelBackupExiste;
     boolean seRealizaronValidaciones = false;
     boolean ingresoDesconocido = false;
     
@@ -116,7 +116,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         txt_placa.setText(placa_back);
         
         //Evaluamos la existencia del vehiculo backup en bd para su futura consulta al actualizar
-        vehiculoDelBackupExiste = vehiControla.evaluarExistenciaDelVehiculo(placa_back);
+        vehiculoDelBackupExiste = vehiControla.evaluarExistenciaDelVehiculo(null, placa_back);
         
         propietario_back = facturaAEditar.getPropietario(); 
         txt_propietario.setText(propietario_back);
@@ -142,9 +142,9 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         lbl_horaIngreso.setText(facturaAEditar.getFechaDeIngresoVehiculo());
         
         //Consultamos el propietario con el fin de ver si se encuentra registrado, de ser asi, deshabilitamos la edicion del formulario
-        boolean vehiculoRegistrado = vehiControla.evaluarExistenciaDelVehiculo(placa_back);
+        int vehiculoRegistrado = vehiControla.evaluarExistenciaDelVehiculo(null, placa_back);
         
-        if(vehiculoRegistrado == true){
+        if(vehiculoRegistrado == 1){
             txt_propietario.setEditable(false);
             cmb_tipVehi.setEnabled(false);
             cmb_convenios.setEnabled(false);
@@ -450,7 +450,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                 facturaAActualizar.setClaseDeVehiculo(tipoVehi_string);
                 
                 //El vehiculo analizado ya existe en el sistema y el ingresado tambien existe
-                if(vehiculoDelBackupExiste == true && ingresoDesconocido == false){
+                if(vehiculoDelBackupExiste == 1 && ingresoDesconocido == false){
                     
                     //Modificamos el id del parqueadero por el del vehiculo ingresado en el objeto factura
                     facturaAActualizar.setId_parqueadero(parqControla.consultarIdParqueadero(no_parq));
@@ -462,7 +462,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                 }
                 
                 //El vehiculo analizado no existe en el sistema y el ingresado tampoco existe
-                else if(vehiculoDelBackupExiste == false && ingresoDesconocido == true){
+                else if(vehiculoDelBackupExiste == 0 && ingresoDesconocido == true){
                     
                     parqSeleccionado = (Parqueadero)cmb_parqVisitantes.getSelectedItem();
                              
@@ -477,7 +477,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                 }                
                 
                 //El vehiculo analizado ya existe en el sistema pero el ingresado es desconocido
-                if(vehiculoDelBackupExiste == true && ingresoDesconocido == true){
+                if(vehiculoDelBackupExiste == 1 && ingresoDesconocido == true){
                     
                     parqSeleccionado = (Parqueadero)cmb_parqVisitantes.getSelectedItem();
                              
@@ -492,7 +492,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                 }               
                 
                 //El vehiculo analizado no existe en el sistema pero el ingresado es conocido
-                else if(vehiculoDelBackupExiste == false && ingresoDesconocido == false){
+                else if(vehiculoDelBackupExiste == 0 && ingresoDesconocido == false){
                     
                     //Modificamos el id del parqueadero por el del vehiculo ingresado en el objeto factura
                     facturaAActualizar.setId_parqueadero(parqControla.consultarIdParqueadero(no_parq));
@@ -766,9 +766,9 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(null, "Placa no válida.");
             txt_placa.setText(placa_back);
         }else{
-            boolean vehiculoYaExisteEnSistema = vehiControla.evaluarExistenciaDelVehiculo(placa);
+            int vehiculoYaExisteEnSistema = vehiControla.evaluarExistenciaDelVehiculo(null, placa);
              
-            if(vehiculoYaExisteEnSistema == true){
+            if(vehiculoYaExisteEnSistema == 1){
                  
                 String botones[] = {"Si", "No"};
                 int eleccion = JOptionPane.showOptionDialog(this, "La placa ingresada corresponde a un vehiculo previamente registrado en el sistema ¿Desea continuar?", "Mensaje", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
@@ -847,7 +847,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         cmb_parqVisitantes.setVisible(false);
         lbl_noParq.setVisible(true);
         
-       if(vehiculoDelBackupExiste == true){
+       if(vehiculoDelBackupExiste == 1){
             txt_placa.setEditable(true);
             txt_propietario.setEditable(false);
             cmb_tipVehi.setEnabled(false);
