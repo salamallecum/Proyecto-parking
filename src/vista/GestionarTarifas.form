@@ -68,10 +68,10 @@
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btn_ingresar" min="-2" pref="113" max="-2" attributes="0"/>
-                  <Component id="btn_editar" min="-2" max="-2" attributes="0"/>
-                  <Component id="btn_eliminar" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="btn_eliminar" max="32767" attributes="0"/>
+                  <Component id="btn_ingresar" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btn_editar" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
