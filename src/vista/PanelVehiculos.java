@@ -132,7 +132,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         btn_estadoParqueadero = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Table_listaVehiculos = new javax.swing.JTable();
-        btn_generarPDF = new javax.swing.JButton();
+        btn_gestorOtrosVehiculos = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -156,6 +156,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         btn_generarQR = new javax.swing.JButton();
         check_estaVehiculoEnParqueadero = new javax.swing.JCheckBox();
         btn_editar = new javax.swing.JButton();
+        btn_generarPDF1 = new javax.swing.JButton();
 
         btn_estadoParqueadero.setText("Estado de Parqueadero");
         btn_estadoParqueadero.addActionListener(new java.awt.event.ActionListener() {
@@ -219,15 +220,15 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 973, 197));
 
-        btn_generarPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
-        btn_generarPDF.setText("Generar Informe PDF");
-        btn_generarPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_generarPDF.addActionListener(new java.awt.event.ActionListener() {
+        btn_gestorOtrosVehiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bicicleta.png"))); // NOI18N
+        btn_gestorOtrosVehiculos.setText("Bicicletas y otros");
+        btn_gestorOtrosVehiculos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_gestorOtrosVehiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_generarPDFActionPerformed(evt);
+                btn_gestorOtrosVehiculosActionPerformed(evt);
             }
         });
-        add(btn_generarPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 420, -1, 43));
+        add(btn_gestorOtrosVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 420, -1, 43));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Placa:");
@@ -455,6 +456,16 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             }
         });
         add(btn_editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 94, -1, -1));
+
+        btn_generarPDF1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generarPDF1.setText("Generar Informe PDF");
+        btn_generarPDF1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generarPDF1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_generarPDF1ActionPerformed(evt);
+            }
+        });
+        add(btn_generarPDF1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 420, -1, 43));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_estadoParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_estadoParqueaderoActionPerformed
@@ -462,10 +473,10 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     }//GEN-LAST:event_btn_estadoParqueaderoActionPerformed
 
     //Metodo que genera el reporte pdf de los vehiculos
-    private void btn_generarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarPDFActionPerformed
+    private void btn_gestorOtrosVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_gestorOtrosVehiculosActionPerformed
         vehicontrolador.generarReportePDFdeVehiculosRegistrados();
-        btn_generarPDF.setEnabled(false);
-    }//GEN-LAST:event_btn_generarPDFActionPerformed
+        btn_gestorOtrosVehiculos.setEnabled(false);
+    }//GEN-LAST:event_btn_gestorOtrosVehiculosActionPerformed
 
     
     private void txt_placaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_placaKeyTyped
@@ -589,7 +600,16 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             cmb_parqueaderos.setSelectedIndex(0);
             validacion++;
+        }else{
+            boolean parqueaderoEsCompatible = parqControla.consultarCompatibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado, clase_string);
+            if(!parqueaderoEsCompatible){
+               JOptionPane.showMessageDialog(null, "El parqueadero indicado no es compatible con el vehiculo.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+               cmb_parqueaderos.setSelectedIndex(0);
+               validacion++;  
+            }
         } 
+        
+        
         
          //Validamos el verdadero id del convenio y de la tarifa en bd
         int idRealDelConvenioSeleccionado = convenioControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
@@ -897,7 +917,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     }//GEN-LAST:event_cmb_tarifaFocusGained
 
     private void cmb_claseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_claseItemStateChanged
-        
+       
     }//GEN-LAST:event_cmb_claseItemStateChanged
 
     private void check_estaVehiculoEnParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_estaVehiculoEnParqueaderoActionPerformed
@@ -927,14 +947,19 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         }
     }//GEN-LAST:event_btn_editarActionPerformed
 
+    private void btn_generarPDF1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarPDF1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_generarPDF1ActionPerformed
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTable Table_listaVehiculos;
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_estadoParqueadero;
-    public static javax.swing.JButton btn_generarPDF;
+    public static javax.swing.JButton btn_generarPDF1;
     private javax.swing.JButton btn_generarQR;
+    public static javax.swing.JButton btn_gestorOtrosVehiculos;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JCheckBox check_estaVehiculoEnParqueadero;
     private javax.swing.JComboBox<String> cmb_clase;
@@ -987,7 +1012,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         
         while(ct == hilo1){
 
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoResidente());
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoResidente("'AUTOMOVIL','MOTO'"));
             cmb_parqueaderos.setModel(modeloParq);
 
             try{

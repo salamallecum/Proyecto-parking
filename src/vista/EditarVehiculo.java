@@ -98,7 +98,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
         MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
         
-        DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoResidente());
+        DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoResidente("'AUTOMOVIL','MOTO'"));
         cmb_noParqueadero.setModel(modeloParq);
         parq.almacenarNombresParqueadero();
         
@@ -465,6 +465,13 @@ public class EditarVehiculo extends javax.swing.JFrame{
         if(parqueaderoEstaOcupado == true){
             JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.", "Validación", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/advertencia.png", 32, 32));
             validacion++;
+        }else{
+            boolean parqueaderoEsCompatible = parqControla.consultarCompatibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado, tipoVehi_string);
+            if(!parqueaderoEsCompatible){
+               JOptionPane.showMessageDialog(null, "El parqueadero indicado no es compatible con el vehiculo.", "Validación", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/advertencia.png", 32, 32));
+               cmb_noParqueadero.setSelectedIndex(0);
+               validacion++;  
+            }
         }
         
         if (validacion == 0) {           

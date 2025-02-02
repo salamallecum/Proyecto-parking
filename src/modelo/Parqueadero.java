@@ -181,18 +181,24 @@ public class Parqueadero {
     
     
     //Agrega los valores de la tabla de parqueaderos al combobox de la ventana de registro y edición de vehiculos
-    public Vector<Parqueadero> mostrarParqueaderosTipoResidente(){
+    public Vector<Parqueadero> mostrarParqueaderosTipoResidente(String tipoDeVehiculo){
         
         //Traemos todos los parqueaderos
         PreparedStatement pst4 = null;
-        ResultSet rs4 = null;       
+        ResultSet rs4 = null; 
+        String sql;
         Connection cn4 = Conexion.conectar();
         
         Vector<Parqueadero> datosPrueba = new Vector<Parqueadero>();
         Parqueadero dat = null;
         
         try{
-           pst4 = cn4.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE'"); 
+           if(tipoDeVehiculo.equals("")){
+               sql = "select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE'";
+           }else{
+               sql = "select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE' and TipoVehiculo in ("+tipoDeVehiculo+")";
+           }
+           pst4 = cn4.prepareStatement(sql); 
            rs4 = pst4.executeQuery();
            
            dat = new Parqueadero();

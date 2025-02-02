@@ -405,6 +405,33 @@ public class ParqueaderoControlador implements Runnable{
         return parqueaderoOcupado;
     }
     
+    //Metodo que consulta la compatibilidad de un parqueadero con un vehiculo mediante su id
+    public boolean consultarCompatibilidadDeParqueaderoMedianteID(int idParq, String tipoVehiculo){
+        
+        boolean parqueaderoCompatible = false;
+        
+        //Verifica la compatibilidad del parqueadero por su id
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select TipoVehiculo from parqueaderos where Id_parqueadero = " + idParq);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                if(rs.getString("TipoVehiculo").equals(tipoVehiculo)){
+                    parqueaderoCompatible = true;
+                }else{
+                    parqueaderoCompatible = false;
+                }
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "¡¡Error al consultar compatibilidad de parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
+            log.fatal("ERROR - Se ha producido un error al intentar validar la compatibilidad de un parquadero utilizando su ID: " + e);
+        } 
+        return parqueaderoCompatible;
+    }
+    
     //Metodo que permite consultar el nombre de un parqueadero para su muestreo usando su id
     public String consultarNombreDeParqueaderoMedianteID(int idParq){
               

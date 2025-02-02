@@ -167,7 +167,7 @@ public class VehiculoControlador extends Thread{
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
                MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
-               PanelVehiculos.btn_generarPDF.setEnabled(true);
+               PanelVehiculos.btn_gestorOtrosVehiculos.setEnabled(true);
             }
             });
             
