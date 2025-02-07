@@ -121,7 +121,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
         propietario_back = facturaAEditar.getPropietario(); 
         txt_propietario.setText(propietario_back);
         
-        tipVehi_back = facturaAEditar.getClaseDeVehiculo();
+        tipVehi_back = facturaAEditar.getTipoDeVehiculo();
         cmb_tipVehi.setSelectedItem(tipVehi_back);
         
         noParq_back = parqControla.consultarNombreDeParqueaderoMedianteID(facturaAEditar.getId_parqueadero());
@@ -447,7 +447,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                 facturaAActualizar.setId(ID);
                 facturaAActualizar.setPlaca(placa);
                 facturaAActualizar.setPropietario(dueño);
-                facturaAActualizar.setClaseDeVehiculo(tipoVehi_string);
+                facturaAActualizar.setTipoDeVehiculo(tipoVehi_string);
                 
                 //El vehiculo analizado ya existe en el sistema y el ingresado tambien existe
                 if(vehiculoDelBackupExiste == 1 && ingresoDesconocido == false){
@@ -786,7 +786,7 @@ public class EditarFacturaIngreso extends javax.swing.JFrame{
                         Vehiculo infoVehiculo = vehiControla.consultarInformacionDeUnVehiculo(null,placa);
                                         
                         txt_propietario.setText(infoVehiculo.getPropietario());
-                        cmb_tipVehi.setSelectedItem(infoVehiculo.getClase());
+                        cmb_tipVehi.setSelectedItem(infoVehiculo.getTipo());
                         lbl_noParq.setText(parqControla.consultarNombreDeParqueaderoMedianteID(infoVehiculo.getId_parqueadero()));
                         cmb_convenios.setSelectedIndex(buscarConvenioEnComboBox(convControla.consultarNombreDeConvenioMedianteID(infoVehiculo.getId_convenio())));
                         cmb_tarifas.setSelectedIndex(buscarTarifaEnComboBox(tarifaControla.consultarNombreDeTarifaMedianteID(infoVehiculo.getId_tarifa())));

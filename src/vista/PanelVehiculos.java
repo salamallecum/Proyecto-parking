@@ -139,7 +139,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         jLabel4 = new javax.swing.JLabel();
         txt_placa = new javax.swing.JTextField();
         txt_propietario = new javax.swing.JTextField();
-        cmb_clase = new javax.swing.JComboBox<>();
+        cmb_tipoVehiculo = new javax.swing.JComboBox<>();
         cmb_parqueaderos = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         cmb_convenios = new javax.swing.JComboBox<>();
@@ -153,10 +153,13 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         jLabel8 = new javax.swing.JLabel();
         txt_busquedapropietario = new javax.swing.JTextField();
         txt_busquedaPlaca = new javax.swing.JTextField();
+        cmb_tipoVehiculoBusqueda = new javax.swing.JComboBox<>();
+        btn_buscar = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
         btn_generarQR = new javax.swing.JButton();
         check_estaVehiculoEnParqueadero = new javax.swing.JCheckBox();
         btn_editar = new javax.swing.JButton();
-        btn_generarPDF1 = new javax.swing.JButton();
+        btn_generarReporteVehiculos = new javax.swing.JButton();
 
         btn_estadoParqueadero.setText("Estado de Parqueadero");
         btn_estadoParqueadero.addActionListener(new java.awt.event.ActionListener() {
@@ -191,7 +194,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Placa", "Propietario", "Clase", "N° Parq", "Convenio", "Tarifa"
+                "Placa", "Propietario", "Tipo", "N° Parq", "Convenio", "Tarifa"
             }
         ) {
             Class[] types = new Class [] {
@@ -228,23 +231,23 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_gestorOtrosVehiculosActionPerformed(evt);
             }
         });
-        add(btn_gestorOtrosVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 420, -1, 43));
+        add(btn_gestorOtrosVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 420, -1, 43));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Placa:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 3, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Propietario:");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 30, -1, -1));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Clase:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 64, -1, -1));
+        jLabel3.setText("Tipo de vehiculo:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, 20));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("N° de Parqueadero:");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 95, -1, -1));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         txt_placa.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -270,7 +273,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 txt_placaKeyTyped(evt);
             }
         });
-        add(txt_placa, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 0, 81, -1));
+        add(txt_placa, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 81, -1));
 
         txt_propietario.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -288,20 +291,20 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 txt_propietarioKeyTyped(evt);
             }
         });
-        add(txt_propietario, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 27, 314, -1));
+        add(txt_propietario, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 314, -1));
 
-        cmb_clase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO" }));
-        cmb_clase.addItemListener(new java.awt.event.ItemListener() {
+        cmb_tipoVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO" }));
+        cmb_tipoVehiculo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmb_claseItemStateChanged(evt);
+                cmb_tipoVehiculoItemStateChanged(evt);
             }
         });
-        cmb_clase.addFocusListener(new java.awt.event.FocusAdapter() {
+        cmb_tipoVehiculo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                cmb_claseFocusGained(evt);
+                cmb_tipoVehiculoFocusGained(evt);
             }
         });
-        add(cmb_clase, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 61, -1, -1));
+        add(cmb_tipoVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, -1, -1));
 
         cmb_parqueaderos.setAutoscrolls(true);
         cmb_parqueaderos.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -309,11 +312,11 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 cmb_parqueaderosFocusGained(evt);
             }
         });
-        add(cmb_parqueaderos, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 92, 271, -1));
+        add(cmb_parqueaderos, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 271, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Convenio:");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 126, -1, -1));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, -1, -1));
 
         cmb_convenios.setAutoscrolls(true);
         cmb_convenios.addItemListener(new java.awt.event.ItemListener() {
@@ -326,7 +329,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 cmb_conveniosFocusGained(evt);
             }
         });
-        add(cmb_convenios, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 123, 271, -1));
+        add(cmb_convenios, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 271, -1));
 
         btn_ingresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Save_icon-icons.com_73702.png"))); // NOI18N
         btn_ingresar.setText("Guardar");
@@ -336,7 +339,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_ingresarActionPerformed(evt);
             }
         });
-        add(btn_ingresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 0, -1, 40));
+        add(btn_ingresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, -1, 40));
         add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 197, 1100, 7));
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ic_delete_128_28267.png"))); // NOI18N
@@ -348,7 +351,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_eliminarActionPerformed(evt);
             }
         });
-        add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 47, -1, -1));
+        add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, -1, -1));
 
         cmb_tarifa.setAutoscrolls(true);
         cmb_tarifa.addItemListener(new java.awt.event.ItemListener() {
@@ -361,11 +364,11 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 cmb_tarifaFocusGained(evt);
             }
         });
-        add(cmb_tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 154, 272, -1));
+        add(cmb_tarifa, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 272, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Tarifa:");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 157, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, -1));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar por"));
 
@@ -375,6 +378,11 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Propietario:");
 
+        txt_busquedapropietario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_busquedapropietarioActionPerformed(evt);
+            }
+        });
         txt_busquedapropietario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_busquedapropietarioKeyReleased(evt);
@@ -393,6 +401,35 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             }
         });
 
+        cmb_tipoVehiculoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO" }));
+        cmb_tipoVehiculoBusqueda.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmb_tipoVehiculoBusquedaItemStateChanged(evt);
+            }
+        });
+        cmb_tipoVehiculoBusqueda.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cmb_tipoVehiculoBusquedaFocusGained(evt);
+            }
+        });
+        cmb_tipoVehiculoBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_tipoVehiculoBusquedaActionPerformed(evt);
+            }
+        });
+
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
+        btn_buscar.setText("Buscar");
+        btn_buscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setText("Tipo de vehiculo:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -401,12 +438,19 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_busquedaPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_busquedapropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txt_busquedaPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txt_busquedapropietario)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                        .addComponent(btn_buscar)))
+                .addGap(6, 6, 6))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -421,10 +465,19 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                         .addGap(3, 3, 3)
                         .addComponent(jLabel8))
                     .addComponent(txt_busquedapropietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(695, 44, -1, -1));
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 50, 400, 140));
 
         btn_generarQR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/qr.png"))); // NOI18N
         btn_generarQR.setText("QR");
@@ -435,7 +488,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_generarQRActionPerformed(evt);
             }
         });
-        add(btn_generarQR, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, -1, -1));
+        add(btn_generarQR, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 0, -1, -1));
 
         check_estaVehiculoEnParqueadero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         check_estaVehiculoEnParqueadero.setText("Está en parqueadero");
@@ -444,7 +497,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 check_estaVehiculoEnParqueaderoActionPerformed(evt);
             }
         });
-        add(check_estaVehiculoEnParqueadero, new org.netbeans.lib.awtextra.AbsoluteConstraints(494, 153, -1, -1));
+        add(check_estaVehiculoEnParqueadero, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 150, -1, -1));
 
         btn_editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-validated_40458.png"))); // NOI18N
         btn_editar.setText("Editar");
@@ -455,26 +508,27 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                 btn_editarActionPerformed(evt);
             }
         });
-        add(btn_editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 94, -1, -1));
+        add(btn_editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 110, -1));
 
-        btn_generarPDF1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
-        btn_generarPDF1.setText("Generar Informe PDF");
-        btn_generarPDF1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_generarPDF1.addActionListener(new java.awt.event.ActionListener() {
+        btn_generarReporteVehiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generarReporteVehiculos.setText("Generar Informe PDF");
+        btn_generarReporteVehiculos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generarReporteVehiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_generarPDF1ActionPerformed(evt);
+                btn_generarReporteVehiculosActionPerformed(evt);
             }
         });
-        add(btn_generarPDF1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 420, -1, 43));
+        add(btn_generarReporteVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 420, -1, 43));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_estadoParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_estadoParqueaderoActionPerformed
        
     }//GEN-LAST:event_btn_estadoParqueaderoActionPerformed
 
-    //Metodo que genera el reporte pdf de los vehiculos
+    //Metodo que abre la ventana que permite gestionar las bicicletas y otros vehiculos
     private void btn_gestorOtrosVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_gestorOtrosVehiculosActionPerformed
-        vehicontrolador.generarReportePDFdeVehiculosRegistrados();
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        new GestionarBicisyOtros().setVisible(true);
         btn_gestorOtrosVehiculos.setEnabled(false);
     }//GEN-LAST:event_btn_gestorOtrosVehiculosActionPerformed
 
@@ -522,7 +576,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                         
         placa = txt_placa.getText().trim();
         dueño = txt_propietario.getText().trim();
-        clase_cmb = cmb_clase.getSelectedIndex();
+        clase_cmb = cmb_tipoVehiculo.getSelectedIndex();
         parqueadero_cmb = cmb_parqueaderos.getSelectedIndex();
         
         Convenio convSeleccionado = new Convenio();
@@ -550,7 +604,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         
         if(clase_cmb == 0){
             clase_string = "Seleccione";
-            cmb_clase.setBackground(Color.red);
+            cmb_tipoVehiculo.setBackground(Color.red);
             validacion++;
         }        
         else if(clase_cmb == 1){
@@ -608,9 +662,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                validacion++;  
             }
         } 
-        
-        
-        
+               
          //Validamos el verdadero id del convenio y de la tarifa en bd
         int idRealDelConvenioSeleccionado = convenioControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
         int idRealDeTarifaSeleccionada = tarifaControla.consultarIdDeunaTarifa(tarifSeleccionada.getNombreTarifa());
@@ -625,7 +677,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
             nuevoVehiculo.setQr_consecutivo(qrInfo);
             nuevoVehiculo.setPlaca(placa);
             nuevoVehiculo.setPropietario(dueño);
-            nuevoVehiculo.setClase(clase_string);
+            nuevoVehiculo.setTipo(clase_string);
             nuevoVehiculo.setId_parqueadero(idRealDelParqueaderoSeleccionado);
             nuevoVehiculo.setId_convenio(idRealDelConvenioSeleccionado);
             nuevoVehiculo.setId_tarifa(idRealDeTarifaSeleccionada); 
@@ -656,7 +708,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
                     nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                     nuevaFactura.setPlaca(placa);
                     nuevaFactura.setPropietario(dueño);
-                    nuevaFactura.setClaseDeVehiculo(clase_string);
+                    nuevaFactura.setTipoDeVehiculo(clase_string);
                     nuevaFactura.setId_parqueadero(idRealDelParqueaderoSeleccionado);
                     nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                     nuevaFactura.setEstadoDeFactura("Abierta");
@@ -772,7 +824,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     
     private void cmb_conveniosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_conveniosItemStateChanged
         int conv_string = cmb_convenios.getSelectedIndex();
-        String tipVehi_string = (String)cmb_clase.getSelectedItem();
+        String tipVehi_string = (String)cmb_tipoVehiculo.getSelectedItem();
         
         if(conv_string == 1){
             if(tipVehi_string.equals("AUTOMOVIL")){
@@ -790,9 +842,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     }//GEN-LAST:event_cmb_conveniosItemStateChanged
 
     private void txt_busquedaPlacaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_busquedaPlacaKeyReleased
-        String buscar = txt_busquedaPlaca.getText();
-        vehicontrolador.busquedaDeVehiculoPorPlaca(buscar);
-        Table_listaVehiculos.setModel(modelo);
+       
     }//GEN-LAST:event_txt_busquedaPlacaKeyReleased
 
     private void txt_busquedaPlacaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_busquedaPlacaKeyTyped
@@ -812,9 +862,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     }//GEN-LAST:event_txt_busquedaPlacaKeyTyped
 
     private void txt_busquedapropietarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_busquedapropietarioKeyReleased
-        String buscar = txt_busquedapropietario.getText();
-        vehicontrolador.busquedaDeVehiculoPorPropietario(buscar);
-        Table_listaVehiculos.setModel(modelo);
+       
     }//GEN-LAST:event_txt_busquedapropietarioKeyReleased
 
     private void txt_busquedapropietarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_busquedapropietarioKeyTyped
@@ -888,12 +936,12 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         btn_editar.setEnabled(false);
     }//GEN-LAST:event_txt_propietarioFocusGained
 
-    private void cmb_claseFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_claseFocusGained
+    private void cmb_tipoVehiculoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_tipoVehiculoFocusGained
         btn_eliminar.setEnabled(false);
         btn_ingresar.setEnabled(true);
         btn_generarQR.setEnabled(false);
         btn_editar.setEnabled(false);
-    }//GEN-LAST:event_cmb_claseFocusGained
+    }//GEN-LAST:event_cmb_tipoVehiculoFocusGained
 
     private void cmb_parqueaderosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_parqueaderosFocusGained
         btn_eliminar.setEnabled(false);
@@ -916,9 +964,9 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         btn_editar.setEnabled(false);
     }//GEN-LAST:event_cmb_tarifaFocusGained
 
-    private void cmb_claseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_claseItemStateChanged
+    private void cmb_tipoVehiculoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tipoVehiculoItemStateChanged
        
-    }//GEN-LAST:event_cmb_claseItemStateChanged
+    }//GEN-LAST:event_cmb_tipoVehiculoItemStateChanged
 
     private void check_estaVehiculoEnParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_estaVehiculoEnParqueaderoActionPerformed
         // TODO add your handling code here:
@@ -947,25 +995,111 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
         }
     }//GEN-LAST:event_btn_editarActionPerformed
 
-    private void btn_generarPDF1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarPDF1ActionPerformed
+    private void btn_generarReporteVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarReporteVehiculosActionPerformed
+        String sentenciaSQLParaReporte = "";
+        String placa = txt_busquedaPlaca.getText();
+        String propietario = txt_busquedapropietario.getText();
+        int tipoVehiculo_cmb = cmb_tipoVehiculoBusqueda.getSelectedIndex();
+        String tipoVehiculo_str = (String) cmb_tipoVehiculoBusqueda.getSelectedItem();
+        
+
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(placa.equals("") && propietario.equals("") && tipoVehiculo_cmb == 0){
+            vehicontrolador.generarReportePDFdeVehiculosRegistrados(sentenciaSQLParaReporte);
+            btn_generarReporteVehiculos.setEnabled(false);
+
+        }else{
+            if(!placa.equals("")){
+                //Agregamos la placa del vehiculo a la sentencia sql
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND vehiculos.Placa LIKE '%"+placa+"%'";
+            }
+            
+            if(!propietario.equals("")){
+                //Agregamos propietario del vehiculo a la sentencia sql
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND vehiculos.Propietario LIKE '%"+propietario+"%'";
+            }
+
+            if(tipoVehiculo_cmb != 0){
+                //Agregamos tipo de vehiculo a la sentencia sql
+                sentenciaSQLParaReporte= sentenciaSQLParaReporte + " AND vehiculos.TipoVehiculo = '"+tipoVehiculo_str+"'";
+            }
+
+            //Ejecutamos la sentencia SQL construida
+            vehicontrolador.generarReportePDFdeVehiculosRegistrados(sentenciaSQLParaReporte);
+            btn_generarReporteVehiculos.setEnabled(false);
+            
+        }
+    }//GEN-LAST:event_btn_generarReporteVehiculosActionPerformed
+
+    private void txt_busquedapropietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_busquedapropietarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_generarPDF1ActionPerformed
+    }//GEN-LAST:event_txt_busquedapropietarioActionPerformed
+
+    private void cmb_tipoVehiculoBusquedaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tipoVehiculoBusquedaItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_tipoVehiculoBusquedaItemStateChanged
+
+    private void cmb_tipoVehiculoBusquedaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_tipoVehiculoBusquedaFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_tipoVehiculoBusquedaFocusGained
+
+    private void cmb_tipoVehiculoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_tipoVehiculoBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_tipoVehiculoBusquedaActionPerformed
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+
+        String sentenciaSQL = "SELECT Ve.Placa, Ve.Propietario, Ve.TipoVehiculo, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa WHERE 1=1";
+        String placa = txt_busquedaPlaca.getText();
+        String propietario = txt_busquedapropietario.getText();
+        int tipoVehiculo_cmb = cmb_tipoVehiculoBusqueda.getSelectedIndex();
+        String tipoVehiculo_str = (String) cmb_tipoVehiculoBusqueda.getSelectedItem();
+        
+
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(placa.equals("") && propietario.equals("") && tipoVehiculo_cmb == 0){
+            JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            vehicontrolador.cargarTablaDeVehiculosPorDefault();
+
+        }else{
+            if(!placa.equals("")){
+                //Agregamos la placa del vehiculo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND Ve.Placa LIKE '%"+placa+"%'";
+            }
+            
+            if(!propietario.equals("")){
+                //Agregamos propietario del vehiculo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND Ve.Propietario LIKE '%"+propietario+"%'";
+            }
+
+            if(tipoVehiculo_cmb != 0){
+                //Agregamos tipo de vehiculo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND Ve.TipoVehiculo = '"+tipoVehiculo_str+"'";
+            }
+
+            //Ejecutamos la sentencia SQL construida
+            vehicontrolador.buscarVehiculo(sentenciaSQL);
+
+        }
+    }//GEN-LAST:event_btn_buscarActionPerformed
 
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTable Table_listaVehiculos;
+    private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_estadoParqueadero;
-    public static javax.swing.JButton btn_generarPDF1;
     private javax.swing.JButton btn_generarQR;
+    public static javax.swing.JButton btn_generarReporteVehiculos;
     public static javax.swing.JButton btn_gestorOtrosVehiculos;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JCheckBox check_estaVehiculoEnParqueadero;
-    private javax.swing.JComboBox<String> cmb_clase;
     private javax.swing.JComboBox<String> cmb_convenios;
     private javax.swing.JComboBox<String> cmb_parqueaderos;
     private javax.swing.JComboBox<String> cmb_tarifa;
+    private javax.swing.JComboBox<String> cmb_tipoVehiculo;
+    private javax.swing.JComboBox<String> cmb_tipoVehiculoBusqueda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -974,6 +1108,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -986,7 +1121,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     public void Limpiar(){
         txt_placa.setText("");
         txt_propietario.setText("");
-        cmb_clase.setSelectedIndex(0);
+        cmb_tipoVehiculo.setSelectedIndex(0);
         cmb_parqueaderos.setSelectedIndex(0);
         cmb_convenios.setSelectedIndex(0);
         cmb_tarifa.setSelectedIndex(0);
@@ -996,7 +1131,7 @@ public class PanelVehiculos extends javax.swing.JPanel implements Runnable{
     public void Normalizar(){
         txt_placa.setBackground(Color.WHITE);
         txt_propietario.setBackground(Color.WHITE);
-        cmb_clase.setBackground(Color.WHITE);
+        cmb_tipoVehiculo.setBackground(Color.WHITE);
         cmb_parqueaderos.setBackground(Color.WHITE);
         cmb_convenios.setBackground(Color.WHITE);
         cmb_tarifa.setBackground(Color.WHITE);

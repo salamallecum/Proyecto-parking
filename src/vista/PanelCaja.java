@@ -641,7 +641,7 @@ public class PanelCaja extends javax.swing.JPanel{
                         vehiculoRegistrado = vehControla.consultarInformacionDeUnVehiculo(null, placa);
 
                         txt_nombrePropietario.setText(vehiculoRegistrado.getPropietario());
-                        cmb_clase.setSelectedItem(vehiculoRegistrado.getClase());
+                        cmb_clase.setSelectedItem(vehiculoRegistrado.getTipo());
 
                         idParq = vehiculoRegistrado.getId_parqueadero();
                         idConvenio = vehiculoRegistrado.getId_convenio();
@@ -752,7 +752,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                 nuevaFactura.setPlaca(placa);
                 nuevaFactura.setPropietario(dueño);
-                nuevaFactura.setClaseDeVehiculo(clase_string);
+                nuevaFactura.setTipoDeVehiculo(clase_string);
                 nuevaFactura.setId_parqueadero(validoParqueadero);
                 nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                 nuevaFactura.setEstadoDeFactura("Abierta");
@@ -821,7 +821,7 @@ public class PanelCaja extends javax.swing.JPanel{
         if(vehiculoARegistrar!=null){
             placa = vehiculoARegistrar.getPlaca();
             dueño = vehiculoARegistrar.getPropietario();
-            clase_string = vehiculoARegistrar.getClase();
+            clase_string = vehiculoARegistrar.getTipo();
             idParq = vehiculoARegistrar.getId_parqueadero();
             idConvenio = vehiculoARegistrar.getId_convenio();
             idTarifa = vehiculoARegistrar.getId_tarifa(); 
@@ -877,7 +877,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                 nuevaFactura.setPlaca(placa);
                 nuevaFactura.setPropietario(dueño);
-                nuevaFactura.setClaseDeVehiculo(clase_string);
+                nuevaFactura.setTipoDeVehiculo(clase_string);
                 nuevaFactura.setId_parqueadero(idParq);
                 nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                 nuevaFactura.setEstadoDeFactura("Abierta");
@@ -904,7 +904,7 @@ public class PanelCaja extends javax.swing.JPanel{
                 if(vehiculoARegistrar!=null){
                     txt_Placa.setText(placa);
                     txt_nombrePropietario.setText(vehiculoARegistrar.getPropietario());
-                    cmb_clase.setSelectedItem(vehiculoARegistrar.getClase());
+                    cmb_clase.setSelectedItem(vehiculoARegistrar.getTipo());
                     lbl_parqueadero.setText(parqControlador.consultarNombreDeParqueaderoMedianteID(idParq));
                     txt_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(idConvenio));
                     txt_tarifa.setText(tarifaControlador.consultarNombreDeTarifaMedianteID(idTarifa));

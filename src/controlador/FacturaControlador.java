@@ -488,7 +488,7 @@ public class FacturaControlador implements Runnable {
             pst2.setString(4, nvaFactura.getFechaDeFactura());
             pst2.setString(5, nvaFactura.getPlaca());
             pst2.setString(6, nvaFactura.getPropietario());
-            pst2.setString(7, nvaFactura.getClaseDeVehiculo());
+            pst2.setString(7, nvaFactura.getTipoDeVehiculo());
             pst2.setInt(8, nvaFactura.getId_parqueadero());
             pst2.setInt(9, nvaFactura.getFacturadoPor());
             pst2.setString(10, nvaFactura.getEstadoDeFactura());
@@ -559,7 +559,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
                 facturaConsultada.setPlaca(rs.getString("Placa"));
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
-                facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
+                facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
                 facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
                 facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
@@ -593,7 +593,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
                 facturaConsultada.setPlaca(rs.getString("Placa"));
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
-                facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
+                facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
                 facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
                 facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
@@ -633,7 +633,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
                 facturaConsultada.setPlaca(rs.getString("Placa"));
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
-                facturaConsultada.setClaseDeVehiculo(rs.getString("Tipo_vehiculo"));
+                facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
                 facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
                 facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
@@ -733,7 +733,7 @@ public class FacturaControlador implements Runnable {
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getClaseDeVehiculo()+"', No_parqueadero="+facturaAActualizar.getId_parqueadero()+", Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+", Diferencia='"+facturaAActualizar.getDiferencia()+"', Impuesto='"+facturaAActualizar.getImpuesto()+"', Valor_a_pagar='"+facturaAActualizar.getValorAPagar()+"', Efectivo='"+facturaAActualizar.getEfectivo()+"', Cambio='"+facturaAActualizar.getCambio()+"' where Id_factura ="+facturaAActualizar.getId());
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getTipoDeVehiculo()+"', No_parqueadero="+facturaAActualizar.getId_parqueadero()+", Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+", Diferencia='"+facturaAActualizar.getDiferencia()+"', Impuesto='"+facturaAActualizar.getImpuesto()+"', Valor_a_pagar='"+facturaAActualizar.getValorAPagar()+"', Efectivo='"+facturaAActualizar.getEfectivo()+"', Cambio='"+facturaAActualizar.getCambio()+"' where Id_factura ="+facturaAActualizar.getId());
 
             pst9.executeUpdate();
             cn9.close();
@@ -749,7 +749,7 @@ public class FacturaControlador implements Runnable {
         
         try{
             Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getClaseDeVehiculo()+"', No_parqueadero="+facturaAActualizar.getId_parqueadero()+", Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+" where Id_factura ="+facturaAActualizar.getId());
+            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+facturaAActualizar.getPlaca()+"', Propietario='"+facturaAActualizar.getPropietario()+"', Tipo_vehiculo='"+facturaAActualizar.getTipoDeVehiculo()+"', No_parqueadero="+facturaAActualizar.getId_parqueadero()+", Facturado_por='"+facturaAActualizar.getFacturadoPor()+"', Id_convenio="+facturaAActualizar.getId_convenio()+", Id_tarifa="+facturaAActualizar.getId_tarifa()+" where Id_factura ="+facturaAActualizar.getId());
 
             pst9.executeUpdate();
             cn9.close();

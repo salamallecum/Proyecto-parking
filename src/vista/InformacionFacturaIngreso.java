@@ -72,7 +72,7 @@ public class InformacionFacturaIngreso extends javax.swing.JFrame {
         lbl_codigo.setText(facturaAbiertaConsultada.getCodigo());
         lbl_placa.setText(facturaAbiertaConsultada.getPlaca());
         lbl_propietario.setText(facturaAbiertaConsultada.getPropietario());
-        lbl_tipoVehiculo.setText(facturaAbiertaConsultada.getClaseDeVehiculo());
+        lbl_tipoVehiculo.setText(facturaAbiertaConsultada.getTipoDeVehiculo());
         lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaAbiertaConsultada.getId_parqueadero()));
         lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaAbiertaConsultada.getFacturadoPor()));
         lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaAbiertaConsultada.getId_convenio()));

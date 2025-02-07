@@ -88,7 +88,7 @@ public class LiquidacionVehiculo extends javax.swing.JFrame {
             lbl_codigo.setText(facturaALiquidar.getCodigo());
             lbl_placa.setText(facturaALiquidar.getPlaca());
             lbl_propietario.setText(facturaALiquidar.getPropietario());
-            lbl_tipoVehiculo.setText(facturaALiquidar.getClaseDeVehiculo());
+            lbl_tipoVehiculo.setText(facturaALiquidar.getTipoDeVehiculo());
             lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaALiquidar.getId_parqueadero()));
             lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaALiquidar.getFacturadoPor()));
             lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaALiquidar.getId_convenio()));

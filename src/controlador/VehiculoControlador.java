@@ -123,7 +123,7 @@ public class VehiculoControlador extends Thread{
             pst2.setString(2, veh.getQr_consecutivo());
             pst2.setString(3, veh.getPlaca());
             pst2.setString(4, veh.getPropietario());
-            pst2.setString(5, veh.getClase());
+            pst2.setString(5, veh.getTipo());
             pst2.setInt(6, veh.getId_parqueadero());
             pst2.setInt(7, veh.getId_convenio());
             pst2.setInt(8, veh.getId_tarifa());
@@ -138,28 +138,24 @@ public class VehiculoControlador extends Thread{
     }
     
     //Metodo que genera el reporte PDF de los vehiculos registrados
-    public void generarReportePDFdeVehiculosRegistrados(){
-        
-        //Enviamos el paramtetro con la ruta que traera la img del reporte
-        Map parametroImg = new HashMap();
-        parametroImg.put("imagen", this.getClass().getResourceAsStream(rutaImgReporteAColor));
-        
+    public void generarReportePDFdeVehiculosRegistrados(String sql){
+         
         try{
             Connection cn3 = Conexion.conectar();
+            
+            //Enviamos la ruta de la imagen y la sentencia sql como parametros
+            Map parametro = new HashMap();
+            parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgReporteAColor));
+            parametro.put("sql", sql);
 
             JasperReport reporte = null;
-            //String path = "src\\Reportes\\ListadoVehiculos.jasper";
-
             reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/ListadoVehiculos.jasper"));
-
-            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametroImg, cn3);
-
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             view.setVisible(true);
             view.setIconImage(getIconImagePDFVehiculos());
             view.setTitle("Reporte de vehiculos registrados");
-            log.info("INFO - Reporte de vehiculos registrados generado satisfactoriamente.");
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
             
             //Agregamos un evento para cuando el visor del reporte se cierre
@@ -167,7 +163,7 @@ public class VehiculoControlador extends Thread{
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
                MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
-               PanelVehiculos.btn_gestorOtrosVehiculos.setEnabled(true);
+               PanelVehiculos.btn_generarReporteVehiculos.setEnabled(true);
             }
             });
             
@@ -184,72 +180,39 @@ public class VehiculoControlador extends Thread{
         return retValue;
     }
     
-    //Metodo que busca un vehiculo teniendo en cuenta su placa
-    public void busquedaDeVehiculoPorPlaca(String text){
+    //Metodo que busca un vehiculo teniendo en cuenta varios criterios de busqueda
+    public void buscarVehiculo(String sentenciaSql){
         
         try{
-            String [] titulos = {"Placa", "Propietario", "Clase", "N° Parq", "Convenio", "Tarifa"};
-            String filtro = "%"+text+"%";
-            String SQL = "SELECT Ve.Placa, Ve.Propietario, Ve.Clase, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa AND Ve.Placa like "+'"'+filtro+'"';
+            String [] titulos = {"Placa", "Propietario", "Tipo", "N° Parq", "Convenio", "Tarifa"};
             modelo = new DefaultTableModel(null, titulos);
             
             Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
+            PreparedStatement pst6 = cn6.prepareStatement(sentenciaSql);
+            ResultSet rs6 = pst6.executeQuery(sentenciaSql);
             
             String[] fila = new String[6];
             
             while(rs6.next()){
-                fila[0]=rs6.getString("Ve.Placa");
-                fila[1]=rs6.getString("Ve.Propietario");
-                fila[2]=rs6.getString("Ve.Clase");
-                fila[3]=rs6.getString("Parq.Nombre_parqueadero");
-                fila[4]=rs6.getString("Conv.Nombre_convenio");
-                fila[5]=rs6.getString("Tar.Nombre_tarifa");
+                fila[0] = rs6.getString("Ve.Placa");
+                fila[1] = rs6.getString("Ve.Propietario");
+                fila[2] = rs6.getString("Ve.TipoVehiculo");
+                fila[3] = rs6.getString("Parq.Nombre_parqueadero");
+                fila[4] = rs6.getString("Conv.Nombre_convenio");
+                fila[5] = rs6.getString("Tar.Nombre_tarifa");
                 modelo.addRow(fila);
+                
             }
-            
+            Table_listaVehiculos.setModel(modelo);
             rs6.close();
             cn6.close();
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡Error al buscar vehiculo por placa!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
-            log.fatal("ERROR - Se ha producido un error al intentar buscar un vehiculo por medio de su placa: " + ex);
+            JOptionPane.showMessageDialog(null, "¡¡Error de busqueda de vehiculos!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
+            log.fatal("ERROR - Se ha producido un error al intentar buscar los vehiculos. " + ex);
         }
     }
-    
-    //Metodo que busca un vehiculo teniendo en cuenta su propietario
-    public void busquedaDeVehiculoPorPropietario(String text){
-        
-        try{
-            String [] titulos = {"Placa", "Propietario", "Clase", "N° Parq", "Convenio", "Tarifa"};
-            String filtro = "%"+text+"%";
-            String SQL = "SELECT Ve.Placa, Ve.Propietario, Ve.Clase, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa AND Ve.Propietario like "+'"'+filtro+'"';
-            modelo = new DefaultTableModel(null, titulos);
-            
-            Connection cn6 = Conexion.conectar();
-            PreparedStatement pst6 = cn6.prepareStatement(SQL);
-            ResultSet rs6 = pst6.executeQuery(SQL);
-            
-            String[] fila = new String[6];
-            
-            while(rs6.next()){
-                fila[0]=rs6.getString("Ve.Placa");
-                fila[1]=rs6.getString("Ve.Propietario");
-                fila[2]=rs6.getString("Ve.Clase");
-                fila[3]=rs6.getString("Parq.Nombre_parqueadero");
-                fila[4]=rs6.getString("Conv.Nombre_convenio");
-                fila[5]=rs6.getString("Tar.Nombre_tarifa");
-                modelo.addRow(fila);
-            }
-            rs6.close();
-            cn6.close();
-            
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "¡¡Error al buscar vehiculo por propietario!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
-            log.fatal("ERROR - Se ha producido un error al intentar buscar un vehiculo por medio de su propietario: " + ex);
-        }
-    }
+   
     
     //Metodo que carga la tabla de vehiculos por Default al abrir el panel de vehiculos
     public void cargarTablaDeVehiculosPorDefault(){
@@ -272,7 +235,7 @@ public class VehiculoControlador extends Thread{
                
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "SELECT Ve.Placa, Ve.Propietario, Ve.Clase, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa");
+                        "SELECT Ve.Placa, Ve.Propietario, Ve.TipoVehiculo, Parq.Nombre_parqueadero, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa");
             
             ResultSet rs = pst.executeQuery();
             
@@ -281,7 +244,7 @@ public class VehiculoControlador extends Thread{
            
             modelo.addColumn("Placa");
             modelo.addColumn("Propietario");
-            modelo.addColumn("Clase");
+            modelo.addColumn("Tipo");
             modelo.addColumn("N° Parq");
             modelo.addColumn("Convenio");
             modelo.addColumn("Tarifa");       
@@ -358,14 +321,14 @@ public class VehiculoControlador extends Thread{
             ResultSet rs;
             
             if(consecutivoQR != null){
-                sql = "select Placa, Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Qr_consecutivo = '"+consecutivoQR+"'";
+                sql = "select Placa, Propietario, TipoVehiculo, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Qr_consecutivo = '"+consecutivoQR+"'";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                 if(rs.next()){
                     vehiculoConsultado.setQr_consecutivo(consecutivoQR);
                     vehiculoConsultado.setPlaca(rs.getString("Placa"));
                     vehiculoConsultado.setPropietario(rs.getString("Propietario"));
-                    vehiculoConsultado.setClase(rs.getString("Clase"));
+                    vehiculoConsultado.setTipo(rs.getString("TipoVehiculo"));
                     vehiculoConsultado.setId_parqueadero(rs.getInt("Id_parqueadero"));
                     vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
                     vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
@@ -375,7 +338,7 @@ public class VehiculoControlador extends Thread{
                 }
                 
             }else if(placaDelVehiculo != null){
-                sql = "select Id_vehiculo, SUBSTR(Qr_consecutivo,7) Consecutivo_qr, Placa, Propietario, Clase, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Placa = '"+placaDelVehiculo+ "'";
+                sql = "select Id_vehiculo, SUBSTR(Qr_consecutivo,7) Consecutivo_qr, Placa, Propietario, TipoVehiculo, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Placa = '"+placaDelVehiculo+ "'";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                 if(rs.next()){
@@ -383,7 +346,7 @@ public class VehiculoControlador extends Thread{
                     vehiculoConsultado.setQr_consecutivo(rs.getString("Consecutivo_qr"));
                     vehiculoConsultado.setPlaca(rs.getString("Placa"));
                     vehiculoConsultado.setPropietario(rs.getString("Propietario"));
-                    vehiculoConsultado.setClase(rs.getString("Clase"));
+                    vehiculoConsultado.setTipo(rs.getString("TipoVehiculo"));
                     vehiculoConsultado.setId_parqueadero(rs.getInt("Id_parqueadero"));
                     vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
                     vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
@@ -447,7 +410,7 @@ public class VehiculoControlador extends Thread{
         
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update vehiculos set Qr_consecutivo ='"+vehAActualizar.getQr_consecutivo()+"',Placa ='"+vehAActualizar.getPlaca()+"',Propietario='"+vehAActualizar.getPropietario()+"',Clase='"+vehAActualizar.getClase()+"',Id_parqueadero="+vehAActualizar.getId_parqueadero()+",Id_convenio="+vehAActualizar.getId_convenio()+",Id_tarifa="+vehAActualizar.getId_tarifa()+" where Id_vehiculo="+vehAActualizar.getId());
+            PreparedStatement pst = cn.prepareStatement("update vehiculos set Qr_consecutivo ='"+vehAActualizar.getQr_consecutivo()+"',Placa ='"+vehAActualizar.getPlaca()+"',Propietario='"+vehAActualizar.getPropietario()+"',TipoVehiculo='"+vehAActualizar.getTipo()+"',Id_parqueadero="+vehAActualizar.getId_parqueadero()+",Id_convenio="+vehAActualizar.getId_convenio()+",Id_tarifa="+vehAActualizar.getId_tarifa()+" where Id_vehiculo="+vehAActualizar.getId());
 
             pst.executeUpdate();
             cn.close(); 

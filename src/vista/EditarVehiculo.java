@@ -122,7 +122,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         propietariaBack = vehiculoConsultado.getPropietario();
         txt_dueño.setText(propietariaBack);
 
-        claseBack = vehiculoConsultado.getClase();
+        claseBack = vehiculoConsultado.getTipo();
         cmb_clase.setSelectedItem(claseBack);
 
         noParqueaderoBack = vehiculoConsultado.getId_parqueadero();       
@@ -482,7 +482,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             vehiculoEditado.setQr_consecutivo(placa+qrBack);
             vehiculoEditado.setPlaca(placa);
             vehiculoEditado.setPropietario(dueño);
-            vehiculoEditado.setClase(tipoVehi_string);
+            vehiculoEditado.setTipo(tipoVehi_string);
             vehiculoEditado.setId_parqueadero(idRealDelParqueaderoSeleccionado);
             vehiculoEditado.setId_convenio(idRealDelConvenioSeleccionado);
             vehiculoEditado.setId_tarifa(idRealDeTarifaSeleccionada); 
@@ -499,7 +499,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                     nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
                     nuevaFactura.setPlaca(placa);
                     nuevaFactura.setPropietario(dueño);
-                    nuevaFactura.setClaseDeVehiculo(tipoVehi_string);
+                    nuevaFactura.setTipoDeVehiculo(tipoVehi_string);
                     nuevaFactura.setId_parqueadero(idRealDelParqueaderoSeleccionado);
                     nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
                     nuevaFactura.setEstadoDeFactura("Abierta");

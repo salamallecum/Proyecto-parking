@@ -14,7 +14,7 @@ public class Factura {
     private String fechaDeFactura;
     private String placa;
     private String propietario;
-    private String claseDeVehiculo;
+    private String tipoDeVehiculo;
     private int id_parqueadero;
     private int facturadoPor;
     private String estadoDeFactura;
@@ -34,13 +34,13 @@ public class Factura {
     private final URL url = Factura.class.getResource("Log4j.properties");
     
     //Constructor
-    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String claseDeVehiculo, int id_parqueadero, int facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String impuesto, String valorAPagar, String efectivo, String cambio) {
+    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String tipoDeVehiculo, int id_parqueadero, int facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String impuesto, String valorAPagar, String efectivo, String cambio) {
         this.id = id;
         this.codigo = codigo;
         this.fechaDeFactura = fechaDeFactura;
         this.placa = placa;
         this.propietario = propietario;
-        this.claseDeVehiculo = claseDeVehiculo;
+        this.tipoDeVehiculo = tipoDeVehiculo;
         this.id_parqueadero = id_parqueadero;
         this.facturadoPor = facturadoPor;
         this.estadoDeFactura = estadoDeFactura;
@@ -98,12 +98,12 @@ public class Factura {
         this.propietario = propietario;
     }
 
-    public String getClaseDeVehiculo() {
-        return claseDeVehiculo;
+    public String getTipoDeVehiculo() {
+        return tipoDeVehiculo;
     }
 
-    public void setClaseDeVehiculo(String claseDeVehiculo) {
-        this.claseDeVehiculo = claseDeVehiculo;
+    public void setTipoDeVehiculo(String tipoDeVehiculo) {
+        this.tipoDeVehiculo = tipoDeVehiculo;
     }
 
     public int getId_parqueadero() {

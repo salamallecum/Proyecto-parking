@@ -13,7 +13,7 @@ public class Vehiculo {
     private String qr_consecutivo = "";
     private String placa = "";
     private String propietario = "";
-    private String clase = "";
+    private String tipo = "";
     private int id_parqueadero = 0;
     private int id_convenio = 0;
     private int id_tarifa = 0;
@@ -23,12 +23,12 @@ public class Vehiculo {
     private URL url = Vehiculo.class.getResource("Log4j.properties");
     
     //Constructor
-    public Vehiculo(int id, String qr_consecutivo, String placa, String propietario, String clase, int id_parqueadero, int id_convenio, int id_tarifa) {
+    public Vehiculo(int id, String qr_consecutivo, String placa, String propietario, String tipo, int id_parqueadero, int id_convenio, int id_tarifa) {
         this.id = id;
         this.qr_consecutivo = qr_consecutivo;
         this.placa = placa;
         this.propietario = propietario;
-        this.clase = clase;
+        this.tipo = tipo;
         this.id_parqueadero = id_parqueadero;
         this.id_convenio = id_convenio;
         this.id_tarifa = id_tarifa;
@@ -67,12 +67,12 @@ public class Vehiculo {
         this.propietario = propietario;
     }
 
-    public String getClase() {
-        return clase;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setClase(String clase) {
-        this.clase = clase;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public int getId_parqueadero() {
