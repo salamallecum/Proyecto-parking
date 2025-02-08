@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.sql.Connection;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;

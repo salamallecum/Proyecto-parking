@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
@@ -39,7 +40,7 @@ import static vista.PanelUsuarios.modelo;
 public class UsuarioControlador {
     
     Usuario usuarioConsultado = new Usuario();  
-    ParametroControlador paramControla;   
+    ParametroControlador paramControla = new ParametroControlador();   
     private final Logger log = Logger.getLogger(UsuarioControlador.class);
     private URL url = UsuarioControlador.class.getResource("/clasesDeApoyo/Log4j.properties");
     public static String rutaImgReporteAColor = "/icons/ImgReporte.jpg";
@@ -200,13 +201,15 @@ public class UsuarioControlador {
                     }
                 
                 }else {
-                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Login", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
-                    txt_usuario.setText("");
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Login", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/cancelar.png", 32, 32));
+                    });
+                        txt_usuario.setText("");
                     txt_clave.setText("");
                 }                 
                 
             } else {
-                 JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Login", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
+                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Login", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/cancelar.png", 32, 32));
                 txt_usuario.setText("");
                 txt_clave.setText("");
             }          
