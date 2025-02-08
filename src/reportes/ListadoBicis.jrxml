@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoBicis" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="189defe1-c95c-4ad7-991a-aba0493e1e0d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.io.InputStream"/>
+	<parameter name="sql" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     vehiculos.`Id_vehiculo` AS vehiculos_Id_vehiculo,
+     vehiculos.`Tipo_Identificacion` AS vehiculos_Tipo_Identificacion,
+     vehiculos.`No_identificacion` AS vehiculos_No_identificacion,
+     vehiculos.`Propietario` AS vehiculos_Propietario,
+     vehiculos.`TipoVehiculo` AS vehiculos_TipoVehiculo,
+     vehiculos.`Color` AS vehiculos_Color,
+     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,
+     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,
+     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa
+FROM
+     `parqueaderos` parqueaderos INNER JOIN `vehiculos` vehiculos ON parqueaderos.`Id_parqueadero` = vehiculos.`Id_parqueadero`
+     INNER JOIN `convenios` convenios ON vehiculos.`Id_convenio` = convenios.`Id_convenio`
+     INNER JOIN `tarifas` tarifas ON vehiculos.`Id_tarifa` = tarifas.`Id_tarifa`
+WHERE 1=1
+$P!{sql}]]>
+	</queryString>
+	<field name="vehiculos_Id_vehiculo" class="java.lang.Integer"/>
+	<field name="vehiculos_Tipo_Identificacion" class="java.lang.String"/>
+	<field name="vehiculos_No_identificacion" class="java.lang.String"/>
+	<field name="vehiculos_Propietario" class="java.lang.String"/>
+	<field name="vehiculos_TipoVehiculo" class="java.lang.String"/>
+	<field name="vehiculos_Color" class="java.lang.String"/>
+	<field name="parqueaderos_Nombre_parqueadero" class="java.lang.String"/>
+	<field name="convenios_Nombre_convenio" class="java.lang.String"/>
+	<field name="tarifas_Nombre_tarifa" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="50" y="0" width="100" height="50" uuid="e7dd9d9b-212c-4ea4-bfb3-f1414f82b866"/>
+			</image>
+			<staticText>
+				<reportElement x="169" y="0" width="297" height="35" uuid="967ab1cd-e6e6-426b-951a-815ee13d38e0"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MORE PARKING]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="35" width="310" height="20" uuid="65c2421e-8650-4670-8302-120104d13187"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Listado de bicicletas y otros vehiculos]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="576" y="0" width="100" height="20" uuid="664d9e99-32cd-4c4a-a25d-355175f53874"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="60" height="20" uuid="73797470-ce7d-404e-9738-0b65f97ea850"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tip Identif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="1" width="90" height="20" uuid="570354f8-a5bf-4965-b13e-758cdf2d64a2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[N° Identificación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="1" width="171" height="20" uuid="aab455f4-ddbd-4c9c-ae0f-f9e41cc8b07d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Propietario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="1" width="80" height="20" uuid="5b710da5-2da9-4245-8577-0e6441e1249b"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="740" y="1" width="129" height="20" uuid="758b8fd0-4252-43c6-aac8-ea71d598c5bf"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tarifa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="481" y="1" width="159" height="20" uuid="af22c702-6f49-4c90-8846-e5b40728fc63"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[N° Parq]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="640" y="1" width="100" height="20" uuid="a67319e9-ae22-442a-8bda-f4f28de8f39a"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Convenio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="1" width="80" height="20" uuid="5996a436-ccfd-440b-8906-5e3d0f07c2cc"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Color]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="60" height="20" uuid="9068ab07-c22b-4e8c-852b-4bc113e236b3"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vehiculos_Tipo_Identificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="0" width="90" height="20" uuid="6eb7a3f7-2047-42f0-8827-62497d53cfd3"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vehiculos_No_identificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="0" width="171" height="20" uuid="7656211e-5888-4c44-8a60-e1baca65e0d8"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vehiculos_Propietario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="321" y="0" width="80" height="20" uuid="4c805f50-5dcf-4aa1-8ba3-4abf096e99ef"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vehiculos_TipoVehiculo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="401" y="0" width="80" height="20" uuid="f8dacc70-1d00-44ef-9a99-f1b4c214f2d4"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vehiculos_Color}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="481" y="0" width="159" height="20" uuid="b49277e4-0972-4ba7-8d52-a7f93099603d"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{parqueaderos_Nombre_parqueadero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="640" y="0" width="100" height="20" uuid="2bf19f6a-f087-4d19-a227-39fdb7dd67f7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{convenios_Nombre_convenio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="740" y="0" width="129" height="20" uuid="bebec7fe-b56b-46b6-98a1-9f5a9a1c99d7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tarifas_Nombre_tarifa}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="345" y="0" width="80" height="20" uuid="b6f481b3-97be-4d84-8dc8-6fff42ceddd7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="425" y="0" width="40" height="20" uuid="58041f2d-e7b7-46a6-b1df-5b0b9c76f5bf"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
