@@ -1094,7 +1094,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
             identificacion = Table_listaBicisYOtros.getValueAt(Fila, 1).toString();
             dueñoBiciUOtro = Table_listaBicisYOtros.getValueAt(Fila, 2).toString();
             tipoVehiculoBiciUOtro = Table_listaBicisYOtros.getValueAt(Fila, 3).toString();
-            vehiControla.generarTicketQrVehiculo(tipoIdentificacion+identificacion+" - "+dueñoBiciUOtro, true, "", tipoVehiculoBiciUOtro);
+            vehiControla.generarTicketQrVehiculo(tipoIdentificacion+identificacion+" - "+dueñoBiciUOtro, false, "", tipoVehiculoBiciUOtro);
             JOptionPane.showMessageDialog(null, "Codigo qr generado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
         }
     }//GEN-LAST:event_btn_generarQRActionPerformed
