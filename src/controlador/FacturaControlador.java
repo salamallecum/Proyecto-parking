@@ -60,7 +60,7 @@ public class FacturaControlador implements Runnable {
     public static String rutaImgTickets = "/icons/ImgTickets.jpg";
     public static String rutaImgDocuments = "/icons/ImgReporte.jpg";
     
-    Factura facturaConsultada = new Factura(0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Factura facturaConsultada = new Factura(0, "", "", 0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
 
     //Hilo encargado del cargue de la tabla de opercaion del parqueradero en el panel caja
     public Thread hilo2 = new Thread(this);
@@ -97,20 +97,32 @@ public class FacturaControlador implements Runnable {
     }
         
     //Metodo que permite actualizar las facturas que se encuentre abierta con la información actualizada de un vehiculo    
-    public void actualizarFacturaAbierta(int id, String placa, String dueño, String tipVehi, int IdParq, int IdConv, int IdTarif){
+    public void actualizarFacturaAbierta(int id, int idVehiculo, String tipoIdentificacion, String numIdentificacion, String placa, String dueño, String tipVehi, int IdParq, int IdConv, int IdTarif){
         
-        try{
-            Connection cn9 = Conexion.conectar();
-            PreparedStatement pst9 = cn9.prepareStatement("update facturas set Placa ='"+placa+"', Propietario='"+dueño+"', Tipo_vehiculo='"+tipVehi+"', No_parqueadero='"+IdParq+"', Id_convenio='"+IdConv+"', Id_tarifa='"+IdTarif+"' where Id_factura ='"+id+"' and Estado_fctra='Abierta'");
-
-            pst9.executeUpdate();
-            cn9.close();
-
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            ResultSet rs;
+            String sql = "";
+            if(idVehiculo != 0){
+                sql = "update facturas set Id_vehiculo ="+idVehiculo+", Placa ='', Tipo_identificacion='', No_identificacion='', Propietario='', Tipo_vehiculo='', No_parqueadero=0, Id_convenio=0, Id_tarifa=0 where Id_factura ="+id+" and Estado_fctra='Abierta'";   
+            }else{
+               if(placa != null){
+                    sql = "update facturas set Placa ='"+placa+"', Propietario='"+dueño+"', Tipo_vehiculo='"+tipVehi+"', No_parqueadero="+IdParq+", Id_convenio="+IdConv+", Id_tarifa="+IdTarif+" where Id_factura ="+id+" and Estado_fctra='Abierta'";   
+            
+                }else if(tipoIdentificacion != null && numIdentificacion != null){
+                    sql = "update facturas set Tipo_identificacion ='"+tipoIdentificacion+"', No_identificacion='"+numIdentificacion+"', Propietario='"+dueño+"', Tipo_vehiculo='"+tipVehi+"', No_parqueadero="+IdParq+", Id_convenio="+IdConv+", Id_tarifa="+IdTarif+" where Id_factura ="+id+" and Estado_fctra='Abierta'";
+                } 
+            }
+                       
+            pst = cn.prepareStatement(sql);
+            pst.executeUpdate();
+            cn.close();
+            
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "¡¡Error al actualizar factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
-            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);
-            
-        } 
+            log.fatal("ERROR - Se ha producido un error al intentar actualizar la factura abierta de un vehiculo: " + e);   
+        }  
     }
        
     //Metodo que genera el ticket de ingreso de un vehiculo
@@ -473,33 +485,75 @@ public class FacturaControlador implements Runnable {
     } 
        
     //Metodo que crea facturas que se cobran con normalidad
-    public void crearFactura (Factura nvaFactura){
+    public void crearFactura (Factura nvaFactura, boolean facturaParaVehConocido){
         
         //Inserta el registro en la base de datos
         try {               
-            Connection cn2 = Conexion.conectar();
-            PreparedStatement pst2 = cn2.prepareStatement(
-                "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Placa, Propietario, Tipo_vehiculo, No_parqueadero, "
-                        + "Facturado_por, Estado_fctra, Contabilizada, Id_convenio, Id_tarifa, Hora_ingreso) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = null;
+            ResultSet rs;
+            String sql;
+            
+            if(facturaParaVehConocido){
+                sql = "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Id_vehiculo, Facturado_por, Estado_fctra, Contabilizada, Hora_ingreso) values (?,?,?,?,?,?,?,?,?)";
+                pst = cn.prepareStatement(sql);
 
-            pst2.setInt(1, nvaFactura.getId());
-            pst2.setString(2, nvaFactura.getCodigo());
-            pst2.setInt(3, 1);
-            pst2.setString(4, nvaFactura.getFechaDeFactura());
-            pst2.setString(5, nvaFactura.getPlaca());
-            pst2.setString(6, nvaFactura.getPropietario());
-            pst2.setString(7, nvaFactura.getTipoDeVehiculo());
-            pst2.setInt(8, nvaFactura.getId_parqueadero());
-            pst2.setInt(9, nvaFactura.getFacturadoPor());
-            pst2.setString(10, nvaFactura.getEstadoDeFactura());
-            pst2.setString(11, nvaFactura.getEstaContabilizada()); 
-            pst2.setInt(12, nvaFactura.getId_convenio());
-            pst2.setInt(13, nvaFactura.getId_tarifa());
-            pst2.setString(14, nvaFactura.getFechaDeIngresoVehiculo());             
+                pst.setInt(1, nvaFactura.getId());
+                pst.setString(2, nvaFactura.getCodigo());
+                pst.setInt(3, 1);
+                pst.setString(4, nvaFactura.getFechaDeFactura());
+                pst.setInt(5, nvaFactura.getIdDelVehiculo());
+                pst.setInt(6, nvaFactura.getFacturadoPor());
+                pst.setString(7, nvaFactura.getEstadoDeFactura());
+                pst.setString(8, nvaFactura.getEstaContabilizada()); 
+                pst.setString(9, nvaFactura.getFechaDeIngresoVehiculo());             
+                    
+            }else{
+                if(!nvaFactura.getPlaca().equals("")){
+                    sql = "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Placa, Propietario, Tipo_vehiculo, No_parqueadero,Facturado_por, Estado_fctra, Contabilizada, Id_convenio, Id_tarifa, Hora_ingreso) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    pst = cn.prepareStatement(sql);
 
-            pst2.executeUpdate();
-            cn2.close();
-        
+                    pst.setInt(1, nvaFactura.getId());
+                    pst.setString(2, nvaFactura.getCodigo());
+                    pst.setInt(3, 1);
+                    pst.setString(4, nvaFactura.getFechaDeFactura());
+                    pst.setString(5, nvaFactura.getPlaca());
+                    pst.setString(6, nvaFactura.getPropietario());
+                    pst.setString(7, nvaFactura.getTipoDeVehiculo());
+                    pst.setInt(8, nvaFactura.getId_parqueadero());
+                    pst.setInt(9, nvaFactura.getFacturadoPor());
+                    pst.setString(10, nvaFactura.getEstadoDeFactura());
+                    pst.setString(11, nvaFactura.getEstaContabilizada()); 
+                    pst.setInt(12, nvaFactura.getId_convenio());
+                    pst.setInt(13, nvaFactura.getId_tarifa());
+                    pst.setString(14, nvaFactura.getFechaDeIngresoVehiculo());             
+
+                }else if(!nvaFactura.getTipoIdentificacion().equals("") && !nvaFactura.getNumIdentificacion().equals("")){
+                    sql = "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Tipo_Identificacion, No_identificacion, Propietario, Tipo_vehiculo, No_parqueadero, Facturado_por, Estado_fctra, Contabilizada, Id_convenio, Id_tarifa, Hora_ingreso) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    pst = cn.prepareStatement(sql);
+
+                    pst.setInt(1, nvaFactura.getId());
+                    pst.setString(2, nvaFactura.getCodigo());
+                    pst.setInt(3, 1);
+                    pst.setString(4, nvaFactura.getFechaDeFactura());
+                    pst.setString(5, nvaFactura.getTipoIdentificacion());
+                    pst.setString(6, nvaFactura.getNumIdentificacion());
+                    pst.setString(7, nvaFactura.getPropietario());
+                    pst.setString(8, nvaFactura.getTipoDeVehiculo());
+                    pst.setInt(9, nvaFactura.getId_parqueadero());
+                    pst.setInt(10, nvaFactura.getFacturadoPor());
+                    pst.setString(11, nvaFactura.getEstadoDeFactura());
+                    pst.setString(12, nvaFactura.getEstaContabilizada()); 
+                    pst.setInt(13, nvaFactura.getId_convenio());
+                    pst.setInt(14, nvaFactura.getId_tarifa());
+                    pst.setString(15, nvaFactura.getFechaDeIngresoVehiculo());             
+                   
+                }
+            }
+            
+            pst.executeUpdate();
+            cn.close();          
+           
         }catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "¡¡Error al ingresar factura en el sistema!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al crear una factura en el sistema: " + e);
@@ -667,21 +721,21 @@ public class FacturaControlador implements Runnable {
         }
     }
     
-    //Metodo que permite identificar si el vehiculo en cuestion esta involucrado en alguna factura de primer ingreso
-    public boolean consultarSiVehiculoTieneFacturaDePrimerIngreso(String placa){
+    //Metodo que permite identificar si el vehiculo en cuestion esta involucrado en alguna factura de primer ingreso (devuelve 1 si es afirmativo y 0 si es negativo)
+    public int consultarSiVehiculoTieneFacturaDePrimerIngreso(int idVehiculo){
 
-        boolean vehiculoTieneFacturaDePrimerIngreso = false;
+        int vehiculoTieneFacturaDePrimerIngreso = 0;
         try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select * from facturas where Placa = '" + placa + "' and Hora_ingreso = '1990-01-01 23:59:00'");
-
+            String sql = "select 1 resultado from facturas where Id_vehiculo = " + idVehiculo + " and Hora_ingreso = '1990-01-01 23:59:00'";
+            
+            pst = cn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                vehiculoTieneFacturaDePrimerIngreso = true;
+                vehiculoTieneFacturaDePrimerIngreso = rs.getInt("resultado");
             }else{
-                vehiculoTieneFacturaDePrimerIngreso = false;
+                vehiculoTieneFacturaDePrimerIngreso = 0;
             }
             
         } catch (SQLException ex) {
@@ -693,14 +747,28 @@ public class FacturaControlador implements Runnable {
     }    
     
     //Metodo para eliminar la factura abierta de un vehiculo
-    public void eliminarFacturaAbierta(String placa){
-        
-        PreparedStatement ps1 = null;
+    public void eliminarFacturaAbierta(int idVehiculo, String placa, String tipoIdentif, String identificacion){
+       
         try{
-            Connection cn1 = Conexion.conectar();          
+            Connection cn1 = Conexion.conectar();
+            PreparedStatement ps1 = null;
+            String sql;
             
-            ps1 = cn1.prepareStatement("delete from facturas where Placa=? and Estado_fctra='Abierta'");
-            ps1.setString(1, placa);
+            if(idVehiculo != 0){
+                sql = "delete from facturas where Id_vehiculo=? and Estado_fctra='Abierta'";
+                ps1 = cn1.prepareStatement(sql);
+                ps1.setInt(1, idVehiculo);
+            }else if(placa != null){
+                sql = "delete from facturas where Placa=? and Estado_fctra='Abierta'";
+                ps1 = cn1.prepareStatement(sql);
+                ps1.setString(1, placa);
+            }else if(tipoIdentif != null && identificacion != null){
+                sql = "delete from facturas where Tipo_Identificacion=? and No_identificacion=? and Estado_fctra='Abierta'";
+                ps1 = cn1.prepareStatement(sql);
+                ps1.setString(1, tipoIdentif);
+                ps1.setString(2, identificacion);
+            }
+            
             ps1.execute();
             cn1.close();
             
@@ -1301,24 +1369,36 @@ public class FacturaControlador implements Runnable {
     }
     
     //Metodo que permite consultar el id de una factura abierta
-    public int consultarIdDeUnaFacturaAbierta(String placa){
+    public int consultarIdDeUnaFacturaAbierta(String placa, String tipoIdentificacion, String numIdentificacion){
        
         int idFact = 0;
+
         try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst;
-            pst = cn.prepareStatement(
-                        "select Id_factura from facturas where Placa = '" + placa + "' and Estado_fctra = 'Abierta'");
-            
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                idFact = rs.getInt("Id_factura");
-                cn.close();
-           
-            } else {
-                log.fatal("ERROR - No se ha encontrado el ID de la factura abierta para la placa indicada");
-            }
+            ResultSet rs;
+            String sql;
+            if(placa != null){
+                sql = "select Id_factura from facturas where Placa = '" + placa + "' and Estado_fctra = 'Abierta'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    idFact = rs.getInt("Id_factura");
+                    cn.close();              
+                }else{
+                    log.fatal("ERROR - No se ha encontrado el ID de la factura abierta para la placa indicada");
+                }
+            }else if(tipoIdentificacion != null && numIdentificacion != null){
+                sql = "select Id_factura from facturas where Tipo_Identificacion= '"+tipoIdentificacion+"' and No_identificacion= '"+numIdentificacion+"'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    idFact = rs.getInt("Id_factura");
+                    cn.close();              
+                }else{
+                    log.fatal("ERROR - No se ha encontrado el ID de la factura abierta para la identificación indicada");
+                }
+            }  
         }catch (SQLException ex){ 
             log.fatal("ERROR - Se ha producido un error al consultar el ID de una factura abierta en el sistema: " + ex); 
         } 
