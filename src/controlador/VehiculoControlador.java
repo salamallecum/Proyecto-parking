@@ -846,26 +846,7 @@ public class VehiculoControlador extends Thread{
                         }
                     }              
                 }
-
-            }/*else if(tipoVehiculoABuscar.equals("BICICLETA") || tipoVehiculoABuscar.equals("PATINETA") || tipoVehiculoABuscar.equals("OTRO")){
-
-                //Buscamos el codigo qr en la carpeta de qrs de bicis para eliminarlo
-                if(carpetaQrsBicis.exists() && carpetaQrsBicis.isDirectory()){
-                    listadoDeQrs = carpetaQrsBicis.listFiles();
-
-                    //Contamos cuantos codigos qr tiene la carpeta de qrs
-                    cantidadQrs = contarCodigosQr(listadoDeQrs);
-
-                    if(cantidadQrs > 0){
-                        for(File qr : listadoDeQrs){
-                            if(qr.isFile() && qr.getName().equals(qrABuscar+".gif")){
-                                //Eliminamos el codigo qr previamente existente
-                                qr.delete();
-                            }
-                        }
-                    }              
-                }                    
-            }*/
+            }
 
             //Actalizamos los nvos qrs para que esten en sus respectivas carpetas
             //Validamos que tipo de vehiculo es al que se le quiere crear el codigo qr actualizado
@@ -899,33 +880,7 @@ public class VehiculoControlador extends Thread{
                         generarQR(qrNuevo, infoQrNvo, tipoVehiculo);
                     }
                 }
-
-            }/*else if(tipoVehiculo.equals("BICICLETA") || tipoVehiculo.equals("PATINETA") || tipoVehiculo.equals("OTRO")){
-
-                //Reanudamos el proceso actualizacion de ticket qr vehicular
-                reanudarProcesoDeActualizaciónQRBicisYOtros();
-
-                //Generamos el nuevo nombre del codigo qr a generar
-                if(!tipoIdentificacionABuscar.equals(tipoIdentificacion)){
-                   infoQrNvo = tipoIdentificacion;    
-                }else{
-                   infoQrNvo = tipoIdentificacionABuscar; 
-                }
-
-                if(!numIdentificacionABuscar.equals(numIdentificacion)){
-                    infoQrNvo = infoQrNvo + numIdentificacion;
-                }else{
-                    infoQrNvo = infoQrNvo + numIdentificacionABuscar;
-                }
-
-                //Generamos el codigo qr actualizado 
-                if(carpetaQrsBicis.exists() && carpetaQrsBicis.isDirectory()){
-                    generarQR(qrNuevo, infoQrNvo, tipoVehiculo);               
-                }else{
-                    crearCarpeta(carpetaQrsBicis);
-                    generarQR(qrNuevo, infoQrNvo, tipoVehiculo);
-                }
-            }*/
+            }
 
         }else{
             //Validamos que tipo de vehiculo es al que se le quiere actualizar el codigo qr
