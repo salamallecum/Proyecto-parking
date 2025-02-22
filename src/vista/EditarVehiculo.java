@@ -513,7 +513,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
             }else{
                 if(elVehiculoTieneFacturaAbierta == 1){
                     
-                    int vehiculoTieneFactPrimerIngreso = facturaControla.consultarSiVehiculoTieneFacturaDePrimerIngreso(ID); //Revisar por que no esta eliminando la factura al desmarcaar el check
+                    int vehiculoTieneFactPrimerIngreso = facturaControla.consultarSiVehiculoTieneFacturaDePrimerIngreso(ID);
                     
                     if(vehiculoTieneFactPrimerIngreso == 1){
                         facturaControla.eliminarFacturaAbierta(ID, null, null, null);

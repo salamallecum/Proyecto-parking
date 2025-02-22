@@ -12,7 +12,10 @@ public class Factura {
     private int id;
     private String codigo;
     private String fechaDeFactura;
+    private int idDelVehiculo;
     private String placa;
+    private String tipoIdentificacion;
+    private String numIdentificacion;
     private String propietario;
     private String tipoDeVehiculo;
     private int id_parqueadero;
@@ -34,11 +37,14 @@ public class Factura {
     private final URL url = Factura.class.getResource("Log4j.properties");
     
     //Constructor
-    public Factura(int id, String codigo, String fechaDeFactura, String placa, String propietario, String tipoDeVehiculo, int id_parqueadero, int facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String impuesto, String valorAPagar, String efectivo, String cambio) {
+    public Factura(int id, String codigo, String fechaDeFactura, int idDelVehiculo, String placa, String tipoIdentificacion, String numIdentificacion, String propietario, String tipoDeVehiculo, int id_parqueadero, int facturadoPor, String estadoDeFactura, String estaContabilizada, int id_convenio, int id_tarifa, String fechaDeIngresoVehiculo, int id_cierre, String fechaDeSalidaVehiculo, String diferencia, String impuesto, String valorAPagar, String efectivo, String cambio) {
         this.id = id;
         this.codigo = codigo;
         this.fechaDeFactura = fechaDeFactura;
+        this.idDelVehiculo = idDelVehiculo;
         this.placa = placa;
+        this.tipoIdentificacion = tipoIdentificacion;
+        this.numIdentificacion = numIdentificacion;
         this.propietario = propietario;
         this.tipoDeVehiculo = tipoDeVehiculo;
         this.id_parqueadero = id_parqueadero;
@@ -82,6 +88,14 @@ public class Factura {
         this.fechaDeFactura = fechaDeFactura;
     }
 
+    public int getIdDelVehiculo() {
+        return idDelVehiculo;
+    }
+
+    public void setIdDelVehiculo(int idDelVehiculo) {
+        this.idDelVehiculo = idDelVehiculo;
+    }
+    
     public String getPlaca() {
         return placa;
     }
@@ -90,6 +104,22 @@ public class Factura {
         this.placa = placa;
     }
 
+    public String getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(String tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public String getNumIdentificacion() {
+        return numIdentificacion;
+    }
+
+    public void setNumIdentificacion(String numIdentificacion) {
+        this.numIdentificacion = numIdentificacion;
+    }
+    
     public String getPropietario() {
         return propietario;
     }

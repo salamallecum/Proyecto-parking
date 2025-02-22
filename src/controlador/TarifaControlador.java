@@ -21,7 +21,7 @@ import static vista.GestionarTarifas.table_listaTarifas;
 public class TarifaControlador {
     
     Tarifa tarifaConsultada = new Tarifa();
-    ParametroControlador paramControla;
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(TarifaControlador.class);
     private URL url = TarifaControlador.class.getResource("Log4j.properties");

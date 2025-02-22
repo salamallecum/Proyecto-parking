@@ -53,8 +53,6 @@ import static vista.PanelCaja.modeloCaja;
 import static vista.PanelCaja.table_operacionParqueadero;
 
 
-
-
 /**
  *
  * @author ALEJO
@@ -62,7 +60,7 @@ import static vista.PanelCaja.table_operacionParqueadero;
 public class ParqueaderoControlador implements Runnable{
     
    VehiculoControlador vehiControlador;
-   ParametroControlador paramControla;
+   ParametroControlador paramControla = new ParametroControlador();
    DefaultTableModel modeloEstadoParq;
    Parqueadero parq = new Parqueadero();
    
@@ -110,16 +108,24 @@ public class ParqueaderoControlador implements Runnable{
     }
 
     //Metodo que actualiza el estado de un parqueadero ya sea disponible o ocupado
-    public void actualizarEstadoDeParqueadero(String placa, String dueño, int idParq, String estaEnParq){
+    public void actualizarEstadoDeParqueadero(String tipoVehiculo, String placa, String tipoIdentif, String numIdentificacion, String dueño, int idParq, String estaEnParq){
                 
         //Actualizamos el estado del parqueadero seleccionado de Disponible a Ocupado
-        try{
-            Connection cn3 = Conexion.conectar();
-            PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Ocupado', Placa='"+placa+"', Propietario='"+dueño+"', Esta_en_parqueadero='"+estaEnParq+"' where Id_parqueadero="+idParq);
-
-            pst3.executeUpdate();
-            cn3.close();
-           
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            ResultSet rs;
+            String sql = "";
+            if(placa != null){
+                sql = "update parqueaderos set Estado ='Ocupado', Placa='"+placa+"', Propietario='"+dueño+"', Esta_en_parqueadero='"+estaEnParq+"' where Id_parqueadero="+idParq+" and TipoVehiculo='"+tipoVehiculo+"'";   
+            
+            }else if(tipoIdentif != null && numIdentificacion != null){
+                sql = "update parqueaderos set Estado ='Ocupado', Tipo_Identificacion='"+tipoIdentif+"', No_identificacion='"+numIdentificacion+"', Propietario='"+dueño+"', Esta_en_parqueadero='"+estaEnParq+"' where Id_parqueadero="+idParq+" and TipoVehiculo='"+tipoVehiculo+"'";   
+            }
+            pst = cn.prepareStatement(sql);
+            pst.executeUpdate();
+            cn.close();
+        
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "¡¡Error al actualizar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al pasar de Disponible a Ocupado un parqueadero" + ex);
@@ -189,7 +195,7 @@ public class ParqueaderoControlador implements Runnable{
                
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                        "select Estado, Nombre_parqueadero, TipoVehiculo, Placa, Propietario from parqueaderos");
+                        "select Estado, Nombre_parqueadero, TipoVehiculo, Placa, Tipo_Identificacion, No_identificacion, Propietario from parqueaderos");
             
             ResultSet rs = pst.executeQuery();
             
@@ -199,7 +205,9 @@ public class ParqueaderoControlador implements Runnable{
             modeloParq.addColumn("Estado");
             modeloParq.addColumn("Nombre");
             modeloParq.addColumn("Tipo de vehiculo");
-            modeloParq.addColumn("Placa/Identificación");
+            modeloParq.addColumn("Placa");
+            modeloParq.addColumn("Tipo identif");
+            modeloParq.addColumn("Identificación");
             modeloParq.addColumn("Propietario");
             
             ajustarTamañoColumnasTablaParqueaderos();
@@ -269,15 +277,18 @@ public class ParqueaderoControlador implements Runnable{
         try {
             Connection cn3 = Conexion.conectar();
             PreparedStatement pst3 = cn3.prepareStatement(
-                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, TipoParq, TipoVehiculo, Estado, Placa, Esta_en_parqueadero) values (?,?,?,?,?,?,?)");
+                "insert into parqueaderos(Id_parqueadero, Nombre_parqueadero, TipoParq, TipoVehiculo, Estado, Tipo_Identificacion, No_identificacion, Placa, Propietario, Esta_en_parqueadero) values (?,?,?,?,?,?,?,?,?,?)");
 
             pst3.setInt(1, nvoParq.getId());
             pst3.setString(2, nvoParq.getNombre());
             pst3.setString(3, nvoParq.getClaseParqueadero());
             pst3.setString(4, nvoParq.getTipoVehiculo());
             pst3.setString(5, nvoParq.getEstado());
-            pst3.setString(6, nvoParq.getPlaca());
-            pst3.setString(7, nvoParq.getEstaOcupado());
+            pst3.setString(6, nvoParq.getTipoIdentificacion());
+            pst3.setString(7, nvoParq.getIdentificacion());
+            pst3.setString(8, nvoParq.getPlaca());
+            pst3.setString(9, nvoParq.getPropietario());
+            pst3.setString(10, nvoParq.getEstaOcupado());
 
 
             pst3.executeUpdate();
@@ -325,8 +336,6 @@ public class ParqueaderoControlador implements Runnable{
             ps1 = cn1.prepareStatement("delete from parqueaderos where Nombre_parqueadero=?");
             ps1.setString(1, nombreParqueadero);
             ps1.execute();
-
-            JOptionPane.showMessageDialog(null, "El parqueadero: " + nombreParqueadero + " ha sido eliminado");
             cn1.close();
 
         }catch(SQLException e){
@@ -359,19 +368,27 @@ public class ParqueaderoControlador implements Runnable{
     }
        
     //Metodo que libera el parqueadero del vehiculo
-    public void liberarParqueadero(String placaL){
+    public void liberarParqueadero(String tipoVehiculo, String placa, String tipoIdentificacion, String numIdentificacion){
         
         //Actualizamos el estado del parqueadero seleccionado de Ocupado a Disponible 
-        try{
-            Connection cn3 = Conexion.conectar();
-            PreparedStatement pst3 = cn3.prepareStatement("update parqueaderos set Estado ='Disponible', Placa='',Propietario='', Esta_en_parqueadero='' where Placa='"+placaL+"'");
-
-            pst3.executeUpdate();
-            cn3.close();
-
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst;
+            ResultSet rs;
+            String sql = "";
+            if(placa != null){
+                sql = "update parqueaderos set Estado ='Disponible', Placa='',Propietario='', Esta_en_parqueadero='' where Placa='"+placa+"' and TipoVehiculo='"+tipoVehiculo+"'";   
+            
+            }else if(tipoIdentificacion != null && numIdentificacion != null){
+                sql = "update parqueaderos set Estado ='Disponible', Tipo_Identificacion='', No_identificacion='', Propietario='', Esta_en_parqueadero='' where Tipo_Identificacion='"+tipoIdentificacion+"' and No_identificacion='"+numIdentificacion+"' and TipoVehiculo='"+tipoVehiculo+"'";
+            }
+            pst = cn.prepareStatement(sql);
+            pst.executeUpdate();
+            cn.close();
+        
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "¡¡Error al liberar parqueadero!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
-            log.fatal("ERROR - Se ha producido un error al dar disponibilidad al parqueadero que utilizaba el vehiculo: "+ placaL + e);
+            log.fatal("ERROR - Se ha producido un error al dar disponibilidad al parqueadero que utilizaba el vehiculo: "+e);
         }
     }
         
@@ -780,12 +797,16 @@ public class ParqueaderoControlador implements Runnable{
         TableColumn col3 = table_listaParqueaderos.getColumnModel().getColumn(2);
         TableColumn col4 = table_listaParqueaderos.getColumnModel().getColumn(3);
         TableColumn col5 = table_listaParqueaderos.getColumnModel().getColumn(4);
+        TableColumn col6 = table_listaParqueaderos.getColumnModel().getColumn(5);
+        TableColumn col7 = table_listaParqueaderos.getColumnModel().getColumn(6);
 
         //Establecemos el ancho de las columnas
         col1.setPreferredWidth(70);
         col2.setPreferredWidth(200);
         col3.setPreferredWidth(100);
-        col4.setPreferredWidth(120);
-        col5.setPreferredWidth(270);
+        col4.setPreferredWidth(90);
+        col5.setPreferredWidth(70);
+        col6.setPreferredWidth(90);
+        col7.setPreferredWidth(200);
     }
 }

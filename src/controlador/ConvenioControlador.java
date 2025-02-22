@@ -21,7 +21,7 @@ import static vista.GestionarConvenios.table_listaConvenios;
 public class ConvenioControlador {
     
    Convenio convenioConsultado = new Convenio();
-   ParametroControlador paramControla;
+   ParametroControlador paramControla = new ParametroControlador();
     
    private final Logger log = Logger.getLogger(ConvenioControlador.class);
    private URL url = ConvenioControlador.class.getResource("Log4j.properties");

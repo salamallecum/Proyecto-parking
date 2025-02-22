@@ -23,7 +23,7 @@ public class Convenio{
     private String nombre;
     private String monto;
     private String frecuencia;
-    ParametroControlador paramControla;
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(Convenio.class);
     private URL url = Convenio.class.getResource("Log4j.properties");

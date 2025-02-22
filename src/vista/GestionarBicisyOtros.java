@@ -1,16 +1,29 @@
 package vista;
 
+import controlador.ConvenioControlador;
+import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
-import java.awt.Color;
+import controlador.TarifaControlador;
+import controlador.UsuarioControlador;
+import controlador.VehiculoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import modelo.Convenio;
+import modelo.Factura;
 import modelo.Parqueadero;
+import modelo.Tarifa;
+import modelo.Vehiculo;
 import org.apache.log4j.Logger;
 
 
@@ -18,14 +31,36 @@ import org.apache.log4j.Logger;
  *
  * @author ALEJO
  */
-public class GestionarBicisyOtros extends javax.swing.JFrame {
-      
-    Parqueadero nuevoParqueadero = new Parqueadero();
-    ParqueaderoControlador parqControla = new ParqueaderoControlador();
+public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable {
+    Vehiculo nuevoVehiculo = new Vehiculo(0, "", "", "", "", "", "", "", 0, 0, 0);  
+    Factura nuevaFactura = new Factura(0, "", "", 0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    VehiculoControlador vehiControla = new VehiculoControlador();
     ParametroControlador paramControla = new ParametroControlador();
+    ParqueaderoControlador parqControla = new ParqueaderoControlador();
+    ConvenioControlador convenioControla = new ConvenioControlador();
+    TarifaControlador tarifaControla = new TarifaControlador();
+    FacturaControlador facturaControla = new FacturaControlador();
+    UsuarioControlador usuarioControla = new UsuarioControlador();
+        
+    public static String biciUOtro_update;
+    public static boolean hayBiciUOtroEnEdicion = false;
+    String user = "";
+    public static String tipoIdentificacion;
+    public static String identificacion;
+    public static String dueñoBiciUOtro;
+    public static String tipoVehiculoBiciUOtro;
     
-    public static DefaultTableModel modeloParq;
+    public static DefaultTableModel modeloBicisUOtros;
     int Fila;
+    
+    //Declaramos los objetos  y se los aprovisionamos a su combobox
+    Parqueadero parq = new Parqueadero();
+    Convenio conv = new Convenio();
+    Tarifa tarif = new Tarifa();
+    
+    Thread hilo1 = new Thread(this);
+    Thread hilo2 = new Thread(this);
+    Thread hilo3 = new Thread(this);
        
     private final Logger log = Logger.getLogger(GestionarBicisyOtros.class);
     private URL url = GestionarBicisyOtros.class.getResource("Log4j.properties");
@@ -35,21 +70,41 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
      */
     public GestionarBicisyOtros() {       
         initComponents();
-        setSize(745, 600);
+        user = Login.usuario;
+        setSize(686, 600);
         setResizable(false);
-        setTitle("Gestionar parqueaderos");
+        setTitle("Gestionar bicicletas y otros vehiculos");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
-        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
-        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true;
+        //Ejecutamos los hilos de loc combo de parqueaderos convenios y tarifas
+        hilo1.start();
+        hilo2.start();
+        hilo3.start(); 
         
-        parqControla.cargarTablaDeParqueaderos();
+        //Avisamos que esta ventana se encuentra abierta para que no deje cerrar sesion al usuario
+        MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = true; 
+        vehiControla.cargarTablaDeBicicletasYOtrosVehiculos();
+        //Cargamos el proceso que se encarga de registrar el ticket qr de bicicletas y otros
+        vehiControla.cargarProcesoDeRegistroQRBicisYOtros();
+        
+        //Agregamos la funcion de editar vehiculo al hacer click sobre el registro de la tabla
+        Table_listaBicisYOtros.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e){
+            int fila_point =  Table_listaBicisYOtros.rowAtPoint(e.getPoint());
+            int columna_point = 0;
+
+            if(fila_point > -1){
+                biciUOtro_update = (String) modeloBicisUOtros.getValueAt(fila_point, columna_point);              
+            }
+        }
+    });
     }
     
     @Override
     public Image getIconImage() {
-        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/gestParking.png"));
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/bicicleta.png"));
         return retValue;
     }
 
@@ -63,8 +118,8 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        table_listaParqueaderos = new javax.swing.JTable();
-        btn_generaPDF = new javax.swing.JButton();
+        Table_listaBicisYOtros = new javax.swing.JTable();
+        btn_generarReporteBicisyOtros = new javax.swing.JButton();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         txt_noIdentificacion = new javax.swing.JTextField();
@@ -85,14 +140,19 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
         cmb_convenios = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        cmb_claseParqBusqueda = new javax.swing.JComboBox<>();
+        cmb_parqueaderos = new javax.swing.JComboBox<>();
+        check_estaVehiculoEnParqueadero = new javax.swing.JCheckBox();
+        jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         cmb_tipoVehiculoBusqueda = new javax.swing.JComboBox<>();
-        jLabel8 = new javax.swing.JLabel();
-        cmb_estadosParqueaderoBusqueda = new javax.swing.JComboBox<>();
         btn_buscar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cmb_tipoIdentificacionBusqueda = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        txt_noIdentificacionBusqueda = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        txt_propietarioBusqueda = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -105,38 +165,38 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
             }
         });
 
-        table_listaParqueaderos.setModel(new javax.swing.table.DefaultTableModel(
+        Table_listaBicisYOtros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Estado", "Nombre", "Tipo", "Placa/Identificación", "Propietario"
+                "Tipo identif", "N° identificación", "Propietario", "Tipo", "N° parq", "Color", "Convenio", "Tarifa"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -147,15 +207,20 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        table_listaParqueaderos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane1.setViewportView(table_listaParqueaderos);
+        Table_listaBicisYOtros.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        Table_listaBicisYOtros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Table_listaBicisYOtrosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(Table_listaBicisYOtros);
 
-        btn_generaPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
-        btn_generaPDF.setText("Generar Informe PDF");
-        btn_generaPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_generaPDF.addActionListener(new java.awt.event.ActionListener() {
+        btn_generarReporteBicisyOtros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/generarPDF.png"))); // NOI18N
+        btn_generarReporteBicisyOtros.setText("Generar Informe PDF");
+        btn_generarReporteBicisyOtros.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_generarReporteBicisyOtros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_generaPDFActionPerformed(evt);
+                btn_generarReporteBicisyOtrosActionPerformed(evt);
             }
         });
 
@@ -193,7 +258,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Tipo de vehiculo:");
 
-        cmb_tipoVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO", "BICICLETA", "PATINETA", "OTRO" }));
+        cmb_tipoVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "BICICLETA", "PATINETA", "OTRO" }));
 
         btn_editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-validated_40458.png"))); // NOI18N
         btn_editar.setText("Editar");
@@ -225,7 +290,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
             }
         });
 
-        cmb_tipoIdentificacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Cedula de ciudadanía", "Targeta de identidad", "Registro civil", "Pasaporte", "Targeta de extrangería", "NIT", "Permiso permanencia", "DIE", " ", " " }));
+        cmb_tipoIdentificacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Cedula de ciudadanía", "Targeta de identidad", "Registro civil", "Pasaporte", "Targeta de extrangería", "NIT", "Permiso permanencia", "DIE" }));
         cmb_tipoIdentificacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_tipoIdentificacionActionPerformed(evt);
@@ -307,6 +372,24 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Tarifa:");
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setText("N° de Parqueadero:");
+
+        cmb_parqueaderos.setAutoscrolls(true);
+        cmb_parqueaderos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cmb_parqueaderosFocusGained(evt);
+            }
+        });
+
+        check_estaVehiculoEnParqueadero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        check_estaVehiculoEnParqueadero.setText("Está en parqueadero");
+        check_estaVehiculoEnParqueadero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                check_estaVehiculoEnParqueaderoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -314,33 +397,37 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmb_tipoIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_noIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_propietario, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_colorVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_convenios, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(5, 5, 5))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmb_parqueaderos, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_colorVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_propietario, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_noIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_tipoIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_ingresar)
+                            .addComponent(btn_editar)
                             .addComponent(btn_eliminar)
                             .addComponent(btn_generarQR)))
-                    .addComponent(btn_ingresar, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(652, 652, 652))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmb_convenios, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addComponent(check_estaVehiculoEnParqueadero)))
+                .addGap(698, 698, 698))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,28 +442,24 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel12)
-                                .addGap(17, 17, 17)
-                                .addComponent(jLabel13))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_colorVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(txt_noIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_propietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_colorVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmb_convenios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(9, 9, 9)
-                                .addComponent(cmb_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txt_propietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmb_parqueaderos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -385,25 +468,32 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
                         .addComponent(btn_eliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_generarQR)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(cmb_tarifa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(cmb_convenios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel13)))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(check_estaVehiculoEnParqueadero)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jTabbedPane3.addTab("Registro", jPanel1);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("Clase:");
-
-        cmb_claseParqBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "RESIDENTE", "VISITANTE" }));
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Tipo de vehiculo:");
 
-        cmb_tipoVehiculoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "AUTOMOVIL", "MOTO", "BICICLETA", "PATINETA", "OTRO" }));
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel8.setText("Estado:");
-
-        cmb_estadosParqueaderoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Disponible", "Ocupado" }));
+        cmb_tipoVehiculoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "BICICLETA", "PATINETA", "OTRO" }));
 
         btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
         btn_buscar.setText("Buscar");
@@ -414,44 +504,114 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("Tipo de identificación:");
+
+        cmb_tipoIdentificacionBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Cedula de ciudadanía", "Targeta de identidad", "Registro civil", "Pasaporte", "Targeta de extrangería", "NIT", "Permiso permanencia", "DIE", " ", " " }));
+        cmb_tipoIdentificacionBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_tipoIdentificacionBusquedaActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel14.setText("N° documento:");
+
+        txt_noIdentificacionBusqueda.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_noIdentificacionBusquedaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_noIdentificacionBusquedaFocusLost(evt);
+            }
+        });
+        txt_noIdentificacionBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_noIdentificacionBusquedaActionPerformed(evt);
+            }
+        });
+        txt_noIdentificacionBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_noIdentificacionBusquedaKeyTyped(evt);
+            }
+        });
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel15.setText("Propietario:");
+
+        txt_propietarioBusqueda.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_propietarioBusquedaFocusGained(evt);
+            }
+        });
+        txt_propietarioBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_propietarioBusquedaActionPerformed(evt);
+            }
+        });
+        txt_propietarioBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_propietarioBusquedaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_propietarioBusquedaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_propietarioBusquedaKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(22, 22, 22)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(cmb_claseParqBusqueda, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(54, 54, 54)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmb_estadosParqueaderoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_buscar))
-                .addContainerGap(105, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmb_tipoIdentificacionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_noIdentificacionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_propietarioBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                        .addComponent(btn_buscar)
+                        .addGap(60, 60, 60))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(135, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmb_estadosParqueaderoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmb_claseParqBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(16, 16, 16)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_tipoIdentificacionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_noIdentificacionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_propietarioBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_tipoVehiculoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(101, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))))
         );
 
         jTabbedPane3.addTab("Buscar", jPanel2);
@@ -463,7 +623,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_generaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_generarReporteBicisyOtros, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
@@ -472,11 +632,11 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_generaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_generarReporteBicisyOtros, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -484,43 +644,71 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     //Metodo boton generar pdf del reporte de parqueaderos
-    private void btn_generaPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generaPDFActionPerformed
-        
-        String sentenciaSQLParaReporte = "";
-        int clase_cmb = cmb_claseParqBusqueda.getSelectedIndex();
-        String clase_str = (String) cmb_claseParqBusqueda.getSelectedItem();
+    private void btn_generarReporteBicisyOtrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarReporteBicisyOtrosActionPerformed
+        String sentenciaSQLParaReporte = " AND vehiculos.TipoVehiculo IN ('BICICLETA', 'PATINETA', 'OTRO')";
+        int tipoIdentificacion_cmb = cmb_tipoIdentificacionBusqueda.getSelectedIndex(); 
+        String tipoIdentifStr = "";
+        String identificacion = txt_noIdentificacionBusqueda.getText();
+        String propietario = txt_propietarioBusqueda.getText();
         int tipoVehiculo_cmb = cmb_tipoVehiculoBusqueda.getSelectedIndex();
         String tipoVehiculo_str = (String) cmb_tipoVehiculoBusqueda.getSelectedItem();
-        int estado_cmb = cmb_estadosParqueaderoBusqueda.getSelectedIndex();
-        String estado_str = (String) cmb_estadosParqueaderoBusqueda.getSelectedItem();
         
-     
-        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
-        if(clase_cmb == 0 && tipoVehiculo_cmb == 0 && estado_cmb == 0){
-            parqControla.generarPDFParqueaderosRegistrados(sentenciaSQLParaReporte);
-        }else{
 
-            if(clase_cmb != 0){
-                //Agregamos la clase de parqueadero a la sentencia sql
-                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND TipoParq = '"+clase_str+"'";
+        //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
+        if(tipoIdentificacion_cmb == 0 && identificacion.equals("") && propietario.equals("") && tipoVehiculo_cmb == 0){
+            vehiControla.generarReportePDFdeBicisYOtrosRegistradas(sentenciaSQLParaReporte);
+            btn_generarReporteBicisyOtros.setEnabled(false);
+
+        }else{
+            if(tipoIdentificacion_cmb != 0){
+                
+                if(tipoIdentificacion_cmb == 1){
+                    tipoIdentifStr = "CC";
+                }else if(tipoIdentificacion_cmb == 2){
+                    tipoIdentifStr = "TI";
+                }else if(tipoIdentificacion_cmb == 3){
+                    tipoIdentifStr = "RC";
+                }else if(tipoIdentificacion_cmb == 4){
+                    tipoIdentifStr = "PA";
+                }else if(tipoIdentificacion_cmb == 5){
+                    tipoIdentifStr = "TE";
+                }else if(tipoIdentificacion_cmb == 6){
+                    tipoIdentifStr = "NIT";
+                }else if(tipoIdentificacion_cmb == 7){
+                    tipoIdentifStr = "PP";
+                }else if(tipoIdentificacion_cmb == 8){
+                    tipoIdentifStr = "DIE";
+                }
+
+                //Agregamos la placa del vehiculo a la sentencia sql
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND vehiculos.Tipo_Identificacion = '"+tipoIdentifStr+"'";
+            }
+            
+            if(!identificacion.equals("")){
+                //Agregamos propietario del vehiculo a la sentencia sql
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND vehiculos.No_identificacion LIKE '%"+identificacion+"%'";
+            }
+            
+            if(!propietario.equals("")){
+                //Agregamos propietario del vehiculo a la sentencia sql
+                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND vehiculos.Propietario LIKE '%"+propietario+"%'";
             }
 
             if(tipoVehiculo_cmb != 0){
-                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND TipoVehiculo = '"+tipoVehiculo_str+"'";
+                //Agregamos tipo de vehiculo a la sentencia sql
+                sentenciaSQLParaReporte= sentenciaSQLParaReporte + " AND vehiculos.TipoVehiculo = '"+tipoVehiculo_str+"'";
             }
 
-            if(estado_cmb != 0){
-                sentenciaSQLParaReporte = sentenciaSQLParaReporte + " AND Estado = '"+estado_str+"'";
-            }
             //Ejecutamos la sentencia SQL construida
-            parqControla.generarPDFParqueaderosRegistrados(sentenciaSQLParaReporte);
-            btn_generaPDF.setEnabled(false);
-        } 
-    }//GEN-LAST:event_btn_generaPDFActionPerformed
+            vehiControla.generarReportePDFdeBicisYOtrosRegistradas(sentenciaSQLParaReporte);
+            btn_generarReporteBicisyOtros.setEnabled(false);
+            
+        }
+    }//GEN-LAST:event_btn_generarReporteBicisyOtrosActionPerformed
 
     //Aqui programamos lo que queremos quehaga al cerrar el jframe
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        //cerrarGestorParqueaderos();
+        cerrarGestorBibicletasYOtrosVehiculos();
     }//GEN-LAST:event_formWindowClosing
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -530,6 +718,8 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
     private void txt_noIdentificacionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_noIdentificacionFocusGained
         btn_eliminar.setEnabled(false);
         btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);
+        btn_editar.setEnabled(false);
     }//GEN-LAST:event_txt_noIdentificacionFocusGained
 
     private void txt_noIdentificacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_noIdentificacionFocusLost
@@ -548,121 +738,365 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
         }
 
         //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 30;
+        int numeroCaracteres = 15;
         if(txt_noIdentificacion.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            JOptionPane.showMessageDialog(null,"Solo 15 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_noIdentificacion.setText("");
         }
     }//GEN-LAST:event_txt_noIdentificacionKeyTyped
 
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
-        //registrarParqueadero();
+        
+        int tipoIdentif_cmb = 0, tipoVehiculo_cmb = 0, parqueadero_cmb, validacion = 0;
+        String qrInfo, color = "";                
+        tipoIdentif_cmb = cmb_tipoIdentificacion.getSelectedIndex();
+        identificacion = txt_noIdentificacion.getText().trim();
+        dueñoBiciUOtro = txt_propietario.getText().trim();
+        tipoVehiculo_cmb = cmb_tipoVehiculo.getSelectedIndex();
+        parqueadero_cmb = cmb_parqueaderos.getSelectedIndex();
+        color = txt_colorVehiculo.getText().trim();
+        
+        Parqueadero parqSeleccionado = new Parqueadero();
+        Convenio convSeleccionado = new Convenio();
+        Tarifa tarifSeleccionada = new Tarifa();     
+        
+        //Capturamos el objeto parqueadero, convenio y tarifa para validarles verdadero id en base de datos
+        parqSeleccionado = (Parqueadero)cmb_parqueaderos.getSelectedItem();
+        convSeleccionado = (Convenio)cmb_convenios.getSelectedItem();
+        tarifSeleccionada = (Tarifa)cmb_tarifa.getSelectedItem();
+        
+        boolean BiciUOtroEnParqueadero = check_estaVehiculoEnParqueadero.isSelected();
+        String BiciUOtroEstaEnParqueo;
+        
+        if(tipoIdentif_cmb == 0){
+            tipoIdentificacion = "Seleccione";
+            cmb_tipoIdentificacion.setBackground(Color.red);
+            validacion++;
+        }else if(tipoIdentif_cmb == 1){
+            tipoIdentificacion = "CC";
+        }else if(tipoIdentif_cmb == 2){
+            tipoIdentificacion = "TI";
+        }else if(tipoIdentif_cmb == 3){
+            tipoIdentificacion = "RC";
+        }else if(tipoIdentif_cmb == 4){
+            tipoIdentificacion = "PA";
+        }else if(tipoIdentif_cmb == 5){
+            tipoIdentificacion = "TE";
+        }else if(tipoIdentif_cmb == 6){
+            tipoIdentificacion = "NIT";
+        }else if(tipoIdentif_cmb == 7){
+            tipoIdentificacion = "PP";
+        }else if(tipoIdentif_cmb == 8){
+            tipoIdentificacion = "DIE";
+        }
+                                          
+        if(identificacion.equals("")){
+            txt_noIdentificacion.setBackground(Color.red);
+            validacion++;
+        }
+        if(dueñoBiciUOtro.equals("")){
+            txt_propietario.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if(tipoVehiculo_cmb == 0){
+            tipoVehiculoBiciUOtro = "Seleccione";
+            cmb_tipoVehiculo.setBackground(Color.red);
+            validacion++;
+        }else if(tipoVehiculo_cmb == 1){
+            tipoVehiculoBiciUOtro = "BICICLETA";
+        }else if(tipoVehiculo_cmb == 2){
+            tipoVehiculoBiciUOtro = "PATINETA";
+        }else if(tipoVehiculo_cmb == 3){
+            tipoVehiculoBiciUOtro = "OTRO";
+        }
+        
+        if(color.equals("")){
+            txt_colorVehiculo.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if(parqueadero_cmb==0){
+            cmb_parqueaderos.setBackground(Color.red);
+            validacion++;
+        }      
+        
+        if(hayBiciUOtroEnEdicion == true){
+            JOptionPane.showMessageDialog(null, "No Permitido, cierre la ventana de edición de vehiculos para continuar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            txt_noIdentificacion.requestFocus();
+            validacion++;
+        }
+        
+        if(BiciUOtroEnParqueadero){
+            BiciUOtroEstaEnParqueo = "Si";
+        }else{
+            BiciUOtroEstaEnParqueo = "No";
+        }
+                
+        int vehiculoYaPreviamenteRegistrado = vehiControla.evaluarExistenciaDelVehiculo(null, null, tipoIdentificacion, identificacion);
+        
+        if(vehiculoYaPreviamenteRegistrado == 1){
+            JOptionPane.showMessageDialog(null, "El vehiculo ya se encuentra registrado.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            txt_noIdentificacion.setText("");
+            validacion++;
+        }      
+        
+        int idRealDelParqueaderoSeleccionado = parqControla.consultarIdParqueadero(parqSeleccionado.getNombre());
+        //Validamos el verdadero id del parqueadero en bd        
+        boolean parqueaderoEstaOcupado = parqControla.consultarDisponibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado);
+        if(parqueaderoEstaOcupado){
+            JOptionPane.showMessageDialog(null, "El parqueadero indicado ya se encuentra ocupado.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            cmb_parqueaderos.setSelectedIndex(0);
+            validacion++;
+        }else{
+            boolean parqueaderoEsCompatible = parqControla.consultarCompatibilidadDeParqueaderoMedianteID(idRealDelParqueaderoSeleccionado, tipoVehiculoBiciUOtro);
+            if(!parqueaderoEsCompatible){
+                JOptionPane.showMessageDialog(null, "El parqueadero indicado no es compatible con el vehiculo.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+                cmb_parqueaderos.setSelectedIndex(0);
+                validacion++;  
+            }
+        }
+               
+         //Validamos el verdadero id del convenio y de la tarifa en bd
+        int idRealDelConvenioSeleccionado = convenioControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
+        int idRealDeTarifaSeleccionada = tarifaControla.consultarIdDeunaTarifa(tarifSeleccionada.getNombreTarifa());
+             
+        if(validacion == 0 ){
+            //Reanudamos el proceso de generacion ticket qr vehicular
+            vehiControla.reanudarProcesoDeRegistroQRBicisYOtros();
+            
+            //Encapsulamos el objeto vehiculo 
+            nuevoVehiculo.setId(0);
+            qrInfo = tipoIdentificacion+identificacion;
+            nuevoVehiculo.setQr_consecutivo(qrInfo);
+            nuevoVehiculo.setTipoIdentificacion(tipoIdentificacion);
+            nuevoVehiculo.setNumIdentificacion(identificacion);
+            nuevoVehiculo.setPropietario(dueñoBiciUOtro);
+            nuevoVehiculo.setTipoVehiculo(tipoVehiculoBiciUOtro);
+            nuevoVehiculo.setColor(color);
+            nuevoVehiculo.setId_parqueadero(idRealDelParqueaderoSeleccionado);
+            nuevoVehiculo.setId_convenio(idRealDelConvenioSeleccionado);
+            nuevoVehiculo.setId_tarifa(idRealDeTarifaSeleccionada); 
+            nuevoVehiculo.setEstaEnParqueadero(BiciUOtroEstaEnParqueo);
+            
+            //Crea el objeto vehiculo en el sistema
+            vehiControla.crearVehiculo(nuevoVehiculo);
+            
+            //Obtenemos el id con el que se registro el vehiculo
+            int idDelVehiculo = vehiControla.consultarIdDeUnVehiculo(null, tipoIdentificacion, identificacion);
+            
+            //Evaluamos si el vehiculo tiene factura abierta
+            int vehiculoConFctraAbierta = vehiControla.consultarSiVehiculoTieneFacturasAbiertas(idDelVehiculo,null,null,null);
+            
+            //Generamos el ingreso del vehiculo en caja dependiendo de si esta o no en parqueadero
+            if(BiciUOtroEstaEnParqueo.equals("Si")){
+                
+                if(vehiculoConFctraAbierta == 1){
+                    int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(null, tipoIdentificacion, identificacion);                    
+                    facturaControla.actualizarFacturaAbierta(idFctra, idDelVehiculo, "", "", "", "", "", 0, 0, 0);
+                    
+                    //Validamos si el parqueadero utilizado por el vehiculo antes de registrarse en el sistema es igual al ingresado por caja
+                    int idDelParqDelVehiculoAntesDeSerRegistrado = vehiControla.consultarIdParqQueOcupaUnVehiculo(null, tipoIdentificacion, identificacion);
+                    
+                    if(idDelParqDelVehiculoAntesDeSerRegistrado != idRealDelParqueaderoSeleccionado){
+                       parqControla.liberarParqueadero(tipoVehiculoBiciUOtro, null, tipoIdentificacion, identificacion);
+                       parqControla.actualizarEstadoDeParqueadero(tipoVehiculoBiciUOtro, null, tipoIdentificacion, identificacion, dueñoBiciUOtro, idRealDelParqueaderoSeleccionado, BiciUOtroEstaEnParqueo);
+                    }
+                                        
+                }else{
+                    //Modelamos la factura de primer ingreso 
+                    nuevaFactura.setId(0);
+                    nuevaFactura.setCodigo("FAC" + paramControla.generarConsecutivo(10));
+                    nuevaFactura.setFechaDeFactura(facturaControla.fecha_de_factura());
+                    nuevaFactura.setIdDelVehiculo(idDelVehiculo);
+                    nuevaFactura.setFacturadoPor(usuarioControla.consultarIdDeunUsuario(user));
+                    nuevaFactura.setEstadoDeFactura("Abierta");
+                    nuevaFactura.setEstaContabilizada("No");
+                    nuevaFactura.setFechaDeIngresoVehiculo("1990-01-01 23:59:00"); //No generará cobro pues no estamos teniendo en cuenta la hora en que fue ingresado
+                    nuevaFactura.setId_cierre(1);
+
+                    //Creamos el objeto Factura de primer ingreso
+                    facturaControla.crearFactura(nuevaFactura, true);
+                    
+                    //Actualizamos el estado del parqueadero
+                    parqControla.actualizarEstadoDeParqueadero(tipoVehiculoBiciUOtro, null, tipoIdentificacion, identificacion, dueñoBiciUOtro, idRealDelParqueaderoSeleccionado, BiciUOtroEstaEnParqueo);
+                }
+                                
+            }else{
+                if(vehiculoConFctraAbierta == 1){
+                    int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(null, tipoIdentificacion, identificacion); 
+                    facturaControla.actualizarFacturaAbierta(idFctra, idDelVehiculo, "", "", "", "", "", 0, 0, 0);
+                    
+                    //Validamos si el parqueadero utilizado por el vehiculo antes de registrarse en el sistema es igual al ingresado por caja
+                    int idDelParqDelVehiculoAntesDeSerRegistrado = vehiControla.consultarIdParqQueOcupaUnVehiculo(null, tipoIdentificacion, identificacion);
+                    
+                    if(idDelParqDelVehiculoAntesDeSerRegistrado != idRealDelParqueaderoSeleccionado){
+                       parqControla.liberarParqueadero(tipoVehiculoBiciUOtro, null, tipoIdentificacion, identificacion);
+                       BiciUOtroEstaEnParqueo = "Si";
+                       parqControla.actualizarEstadoDeParqueadero(tipoVehiculoBiciUOtro, null, tipoIdentificacion, identificacion, dueñoBiciUOtro, idRealDelParqueaderoSeleccionado, BiciUOtroEstaEnParqueo);
+                    }
+                    
+                }else{
+                    parqControla.actualizarEstadoDeParqueadero(tipoVehiculoBiciUOtro, null, tipoIdentificacion, identificacion, dueñoBiciUOtro, idRealDelParqueaderoSeleccionado, BiciUOtroEstaEnParqueo);
+                }    
+            }    
+            
+            //Agregamos el objeto vehiculo a la tabla de vehiculos
+            Object[] fila = new Object[8];
+            fila[0] = tipoIdentificacion;
+            fila[1] = identificacion;
+            fila[2] = dueñoBiciUOtro;
+            fila[3] = tipoVehiculoBiciUOtro;
+            fila[4] = parqSeleccionado.getNombre();
+            fila[5] = color;
+            fila[6] = convSeleccionado.getNombre();
+            fila[7] = tarifSeleccionada.getNombreTarifa();
+            modeloBicisUOtros.addRow(fila);
+            
+            JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
+            //Generamos el codigo QR del vehiculo y lo imprimimos
+            vehiControla.generarQR(qrInfo+" - "+dueñoBiciUOtro, qrInfo, tipoVehiculoBiciUOtro);
+            Limpiar();
+            Normalizar();
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            Normalizar();
+        }
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-/*
-        String sentenciaSQL = "SELECT Estado, Nombre_parqueadero, TipoVehiculo, Placa, Propietario FROM parqueaderos WHERE 1=1";
-        int clase_cmb = cmb_claseParqBusqueda.getSelectedIndex();
-        String clase_str = (String) cmb_claseParqBusqueda.getSelectedItem();
+
+        String sentenciaSQL = "SELECT Ve.Tipo_Identificacion, Ve.No_identificacion, Ve.Propietario, Ve.TipoVehiculo, Parq.Nombre_parqueadero, Ve.Color, Conv.Nombre_convenio, Tar.Nombre_tarifa FROM vehiculos Ve INNER JOIN parqueaderos Parq ON Ve.Id_parqueadero = Parq.Id_parqueadero INNER JOIN convenios Conv ON Ve.Id_convenio = Conv.Id_convenio INNER JOIN tarifas Tar ON Ve.Id_tarifa = Tar.Id_tarifa WHERE Ve.TipoVehiculo IN ('BICICLETA', 'PATINETA', 'OTRO')";
+        int tipoIdentificacion_cmb = cmb_tipoIdentificacionBusqueda.getSelectedIndex(); 
+        String tipoIdentifStr = "";
+        String identificacion = txt_noIdentificacionBusqueda.getText();
+        String propietario = txt_propietarioBusqueda.getText();
         int tipoVehiculo_cmb = cmb_tipoVehiculoBusqueda.getSelectedIndex();
         String tipoVehiculo_str = (String) cmb_tipoVehiculoBusqueda.getSelectedItem();
-        int estado_cmb = cmb_estadosParqueaderoBusqueda.getSelectedIndex();
-        String estado_str = (String) cmb_estadosParqueaderoBusqueda.getSelectedItem();
         
      
         //Validamos que ningun campo haya quedado en blanco y que al menos uno haya sido diligenciado
-        if(clase_cmb == 0 && tipoVehiculo_cmb == 0 && estado_cmb == 0){
+        if(tipoIdentificacion_cmb == 0 && identificacion.equals("") && propietario.equals("") && tipoVehiculo_cmb == 0){
             JOptionPane.showMessageDialog(null,"Debe diligenciar por lo menos un criterio de busqueda.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
-            parqControla.cargarTablaDeParqueaderos();
-
+            vehiControla.cargarTablaDeBicicletasYOtrosVehiculos();
         }else{
+            if(tipoIdentificacion_cmb != 0){
+                
+                if(tipoIdentificacion_cmb == 1){
+                    tipoIdentifStr = "CC";
+                }else if(tipoIdentificacion_cmb == 2){
+                    tipoIdentifStr = "TI";
+                }else if(tipoIdentificacion_cmb == 3){
+                    tipoIdentifStr = "RC";
+                }else if(tipoIdentificacion_cmb == 4){
+                    tipoIdentifStr = "PA";
+                }else if(tipoIdentificacion_cmb == 5){
+                    tipoIdentifStr = "TE";
+                }else if(tipoIdentificacion_cmb == 6){
+                    tipoIdentifStr = "NIT";
+                }else if(tipoIdentificacion_cmb == 7){
+                    tipoIdentifStr = "PP";
+                }else if(tipoIdentificacion_cmb == 8){
+                    tipoIdentifStr = "DIE";
+                }
 
-            if(clase_cmb != 0){
-                //Agregamos la clase de parqueadero a la sentencia sql
-                sentenciaSQL = sentenciaSQL + " AND TipoParq = '"+clase_str+"'";
+                //Agregamos la placa del vehiculo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND Ve.Tipo_Identificacion = '"+tipoIdentifStr+"'";
+            }
+            
+            if(!identificacion.equals("")){
+                //Agregamos propietario del vehiculo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND Ve.No_identificacion LIKE '%"+identificacion+"%'";
+            }
+            
+            if(!propietario.equals("")){
+                //Agregamos propietario del vehiculo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND Ve.Propietario LIKE '%"+propietario+"%'";
             }
 
             if(tipoVehiculo_cmb != 0){
-                sentenciaSQL = sentenciaSQL + " AND TipoVehiculo = '"+tipoVehiculo_str+"'";
+                //Agregamos tipo de vehiculo a la sentencia sql
+                sentenciaSQL = sentenciaSQL + " AND Ve.TipoVehiculo = '"+tipoVehiculo_str+"'";
             }
-
-            if(estado_cmb != 0){
-                sentenciaSQL = sentenciaSQL + " AND Estado = '"+estado_str+"'";
-            }
-
-            //Ejecutamos la sentencia SQL construida
-            parqControla.buscarParqueaderos(sentenciaSQL);
-
-        }*/
+        }
+        //Ejecutamos la sentencia SQL construida
+        vehiControla.buscarBicicletasUOtros(sentenciaSQL);
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
-        /*Fila = Table_listaVehiculos.getSelectedRow();
-        int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
+        Fila = Table_listaBicisYOtros.getSelectedRow();
+        int cantidadFilas = Table_listaBicisYOtros.getSelectedRowCount();
 
         if(cantidadFilas == 0){
             JOptionPane.showMessageDialog(null, "Seleccione el vehiculo que desea editar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }else{
 
-            if(hayVehiculoEnEdicion == true){
-                JOptionPane.showMessageDialog(null, "No Permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon("src/icons/Cancelar.png"));
+            if(hayBiciUOtroEnEdicion == true){
+                JOptionPane.showMessageDialog(null, "No Permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             }else{
-                hayVehiculoEnEdicion = true;
-                vehiculo_update = Table_listaVehiculos.getValueAt(Fila, 0).toString();
-                new EditarVehiculo().setVisible(true);
+                hayBiciUOtroEnEdicion = true;
+                biciUOtro_update = Table_listaBicisYOtros.getValueAt(Fila, 0).toString() + Table_listaBicisYOtros.getValueAt(Fila, 1).toString();
+                new EditarBicisYOtros().setVisible(true);
             }
-        */
+        }
     }//GEN-LAST:event_btn_editarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-/*
-        Fila = Table_listaVehiculos.getSelectedRow();
-        int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
+
+        Fila = Table_listaBicisYOtros.getSelectedRow();
+        int cantidadFilas = Table_listaBicisYOtros.getSelectedRowCount();
 
         if(cantidadFilas == 0){
             JOptionPane.showMessageDialog(null, "Seleccione el vehiculo que desea eliminar.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }else{
-            String placa = Table_listaVehiculos.getValueAt(Fila, 0).toString();
-            String propietario = Table_listaVehiculos.getValueAt(Fila, 1).toString();
+            String tipoIdentif = Table_listaBicisYOtros.getValueAt(Fila, 0).toString();
+            String identificacion = Table_listaBicisYOtros.getValueAt(Fila, 1).toString();
+            int idDelVehiculo = vehiControla.consultarIdDeUnVehiculo(null, tipoIdentif, identificacion);
+            String propietario = Table_listaBicisYOtros.getValueAt(Fila, 2).toString();
+            tipoVehiculoBiciUOtro = Table_listaBicisYOtros.getValueAt(Fila, 3).toString();
+                   
             String botones[] = {"Si", "No"};
             int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar vehiculo", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
 
             if(decision == JOptionPane.YES_OPTION){
 
-                vehicontrolador.eliminarVehiculo(placa);
+                vehiControla.eliminarVehiculo(idDelVehiculo);
 
-                boolean elvehiculoTieneFacturaAbierta = vehicontrolador.consultarSiVehiculoTieneFacturasAbiertas(placa);
+                int elvehiculoTieneFacturaAbierta = vehiControla.consultarSiVehiculoTieneFacturasAbiertas(idDelVehiculo,null, tipoIdentif, identificacion);
 
-                if(elvehiculoTieneFacturaAbierta == true){
-                    facturaControla.eliminarFacturaAbierta(placa);
+                if(elvehiculoTieneFacturaAbierta == 1){
+                    facturaControla.eliminarFacturaAbierta(idDelVehiculo,null, null, null);
                 }
 
-                JOptionPane.showMessageDialog(null, "El vehiculo de placa: " + placa + " ha sido eliminado", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
+                JOptionPane.showMessageDialog(null, "El vehiculo ha sido eliminado", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
                 //Eliminamos el codigo qr del vehiculo
-                vehicontrolador.eliminarQr(placa+" - "+propietario);
-                modelo.removeRow(Fila);
-                parqControla.liberarParqueadero(placa);
+                vehiControla.eliminarQr(tipoIdentif+identificacion+" - "+propietario, tipoVehiculoBiciUOtro);
+                modeloBicisUOtros.removeRow(Fila);
+                parqControla.liberarParqueadero(tipoVehiculoBiciUOtro, null, tipoIdentif, identificacion);
                 Limpiar();
 
             }else if(decision == JOptionPane.NO_OPTION){
                 btn_ingresar.setEnabled(true);
             }
-        }*/
+        }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_generarQRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarQRActionPerformed
-        /*Fila = Table_listaVehiculos.getSelectedRow();
-        int cantidadFilas = Table_listaVehiculos.getSelectedRowCount();
+        Fila = Table_listaBicisYOtros.getSelectedRow();
+        int cantidadFilas = Table_listaBicisYOtros.getSelectedRowCount();
 
         if(cantidadFilas == 0){
             JOptionPane.showMessageDialog(null, "Seleccione el vehiculo al que desea generar su codigo qr.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }else{
-            placa = Table_listaVehiculos.getValueAt(Fila, 0).toString();
-            dueño = Table_listaVehiculos.getValueAt(Fila, 1).toString();
-            vehicontrolador.generarTicketQrVehiculo(placa+" - "+dueño, false, "");
+            tipoIdentificacion = Table_listaBicisYOtros.getValueAt(Fila, 0).toString();
+            identificacion = Table_listaBicisYOtros.getValueAt(Fila, 1).toString();
+            dueñoBiciUOtro = Table_listaBicisYOtros.getValueAt(Fila, 2).toString();
+            tipoVehiculoBiciUOtro = Table_listaBicisYOtros.getValueAt(Fila, 3).toString();
+            vehiControla.generarTicketQrVehiculo(tipoIdentificacion+identificacion+" - "+dueñoBiciUOtro, true, "", tipoVehiculoBiciUOtro);
             JOptionPane.showMessageDialog(null, "Codigo qr generado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
-        }*/
+        }
     }//GEN-LAST:event_btn_generarQRActionPerformed
 
     private void cmb_tipoIdentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_tipoIdentificacionActionPerformed
@@ -677,12 +1111,12 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_propietarioFocusGained
 
     private void txt_propietarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyPressed
-        /*if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
+        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
             Limpiar();
             btn_eliminar.setEnabled(false);
             btn_ingresar.setEnabled(true);
             btn_generarQR.setEnabled(false);
-        }*/
+        }
     }//GEN-LAST:event_txt_propietarioKeyPressed
 
     private void txt_propietarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyReleased
@@ -690,7 +1124,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_propietarioKeyReleased
 
     private void txt_propietarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioKeyTyped
-/*
+
         //Cuenta la cantidad maxima de caracteres
         int numeroCaracteres = 29;
         if(txt_propietario.getText().length()> numeroCaracteres){
@@ -703,7 +1137,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
         if(Character.isLowerCase(c)){
             evt.setKeyChar(Character.toUpperCase(c));
 
-        }*/
+        }
     }//GEN-LAST:event_txt_propietarioKeyTyped
 
     private void txt_colorVehiculoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_colorVehiculoFocusGained
@@ -719,7 +1153,19 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_colorVehiculoActionPerformed
 
     private void txt_colorVehiculoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_colorVehiculoKeyTyped
-        // TODO add your handling code here:
+        //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 29;
+        if(txt_colorVehiculo.getText().length()> numeroCaracteres){
+            evt.consume();
+            JOptionPane.showMessageDialog(null,"Solo 30 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+        }
+
+        //Forza a escribir en mayuscula
+        char c=evt.getKeyChar();
+        if(Character.isLowerCase(c)){
+            evt.setKeyChar(Character.toUpperCase(c));
+
+        }
     }//GEN-LAST:event_txt_colorVehiculoKeyTyped
 
     private void cmb_tarifaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_tarifaItemStateChanged
@@ -734,22 +1180,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_tarifaFocusGained
 
     private void cmb_conveniosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmb_conveniosItemStateChanged
-        /*int conv_string = cmb_convenios.getSelectedIndex();
-        String tipVehi_string = (String)cmb_clase.getSelectedItem();
-
-        if(conv_string == 1){
-            if(tipVehi_string.equals("AUTOMOVIL")){
-                cmb_tarifa.setSelectedIndex(2);
-
-            } else if(tipVehi_string.equals("MOTO")){
-                cmb_tarifa.setSelectedIndex(3);
-            }
-        }
-
-        if(conv_string > 1){
-            cmb_tarifa.setSelectedIndex(1);
-        }
-*/
+        
     }//GEN-LAST:event_cmb_conveniosItemStateChanged
 
     private void cmb_conveniosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_conveniosFocusGained
@@ -758,6 +1189,63 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
         btn_generarQR.setEnabled(false);
         btn_editar.setEnabled(false);
     }//GEN-LAST:event_cmb_conveniosFocusGained
+
+    private void cmb_tipoIdentificacionBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_tipoIdentificacionBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_tipoIdentificacionBusquedaActionPerformed
+
+    private void txt_noIdentificacionBusquedaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_noIdentificacionBusquedaFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_noIdentificacionBusquedaFocusGained
+
+    private void txt_noIdentificacionBusquedaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_noIdentificacionBusquedaFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_noIdentificacionBusquedaFocusLost
+
+    private void txt_noIdentificacionBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_noIdentificacionBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_noIdentificacionBusquedaActionPerformed
+
+    private void txt_noIdentificacionBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_noIdentificacionBusquedaKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_noIdentificacionBusquedaKeyTyped
+
+    private void txt_propietarioBusquedaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_propietarioBusquedaFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_propietarioBusquedaFocusGained
+
+    private void txt_propietarioBusquedaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioBusquedaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_propietarioBusquedaKeyPressed
+
+    private void txt_propietarioBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioBusquedaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_propietarioBusquedaKeyReleased
+
+    private void txt_propietarioBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_propietarioBusquedaKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_propietarioBusquedaKeyTyped
+
+    private void txt_propietarioBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_propietarioBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_propietarioBusquedaActionPerformed
+
+    private void cmb_parqueaderosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmb_parqueaderosFocusGained
+        btn_eliminar.setEnabled(false);
+        btn_ingresar.setEnabled(true);
+        btn_generarQR.setEnabled(false);
+        btn_editar.setEnabled(false);
+    }//GEN-LAST:event_cmb_parqueaderosFocusGained
+
+    private void check_estaVehiculoEnParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_estaVehiculoEnParqueaderoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_check_estaVehiculoEnParqueaderoActionPerformed
+
+    private void Table_listaBicisYOtrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Table_listaBicisYOtrosMouseClicked
+        btn_editar.setEnabled(true);
+        btn_eliminar.setEnabled(true);
+        btn_generarQR.setEnabled(true);
+    }//GEN-LAST:event_Table_listaBicisYOtrosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -833,148 +1321,121 @@ public class GestionarBicisyOtros extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JTable Table_listaBicisYOtros;
     private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_editar;
     private javax.swing.JButton btn_eliminar;
-    public static javax.swing.JButton btn_generaPDF;
     private javax.swing.JButton btn_generarQR;
+    public static javax.swing.JButton btn_generarReporteBicisyOtros;
     private javax.swing.JButton btn_ingresar;
-    private javax.swing.JComboBox<String> cmb_claseParqBusqueda;
+    private javax.swing.JCheckBox check_estaVehiculoEnParqueadero;
     private javax.swing.JComboBox<String> cmb_convenios;
-    private javax.swing.JComboBox<String> cmb_estadosParqueaderoBusqueda;
+    private javax.swing.JComboBox<String> cmb_parqueaderos;
     private javax.swing.JComboBox<String> cmb_tarifa;
     private javax.swing.JComboBox<String> cmb_tipoIdentificacion;
+    private javax.swing.JComboBox<String> cmb_tipoIdentificacionBusqueda;
     private javax.swing.JComboBox<String> cmb_tipoVehiculo;
     private javax.swing.JComboBox<String> cmb_tipoVehiculoBusqueda;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
-    public static javax.swing.JTable table_listaParqueaderos;
     private javax.swing.JTextField txt_colorVehiculo;
     private javax.swing.JTextField txt_noIdentificacion;
+    private javax.swing.JTextField txt_noIdentificacionBusqueda;
     private javax.swing.JTextField txt_propietario;
+    private javax.swing.JTextField txt_propietarioBusqueda;
     // End of variables declaration//GEN-END:variables
- 
-    //Metodo que registra un tablero compartido
-    public void registrarParqueadero(){
-      /*
-        int validacion = 0;
-        String nombreParqueadero;
-        String clase_parqstr = "";
-        String tipo_vehistr = "";
-        
-        nombreParqueadero = txt_noIdentificacion.getText().trim();
-        int clase_parq = cmb_claseParq.getSelectedIndex();
-        int tipo_vehiculo = cmb_tipoVehiculo.getSelectedIndex();
-                       
-        if(nombreParqueadero.equals("")){
-            txt_noIdentificacion.setBackground(Color.red);
-            validacion++;
-        }
-        
-        if(clase_parq == 0){
-            clase_parqstr = "Seleccione";
-            cmb_claseParq.setBackground(Color.red);
-            validacion++;
-        }        
-        else if(clase_parq == 1){
-            clase_parqstr = "RESIDENTE";
-        }else if(clase_parq == 2){
-            clase_parqstr = "VISITANTE";
-        }
-        
-        if(tipo_vehiculo == 0){
-            clase_parqstr = "Seleccione";
-            cmb_tipoVehiculo.setBackground(Color.red);
-            validacion++;
-        }        
-        else if(tipo_vehiculo == 1){
-            tipo_vehistr = "AUTOMOVIL";
-        }else if(tipo_vehiculo == 2){
-             tipo_vehistr = "MOTO";
-        }else if(tipo_vehiculo == 3){
-             tipo_vehistr = "BICICLETA";
-        }else if(tipo_vehiculo == 4){
-             tipo_vehistr = "PATINETA";
-        }else if(tipo_vehiculo == 5){
-             tipo_vehistr = "OTRO";
-        }
-                
-        //Valida si el parquedero en cuestion ya fue creado con anterioridad
-        boolean elParqueaderoExiste = parqControla.evaluarExistenciaDeParqueadero(nombreParqueadero);
-        
-        if(elParqueaderoExiste){
-            txt_noIdentificacion.setBackground(Color.red);
-            JOptionPane.showMessageDialog(null, "Nombre de parqueadero no disponible.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
-            Normalizar();
-        }else{
-            
-            if(validacion == 0){
-                //Encapsulamos el objeto Parqueadero
-                nuevoParqueadero.setId(0);
-                nuevoParqueadero.setNombre(nombreParqueadero);
-                nuevoParqueadero.setClaseParqueadero(clase_parqstr);
-                nuevoParqueadero.setTipoVehiculo(tipo_vehistr);
-                nuevoParqueadero.setEstado("Disponible");
-                nuevoParqueadero.setPlaca("");
-                nuevoParqueadero.setEstaOcupado("");
-                
-                parqControla.crearParqueadero(nuevoParqueadero);
-                
-                Object[] fila = new Object[5];
-                fila[0] = "Disponible";
-                fila[1] = nombreParqueadero;
-                fila[2] = tipo_vehistr;
-                modeloParq.addRow(fila);
-
-                JOptionPane.showMessageDialog(null, "Parqueadero registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
-                Limpiar();
-                Normalizar();
-                txt_noIdentificacion.requestFocus();
-            
-            }else {
-                JOptionPane.showMessageDialog(null, "Debes de llenar todos los campos.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
-                Normalizar();
-            }
-        }*/           
-    }     
- 
+   
     //Metodo que limpia el formulario en caso de ingresar tablero principal
-    /*public void Limpiar(){
+    public void Limpiar(){
+        cmb_tipoIdentificacion.setSelectedIndex(0);
         txt_noIdentificacion.setText("");
-        cmb_claseParq.setSelectedIndex(0);
+        txt_propietario.setText("");
         cmb_tipoVehiculo.setSelectedIndex(0);
-    }*/
+        txt_colorVehiculo.setText("");
+        cmb_parqueaderos.setSelectedIndex(0);
+        cmb_convenios.setSelectedIndex(0);
+        cmb_tarifa.setSelectedIndex(0);
+        check_estaVehiculoEnParqueadero.setSelected(false);
+    }
     
     //Metodo que normaliza el formulario en caso tablero compartido
-    /*public void Normalizar(){
+    public void Normalizar(){
         txt_noIdentificacion.setBackground(Color.WHITE);
-    }*/
+        txt_propietario.setBackground(Color.WHITE);
+        txt_colorVehiculo.setBackground(Color.WHITE);
+        cmb_parqueaderos.setBackground(Color.WHITE);
+        cmb_convenios.setBackground(Color.WHITE);
+        cmb_tarifa.setBackground(Color.WHITE);
+        check_estaVehiculoEnParqueadero.setBackground(Color.WHITE);;
+    }
     
     //Metodo que se invoca al cerrar el jFrame
-   /* private void cerrarGestorParqueaderos(){
+    private void cerrarGestorBibicletasYOtrosVehiculos(){
         
         String botones[] = {"Si", "No"};
-        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de parqueaderos", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
+        int eleccion = JOptionPane.showOptionDialog(this, "¿Está seguro que desea cerrar?", "Administrador de bicis y otros", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
         
         if(eleccion == JOptionPane.YES_OPTION){
             dispose();
             //Avisamos que esta ventana se encuentra cerrada 
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
-            PanelParametros.btn_parqueaderos.setEnabled(true);
+            PanelVehiculos.btn_gestorOtrosVehiculos.setEnabled(true);
         }
-    }*/
+    }
+
+    //Metodo que ejecuta loss hilos que traen los datos del estado de cupo de parqueadero, Convenios, tarifas y generacion de codiggo qr en tiempo real  
+    @Override
+    public void run() {
+        Thread ct = Thread.currentThread();
+        Thread ct1 = Thread.currentThread();
+        Thread ct2 = Thread.currentThread();
+        
+        while(ct == hilo1){
+
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoResidente("'BICICLETA', 'PATINETA', 'OTRO'"));
+            cmb_parqueaderos.setModel(modeloParq);
+
+            try{
+                ct.sleep(30000);
+            }catch(InterruptedException e){}
+        }
+
+        while(ct1 == hilo2){
+
+            DefaultComboBoxModel modeloConv = new DefaultComboBoxModel(conv.mostrarConveniosDisponibles());
+            cmb_convenios.setModel(modeloConv);
+            conv.almacenarNombresConvenio();
+
+            try{
+                ct1.sleep(30000);
+            }catch(InterruptedException e){}
+        }
+
+        while(ct2 == hilo3){
+
+            DefaultComboBoxModel modeloTarif = new DefaultComboBoxModel(tarif.mostrarTarifasDisponibles());
+            cmb_tarifa.setModel(modeloTarif);
+            tarif.almacenarNombresTarifa();
+
+            try{
+                ct2.sleep(30000);
+            }catch(InterruptedException e){}
+        }
+    }   
 }
 
 

@@ -30,7 +30,7 @@ public class Tarifa {
     private String montoTiempoAdicional;
     private String unidadDelTiempoAdicional;
     
-    ParametroControlador paramControla;
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(Tarifa.class);
     private URL url = Tarifa.class.getResource("Log4j.properties");

@@ -56,7 +56,7 @@ public class CierreControlador {
    Cierre cierreConsultado = new Cierre(0, "", "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "", "", "", "", "");
    FacturaControlador factControla;
    ParqueaderoControlador parqControla;
-   ParametroControlador paramControla;
+   ParametroControlador paramControla = new ParametroControlador();
    public String totalEsperadoProducidoCierres = "";
    public String totalRealProducidoCierres = "";
    public String totalPerdidasCierres_str = "";

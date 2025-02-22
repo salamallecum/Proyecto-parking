@@ -52,7 +52,7 @@ public class ArqueoControlador {
    Arqueo arqueoConsultado = new Arqueo(0, "", 0, "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
    FacturaControlador factControla;
    CierreControlador cierreControla;
-   ParametroControlador paramControla;
+   ParametroControlador paramControla = new ParametroControlador();
    UsuarioControlador usuarioControla;
    int totalPerdidasArqueos;
    public String totalPerdidasArqueos_str;

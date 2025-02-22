@@ -97,36 +97,36 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
 
         table_listaParqueaderos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Estado", "Nombre", "Tipo", "Placa/Identificación", "Propietario"
+                "Estado", "Nombre", "Tipo", "Placa", "Tipo identif", "Identificación", "Propietario"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -435,6 +435,7 @@ public class GestionarParqueaderos extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "El parqueadero indicado tiene cupo actualmente en parqueadero.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }else{
                     parqControla.eliminarParqueadero(nombreParqueadero);
+                    JOptionPane.showMessageDialog(null, "Parqueadero eliminado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
                     modeloParq.removeRow(Fila);
                 }
             }else if(decision == JOptionPane.NO_OPTION){}

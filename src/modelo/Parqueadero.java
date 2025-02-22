@@ -25,10 +25,12 @@ public class Parqueadero {
     private String claseParqueadero;
     private String tipoVehiculo;
     private String placa;
+    private String tipoIdentificacion;
+    private String identificacion;
     private String propietario;
     private String estaEnParqueo;
     
-    ParametroControlador paramControla;
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(Parqueadero.class);
     private URL url = Parqueadero.class.getResource("Log4j.properties");
@@ -67,6 +69,22 @@ public class Parqueadero {
         this.placa = placa;
     }
 
+    public String getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(String tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+    
     public String getPropietario() {
         return propietario;
     }
@@ -193,11 +211,7 @@ public class Parqueadero {
         Parqueadero dat = null;
         
         try{
-           if(tipoDeVehiculo.equals("")){
-               sql = "select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE'";
-           }else{
-               sql = "select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE' and TipoVehiculo in ("+tipoDeVehiculo+")";
-           }
+           sql = "select Id_parqueadero, Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE' and TipoVehiculo in ("+tipoDeVehiculo+")";           
            pst4 = cn4.prepareStatement(sql); 
            rs4 = pst4.executeQuery();
            
@@ -222,7 +236,7 @@ public class Parqueadero {
     }
     
     //Metodo que se encarga de almacenar los nombres de paqueadero en un arraylist 
-    public void almacenarNombresParqueadero(){
+    public void almacenarNombresParqueadero(String tiposVehiculo){
         
         //Traemos todos los parqueaderos
         PreparedStatement pst4 = null;
@@ -233,7 +247,7 @@ public class Parqueadero {
         int numParqueaderosRegistrados = contarParqueaderosRegistrados("RESIDENTE");
         
         try{
-           pst4 = cn4.prepareStatement("select Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE'"); 
+           pst4 = cn4.prepareStatement("select Nombre_parqueadero from parqueaderos where TipoParq = 'RESIDENTE' and TipoVehiculo in ("+tiposVehiculo+")"); 
            rs4 = pst4.executeQuery();
                           
            while(rs4.next()){               

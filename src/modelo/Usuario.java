@@ -27,7 +27,7 @@ public class Usuario {
     private String rol;
     private String activo;
     
-    ParametroControlador paramControla;
+    ParametroControlador paramControla = new ParametroControlador();
     
     private final Logger log = Logger.getLogger(Usuario.class);
     private URL url = Usuario.class.getResource("Log4j.properties");
