@@ -1254,7 +1254,7 @@ public class GestionarTarifas extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "La tarifa seleccionada se está implementando actualmente.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
                 }else{
                     
-                    if(nombreTarifa.equals("TARIF_AUTOMOVIL") || nombreTarifa.equals("TARIF_MOTO") || nombreTarifa.equals("TARIF_PREFERENCIAL") || nombreTarifa.equals("TARIF_BICICLETA") || nombreTarifa.equals("TARIF_PATINETA") || nombreTarifa.equals("TARIF_OTROS")){
+                    if(nombreTarifa.equals("TARIF_AUTOMOVIL") || nombreTarifa.equals("TARIF_MOTO") || nombreTarifa.equals("TARIF_BICICLETA") || nombreTarifa.equals("TARIF_PATINETA") || nombreTarifa.equals("TARIF_OTROS")){
                         JOptionPane.showMessageDialog(null, "No permitido.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
                     }else{
                         tarifaControla.eliminarTarifa(nombreTarifa);
