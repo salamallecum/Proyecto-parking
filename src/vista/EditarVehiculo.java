@@ -112,7 +112,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         tarif.almacenarNombresTarifa();
                                
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
-        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null,vehiculo_actualizado);
+        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null,vehiculo_actualizado,null,null);
          
         //Colocamos la infromacion del objeto vehiculo en la interfaz
         ID = vehiculoConsultado.getId();
@@ -175,7 +175,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         
         cmb_tarifas.setSelectedIndex(idVerdaderoDeTarifa);
         
-        elVehiculoEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(null, vehiculo_actualizado);
+        elVehiculoEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(null, vehiculo_actualizado, null, null);
                 
         if(elVehiculoEstaEnParqueadero == true){
             check_editEstaVehiculoEnParqueadero.setSelected(true);
@@ -521,7 +521,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
                         int idFctra = facturaControla.consultarIdDeUnaFacturaAbierta(placa, null, null);
                         facturaControla.actualizarFacturaAbierta(idFctra, ID, "", "", "", "", "", 0, 0, 0);
                         vehiculoEstaEnParqueo = "Si";
-                        JOptionPane.showMessageDialog(null, "El vehiculo si está en parqueadero, tiene un proceso de liquidación pendiente.");
+                        JOptionPane.showMessageDialog(null,"El vehiculo si está en parqueadero, tiene un proceso de liquidación pendiente.", "Validación", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/advertencia.png", 32, 32));
                     }   
                 }
             }  

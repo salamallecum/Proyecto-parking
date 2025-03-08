@@ -36,7 +36,8 @@ import static vista.GestionarBicisyOtros.tipoVehiculoBiciUOtro;
  */
 public class EditarBicisYOtros extends javax.swing.JFrame{
 
-    String biciYOtros_actualizado="";
+    String biciYOtros_TipoIdentificacionActualizado="";
+    String biciYOtros_NumIdentificacionActualizado="";
     String tipoIdentifBack;
     String numeroIdentifBack;
     String propietariaBack;
@@ -84,7 +85,8 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
      */
     public EditarBicisYOtros() {
         initComponents();
-        biciYOtros_actualizado = GestionarBicisyOtros.biciUOtro_update;
+        biciYOtros_TipoIdentificacionActualizado = GestionarBicisyOtros.biciUOtroTipoIdentificacion_update;
+        biciYOtros_NumIdentificacionActualizado = GestionarBicisyOtros.biciUOtroNumIdentificacion_update;
         tablaBicis = GestionarBicisyOtros.Table_listaBicisYOtros;
         user = Login.usuario;
         modeloBicis = GestionarBicisyOtros.modeloBicisUOtros;
@@ -114,7 +116,7 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
         tarif.almacenarNombresTarifa();
                                
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
-        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(biciYOtros_actualizado, null);
+        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null, null, biciYOtros_TipoIdentificacionActualizado, biciYOtros_NumIdentificacionActualizado);
          
         //Colocamos la infromacion del objeto vehiculo en la interfaz
         ID = vehiculoConsultado.getId();
@@ -198,7 +200,7 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
         
         cmb_tarifasEditar.setSelectedIndex(idVerdaderoDeTarifa);
         
-        laBiciUOtroEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(biciYOtros_actualizado, null);
+        laBiciUOtroEstaEnParqueadero = vehicontrolador.verificarSiVehiculoEstaEnParqueadero(null, null, biciYOtros_TipoIdentificacionActualizado, biciYOtros_NumIdentificacionActualizado);
                 
         if(laBiciUOtroEstaEnParqueadero){
             check_editEstaVehiculoEnParqueadero.setSelected(true);
@@ -362,7 +364,7 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
 
         cmb_tipoVehiculoEditar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "BICICLETA", "PATINETA", "OTRO" }));
 
-        cmb_tipoIdentificacionEditar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Cedula de ciudadanía", "Targeta de identidad", "Registro civil", "Pasaporte", "Targeta de extrangería", "NIT", "Permiso permanencia", "DIE" }));
+        cmb_tipoIdentificacionEditar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Cedula de ciudadanía (CC)", "Targeta de identidad (TI)", "Registro civil (RC)", "Pasaporte (PA)", "Targeta de extrangería (TE)", "NIT ", "Permiso permanencia (PP)", "DIE" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -577,7 +579,13 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
             
             //Encapsulamos el objeto vehiculo 
             vehiculoEditado.setId(ID);
-            vehiculoEditado.setQr_consecutivo(tipoIdentificacion+identificacion);
+            
+            //Definimos el contenido que tendra el qr garanizando que siempre tenga 16 caracteres
+            qrInfo = tipoIdentificacion+identificacion;
+            if(qrInfo.length() < 16){
+                qrInfo = qrInfo+parametroControla.generarConsecutivo(16-qrInfo.length());
+            }
+            vehiculoEditado.setQr_consecutivo(qrInfo);
             vehiculoEditado.setTipoIdentificacion(tipoIdentificacion);
             vehiculoEditado.setNumIdentificacion(identificacion);
             vehiculoEditado.setPropietario(dueñoBiciUOtro);
@@ -642,7 +650,7 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
             
             JOptionPane.showMessageDialog(null, "Vehiculo actualizado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/exitoso.png", 32, 32));
             //Actualizamos el codigo QR del vehiculo y lo imprimimos
-            vehicontrolador.actualizarQR(tipoVehiculoBack, tipoVehiculoBiciUOtro, null, null, null, tipoIdentifBack, numeroIdentifBack, tipoIdentificacion, identificacion, propietariaBack, dueñoBiciUOtro);
+            vehicontrolador.actualizarQR(tipoVehiculoBack, tipoVehiculoBiciUOtro, null, null, qrInfo, tipoIdentifBack, numeroIdentifBack, tipoIdentificacion, identificacion, propietariaBack, dueñoBiciUOtro);
             this.dispose();  
             GestionarBicisyOtros.hayBiciUOtroEnEdicion = false;
             MenuAdministrador.hayAlgunaVentanaAbiertaDelSistema = false;
@@ -735,11 +743,11 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
             evt.setKeyChar(Character.toUpperCase(c));
         }
 
-        //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 15;
+       //Cuenta la cantidad maxima de caracteres
+        int numeroCaracteres = 14;
         if(txt_noIdentificacionEditar.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 15 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/advertencia.png", 32, 32));
+            JOptionPane.showMessageDialog(null,"Solo 14 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, parametroControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_noIdentificacionEditar.setText("");
         }
     }//GEN-LAST:event_txt_noIdentificacionEditarKeyTyped

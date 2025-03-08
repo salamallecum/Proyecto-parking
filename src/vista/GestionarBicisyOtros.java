@@ -42,7 +42,8 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
     FacturaControlador facturaControla = new FacturaControlador();
     UsuarioControlador usuarioControla = new UsuarioControlador();
         
-    public static String biciUOtro_update;
+    public static String biciUOtroTipoIdentificacion_update;
+    public static String biciUOtroNumIdentificacion_update;
     public static boolean hayBiciUOtroEnEdicion = false;
     String user = "";
     public static String tipoIdentificacion;
@@ -94,9 +95,11 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
         public void mouseClicked(MouseEvent e){
             int fila_point =  Table_listaBicisYOtros.rowAtPoint(e.getPoint());
             int columna_point = 0;
+            int columna_point_1 = 1;
 
             if(fila_point > -1){
-                biciUOtro_update = (String) modeloBicisUOtros.getValueAt(fila_point, columna_point);              
+                biciUOtroTipoIdentificacion_update = (String) modeloBicisUOtros.getValueAt(fila_point, columna_point);   
+                biciUOtroNumIdentificacion_update = (String) modeloBicisUOtros.getValueAt(fila_point, columna_point_1);
             }
         }
     });
@@ -290,7 +293,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
             }
         });
 
-        cmb_tipoIdentificacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Cedula de ciudadanía", "Targeta de identidad", "Registro civil", "Pasaporte", "Targeta de extrangería", "NIT", "Permiso permanencia", "DIE" }));
+        cmb_tipoIdentificacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Cedula de ciudadanía (CC)", "Targeta de identidad (TI)", "Registro civil (RC)", "Pasaporte (PA)", "Targeta de extrangería (TE)", "NIT ", "Permiso permanencia (PP)", "DIE" }));
         cmb_tipoIdentificacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmb_tipoIdentificacionActionPerformed(evt);
@@ -411,10 +414,11 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmb_parqueaderos, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_colorVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_propietario, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_noIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmb_tipoIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txt_noIdentificacion, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cmb_tipoIdentificacion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmb_tipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(40, 40, 40)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_ingresar)
@@ -731,17 +735,20 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
     }//GEN-LAST:event_txt_noIdentificacionActionPerformed
 
     private void txt_noIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_noIdentificacionKeyTyped
-        //Forza aescribir en mayuscula
-        char c=evt.getKeyChar();
-        if(Character.isLowerCase(c)){
-            evt.setKeyChar(Character.toUpperCase(c));
+        //Evalua que se digiten números no letras
+        char validar = evt.getKeyChar();
+        
+        if(Character.isLetter(validar)){
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Ingrese solo números.", "Validación",JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
         }
 
         //Cuenta la cantidad maxima de caracteres
-        int numeroCaracteres = 15;
+        int numeroCaracteres = 14;
         if(txt_noIdentificacion.getText().length()== numeroCaracteres){
             evt.consume();
-            JOptionPane.showMessageDialog(null,"Solo 15 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
+            JOptionPane.showMessageDialog(null,"Solo 14 caracteres.", "Validación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/advertencia.png", 32, 32));
             txt_noIdentificacion.setText("");
         }
     }//GEN-LAST:event_txt_noIdentificacionKeyTyped
@@ -858,7 +865,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
             }
         }
                
-         //Validamos el verdadero id del convenio y de la tarifa en bd
+        //Validamos el verdadero id del convenio y de la tarifa en bd
         int idRealDelConvenioSeleccionado = convenioControla.consultarIdDeunConvenio(convSeleccionado.getNombre());
         int idRealDeTarifaSeleccionada = tarifaControla.consultarIdDeunaTarifa(tarifSeleccionada.getNombreTarifa());
              
@@ -869,6 +876,11 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
             //Encapsulamos el objeto vehiculo 
             nuevoVehiculo.setId(0);
             qrInfo = tipoIdentificacion+identificacion;
+            //Garantizamos que el consecutivo qr tenga siempre 16 caracteres
+            if(qrInfo.length() < 16){
+                qrInfo = qrInfo+paramControla.generarConsecutivo(16-qrInfo.length());
+            }
+            
             nuevoVehiculo.setQr_consecutivo(qrInfo);
             nuevoVehiculo.setTipoIdentificacion(tipoIdentificacion);
             nuevoVehiculo.setNumIdentificacion(identificacion);
@@ -956,7 +968,7 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
             
             JOptionPane.showMessageDialog(null, "Vehiculo registrado satisfactoriamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/exitoso.png", 32, 32));
             //Generamos el codigo QR del vehiculo y lo imprimimos
-            vehiControla.generarQR(qrInfo+" - "+dueñoBiciUOtro, qrInfo, tipoVehiculoBiciUOtro);
+            vehiControla.generarQR(tipoIdentificacion+identificacion+" - "+dueñoBiciUOtro, qrInfo, tipoVehiculoBiciUOtro);
             Limpiar();
             Normalizar();
             
@@ -1037,7 +1049,8 @@ public class GestionarBicisyOtros extends javax.swing.JFrame implements Runnable
                 JOptionPane.showMessageDialog(null, "No Permitido.", "Error", JOptionPane.INFORMATION_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
             }else{
                 hayBiciUOtroEnEdicion = true;
-                biciUOtro_update = Table_listaBicisYOtros.getValueAt(Fila, 0).toString() + Table_listaBicisYOtros.getValueAt(Fila, 1).toString();
+                biciUOtroTipoIdentificacion_update = Table_listaBicisYOtros.getValueAt(Fila, 0).toString(); 
+                biciUOtroNumIdentificacion_update = Table_listaBicisYOtros.getValueAt(Fila, 1).toString();
                 new EditarBicisYOtros().setVisible(true);
             }
         }
