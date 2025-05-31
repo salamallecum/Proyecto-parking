@@ -4,6 +4,7 @@ import controlador.ParametroControlador;
 import controlador.UsuarioControlador;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.util.Calendar;
@@ -12,6 +13,8 @@ import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import org.apache.log4j.Logger;
+import static vista.PanelCaja.table_operacionParqueaderoBicisYOtros;
+import static vista.PanelCaja.table_operacionParqueaderoCarrosYMotos;
 
 /**
  *
@@ -25,7 +28,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
     Date fechaHoraActual;
     Thread h1; 
     
-    ParametroControlador paramControla;
+    ParametroControlador paramControla = new ParametroControlador();
     
     //Variables que monitorean las ventanas del sistema que estanabiertas y cerradas  
     public static boolean hayAlgunaVentanaAbiertaDelSistema = false;
@@ -71,7 +74,7 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         panelUsu.setVisible(false);
         
         panelCaja = new PanelCaja();
-        panelCaja.setBounds(289,76,1000,591);
+        panelCaja.setBounds(289,100,1000,800);
         add(panelCaja);
         panelCaja.setVisible(false);
         
@@ -435,9 +438,8 @@ public class MenuAdministrador extends javax.swing.JFrame implements Runnable{
         btn_Reportes.setBackground(Color.WHITE);
         btn_vehiculos.setBackground(Color.WHITE);
         btn_parametros.setBackground(Color.WHITE);
-        
-        
-        setSize(1300,750);
+                
+        setSize(1300,850);
         panelUsu.setVisible(false);
         panelCaja.setVisible(true);
         panelReport.setVisible(false);

@@ -43,14 +43,18 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.apache.log4j.Logger;
 import static vista.EditarFacturaFinal.cmb_parqVisitantesFinal;
 import static vista.EditarFacturaIngreso.cmb_parqVisitantes;
-import static vista.EstadoParqueadero.Table_estado;
 import vista.GestionarParqueaderos;
 import static vista.GestionarParqueaderos.modeloParq;
 import static vista.GestionarParqueaderos.table_listaParqueaderos;
 import vista.MenuAdministrador;
-import static vista.PanelCaja.cmb_numParqueadero;
-import static vista.PanelCaja.modeloCaja;
-import static vista.PanelCaja.table_operacionParqueadero;
+import static vista.PanelCaja.modeloTablaCarrosYMotosCaja;
+import static vista.PanelCaja.modeloTablaBicisYOtrosCaja;
+import static vista.PanelCaja.cmb_numParqueaderoCarroOMoto;
+import static vista.PanelCaja.cmb_numParqueaderoBiciUOtro;
+import static vista.PanelCaja.table_operacionParqueaderoCarrosYMotos;
+import static vista.PanelCaja.table_operacionParqueaderoBicisYOtros;
+import static vista.EstadoParqueadero.Table_estadoCarrosYMotos;
+import static vista.EstadoParqueadero.Table_estadoBicisYOtros;
 
 
 /**
@@ -61,7 +65,8 @@ public class ParqueaderoControlador implements Runnable{
     
    VehiculoControlador vehiControlador;
    ParametroControlador paramControla = new ParametroControlador();
-   DefaultTableModel modeloEstadoParq;
+   DefaultTableModel modeloEstadoParqCarrosYMotos;
+   DefaultTableModel modeloEstadoParqBicis;
    Parqueadero parq = new Parqueadero();
    
    //Variables que regulan cuando los hilos 2 y 3 se les dio start
@@ -117,8 +122,7 @@ public class ParqueaderoControlador implements Runnable{
             ResultSet rs;
             String sql = "";
             if(placa != null){
-                sql = "update parqueaderos set Estado ='Ocupado', Placa='"+placa+"', Propietario='"+dueño+"', Esta_en_parqueadero='"+estaEnParq+"' where Id_parqueadero="+idParq+" and TipoVehiculo='"+tipoVehiculo+"'";   
-            
+                sql = "update parqueaderos set Estado ='Ocupado', Placa='"+placa+"', Propietario='"+dueño+"', Esta_en_parqueadero='"+estaEnParq+"' where Id_parqueadero="+idParq+" and TipoVehiculo='"+tipoVehiculo+"'";             
             }else if(tipoIdentif != null && numIdentificacion != null){
                 sql = "update parqueaderos set Estado ='Ocupado', Tipo_Identificacion='"+tipoIdentif+"', No_identificacion='"+numIdentificacion+"', Propietario='"+dueño+"', Esta_en_parqueadero='"+estaEnParq+"' where Id_parqueadero="+idParq+" and TipoVehiculo='"+tipoVehiculo+"'";   
             }
@@ -176,6 +180,7 @@ public class ParqueaderoControlador implements Runnable{
     }
         
     //Cargamos la tabla de parqueaderos de la ventana gestionarParqueaderos
+    
     public void cargarTablaDeParqueaderos(){
         
         //Cargamos los datos de la tabla
@@ -473,93 +478,158 @@ public class ParqueaderoControlador implements Runnable{
     }
     
     //Metodo que imprime ticket de seguimiento parqueadero
-    public void generarReporteDeEstadoParqueadero(){     
+    public void generarReporteDeEstadoParqueadero(int numeroDeReporte){     
                 
         PrinterMatrix printer = new PrinterMatrix();
 
         Extenso e = new Extenso();
+        
+        //Validamos que numero de reporte se va a generar
+        if(numeroDeReporte == 0){
+            e.setNumber(101.85);
+            int filas = Table_estadoCarrosYMotos.getRowCount();
 
-        e.setNumber(101.85);
-        int filas = Table_estado.getRowCount();
+            //Definir el tamanho del papel para la impresion  aca 25 lineas y 80 columnas
+            printer.setOutSize(filas + 8, 46);
+            //Imprimir * 1ra linea de la columa de 1 a 80
+            printer.printCharAtCol(1, 1, 46, "=");
+            //Imprimir Encabezado nombre del La EMpresa
+           printer.printTextWrap(1, 2, 12, 46, "ESTADO DEL PARQUEADERO");
+           //printer.printTextWrap(linI, linE, colI, colE, null);
 
-        //Definir el tamanho del papel para la impresion  aca 25 lineas y 80 columnas
-        printer.setOutSize(filas + 8, 46);
-        //Imprimir * 1ra linea de la columa de 1 a 80
-        printer.printCharAtCol(1, 1, 46, "=");
-        //Imprimir Encabezado nombre del La EMpresa
-       printer.printTextWrap(1, 2, 12, 46, "ESTADO DEL PARQUEADERO");
-       //printer.printTextWrap(linI, linE, colI, colE, null);
-       
-       printer.printTextWrap(3, 8, 1, 46, "Estado  |  No Parq  |  Placa  |  Parqueado?");
-       printer.printCharAtCol(5, 1, 46, "-");
-       
-       int pie = 1;
-            
-        for (int i = 0; i < filas; i++) { 
-            printer.printTextWrap(5 + i, 10, 1, 46, Table_estado.getValueAt(i, 0)+"  |  "+Table_estado.getValueAt(i, 1)+"  |  "+Table_estado.getValueAt(i, 2)+"  |  "+Table_estado.getValueAt(i, 3)); 
-            pie++; 
-        } 
-               
-        if(pie > filas){
-            printer.printTextWrap(filas + 6, 0, 8, 46, "Todos los derechos reservados ");
-        }
-             
-        printer.toFile("bin\\impresion.txt");
+           printer.printTextWrap(3, 8, 1, 46, "Estado  |  No Parq  |  Placa  |  Parqueado?");
+           printer.printCharAtCol(5, 1, 46, "-");
 
-      FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream("bin\\impresion.txt");
-        } catch (FileNotFoundException ex) {
-            log.fatal("ERROR - Se ha producido un error de localizacion del archivo impresion.txt: " + ex);
-        }
-        if (inputStream == null) {
-            return;
-        }
+           int pie = 1;
 
-        DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
-        Doc document = new SimpleDoc(inputStream, docFormat, null);
+            for (int i = 0; i < filas; i++) { 
+                printer.printTextWrap(5 + i, 10, 1, 46, Table_estadoCarrosYMotos.getValueAt(i, 0)+"  |  "+Table_estadoCarrosYMotos.getValueAt(i, 1)+"  |  "+Table_estadoCarrosYMotos.getValueAt(i, 2)+"  |  "+Table_estadoCarrosYMotos.getValueAt(i, 3)); 
+                pie++; 
+            } 
 
-        PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
-
-        PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
-
-
-        if (defaultPrintService != null) {
-            DocPrintJob printJob = defaultPrintService.createPrintJob();
-            try {
-                printJob.print(document, attributeSet);
-
-            } catch (PrintException ex) {
-                log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero: " + ex);
+            if(pie > filas){
+                printer.printTextWrap(filas + 6, 0, 8, 46, "Todos los derechos reservados ");
             }
-        } else {
-           log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero, verifique la conexión de su impresora");
-        }
 
-        //inputStream.close();
-       
+            printer.toFile("bin\\impresion.txt");
+
+          FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream("bin\\impresion.txt");
+            } catch (FileNotFoundException ex) {
+                log.fatal("ERROR - Se ha producido un error de localizacion del archivo impresion.txt: " + ex);
+            }
+            if (inputStream == null) {
+                return;
+            }
+
+            DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+            Doc document = new SimpleDoc(inputStream, docFormat, null);
+
+            PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
+
+            PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+
+
+            if (defaultPrintService != null) {
+                DocPrintJob printJob = defaultPrintService.createPrintJob();
+                try {
+                    printJob.print(document, attributeSet);
+
+                } catch (PrintException ex) {
+                    log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero: " + ex);
+                }
+            } else {
+               log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero, verifique la conexión de su impresora");
+            }
+        
+        }else if(numeroDeReporte == 1){
+            e.setNumber(101.85);
+            int filas = Table_estadoBicisYOtros.getRowCount();
+
+            //Definir el tamanho del papel para la impresion  aca 25 lineas y 80 columnas
+            printer.setOutSize(filas + 8, 46);
+            //Imprimir * 1ra linea de la columa de 1 a 80
+            printer.printCharAtCol(1, 1, 46, "=");
+            //Imprimir Encabezado nombre del La EMpresa
+           printer.printTextWrap(1, 2, 12, 46, "ESTADO DEL PARQUEADERO");
+           //printer.printTextWrap(linI, linE, colI, colE, null);
+
+           printer.printTextWrap(3, 8, 1, 46, "Estado  |  No Parq  |  Identif  |  Parqueado?");
+           printer.printCharAtCol(5, 1, 46, "-");
+
+           int pie = 1;
+
+            for (int i = 0; i < filas; i++) { 
+                printer.printTextWrap(5 + i, 10, 1, 46, Table_estadoBicisYOtros.getValueAt(i, 0)+"  |  "+Table_estadoBicisYOtros.getValueAt(i, 1)+"  |  "+Table_estadoBicisYOtros.getValueAt(i, 2)+"  |  "+Table_estadoBicisYOtros.getValueAt(i, 3)); 
+                pie++; 
+            } 
+
+            if(pie > filas){
+                printer.printTextWrap(filas + 6, 0, 8, 46, "Todos los derechos reservados ");
+            }
+
+            printer.toFile("bin\\impresion.txt");
+
+          FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream("bin\\impresion.txt");
+            } catch (FileNotFoundException ex) {
+                log.fatal("ERROR - Se ha producido un error de localizacion del archivo impresion.txt: " + ex);
+            }
+            if (inputStream == null) {
+                return;
+            }
+
+            DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+            Doc document = new SimpleDoc(inputStream, docFormat, null);
+
+            PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
+
+            PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+
+
+            if (defaultPrintService != null) {
+                DocPrintJob printJob = defaultPrintService.createPrintJob();
+                try {
+                    printJob.print(document, attributeSet);
+
+                } catch (PrintException ex) {
+                    log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero: " + ex);
+                }
+            } else {
+               log.fatal("ERROR - Se ha producido un error al intentar imprimir el reporte de estado del parqueadero, verifique la conexión de su impresora");
+            }
+        }
+        //inputStream.close(); 
     }
     
     //Metodo que permite mostrar la tabla del estado de parqueadero en tiempo real (funcion del panel caja boton "Estado de parqueadero")
     public void mostrarTablaDeEstadoDelParqueaderoEnTiempoReal(){
         
-        //Consulta de datos a la BD
+        
         try {
-            modeloEstadoParq = new DefaultTableModel(0, 4);
-            Table_estado.setModel(modeloEstadoParq);
-
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                        "select  Estado, Nombre_parqueadero, Placa, Esta_en_parqueadero from parqueaderos");
-
-            ResultSet rs = pst.executeQuery();
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int cantidadColumnas = rsmd.getColumnCount();
+            PreparedStatement pst = null;
+            ResultSet rs = null;
+            ResultSetMetaData rsmd = null;
+            int cantidadColumnas = 0;
+            int[] anchosTabla = {5,15,20,10};
             
-           
-            //Aqui colocamos las etiquetas de la tabla
-            JTableHeader tableHeader = Table_estado.getTableHeader();
+            modeloEstadoParqCarrosYMotos = new DefaultTableModel(0,4);
+            Table_estadoCarrosYMotos.setModel(modeloEstadoParqCarrosYMotos);
+            
+            modeloEstadoParqBicis = new DefaultTableModel(0,4);
+            Table_estadoBicisYOtros.setModel(modeloEstadoParqBicis);
+            
+            //Tabla de carros y motos - Consulta de datos a la BD
+            pst = cn.prepareStatement("select  Estado, Nombre_parqueadero, Placa, Esta_en_parqueadero from parqueaderos where TipoVehiculo in ('AUTOMOVIL','MOTO')");
+            rs = pst.executeQuery();
+            rsmd = rs.getMetaData();
+            cantidadColumnas = rsmd.getColumnCount();
+                       
+            //Aqui colocamos las etiquetas de la tabla de carros y motos
+            JTableHeader tableHeader = Table_estadoCarrosYMotos.getTableHeader();
             TableColumnModel tableColumnModel = tableHeader.getColumnModel();
             
             TableColumn tableColumn0 = tableColumnModel.getColumn(0);
@@ -575,11 +645,9 @@ public class ParqueaderoControlador implements Runnable{
             tableColumn4.setHeaderValue( "Parqueado?" );
                        
             tableHeader.repaint();
-                
-            int[] anchosTabla = {5,15,20,10};
-
+           
             for(int x=0; x < cantidadColumnas; x++){
-                Table_estado.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+                Table_estadoCarrosYMotos.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
             }
 
             while (rs.next()) {
@@ -589,9 +657,48 @@ public class ParqueaderoControlador implements Runnable{
                 for (int i = 0; i < cantidadColumnas; i++) {
                     filas[i] = rs.getObject(i + 1);
                 }
-                modeloEstadoParq.addRow(filas);
+                modeloEstadoParqCarrosYMotos.addRow(filas);
             }
-                cn.close();        
+            
+            //Tabla de carros y motos - Consulta de datos a la BD
+            pst = cn.prepareStatement("select  Estado, Nombre_parqueadero, concat(Tipo_Identificacion,' ',No_identificacion) Identificacion, \n" +
+                                        "Esta_en_parqueadero from parqueaderos where TipoVehiculo in ('BICICLETA','PATINETA','OTRO')");
+            rs = pst.executeQuery();
+            rsmd = rs.getMetaData();
+            cantidadColumnas = rsmd.getColumnCount();
+                       
+            //Aqui colocamos las etiquetas de la tabla de carros y motos
+            tableHeader = Table_estadoBicisYOtros.getTableHeader();
+            tableColumnModel = tableHeader.getColumnModel();
+            
+            tableColumn0 = tableColumnModel.getColumn(0);
+            tableColumn0.setHeaderValue( "Estado" );
+                        
+            tableColumn2 = tableColumnModel.getColumn(1);
+            tableColumn2.setHeaderValue( "N° parq" );
+            
+            tableColumn3 = tableColumnModel.getColumn(2);
+            tableColumn3.setHeaderValue( "Identificación" );
+                       
+            tableColumn4 = tableColumnModel.getColumn(3);
+            tableColumn4.setHeaderValue( "Parqueado?" );
+                       
+            tableHeader.repaint();
+                
+            for(int x=0; x < cantidadColumnas; x++){
+                Table_estadoBicisYOtros.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+            }
+
+            while (rs.next()) {
+
+                Object[] filas = new Object[cantidadColumnas];
+
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modeloEstadoParqBicis.addRow(filas);
+            }
+            cn.close();        
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "¡¡Error al mostrar información del parqueadero en tiempo real!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
@@ -599,32 +706,94 @@ public class ParqueaderoControlador implements Runnable{
         }
     }
     
-    //Metodo que permite mosrar la tabla de vehiculos en facturación en tiempo real (tabla del panel caja)
-    public void mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja(){
+    //Metodo que permite mosrar la tablas de los vehiculos en facturación en tiempo real (tablas carros, motos bicicletas y otros del panel caja)
+    public void mostrarTablasDeFacturacionDeVehiculosEnParqueaderoPanelCaja(){
         
         try {
-            modeloCaja = new DefaultTableModel();
-            table_operacionParqueadero.setModel(modeloCaja);
+            modeloTablaCarrosYMotosCaja = new DefaultTableModel();
+            table_operacionParqueaderoCarrosYMotos.setModel(modeloTablaCarrosYMotosCaja);
 
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                        "select Fac.Fecha_factura, Fac.Placa, Fac.Propietario, Parq.Nombre_parqueadero from facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero AND Estado_fctra ='Abierta'");
+            PreparedStatement pst;
+            ResultSet rs;
+            int cantidadColumnas;
+            ResultSetMetaData rsmd;
+            
+            //Tabla de facturacion carros y motos
+            pst = cn.prepareStatement("SELECT Fac.Fecha_factura AS Fecha_factura, \n" +
+                                        "Fac.Placa AS Placa,\n" +
+                                        "Fac.Propietario AS Propietario, \n" +
+                                        "Parq.Nombre_parqueadero AS Nombre_parqueadero \n" +
+                                        "FROM facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero\n" +
+                                        "WHERE Fac.Tipo_vehiculo in ('AUTOMOVIL', 'MOTO')\n" +
+                                        "AND Fac.Estado_fctra ='Abierta'\n" +
+                                        "UNION\n" +
+                                        "SELECT Fac.Fecha_factura AS Fecha_factura,\n" +
+                                        "Veh.Placa AS Placa, \n" +
+                                        "Veh.Propietario AS Propietario,  \n" +
+                                        "Parq.Nombre_parqueadero AS Nombre_parqueadero \n" +
+                                        "FROM facturas Fac, vehiculos Veh INNER JOIN parqueaderos Parq ON Veh.Id_parqueadero = Parq.Id_parqueadero \n" +
+                                        "WHERE Veh.TipoVehiculo in ('AUTOMOVIL', 'MOTO')\n" +
+                                        "AND Fac.Estado_fctra ='Abierta'\n" +
+                                        "AND Fac.Id_vehiculo = Veh.Id_vehiculo");
+            rs = pst.executeQuery();
 
-            ResultSet rs = pst.executeQuery();
+            rsmd = rs.getMetaData();
+            cantidadColumnas = rsmd.getColumnCount();
 
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int cantidadColumnas = rsmd.getColumnCount();
+            modeloTablaCarrosYMotosCaja.addColumn("Fecha");
+            modeloTablaCarrosYMotosCaja.addColumn("Placa");
+            modeloTablaCarrosYMotosCaja.addColumn("Propietario");
+            modeloTablaCarrosYMotosCaja.addColumn("Número de Parqueadero");
+            
+            while (rs.next()) {
 
-            modeloCaja.addColumn("Fecha");
-            modeloCaja.addColumn("Placa");
-            modeloCaja.addColumn("Propietario");
-            modeloCaja.addColumn("Numero de Parqueadero");
+                Object[] filas = new Object[cantidadColumnas];
 
-            int[] anchosTabla = {10,10,15,5};
+                for (int i = 0; i < cantidadColumnas; i++) {
 
-            for(int x=0; x < cantidadColumnas; x++){
-                table_operacionParqueadero.getColumnModel().getColumn(x).setPreferredWidth(anchosTabla[x]);
+                    filas[i] = rs.getObject(i + 1); 
+                }
+                modeloTablaCarrosYMotosCaja.addRow(filas);
             }
+            
+            //Tabla de facturacion bicis y otros
+            modeloTablaBicisYOtrosCaja = new DefaultTableModel();
+            table_operacionParqueaderoBicisYOtros.setModel(modeloTablaBicisYOtrosCaja);
+            
+            pst = cn.prepareStatement("SELECT Fac.Fecha_factura AS Fecha_factura, \n" +
+                                        "Fac.Tipo_Identificacion AS Tipo_Identificacion, \n" +
+                                        "Fac.No_identificacion AS No_Identificacion, \n" +
+                                        "Fac.Propietario AS Propietario, \n" +
+                                        "Fac.Tipo_vehiculo AS Tipo_vehiculo, \n" +
+                                        "Parq.Nombre_parqueadero AS Nombre_parqueadero \n" +
+                                        "FROM facturas Fac INNER JOIN parqueaderos Parq ON Fac.No_parqueadero = Parq.Id_parqueadero\n" +
+                                        "WHERE Fac.Tipo_vehiculo in ('BICICLETA','PATINETA','OTRO')\n" +
+                                        "AND Fac.Estado_fctra ='Abierta'\n" +
+                                        "UNION \n" +
+                                        "SELECT Fac.Fecha_factura AS Fecha_factura,\n" +
+                                        "Veh.Tipo_Identificacion AS Tipo_Identificacion, \n" +
+                                        "Veh.No_identificacion AS No_Identificacion, \n" +
+                                        "Veh.Propietario AS Propietario, \n" +
+                                        "Veh.TipoVehiculo AS Tipo_vehiculo, \n" +
+                                        "Parq.Nombre_parqueadero AS Nombre_parqueadero \n" +
+                                        "FROM facturas Fac, vehiculos Veh INNER JOIN parqueaderos Parq ON Veh.Id_parqueadero = Parq.Id_parqueadero \n" +
+                                        "WHERE Veh.TipoVehiculo in ('BICICLETA','PATINETA','OTRO')\n" +
+                                        "AND Fac.Estado_fctra ='Abierta'\n" +
+                                        "AND Fac.Id_vehiculo = Veh.Id_vehiculo;");
+            rs = pst.executeQuery();
+
+            rsmd = rs.getMetaData();
+            cantidadColumnas = rsmd.getColumnCount();
+
+            modeloTablaBicisYOtrosCaja.addColumn("Fecha");
+            modeloTablaBicisYOtrosCaja.addColumn("Tipo identif");
+            modeloTablaBicisYOtrosCaja.addColumn("N° Identificación");
+            modeloTablaBicisYOtrosCaja.addColumn("Propietario");
+            modeloTablaBicisYOtrosCaja.addColumn("Tipo");
+            modeloTablaBicisYOtrosCaja.addColumn("Número de Parqueadero");
+            
+            ajustarTamañoColumnasTablaFacturacionBicisYOtros();
 
             while (rs.next()) {
 
@@ -634,8 +803,9 @@ public class ParqueaderoControlador implements Runnable{
 
                     filas[i] = rs.getObject(i + 1); 
                 }
-                modeloCaja.addRow(filas);
+                modeloTablaBicisYOtrosCaja.addRow(filas);
             }
+            
             cn.close();                    
         
         } catch (SQLException e) {
@@ -717,8 +887,10 @@ public class ParqueaderoControlador implements Runnable{
             
             if(ct1 == hilo1){
             //Cargamos los datos en los combobox
-            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
-            cmb_numParqueadero.setModel(modeloParq);
+            DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles("'AUTOMOVIL', 'MOTO'"));
+            DefaultComboBoxModel modeloParq1 = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles("'BICICLETA', 'PATINETA', 'OTRO'"));
+            cmb_numParqueaderoCarroOMoto.setModel(modeloParq);
+            cmb_numParqueaderoBiciUOtro.setModel(modeloParq1);
 
                 try{
                     ct1.sleep(100000);
@@ -744,7 +916,7 @@ public class ParqueaderoControlador implements Runnable{
             
             if(ct3 == hilo3){
                 //Cargamos los datos en los combobox
-                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles());
+                DefaultComboBoxModel modeloParq = new DefaultComboBoxModel(parq.mostrarParqueaderosTipoVisitanteDisponibles("'AUTOMOVIL', 'MOTO', 'BICICLETA', 'PATINETA', 'OTRO'"));
                 cmb_parqVisitantes.setModel(modeloParq);
 
                 try{
@@ -790,6 +962,7 @@ public class ParqueaderoControlador implements Runnable{
         }
     }
     
+    //Metodo que ajusta el tamaño de las columnas de de la ventana GestionarParqueaderos
     public void ajustarTamañoColumnasTablaParqueaderos(){
         //Obtenemos las columnas de la tabla
         TableColumn col1 = table_listaParqueaderos.getColumnModel().getColumn(0);
@@ -808,5 +981,24 @@ public class ParqueaderoControlador implements Runnable{
         col5.setPreferredWidth(70);
         col6.setPreferredWidth(90);
         col7.setPreferredWidth(200);
+    }
+    
+    //Metodo que ajusta el tamaño de las columnas de la tabla de facturacion de bicis y otros (panel caja)
+    public void  ajustarTamañoColumnasTablaFacturacionBicisYOtros(){
+        //Obtenemos las columnas de la tabla
+        TableColumn col1 = table_operacionParqueaderoBicisYOtros.getColumnModel().getColumn(0);
+        TableColumn col2 = table_operacionParqueaderoBicisYOtros.getColumnModel().getColumn(1);
+        TableColumn col3 = table_operacionParqueaderoBicisYOtros.getColumnModel().getColumn(2);
+        TableColumn col4 = table_operacionParqueaderoBicisYOtros.getColumnModel().getColumn(3);
+        TableColumn col5 = table_operacionParqueaderoBicisYOtros.getColumnModel().getColumn(4);
+        TableColumn col6 = table_operacionParqueaderoBicisYOtros.getColumnModel().getColumn(5); 
+        
+        //Establecemos el ancho de las columnas
+        col1.setPreferredWidth(80);
+        col2.setPreferredWidth(100);
+        col3.setPreferredWidth(150);
+        col4.setPreferredWidth(300); 
+        col5.setPreferredWidth(100); 
+        col6.setPreferredWidth(300); 
     }
 }

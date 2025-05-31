@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -83,12 +84,12 @@ public class FacturaControlador implements Runnable {
     //Constructor
     public FacturaControlador() {}
     
-    //Metodo que se encarga de detener el hilo que detiene el hilo que muestra la operacion del parqueadero en la tabla del panel caja
+    //Metodo que se encarga de detener el hilo que muestra la operacion del parqueadero en la tabla del panel caja
     public void detenerHiloOperacionParqueadero(){
         ejecutarHiloOpParq = false;
     }
     
-    //Metodo que se encarga de ejecutar el hilo que detiene el hilo que muestra la operacion del parqueadero en la tabla del panel caja
+    //Metodo que se encarga de ejecutar el hilo que muestra la operacion del parqueadero en la tabla del panel caja
     public void ejecutarHiloOperacionparqueadero(){
         ejecutarHiloOpParq = true;
         if(ejecutarHiloOpParq == true){
@@ -126,21 +127,135 @@ public class FacturaControlador implements Runnable {
     }
        
     //Metodo que genera el ticket de ingreso de un vehiculo
-    public void generarTicketIngreso(String placaVehiculo, String codigoFactura, boolean vistaPrevia){
+    public void generarTicketIngreso(boolean vehiculoRegistrado, String tipoVehiculo, int idVehiculo, String placaVehiculo, String tipoIdentificacion, String numIdentificacion, String codigoFactura, boolean vistaPrevia){
         
         try{
             Connection cn3 = Conexion.conectar();
-            
-            //Agregamos los parametros con los cuales se generara el ticket
-            Map parametros = new HashMap ();
-            parametros.put("placa_vehiculo", placaVehiculo);
-            parametros.put("codigo_factura", codigoFactura);
-            parametros.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
-                     
             JasperReport reporte = null;
-            //String path = "src\\Reportes\\TicketIngreso.jasper";
-
-            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/TicketIngreso.jasper"));
+            Map parametros = new HashMap();
+            String sql = "";
+            String reporteAEjecutar = "";
+            
+            //Validamos si el ticket se generara para un vehiculo registrado
+            if(vehiculoRegistrado){
+                //Validamos que tipo de vehiculo tiene el vehiculo registrado
+                if(tipoVehiculo.equals("AUTOMOVIL") || tipoVehiculo.equals("MOTO")){
+                    sql = "SELECT\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario,\n" +
+                            "     vehiculos.`Propietario` AS facturas_Propietario,\n" +
+                            "     vehiculos.`Placa` AS facturas_Placa,\n" +
+                            "     vehiculos.`TipoVehiculo` AS facturas_Tipo_vehiculo,\n" +
+                            "     facturas.`Estado_fctra` AS facturas_Estado_fctra,\n" +
+                            "     vehiculos.`Id_vehiculo` AS vehiculos_Id_vehiculo\n" +
+                            "FROM\n" +
+                            "     `vehiculos` vehiculos INNER JOIN `parqueaderos` parqueaderos ON vehiculos.`Id_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     AND parqueaderos.`Id_parqueadero` = vehiculos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON vehiculos.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `convenios` convenios ON vehiculos.`Id_convenio` = convenios.`Id_convenio`\n" +
+                            "     INNER JOIN `facturas` facturas ON vehiculos.`Id_vehiculo` = facturas.`Id_vehiculo`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            "     AND usuarios.`Id_usuario` = facturas.`Facturado_por`\n" +
+                            "WHERE\n" +
+                            " facturas.`Estado_fctra` = 'Abierta'\n" +
+                            " AND facturas.`Codigo` = '"+codigoFactura+"'\n" +
+                            " AND vehiculos.`Id_vehiculo` = " + idVehiculo;
+                                                  
+                    reporteAEjecutar = "/reportes/TicketIngresoCarrosYMotos.jasper";          
+                                      
+                }else if(tipoVehiculo.equals("BICICLETA") || tipoVehiculo.equals("PATINETA") || tipoVehiculo.equals("OTRO")){
+                    //Validamos que tipo de vehiculo tiene el vehiculo desconocido
+                    sql = "SELECT\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     facturas.`Estado_fctra` AS facturas_Estado_fctra,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     vehiculos.`Id_vehiculo` AS vehiculos_Id_vehiculo,\n" +
+                            "     vehiculos.`Tipo_Identificacion` AS facturas_Tipo_Identificacion,\n" +
+                            "     vehiculos.`No_identificacion` AS facturas_No_identificacion,\n" +
+                            "     vehiculos.`Propietario` AS facturas_Propietario,\n" +
+                            "     vehiculos.`TipoVehiculo` AS facturas_Tipo_vehiculo,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario\n" +
+                            "FROM\n" +
+                            "     `vehiculos` vehiculos INNER JOIN `parqueaderos` parqueaderos ON vehiculos.`Id_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     AND parqueaderos.`Id_parqueadero` = vehiculos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON vehiculos.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `convenios` convenios ON vehiculos.`Id_convenio` = convenios.`Id_convenio`\n" +
+                            "     INNER JOIN `facturas` facturas ON vehiculos.`Id_vehiculo` = facturas.`Id_vehiculo`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            "     AND usuarios.`Id_usuario` = facturas.`Facturado_por`\n" +
+                            "WHERE\n" +
+                            " facturas.`Estado_fctra` = 'Abierta'\n" +
+                            " AND facturas.`Codigo` = '"+codigoFactura+"'\n" +
+                            " AND vehiculos.`Id_vehiculo` = " + idVehiculo;
+                    
+                    reporteAEjecutar = "/reportes/TicketIngresoBicisYOtros.jasper"; 
+                }
+                    
+            }else{
+                //Validamos que tipo de vehiculo tiene el vehiculo desconocido
+                if(tipoVehiculo.equals("AUTOMOVIL") || tipoVehiculo.equals("MOTO")){
+                    sql = "SELECT\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     facturas.`Placa` AS facturas_Placa,\n" +
+                            "     facturas.`Propietario` AS facturas_Propietario,\n" +
+                            "     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario\n" +
+                            "FROM\n" +
+                            "     `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            "WHERE\n" +
+                            "     facturas.`Placa` = '"+placaVehiculo+"'\n" +
+                            "AND facturas.Estado_fctra = 'Abierta'\n" +
+                            "AND facturas.`Codigo` = '"+ codigoFactura +"'";
+                    
+                    reporteAEjecutar = "/reportes/TicketIngresoCarrosYMotos.jasper"; 
+                    
+                }else if(tipoVehiculo.equals("BICICLETA") || tipoVehiculo.equals("PATINETA") || tipoVehiculo.equals("OTRO")){
+                    //Validamos que tipo de vehiculo tiene el vehiculo desconocido
+                    sql = "SELECT\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     facturas.`Estado_fctra` AS facturas_Estado_fctra,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario,\n" +
+                            "     facturas.`Tipo_Identificacion` AS facturas_Tipo_Identificacion,\n" +
+                            "     facturas.`No_identificacion` AS facturas_No_identificacion,\n" +
+                            "     facturas.`Propietario` AS facturas_Propietario,\n" +
+                            "     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo\n" +
+                            "FROM\n" +
+                            "     `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            " WHERE\n" +
+                            " facturas.`Tipo_Identificacion` = '"+tipoIdentificacion+"'\n" +
+                            " AND facturas.`No_identificacion` = '"+numIdentificacion+"'\n" +
+                            " AND facturas.`Estado_fctra` = 'Abierta'\n" +
+                            " AND facturas.`Codigo` = '"+codigoFactura+"'";
+                    
+                    reporteAEjecutar = "/reportes/TicketIngresoBicisYOtros.jasper";    
+                }
+            }
+            
+            parametros.put("sql", sql);
+            parametros.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
+                      
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource(reporteAEjecutar));
 
             JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, cn3);
             
@@ -148,7 +263,11 @@ public class FacturaControlador implements Runnable {
                //Da una vista previa del ticket
                 JasperViewer view = new JasperViewer(jprint, false);
                 view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                view.setTitle("Ticket de ingreso vehiculo " + placaVehiculo);
+                if(tipoVehiculo.equals("AUTOMOVIL") || tipoVehiculo.equals("MOTO")){
+                    view.setTitle("Ticket de salida vehiculo " + placaVehiculo);
+                }else if(tipoVehiculo.equals("BICICLETA") || tipoVehiculo.equals("PATINETA") || tipoVehiculo.equals("OTRO")){
+                    view.setTitle("Ticket de salida vehiculo " + tipoIdentificacion + numIdentificacion);
+                }
                 view.setVisible(true);
                 view.setIconImage(getIconImageTicket());
                 
@@ -171,30 +290,180 @@ public class FacturaControlador implements Runnable {
         }
     }
        
-    //Metodo que imprime el ticket de salida de un vehiculo
-    public void generarTicketSalida(String placa_tick, String codigoFactura, boolean vistaPrevia){
+    //Metodo que genera el ticket de salida de un vehiculo
+    public void generarTicketSalida(boolean vehiculoRegistrado, String tipoVehiculo, int idVehiculo, String placaVehiculo, String tipoIdentificacion, String numIdentificacion, String codigoFactura, boolean vistaPrevia){
         
         try{
            Connection cn3 = Conexion.conectar();
-
-           Map parametro = new HashMap();
-           parametro.clear();
-           parametro.put("placa", placa_tick);
-           parametro.put("codigo_factura", codigoFactura);
-           parametro.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
-           
            JasperReport reporte = null;
-           //String path = "src\\Reportes\\TicketSalida.jasper";
+           Map parametros = new HashMap();
+           String sql = "";
+           String reporteAEjecutar = "";
+           
+           //Validamos si el ticket se generara para un vehiculo registrado
+            if(vehiculoRegistrado){
+                //Validamos que tipo de vehiculo tiene el vehiculo registrado
+                if(tipoVehiculo.equals("AUTOMOVIL") || tipoVehiculo.equals("MOTO")){
+                    sql = "SELECT\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     vehiculos.`Placa` AS facturas_Placa,\n" +
+                            "     vehiculos.`Propietario` AS facturas_Propietario,\n" +
+                            "     vehiculos.`TipoVehiculo` AS facturas_Tipo_vehiculo,\n" +
+                            "     facturas.`Facturado_por` AS facturas_Facturado_por,\n" +
+                            "     facturas.`Estado_fctra` AS facturas_Estado_fctra,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     facturas.`Hora_salida` AS facturas_Hora_salida,\n" +
+                            "     facturas.`Valor_a_pagar` AS facturas_Valor_a_pagar,\n" +
+                            "     facturas.`Efectivo` AS facturas_Efectivo,\n" +
+                            "     facturas.`Cambio` AS facturas_Cambio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     facturas.`Contabilizada` AS facturas_Contabilizada,\n" +
+                            "     facturas.`Diferencia` AS facturas_Diferencia,\n" +
+                            "     facturas.`Impuesto` AS facturas_Impuesto,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario,\n" +
+                            "     vehiculos.`Id_vehiculo` AS vehiculos_Id_vehiculo\n" +
+                            "FROM\n" +
+                            "     `vehiculos` vehiculos INNER JOIN `parqueaderos` parqueaderos ON vehiculos.`Id_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     AND parqueaderos.`Id_parqueadero` = vehiculos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON vehiculos.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `convenios` convenios ON vehiculos.`Id_convenio` = convenios.`Id_convenio`\n" +
+                            "     INNER JOIN `facturas` facturas ON vehiculos.`Id_vehiculo` = facturas.`Id_vehiculo`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            "     AND usuarios.`Id_usuario` = facturas.`Facturado_por`\n" +
+                            "WHERE\n" +   
+                            " facturas.`Estado_fctra` = 'Cerrada'\n" +
+                            " AND facturas.`Codigo` = '"+codigoFactura+"'\n" +
+                            " AND vehiculos.`Id_vehiculo` = " + idVehiculo;
+                                                  
+                    reporteAEjecutar = "/reportes/TicketSalidaCarrosYMotos.jasper";          
+                                      
+                }else if(tipoVehiculo.equals("BICICLETA") || tipoVehiculo.equals("PATINETA") || tipoVehiculo.equals("OTRO")){
+                    //Validamos que tipo de vehiculo tiene el vehiculo desconocido
+                    sql = "SELECT\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     vehiculos.`Tipo_Identificacion` AS facturas_Tipo_Identificacion,\n" +
+                            "     vehiculos.`No_identificacion` AS facturas_No_identificacion,\n" +
+                            "     vehiculos.`Propietario` AS facturas_Propietario,\n" +
+                            "     vehiculos.`TipoVehiculo` AS facturas_Tipo_vehiculo,\n" +
+                            "     facturas.`Facturado_por` AS facturas_Facturado_por,\n" +
+                            "     facturas.`Estado_fctra` AS facturas_Estado_fctra,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     facturas.`Hora_salida` AS facturas_Hora_salida,\n" +
+                            "     facturas.`Valor_a_pagar` AS facturas_Valor_a_pagar,\n" +
+                            "     facturas.`Efectivo` AS facturas_Efectivo,\n" +
+                            "     facturas.`Cambio` AS facturas_Cambio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     facturas.`Contabilizada` AS facturas_Contabilizada,\n" +
+                            "     facturas.`Diferencia` AS facturas_Diferencia,\n" +
+                            "     facturas.`Impuesto` AS facturas_Impuesto,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario\n" +
+                            "FROM\n" +
+                           "      `vehiculos` vehiculos INNER JOIN `parqueaderos` parqueaderos ON vehiculos.`Id_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     AND parqueaderos.`Id_parqueadero` = vehiculos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON vehiculos.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `convenios` convenios ON vehiculos.`Id_convenio` = convenios.`Id_convenio`\n" +
+                            "     INNER JOIN `facturas` facturas ON vehiculos.`Id_vehiculo` = facturas.`Id_vehiculo`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            "     AND usuarios.`Id_usuario` = facturas.`Facturado_por`\n" +
+                            "WHERE\n" +
+                            " facturas.`Estado_fctra` = 'Cerrada'\n" +
+                            " AND facturas.`Codigo` = '"+codigoFactura+"'\n" +
+                            " AND vehiculos.`Id_vehiculo` = " + idVehiculo;
+                    
+                    reporteAEjecutar = "/reportes/TicketSalidaBicisYOtros.jasper"; 
+                }
+                    
+            }else{
+                //Validamos que tipo de vehiculo tiene el vehiculo desconocido
+                if(tipoVehiculo.equals("AUTOMOVIL") || tipoVehiculo.equals("MOTO")){
+                    sql = "SELECT\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     facturas.`Placa` AS facturas_Placa,\n" +
+                            "     facturas.`Propietario` AS facturas_Propietario,\n" +
+                            "     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,\n" +
+                            "     facturas.`Facturado_por` AS facturas_Facturado_por,\n" +
+                            "     facturas.`Estado_fctra` AS facturas_Estado_fctra,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     facturas.`Hora_salida` AS facturas_Hora_salida,\n" +
+                            "     facturas.`Valor_a_pagar` AS facturas_Valor_a_pagar,\n" +
+                            "     facturas.`Efectivo` AS facturas_Efectivo,\n" +
+                            "     facturas.`Cambio` AS facturas_Cambio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     facturas.`Contabilizada` AS facturas_Contabilizada,\n" +
+                            "     facturas.`Diferencia` AS facturas_Diferencia,\n" +
+                            "     facturas.`Impuesto` AS facturas_Impuesto,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario\n" +
+                            "FROM\n" +
+                            "     `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            "WHERE\n" +
+                            " facturas.`Placa` = '"+placaVehiculo+"'\n" +
+                            "AND facturas.`Estado_fctra` = 'Cerrada'\n" +
+                            "AND facturas.`Codigo` = '"+codigoFactura+"'";
+                    
+                    reporteAEjecutar = "/reportes/TicketSalidaCarrosYMotos.jasper"; 
+                    
+                }else if(tipoVehiculo.equals("BICICLETA") || tipoVehiculo.equals("PATINETA") || tipoVehiculo.equals("OTRO")){
+                    //Validamos que tipo de vehiculo tiene el vehiculo desconocido
+                    sql = "SELECT\n" +
+                            "     convenios.`Nombre_convenio` AS convenios_Nombre_convenio,\n" +
+                            "     facturas.`Codigo` AS facturas_Codigo,\n" +
+                            "     facturas.`Tipo_Identificacion` AS facturas_Tipo_Identificacion,\n" +
+                            "     facturas.`No_identificacion` AS facturas_No_identificacion,\n" +
+                            "     facturas.`Propietario` AS facturas_Propietario,\n" +
+                            "     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,\n" +
+                            "     facturas.`Facturado_por` AS facturas_Facturado_por,\n" +
+                            "     facturas.`Estado_fctra` AS facturas_Estado_fctra,\n" +
+                            "     facturas.`Hora_ingreso` AS facturas_Hora_ingreso,\n" +
+                            "     facturas.`Hora_salida` AS facturas_Hora_salida,\n" +
+                            "     facturas.`Valor_a_pagar` AS facturas_Valor_a_pagar,\n" +
+                            "     facturas.`Efectivo` AS facturas_Efectivo,\n" +
+                            "     facturas.`Cambio` AS facturas_Cambio,\n" +
+                            "     tarifas.`Nombre_tarifa` AS tarifas_Nombre_tarifa,\n" +
+                            "     parqueaderos.`Nombre_parqueadero` AS parqueaderos_Nombre_parqueadero,\n" +
+                            "     facturas.`Contabilizada` AS facturas_Contabilizada,\n" +
+                            "     facturas.`Diferencia` AS facturas_Diferencia,\n" +
+                            "     facturas.`Impuesto` AS facturas_Impuesto,\n" +
+                            "     usuarios.`Usuario` AS usuarios_Usuario\n" +
+                            "FROM\n" +
+                            "     `convenios` convenios INNER JOIN `facturas` facturas ON convenios.`Id_convenio` = facturas.`Id_convenio`\n" +
+                            "     INNER JOIN `tarifas` tarifas ON facturas.`Id_tarifa` = tarifas.`Id_tarifa`\n" +
+                            "     INNER JOIN `parqueaderos` parqueaderos ON facturas.`No_parqueadero` = parqueaderos.`Id_parqueadero`\n" +
+                            "     INNER JOIN `usuarios` usuarios ON facturas.`Facturado_por` = usuarios.`Id_usuario`\n" +
+                            "WHERE\n" +
+                            " facturas.`Tipo_Identificacion` = '"+tipoIdentificacion+"'\n" +
+                            " AND facturas.`No_identificacion` = '"+numIdentificacion+"'\n" +
+                            " AND facturas.`Estado_fctra` = 'Cerrada'\n" +
+                            " AND facturas.`Codigo` = '"+codigoFactura+"'";
+                    
+                    reporteAEjecutar = "/reportes/TicketSalidaBicisYOtros.jasper";    
+                }
+            }          
+           System.out.println("Query ejecutado: "+sql);
+           parametros.put("sql", sql);
+           parametros.put("imagen", this.getClass().getResourceAsStream(rutaImgTickets));
+           
+           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource(reporteAEjecutar));
 
-           reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/TicketSalida.jasper"));
-
-           JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, cn3);
+           JasperPrint jprint = JasperFillManager.fillReport(reporte, parametros, cn3);
            
            if(vistaPrevia == true){
                //Da una vista previa del ticket
                 JasperViewer view = new JasperViewer(jprint, false);
                 view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                view.setTitle("Ticket de salida vehiculo " + placa_tick);
+                if(tipoVehiculo.equals("AUTOMOVIL") || tipoVehiculo.equals("MOTO")){
+                    view.setTitle("Ticket de salida vehiculo " + placaVehiculo);
+                }else if(tipoVehiculo.equals("BICICLETA") || tipoVehiculo.equals("PATINETA") || tipoVehiculo.equals("OTRO")){
+                    view.setTitle("Ticket de salida vehiculo " + tipoIdentificacion + numIdentificacion);
+                }
                 view.setVisible(true);
                 view.setIconImage(getIconImageTicket());
                 
@@ -355,8 +624,8 @@ public class FacturaControlador implements Runnable {
                     int digitoAntePen = Character.getNumericValue(montoImpuestoArreglo[penultDigito - 1]); 
                     digitoAntePen = digitoAntePen + 1;
                     montoImpuestoArreglo[penultDigito-1] = Character.forDigit(digitoAntePen, 10);
-                    montoDeImpuesto_str = String.valueOf(montoImpuestoArreglo);
-                    montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str.trim());
+                    montoDeImpuesto_str = String.copyValueOf(montoImpuestoArreglo);
+                    montoDeImpuesto = Integer.parseInt(montoDeImpuesto_str);
                 }
             }                        
         }
@@ -510,34 +779,15 @@ public class FacturaControlador implements Runnable {
                     
             }else{
                 if(!nvaFactura.getPlaca().equals("")){
-                    sql = "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Placa, Propietario, Tipo_vehiculo, No_parqueadero,Facturado_por, Estado_fctra, Contabilizada, Id_convenio, Id_tarifa, Hora_ingreso) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    sql = "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Id_vehiculo, Placa, Propietario, Tipo_vehiculo, No_parqueadero, Facturado_por, Estado_fctra, Contabilizada, Id_convenio, Id_tarifa, Hora_ingreso) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     pst = cn.prepareStatement(sql);
 
                     pst.setInt(1, nvaFactura.getId());
                     pst.setString(2, nvaFactura.getCodigo());
                     pst.setInt(3, 1);
                     pst.setString(4, nvaFactura.getFechaDeFactura());
-                    pst.setString(5, nvaFactura.getPlaca());
-                    pst.setString(6, nvaFactura.getPropietario());
-                    pst.setString(7, nvaFactura.getTipoDeVehiculo());
-                    pst.setInt(8, nvaFactura.getId_parqueadero());
-                    pst.setInt(9, nvaFactura.getFacturadoPor());
-                    pst.setString(10, nvaFactura.getEstadoDeFactura());
-                    pst.setString(11, nvaFactura.getEstaContabilizada()); 
-                    pst.setInt(12, nvaFactura.getId_convenio());
-                    pst.setInt(13, nvaFactura.getId_tarifa());
-                    pst.setString(14, nvaFactura.getFechaDeIngresoVehiculo());             
-
-                }else if(!nvaFactura.getTipoIdentificacion().equals("") && !nvaFactura.getNumIdentificacion().equals("")){
-                    sql = "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Tipo_Identificacion, No_identificacion, Propietario, Tipo_vehiculo, No_parqueadero, Facturado_por, Estado_fctra, Contabilizada, Id_convenio, Id_tarifa, Hora_ingreso) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                    pst = cn.prepareStatement(sql);
-
-                    pst.setInt(1, nvaFactura.getId());
-                    pst.setString(2, nvaFactura.getCodigo());
-                    pst.setInt(3, 1);
-                    pst.setString(4, nvaFactura.getFechaDeFactura());
-                    pst.setString(5, nvaFactura.getTipoIdentificacion());
-                    pst.setString(6, nvaFactura.getNumIdentificacion());
+                    pst.setString(5, null);
+                    pst.setString(6, nvaFactura.getPlaca());
                     pst.setString(7, nvaFactura.getPropietario());
                     pst.setString(8, nvaFactura.getTipoDeVehiculo());
                     pst.setInt(9, nvaFactura.getId_parqueadero());
@@ -547,6 +797,27 @@ public class FacturaControlador implements Runnable {
                     pst.setInt(13, nvaFactura.getId_convenio());
                     pst.setInt(14, nvaFactura.getId_tarifa());
                     pst.setString(15, nvaFactura.getFechaDeIngresoVehiculo());             
+
+                }else if(!nvaFactura.getTipoIdentificacion().equals("") && !nvaFactura.getNumIdentificacion().equals("")){
+                    sql = "insert into facturas (Id_factura, Codigo, Id_cierre, Fecha_factura, Id_vehiculo, Tipo_Identificacion, No_identificacion, Propietario, Tipo_vehiculo, No_parqueadero, Facturado_por, Estado_fctra, Contabilizada, Id_convenio, Id_tarifa, Hora_ingreso) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    pst = cn.prepareStatement(sql);
+
+                    pst.setInt(1, nvaFactura.getId());
+                    pst.setString(2, nvaFactura.getCodigo());
+                    pst.setInt(3, 1);
+                    pst.setString(4, nvaFactura.getFechaDeFactura());
+                    pst.setString(5, null);
+                    pst.setString(6, nvaFactura.getTipoIdentificacion());
+                    pst.setString(7, nvaFactura.getNumIdentificacion());
+                    pst.setString(8, nvaFactura.getPropietario());
+                    pst.setString(9, nvaFactura.getTipoDeVehiculo());
+                    pst.setInt(10, nvaFactura.getId_parqueadero());
+                    pst.setInt(11, nvaFactura.getFacturadoPor());
+                    pst.setString(12, nvaFactura.getEstadoDeFactura());
+                    pst.setString(13, nvaFactura.getEstaContabilizada()); 
+                    pst.setInt(14, nvaFactura.getId_convenio());
+                    pst.setInt(15, nvaFactura.getId_tarifa());
+                    pst.setString(16, nvaFactura.getFechaDeIngresoVehiculo());             
                    
                 }
             }
@@ -561,11 +832,20 @@ public class FacturaControlador implements Runnable {
     }
          
     //Metodo que cierra la factura de un vehiculo unavez este ha salido del parqueadero
-    public void cerrarFactura(String placa){
+    public void cerrarFactura(int idDelVehiculo, String placa, String tipoIdentificacion, String numIdentificacion){
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update facturas set Estado_fctra = 'Cerrada' where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
-
+            String sql = "update facturas set Estado_fctra = 'Cerrada' where Estado_fctra = 'Abierta'";
+            
+            if(idDelVehiculo != 0){
+                sql = sql+" and Id_vehiculo ="+idDelVehiculo;
+            }else if(placa != null){
+                sql = sql+" and Placa ='"+placa+"'";
+            }else if(tipoIdentificacion != null && numIdentificacion != null){
+                sql = sql+" and Tipo_Identificacion ='"+tipoIdentificacion+"' and No_identificacion = '"+numIdentificacion+"'";
+            }
+            
+            PreparedStatement pst = cn.prepareStatement(sql);
             pst.executeUpdate();
             cn.close();
 
@@ -597,31 +877,83 @@ public class FacturaControlador implements Runnable {
     }
         
     //Metodo que consulta la información de una factura abierta para la liquidación de un vehiculo 
-    public Factura consultarInformacionDeUnaFacturaAbiertaParaSuLiquidacion(String placaDelVehiculo){
+    public Factura consultarInformacionDeUnaFacturaAbiertaParaSuLiquidacion(int idDelVehiculo, String placaDelVehiculo, String tipoIdentificacion, String numIdentificacion){
                
         //Hace la consulta de registros a la base de datos
         try {
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                "select * from facturas where Placa = '" + placaDelVehiculo + "' and Estado_fctra='Abierta'");
-            ResultSet rs = pst.executeQuery();
+            String sql = "select * from facturas where Estado_fctra='Abierta'";
+            PreparedStatement pst;
+            ResultSet rs = null;
             
-            if(rs.next()){
-                facturaConsultada.setId(rs.getInt("Id_factura"));
-                facturaConsultada.setCodigo(rs.getString("Codigo"));
-                facturaConsultada.setId_cierre(rs.getInt("Id_cierre"));
-                facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
-                facturaConsultada.setPlaca(rs.getString("Placa"));
-                facturaConsultada.setPropietario(rs.getString("Propietario"));
-                facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
-                facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
-                facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
-                facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
-                facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa")); 
-                facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
+            if(idDelVehiculo != 0){
+                sql = "SELECT fac.Id_factura, fac.Codigo, veh.Placa, veh.Tipo_Identificacion, veh.No_identificacion, fac.Id_cierre, fac.Fecha_factura, veh.Propietario, veh.TipoVehiculo, veh.Id_parqueadero, fac.Facturado_por, veh.Id_convenio, veh.Id_tarifa, fac.Hora_ingreso \n" +
+                       "FROM facturas fac, vehiculos veh \n" +
+                        "WHERE fac.Id_vehiculo = veh.Id_vehiculo\n" +
+                        "AND veh.Id_vehiculo = "+idDelVehiculo;
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
                 
-                cn.close();              
+                if(rs.next()){
+                    facturaConsultada.setId(rs.getInt("fac.Id_factura"));
+                    facturaConsultada.setCodigo(rs.getString("fac.Codigo"));
+                    facturaConsultada.setPlaca(rs.getString("veh.Placa"));
+                    facturaConsultada.setTipoIdentificacion(rs.getString("veh.Tipo_Identificacion"));
+                    facturaConsultada.setNumIdentificacion(rs.getString("veh.No_identificacion"));
+                    facturaConsultada.setId_cierre(rs.getInt("fac.Id_cierre"));
+                    facturaConsultada.setFechaDeFactura(rs.getString("fac.Fecha_factura"));
+                    facturaConsultada.setPropietario(rs.getString("veh.Propietario"));
+                    facturaConsultada.setTipoDeVehiculo(rs.getString("veh.TipoVehiculo"));
+                    facturaConsultada.setId_parqueadero(rs.getInt("veh.Id_parqueadero"));
+                    facturaConsultada.setFacturadoPor(rs.getInt("fac.Facturado_por"));
+                    facturaConsultada.setId_convenio(rs.getInt("veh.Id_convenio"));
+                    facturaConsultada.setId_tarifa(rs.getInt("veh.Id_tarifa"));
+                    facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("fac.Hora_ingreso"));               
+                }   
+               
+            }else if(placaDelVehiculo != null){
+                sql = sql+" and Placa = '" + placaDelVehiculo + "'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                
+                if(rs.next()){
+                    facturaConsultada.setId(rs.getInt("Id_factura"));
+                    facturaConsultada.setCodigo(rs.getString("Codigo"));
+                    facturaConsultada.setPlaca(rs.getString("Placa"));
+                    facturaConsultada.setId_cierre(rs.getInt("Id_cierre"));
+                    facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
+                    facturaConsultada.setPropietario(rs.getString("Propietario"));
+                    facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
+                    facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
+                    facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
+                    facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
+                    facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa"));
+                    facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
+                }
+                
+            }else if(tipoIdentificacion != null && numIdentificacion != null){
+                sql = sql+" and Tipo_Identificacion = '" + tipoIdentificacion + "' and No_identificacion = '" + numIdentificacion + "'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                
+                if(rs.next()){
+                    facturaConsultada.setId(rs.getInt("Id_factura"));
+                    facturaConsultada.setCodigo(rs.getString("Codigo"));
+                    facturaConsultada.setId_cierre(rs.getInt("Id_cierre"));
+                    facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
+                    facturaConsultada.setTipoIdentificacion(rs.getString("Tipo_Identificacion"));
+                    facturaConsultada.setNumIdentificacion(rs.getString("No_identificacion"));
+                    facturaConsultada.setPropietario(rs.getString("Propietario"));
+                    facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
+                    facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
+                    facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
+                    facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
+                    facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa"));
+                    facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
+                }               
             }
+                    
+            cn.close();           
             
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "¡¡Error al cargar información de una factura abierta!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
@@ -645,7 +977,10 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setCodigo(rs.getString("Codigo"));
                 facturaConsultada.setId_cierre(rs.getInt("Id_cierre"));
                 facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
+                facturaConsultada.setIdDelVehiculo(rs.getInt("Id_vehiculo"));
                 facturaConsultada.setPlaca(rs.getString("Placa"));
+                facturaConsultada.setTipoIdentificacion(rs.getString("Tipo_identificacion"));
+                facturaConsultada.setNumIdentificacion(rs.getString("No_identificacion"));
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
                 facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
@@ -658,8 +993,7 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setImpuesto(rs.getString("Impuesto"));
                 facturaConsultada.setValorAPagar(rs.getString("Valor_a_pagar"));
                 facturaConsultada.setEfectivo(rs.getString("Efectivo"));
-                facturaConsultada.setCambio(rs.getString("Cambio"));
-                
+                facturaConsultada.setCambio(rs.getString("Cambio")); 
                 cn.close();              
             }
             
@@ -685,15 +1019,17 @@ public class FacturaControlador implements Runnable {
                 facturaConsultada.setCodigo(rs.getString("Codigo"));
                 facturaConsultada.setId_cierre(rs.getInt("Id_cierre"));
                 facturaConsultada.setFechaDeFactura(rs.getString("Fecha_factura"));
+                facturaConsultada.setIdDelVehiculo(rs.getInt("Id_vehiculo"));
                 facturaConsultada.setPlaca(rs.getString("Placa"));
+                facturaConsultada.setTipoIdentificacion(rs.getString("Tipo_identificacion"));
+                facturaConsultada.setNumIdentificacion(rs.getString("No_identificacion"));
                 facturaConsultada.setPropietario(rs.getString("Propietario"));
                 facturaConsultada.setTipoDeVehiculo(rs.getString("Tipo_vehiculo"));
                 facturaConsultada.setId_parqueadero(rs.getInt("No_parqueadero"));
                 facturaConsultada.setFacturadoPor(rs.getInt("Facturado_por"));
                 facturaConsultada.setId_convenio(rs.getInt("Id_convenio"));
                 facturaConsultada.setId_tarifa(rs.getInt("Id_tarifa")); 
-                facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));
-                                
+                facturaConsultada.setFechaDeIngresoVehiculo(rs.getString("Hora_ingreso"));                               
                 cn.close();              
             }
             
@@ -706,12 +1042,21 @@ public class FacturaControlador implements Runnable {
     
     
     //Metodo que permite liquidar una factura una vez el vehiculo sale del parqueadero
-    public void liquidarFacturaDeVehiculo(int idUsuario, String horaSalida, String placa, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio, String impuesto){
+    public void liquidarFacturaDeVehiculo(int idUsuario, String horaSalida, int idVehiculo, String placa, String tipoIdentificacion, String numIdentificacion, String valor_a_pagar, String diferencia, String dineroRecibido, String cambio, String impuesto){
         
         try{
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update facturas set Facturado_por= "+idUsuario+", Hora_salida ='"+horaSalida+"', Diferencia ='"+diferencia+"', Impuesto ='"+impuesto+"', Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Placa ='"+placa+"' AND Estado_fctra = 'Abierta'");
-
+            String sql = "update facturas set Facturado_por= "+idUsuario+", Hora_salida ='"+horaSalida+"', Diferencia ='"+diferencia+"', Impuesto ='"+impuesto+"', Valor_a_pagar='"+valor_a_pagar+"',Efectivo='"+dineroRecibido+"',Cambio='"+cambio+"'where Estado_fctra = 'Abierta'";
+            
+            if(idVehiculo != 0){
+                sql = sql +" and Id_vehiculo ="+idVehiculo; 
+            }else if(placa != null){
+                sql = sql +" and Placa ='"+placa+"'";
+            }else if(tipoIdentificacion != null && numIdentificacion != null){
+                sql = sql +" and Tipo_Identificacion ='"+tipoIdentificacion+"' and No_identificacion ='"+numIdentificacion+"'";
+            }
+            
+            PreparedStatement pst = cn.prepareStatement(sql);
             pst.executeUpdate();
             cn.close();
 
@@ -1085,7 +1430,7 @@ public class FacturaControlador implements Runnable {
             pst.executeUpdate(); 
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
+            JOptionPane.showMessageDialog(null, "¡¡Error al eliminar factura!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, parametroControla.getIcon("/icons/Cancelar.png", 32, 32));
             log.fatal("ERROR - Se ha producido un error al intentar eliminar una factura. " + e);
         }
     }
@@ -1414,7 +1759,7 @@ public class FacturaControlador implements Runnable {
 
             if(ct1 == hilo2){
                 //Cargamos los datos de la tabla
-                parqControlador.mostrarTablaFacturacionDeVehiculosEnParqueaderoPanelCaja();
+                parqControlador.mostrarTablasDeFacturacionDeVehiculosEnParqueaderoPanelCaja();
 
                 try{
                     ct1.sleep(30000);
@@ -1536,5 +1881,33 @@ public class FacturaControlador implements Runnable {
     public Image getIconImagePDFUser() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icons/preview.png"));
         return retValue;
+    }
+    
+   //Metodo que se encarga de inicializar todos los atributos del objeto facturaALimpiar
+    public Factura limpiarFactura(Factura facturaALimpiar){
+       facturaALimpiar.setId(0);
+       facturaALimpiar.setCodigo("");
+       facturaALimpiar.setId_cierre(0);
+       facturaALimpiar.setFechaDeFactura("");
+       facturaALimpiar.setIdDelVehiculo(0);
+       facturaALimpiar.setPlaca("");
+       facturaALimpiar.setTipoIdentificacion("");
+       facturaALimpiar.setNumIdentificacion("");
+       facturaALimpiar.setPropietario("");
+       facturaALimpiar.setTipoDeVehiculo("");
+       facturaALimpiar.setId_parqueadero(0);
+       facturaALimpiar.setId_convenio(0);
+       facturaALimpiar.setId_tarifa(0);
+       facturaALimpiar.setFacturadoPor(0);
+       facturaALimpiar.setEstadoDeFactura("");
+       facturaALimpiar.setEstaContabilizada("");
+       facturaALimpiar.setFechaDeIngresoVehiculo("");
+       facturaALimpiar.setFechaDeSalidaVehiculo("");
+       facturaALimpiar.setDiferencia("");
+       facturaALimpiar.setImpuesto("");
+       facturaALimpiar.setValorAPagar("");
+       facturaALimpiar.setEfectivo("");
+       facturaALimpiar.setCambio("");
+       return facturaALimpiar;
     }
 }

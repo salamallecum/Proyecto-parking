@@ -112,7 +112,7 @@ public class EditarVehiculo extends javax.swing.JFrame{
         tarif.almacenarNombresTarifa();
                                
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
-        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null,vehiculo_actualizado,null,null);
+        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null,0,vehiculo_actualizado,null,null);
          
         //Colocamos la infromacion del objeto vehiculo en la interfaz
         ID = vehiculoConsultado.getId();

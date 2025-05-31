@@ -83,17 +83,17 @@ public class CierreControlador {
         PanelCaja.btn_abrirCaja.setEnabled(true);
         PanelCaja.txt_consecutivoQR.setEnabled(false);
         PanelCaja.txt_Placa.setEnabled(false);
-        PanelCaja.txt_nombrePropietario.setEnabled(false);
-        PanelCaja.cmb_clase.setEnabled(false);
-        PanelCaja.txt_convenio.setEnabled(false);
-        PanelCaja.txt_tarifa.setEnabled(false);
-        PanelCaja.table_operacionParqueadero.setEnabled(false);
+        PanelCaja.txt_nombrePropietarioCarroOMoto.setEnabled(false);
+        PanelCaja.cmb_tipoVehiCarroOMoto.setEnabled(false);
+        PanelCaja.txt_convenioCarroOMoto.setEnabled(false);
+        PanelCaja.txt_tarifaCarroOMoto.setEnabled(false);
+        PanelCaja.table_operacionParqueaderoCarrosYMotos.setEnabled(false);
         PanelCaja.btn_estadoParqueadero.setEnabled(false);
         PanelCaja.btn_generarCierreDeCaja.setEnabled(false);
-        PanelCaja.btn_ingresar.setEnabled(false);
-        PanelCaja.cmb_numParqueadero.setEnabled(false);
-        PanelCaja.table_operacionParqueadero.setEnabled(false);
-        limpiarTablaOperacionParqueadero(PanelCaja.table_operacionParqueadero);
+        PanelCaja.btn_ingresarCarroOMoto.setEnabled(false);
+        PanelCaja.cmb_numParqueaderoCarroOMoto.setEnabled(false);
+        PanelCaja.table_operacionParqueaderoCarrosYMotos.setEnabled(false);
+        limpiarTablaOperacionParqueadero(PanelCaja.table_operacionParqueaderoCarrosYMotos);
         factControla.detenerHiloOperacionParqueadero();
         parqControla.detenerHiloParqueaderosVisitantesDisponiblesPanelCaja();
         

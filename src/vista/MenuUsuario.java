@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import org.apache.log4j.Logger;
@@ -56,7 +55,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
         
         //Carga de paneles
         panelCaja = new PanelCaja();
-        panelCaja.setBounds(289,76,1000,591);
+        panelCaja.setBounds(289,100,1000,800);
         add(panelCaja);
         panelCaja.setVisible(false);
         
@@ -327,7 +326,7 @@ public class MenuUsuario extends javax.swing.JFrame implements Runnable{
         
         btn_Caja.setBackground(Color.GRAY);
         
-        setSize(1300,750);
+        setSize(1300,850);
         panelCaja.setVisible(true);
         repaint();
     }//GEN-LAST:event_btn_CajaActionPerformed

@@ -5,6 +5,7 @@ import controlador.FacturaControlador;
 import controlador.ParametroControlador;
 import controlador.ParqueaderoControlador;
 import controlador.UsuarioControlador;
+import controlador.VehiculoControlador;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -18,10 +19,16 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import modelo.Arqueo;
 import org.apache.log4j.Logger;
+import static vista.PanelCaja.idVehiculo_update;
 import static vista.PanelCaja.laCajaFueAbierta;
-import static vista.PanelCaja.modeloCaja;
-import static vista.PanelCaja.parqueadero_update;
-import static vista.PanelCaja.table_operacionParqueadero;
+import static vista.PanelCaja.modeloTablaCarrosYMotosCaja;
+import static vista.PanelCaja.modeloTablaBicisYOtrosCaja;
+import static vista.PanelCaja.placa_update;
+import static vista.PanelCaja.tipoIdentif_update;
+import static vista.PanelCaja.noIndentif_update;
+import static vista.PanelCaja.placa_update;
+import static vista.PanelCaja.table_operacionParqueaderoCarrosYMotos;
+import static vista.PanelCaja.table_operacionParqueaderoBicisYOtros;
 
 /**
  *
@@ -75,6 +82,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     ArqueoControlador arqueoControla = new ArqueoControlador();
     ParqueaderoControlador parqControlador = new ParqueaderoControlador();
     ParametroControlador paramControla = new ParametroControlador();
+    VehiculoControlador vehiControla = new VehiculoControlador();
     
     private final Logger log = Logger.getLogger(ArqueoDeCaja.class);
     private URL url = ArqueoDeCaja.class.getResource("Log4j.properties");
@@ -870,7 +878,7 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
     private void btn_finalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_finalizarActionPerformed
         
         boolean ventanaEmergCopiaArqueo = false; 
-        
+        int idDelVehiculo = 0;
         //Mientras los campos esten vacios el boton de finalizar permanecera inactivo
         if(numBilletesDe100Mil.equals("") || numBilletesDe50Mil.equals("") || numBilletesDe20Mil.equals("") || 
                 numBilletesDe10Mil.equals("") || numBilletesDe5Mil.equals("") || numBilletesDe2Mil.equals("") || numBilletesOMonedasDeMil.equals("") ||
@@ -939,16 +947,21 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                    parqControlador.ejecutarHiloParqueaderosVisitantesDisponiblesPanelCaja();
                    facturaControla.ejecutarHiloOperacionparqueadero();
 
-                   //Agregamos la funcion de liquidar vehiculo al hacer click sobre el registro de la tabla
-                   table_operacionParqueadero.addMouseListener(new MouseAdapter() {
+                   //Agregamos la funcion de liquidar vehiculo al hacer click sobre los registros de las tablas
+                   table_operacionParqueaderoCarrosYMotos.addMouseListener(new MouseAdapter() {
                        @Override
                        public void mouseClicked(MouseEvent e){
-                           int fila_point = table_operacionParqueadero.rowAtPoint(e.getPoint());
-                           int columna_point = 1;
+                           int fila_point = table_operacionParqueaderoCarrosYMotos.rowAtPoint(e.getPoint());
+                           int placa_point = 1;
 
                            if(fila_point > -1){
-                               parqueadero_update = (String) modeloCaja.getValueAt(fila_point, columna_point);
-
+                               String placaDeVehiculo = (String) modeloTablaCarrosYMotosCaja.getValueAt(fila_point, placa_point);
+                                int idDelVehiculo = vehiControla.consultarIdDeUnVehiculo(placaDeVehiculo, null, null);
+                                if(idDelVehiculo != 0){
+                                    idVehiculo_update = idDelVehiculo;
+                                }else{
+                                    placa_update = placaDeVehiculo;
+                                }
                                 if(PanelCaja.numVehiculosLiquidandose == 0){
                                     LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
                                     liquidacion_vehiculo.setVisible(true);
@@ -957,6 +970,33 @@ public class ArqueoDeCaja extends javax.swing.JFrame {
                            }
                        }
                    });
+                   
+                   table_operacionParqueaderoBicisYOtros.addMouseListener(new MouseAdapter() {
+                       @Override
+                       public void mouseClicked(MouseEvent e){
+                           int fila_point = table_operacionParqueaderoBicisYOtros.rowAtPoint(e.getPoint());
+                           int tipoIdentif_point = 1;
+                           int numIdentif_point = 2;
+
+                           if(fila_point > -1){
+                               String tipoIdentificacion = (String) modeloTablaBicisYOtrosCaja.getValueAt(fila_point, tipoIdentif_point);
+                               String numIdentificacion = (String) modeloTablaBicisYOtrosCaja.getValueAt(fila_point, numIdentif_point);
+                               int idDelVehiculo = vehiControla.consultarIdDeUnVehiculo(null, tipoIdentificacion, numIdentificacion);
+                               if(idDelVehiculo != 0){
+                                    idVehiculo_update = idDelVehiculo;
+                                }else{
+                                    tipoIdentif_update = tipoIdentificacion;
+                                    noIndentif_update = numIdentificacion;
+                               }
+                                if(PanelCaja.numVehiculosLiquidandose == 0){
+                                    LiquidacionVehiculo liquidacion_vehiculo = new LiquidacionVehiculo();
+                                    liquidacion_vehiculo.setVisible(true);
+                                    PanelCaja.numVehiculosLiquidandose++;  
+                                }
+                           }
+                       }
+                   });
+                   
                 } 
             }         
         }       

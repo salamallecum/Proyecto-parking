@@ -4,7 +4,6 @@ import controlador.ParametroControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;

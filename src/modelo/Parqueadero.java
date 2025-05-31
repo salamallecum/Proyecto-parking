@@ -123,7 +123,7 @@ public class Parqueadero {
     }
     
     //Agrega los valores de la tabla de parqueaderos al combobox 
-    public Vector<Parqueadero> mostrarParqueaderosTipoVisitanteDisponibles(){
+    public Vector<Parqueadero> mostrarParqueaderosTipoVisitanteDisponibles(String tipoDeVehiculo){
         
         //Traemos todoslos parqueaderos
         PreparedStatement pst3 = null;
@@ -135,7 +135,7 @@ public class Parqueadero {
 
         
         try{
-           pst3 = cn3.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos where Estado = 'Disponible' and TipoParq = 'VISITANTE'"); 
+           pst3 = cn3.prepareStatement("select Id_parqueadero, Nombre_parqueadero from parqueaderos where Estado = 'Disponible' and TipoParq = 'VISITANTE' and TipoVehiculo in ("+tipoDeVehiculo+")"); 
            rs3 = pst3.executeQuery();
            
            dat = new Parqueadero();

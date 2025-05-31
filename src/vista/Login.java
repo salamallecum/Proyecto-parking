@@ -21,13 +21,13 @@ import org.apache.log4j.PropertyConfigurator;
 
     
 public class Login extends javax.swing.JFrame {
-
+    
+    UsuarioControlador usuControlador = new UsuarioControlador();
+    ParametroControlador paramControla = new ParametroControlador();
     public static String usuario = ""; //Se declara así para enviar datos entre interfaces
     char [] char_clave = new char[15];
     String clave = "";
        
-    UsuarioControlador usuControlador = new UsuarioControlador();
-    ParametroControlador paramControla = new ParametroControlador();
     private final Logger log = Logger.getLogger(Login.class);
     private URL url = Login.class.getResource("/clasesDeApoyo/Log4j.properties");
     

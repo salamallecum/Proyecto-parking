@@ -1,33 +1,34 @@
 ==============================================
             ESTADO DEL PARQUEADERO            
                                               
- Estado  |  No Parq  |  Placa  |  Parqueado?  
+ Estado  |  No Parq  |  Identif  |  Parqueado?
 ----------------------------------------------
- Ocupado  |  1A  |  CSA503  |  No             
- Ocupado  |  2A  |  ABA900  |  No             
- Ocupado  |  3A  |  TTX852  |  No             
- Ocupado  |  4A  |  GGG667  |  No             
- Ocupado  |  5A  |  FFF633  |  No             
- Ocupado  |  6A  |  WWO521  |  No             
- Ocupado  |  7A  |  ABC568  |  No             
- Disponible  |  8A  |    |                    
- Ocupado  |  9A  |  TUV998  |  No             
- Ocupado  |  10A  |  QVC850  |  No            
- Ocupado  |  11A  |  CVC500  |  No            
- Ocupado  |  12A  |  VBK850  |  No            
- Ocupado  |  13A  |  ERF89G  |  No            
- Ocupado  |  14A  |  AAA800  |  No            
- Ocupado  |  15A  |  ERA520  |  No            
- Ocupado  |  16A  |  WSC850  |  No            
- Ocupado  |  17A  |  ZXC244  |  No            
- Ocupado  |  18A  |  XXX300  |  No            
- Ocupado  |  19A  |  AWS812  |  No            
- Ocupado  |  20A  |  ALA999  |  No            
- Ocupado  |  21A  |  QCV222  |  No            
- Ocupado  |  22A  |  HHH555  |  No            
- Ocupado  |  23A  |  WAL891  |  No            
- Ocupado  |  24A  |  VBN900  |  No            
- Ocupado  |  25A  |  ZZZ123  |  No            
-                                              
+ Ocupado  |  PARQUEADERO 3A  |  CC 1020999555 
+ Ocupado  |  PARQUEADERO 4A  |  TI 96051277890
+ Disponible  |  PARQUEADERO 5A  |     |       
+ Disponible  |  PARQUEADERO DE ALEJO  |     | 
+ Disponible  |  PARQ PRUEBA 2  |     |        
+ Ocupado  |  PARQUEADERO PRUEBA  |  CC 542867 
+ Disponible  |  PARQ SKATE  |     |           
+ Ocupado  |  PARQ TEST  |  CC 1020824810  |  N
+ Disponible  |  PARQ BICI  |     |            
+ Ocupado  |  PRUEBA INSTALA  |  CC 11191911  |
+ Ocupado  |  ISITANTE BICI 1  |  CC 35200195  
+ Ocupado  |  VISITANTE BICI 2  |  TI 96055555 
+ Ocupado  |  VISITANTE BICI 3  |  PA 154263112
+ Ocupado  |  VISITANTE PATINETA 4  |  TI 98254
+ Ocupado  |  VISITANTE BICI 5  |  CC 6258999  
+ Ocupado  |  VISITANTE PATINETA 6  |  CC 81919
+ Ocupado  |  VISITANTE BICI 8  |  PA 991915151
+ Ocupado  |  VISITANTE PATINETA 9  |  NIT 9002
+ Ocupado  |  VISITANTE BICI 10  |  PP 95522333
+ Ocupado  |  VISITANTE OTRO  |  TI 97041253369
+ Ocupado  |  PARQ RESIDENTE BICI  |  TI 960218
+ Ocupado  |  PRUEBA RESID BICICLETA  |  CC 555
+ Ocupado  |  PRUEBA ING QR BICI  |  TI 9906305
+ Ocupado  |  PRUEBA BICI EXTRANJERO  |  PA 154
+ Ocupado  |  PARQUEADERO MORE SECURITY  |  NIT
+ Ocupado  |  PRUEBA RESIDENTE OTRO  |  RC 8555
+ 55  |  Si                                    
         Todos los derechos reservados         
                                               

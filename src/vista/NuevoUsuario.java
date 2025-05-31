@@ -29,7 +29,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
      */
     public NuevoUsuario() {
         initComponents();
-        setSize(460,385);
+        setSize(460,400);
         setResizable(false);
         setTitle("Nuevo usuario");
         setLocationRelativeTo(null);

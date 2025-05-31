@@ -116,7 +116,7 @@ public class EditarBicisYOtros extends javax.swing.JFrame{
         tarif.almacenarNombresTarifa();
                                
         //Traemos el objeto tipo vehiculo con la info del vehiculo a editar
-        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null, null, biciYOtros_TipoIdentificacionActualizado, biciYOtros_NumIdentificacionActualizado);
+        vehiculoConsultado = vehicontrolador.consultarInformacionDeUnVehiculo(null, 0, null, biciYOtros_TipoIdentificacionActualizado, biciYOtros_NumIdentificacionActualizado);
          
         //Colocamos la infromacion del objeto vehiculo en la interfaz
         ID = vehiculoConsultado.getId();

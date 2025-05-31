@@ -1,6 +1,7 @@
 package controlador;
 
 import clasesDeApoyo.Conexion;
+import java.awt.Point;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -11,6 +12,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
+import static vista.PanelCaja.table_operacionParqueaderoBicisYOtros;
+import static vista.PanelCaja.table_operacionParqueaderoCarrosYMotos;
 
 /**
  *
@@ -91,5 +94,12 @@ public class ParametroControlador {
     public Icon getIcon(String path, int w, int h){
         return new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage().getScaledInstance(w, h, 0));
     }
+    
+    //Metodo que obtiene la ubicacion x y y que tiene la tabla de operacion de la tabla de operacion ParqueaderoCarrosYMotos del Panel Caja y se la asigna la tabla de operacion ParqueaderoBicisYOtros
+    /*public void obtenerCoordenadasTablaOperacionParqCarrosYMotosPanelCaja(){
+        //Obtenemos la ubicacion que tiene en pantalla 
+        Point ubicacionTablaCarrosYMotos = table_operacionParqueaderoCarrosYMotos.getLocationOnScreen();
+        table_operacionParqueaderoBicisYOtros.setLocation(ubicacionTablaCarrosYMotos);        
+    }*/
 }
 

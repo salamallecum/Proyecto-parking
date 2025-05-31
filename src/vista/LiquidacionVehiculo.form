@@ -47,6 +47,8 @@
                           <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel9" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_placa1" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -54,7 +56,13 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="lbl_codigo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lbl_placa" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="lbl_placa2" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="lbl_numIdentificacion1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="lbl_numIdentificacion2" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                       <Component id="lbl_propietario" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lbl_tipoVehiculo" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="lbl_facturadoPor" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -90,14 +98,6 @@
                   </Group>
               </Group>
           </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="91" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="337" pref="337" max="-2" attributes="0"/>
-          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -110,8 +110,10 @@
               </Group>
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbl_placa" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lbl_placa1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lbl_placa2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lbl_numIdentificacion1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lbl_numIdentificacion2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -210,7 +212,7 @@
         <Property name="text" type="java.lang.String" value="Cod. Factura:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="lbl_placa1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
@@ -292,7 +294,7 @@
         <Property name="text" type="java.lang.String" value="codigo_factura"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lbl_placa">
+    <Component class="javax.swing.JLabel" name="lbl_placa2">
       <Properties>
         <Property name="text" type="java.lang.String" value="placa_vehiculo"/>
       </Properties>
@@ -449,6 +451,19 @@
           <Color blue="99" green="0" red="cc" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbl_numIdentificacion1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="N&#xb0; Identif:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbl_numIdentificacion2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="no_identificacion"/>
       </Properties>
     </Component>
   </SubComponents>

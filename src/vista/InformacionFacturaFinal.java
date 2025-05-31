@@ -10,13 +10,13 @@ import controlador.VehiculoControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import modelo.Factura;
+import modelo.Vehiculo;
 import org.apache.log4j.Logger;
 
 /**
@@ -30,7 +30,11 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     public static int ID;
     javax.swing.JTable tablaOperacionFacturas;
     DefaultTableModel modelo;
-    public static int Fila;    
+    int Fila; 
+    int idDelVehiculo;
+    String placaDelVehiculo;
+    String tipoIdentifVehiculo;
+    String numIdentifVehiculo;
         
     FacturaControlador facturaControla = new FacturaControlador();
     ParqueaderoControlador parqControla = new ParqueaderoControlador();
@@ -40,8 +44,8 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     UsuarioControlador usuarioControla = new UsuarioControlador();
     ParametroControlador paramControla = new ParametroControlador();
        
-    Factura facturaCerradaConsultada = new Factura (0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
-        
+    Factura facturaCerradaConsultada = new Factura(0, "", "", 0, "", "", "", "", "", 0, 0, "", "", 0, 0, "", 0, "", "", "", "", "", "");
+    Vehiculo vehiculoConsultado = new Vehiculo(0, "", "", "", "", "", "", "", 0, 0, 0);
     private final Logger log = Logger.getLogger(InformacionFacturaFinal.class);
     private URL url = InformacionFacturaFinal.class.getResource("Log4j.properties");
           
@@ -54,8 +58,10 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         factura_actualizada = GestionarFacturas.codigoFactura_update;
         tablaOperacionFacturas = GestionarFacturas.table_listaFacturas;
         modelo = GestionarFacturas.modelo;
+        lbl_numIdentificacion1.setVisible(false);
+        lbl_numIdentificacion2.setVisible(false);
         
-        setSize(417,510);
+        setSize(450,540);
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("Información de factura");
@@ -66,20 +72,64 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         
         Fila = tablaOperacionFacturas.getSelectedRow(); 
         
-        //Cargamos la informacion de la facturacerrada en el frame
+        //Cargamos la informacion de la factura cerrada en el frame
         facturaCerradaConsultada = facturaControla.consultarInformacionDeUnaFacturaCerrada(factura_actualizada);
-        
         ID = facturaCerradaConsultada.getId();
         lbl_codigo.setText(facturaCerradaConsultada.getCodigo());
-        lbl_placa.setText(facturaCerradaConsultada.getPlaca());
-        lbl_propietario.setText(facturaCerradaConsultada.getPropietario());
-        lbl_tipoVehiculo.setText(facturaCerradaConsultada.getTipoDeVehiculo());
-        lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaCerradaConsultada.getId_parqueadero()));
-        lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaCerradaConsultada.getFacturadoPor()));
-        lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaCerradaConsultada.getId_convenio()));
-        lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaCerradaConsultada.getId_tarifa()));
-        lbl_impuesto.setText(facturaCerradaConsultada.getImpuesto());
+        idDelVehiculo = facturaCerradaConsultada.getIdDelVehiculo();
+        placaDelVehiculo = facturaCerradaConsultada.getPlaca();
+        tipoIdentifVehiculo = facturaCerradaConsultada.getTipoIdentificacion();
+        numIdentifVehiculo = facturaCerradaConsultada.getNumIdentificacion();
         
+        //Evaluamos si la factura es de un carro/moto/bicicleta u otro
+        if(idDelVehiculo != 0){
+            vehiculoConsultado = vehiControlador.consultarInformacionDeUnVehiculo(null, idDelVehiculo, null, null, null);
+            
+            if(vehiculoConsultado.getTipoVehiculo().equals("AUTOMOVIL") || vehiculoConsultado.getTipoVehiculo().equals("MOTO")){
+                lbl_placa2.setText(vehiculoConsultado.getPlaca());
+                lbl_propietario.setText(vehiculoConsultado.getPropietario());
+                lbl_tipoVehiculo.setText(vehiculoConsultado.getTipoVehiculo());
+                lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(vehiculoConsultado.getId_parqueadero()));
+                lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaCerradaConsultada.getFacturadoPor()));
+                lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(vehiculoConsultado.getId_convenio()));
+                lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(vehiculoConsultado.getId_tarifa()));
+        
+            }else if(vehiculoConsultado.getTipoVehiculo().equals("BICICLETA") || vehiculoConsultado.getTipoVehiculo().equals("PATINETA") || vehiculoConsultado.getTipoVehiculo().equals("OTRO")){
+                lbl_placa1.setText("Tipo Identif:");
+                lbl_placa2.setText(vehiculoConsultado.getTipoIdentificacion());
+                lbl_numIdentificacion1.setVisible(true);
+                lbl_numIdentificacion2.setText(vehiculoConsultado.getNumIdentificacion());
+                lbl_numIdentificacion2.setVisible(true);
+                lbl_propietario.setText(vehiculoConsultado.getPropietario());
+                lbl_tipoVehiculo.setText(vehiculoConsultado.getTipoVehiculo());
+                lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(vehiculoConsultado.getId_parqueadero()));
+                lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaCerradaConsultada.getFacturadoPor()));
+                lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(vehiculoConsultado.getId_convenio()));
+                lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(vehiculoConsultado.getId_tarifa()));
+            }
+            
+        }else if(placaDelVehiculo != null){
+            lbl_placa2.setText(placaDelVehiculo);
+            lbl_propietario.setText(facturaCerradaConsultada.getPropietario());
+            lbl_tipoVehiculo.setText(facturaCerradaConsultada.getTipoDeVehiculo());
+            lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaCerradaConsultada.getId_parqueadero()));
+            lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaCerradaConsultada.getFacturadoPor()));
+            lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaCerradaConsultada.getId_convenio()));
+            lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaCerradaConsultada.getId_tarifa()));
+            
+        }else if(tipoIdentifVehiculo != null && numIdentifVehiculo != null){
+            lbl_placa1.setText("Tipo Identif:");
+            lbl_placa2.setText(tipoIdentifVehiculo);
+            lbl_numIdentificacion1.setVisible(true);
+            lbl_numIdentificacion2.setText(numIdentifVehiculo);
+            lbl_numIdentificacion2.setVisible(true);
+            lbl_propietario.setText(facturaCerradaConsultada.getPropietario());
+            lbl_tipoVehiculo.setText(facturaCerradaConsultada.getTipoDeVehiculo());
+            lbl_noParqueadero.setText(parqControla.consultarNombreDeParqueaderoMedianteID(facturaCerradaConsultada.getId_parqueadero()));
+            lbl_facturadoPor.setText(usuarioControla.consultarUsuarioMedianteID(facturaCerradaConsultada.getFacturadoPor()));
+            lbl_convenio.setText(convControla.consultarNombreDeConvenioMedianteID(facturaCerradaConsultada.getId_convenio()));
+            lbl_tarifa.setText(tarifaControla.consultarNombreDeTarifaMedianteID(facturaCerradaConsultada.getId_tarifa()));
+        }
         
         String fecha_ingreso = facturaCerradaConsultada.getFechaDeIngresoVehiculo();
         
@@ -87,6 +137,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
             lbl_horaIngreso.setText("Registro 1er vez en sistema.");
             lbl_horaSalida.setText("N/A");
             lbl_diferencia.setText("N/A");
+            lbl_impuesto.setText(facturaCerradaConsultada.getImpuesto());
             lbl_totalAPagar.setText("0");
             lbl_efectivo.setText("0");
             lbl_dineroCambio.setText("0");
@@ -94,6 +145,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
             lbl_horaIngreso.setText(facturaCerradaConsultada.getFechaDeIngresoVehiculo());
             lbl_horaSalida.setText(facturaCerradaConsultada.getFechaDeSalidaVehiculo());
             lbl_diferencia.setText(facturaCerradaConsultada.getDiferencia());
+            lbl_impuesto.setText(facturaCerradaConsultada.getImpuesto());
             lbl_totalAPagar.setText(facturaCerradaConsultada.getValorAPagar());
             lbl_efectivo.setText(facturaCerradaConsultada.getEfectivo());
             lbl_dineroCambio.setText(facturaCerradaConsultada.getCambio());
@@ -121,7 +173,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
         btn_imprimirFactura = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_placa1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -130,7 +182,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         lbl_codigo = new javax.swing.JLabel();
-        lbl_placa = new javax.swing.JLabel();
+        lbl_placa2 = new javax.swing.JLabel();
         lbl_tipoVehiculo = new javax.swing.JLabel();
         lbl_horaIngreso = new javax.swing.JLabel();
         lbl_horaSalida = new javax.swing.JLabel();
@@ -153,6 +205,8 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         lbl_impuesto = new javax.swing.JLabel();
         lbl_diferencia2 = new javax.swing.JLabel();
+        lbl_numIdentificacion1 = new javax.swing.JLabel();
+        lbl_numIdentificacion2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
@@ -174,8 +228,8 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Cod. Factura:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Placa:");
+        lbl_placa1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbl_placa1.setText("Placa:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Tipo Vehiculo:");
@@ -200,7 +254,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
 
         lbl_codigo.setText("codigo_factura");
 
-        lbl_placa.setText("placa_vehiculo");
+        lbl_placa2.setText("placa_vehiculo");
 
         lbl_tipoVehiculo.setText("tipo_vehiculo");
 
@@ -272,67 +326,67 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
         lbl_diferencia2.setForeground(new java.awt.Color(204, 0, 153));
         lbl_diferencia2.setText("%");
 
+        lbl_numIdentificacion1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbl_numIdentificacion1.setText("N° Identif:");
+
+        lbl_numIdentificacion2.setText("no_identificacion");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbl_codigo)
-                            .addComponent(lbl_placa)
-                            .addComponent(lbl_propietario)
-                            .addComponent(lbl_tipoVehiculo)
-                            .addComponent(lbl_facturadoPor)
-                            .addComponent(lbl_horaIngreso)
-                            .addComponent(lbl_horaSalida)
-                            .addComponent(lbl_diferencia, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                            .addComponent(lbl_noParqueadero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_convenio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_tarifa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btn_imprimirFactura)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_editar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_eliminar)
-                        .addGap(32, 32, 32))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_placa1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_noParqueadero, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                    .addComponent(lbl_convenio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_tarifa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_diferencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_codigo)
+                    .addComponent(lbl_propietario)
+                    .addComponent(lbl_tipoVehiculo)
+                    .addComponent(lbl_facturadoPor)
+                    .addComponent(lbl_horaIngreso)
+                    .addComponent(lbl_horaSalida)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(lbl_impuesto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbl_totalAPagar)
-                            .addComponent(lbl_efectivo)
-                            .addComponent(lbl_dineroCambio))
-                        .addContainerGap())))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(111, 111, 111)
-                .addComponent(jLabel16)
+                        .addComponent(lbl_diferencia2))
+                    .addComponent(lbl_totalAPagar)
+                    .addComponent(lbl_efectivo)
+                    .addComponent(lbl_dineroCambio)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbl_placa2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbl_numIdentificacion1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_numIdentificacion2)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_imprimirFactura)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbl_impuesto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_diferencia2)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(btn_editar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_eliminar)
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,8 +397,11 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
                     .addComponent(lbl_codigo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_placa)
-                    .addComponent(jLabel2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lbl_placa2)
+                        .addComponent(lbl_numIdentificacion1)
+                        .addComponent(lbl_numIdentificacion2))
+                    .addComponent(lbl_placa1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -410,9 +467,16 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_imprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimirFacturaActionPerformed
-        String placa = lbl_placa.getText();
         String codigo = lbl_codigo.getText();
-        facturaControla.generarTicketSalida(placa,codigo,true);  
+        String tipoDeVehiculo = lbl_tipoVehiculo.getText();
+        
+        if(idDelVehiculo != 0){
+            facturaControla.generarTicketSalida(true, tipoDeVehiculo, idDelVehiculo, null, null, null, codigo, true); 
+        }else if(placaDelVehiculo != null){
+            facturaControla.generarTicketSalida(false, tipoDeVehiculo, 0, placaDelVehiculo, null, null, codigo, true); 
+        }else if(tipoIdentifVehiculo != null && numIdentifVehiculo != null){
+            facturaControla.generarTicketSalida(false, tipoDeVehiculo, 0, null, tipoIdentifVehiculo, numIdentifVehiculo, codigo, true); 
+        }
         btn_imprimirFactura.setEnabled(false);
     }//GEN-LAST:event_btn_imprimirFacturaActionPerformed
 
@@ -424,8 +488,7 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         String botones[] = {"Si", "No"};
         int decision = JOptionPane.showOptionDialog(this, "¿Está seguro que desea eliminar?", "Eliminar factura", 0, JOptionPane.QUESTION_MESSAGE, paramControla.getIcon("/icons/pregunta.png", 32, 32), botones, this);
-        String placa = lbl_placa.getText();
-        
+                
         if(decision == JOptionPane.YES_OPTION){    
             
             boolean factContabilizada = facturaControla.verificarSifacturaFueContabilizada(factura_actualizada);
@@ -508,7 +571,6 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -527,7 +589,10 @@ public class InformacionFacturaFinal extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_horaSalida;
     private javax.swing.JLabel lbl_impuesto;
     private javax.swing.JLabel lbl_noParqueadero;
-    private javax.swing.JLabel lbl_placa;
+    private javax.swing.JLabel lbl_numIdentificacion1;
+    private javax.swing.JLabel lbl_numIdentificacion2;
+    private javax.swing.JLabel lbl_placa1;
+    private javax.swing.JLabel lbl_placa2;
     private javax.swing.JLabel lbl_propietario;
     private javax.swing.JLabel lbl_tarifa;
     private javax.swing.JLabel lbl_tipoVehiculo;

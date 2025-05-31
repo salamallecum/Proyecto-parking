@@ -190,7 +190,7 @@ public class VehiculoControlador extends Thread{
     
     //Metodo que genera el reporte PDF de carros y motos registrados
     public void generarReportePDFdeCarrosYMotosRegistradas(String sql){
-        System.out.println("condicion: "+sql); 
+        
         try{
             Connection cn3 = Conexion.conectar();
             
@@ -447,7 +447,7 @@ public class VehiculoControlador extends Thread{
     }
     
     //Metodo para verificar que el vehiculo no se encuentre en parqueadero
-    public boolean verificarSiVehiculoEstaEnParqueadero(String qr_consecutivo, String placa){
+    public boolean verificarSiVehiculoEstaEnParqueadero(String qr_consecutivo, String placa, String tipoIdentificacion, String numIdentificacion){
         
         boolean vehiculoEnParqueadero = false;
         
@@ -459,6 +459,8 @@ public class VehiculoControlador extends Thread{
                 sql = " select parq.Esta_en_parqueadero FROM parqueaderos parq, vehiculos veh WHERE parq.Tipo_Identificacion = veh.Tipo_Identificacion and parq.No_identificacion = veh.No_identificacion and veh.Qr_consecutivo = '"+qr_consecutivo+"' and parq.Esta_en_parqueadero='Si'";
             }else if(placa != null){
                 sql = "select Esta_en_parqueadero from parqueaderos where Placa = '" + placa + "' AND Esta_en_parqueadero='Si'";
+            }else if(tipoIdentificacion != null && numIdentificacion != null){
+                sql = "select Esta_en_parqueadero from parqueaderos where Tipo_Identificacion = '" + tipoIdentificacion + "' AND No_identificacion = '" + numIdentificacion+ "' AND Esta_en_parqueadero='Si'";
             }
             
             PreparedStatement pst = cn.prepareStatement(sql);
@@ -500,7 +502,7 @@ public class VehiculoControlador extends Thread{
     }
 
     //Metodo que consulta la ifnromación de un vehiculo teniendo en cuenta su consecutivo qr o placa
-    public Vehiculo consultarInformacionDeUnVehiculo(String consecutivoQR, String placaDelVehiculo){
+    public Vehiculo consultarInformacionDeUnVehiculo(String consecutivoQR, int idVehiculo, String placaDelVehiculo, String tipoIdentificacion, String numIdentificacion){
         
         //Hace la consulta de registros a la base de datos
         try {
@@ -530,6 +532,25 @@ public class VehiculoControlador extends Thread{
                     vehiculoConsultado = null;
                 }
                 
+            }else if(idVehiculo != 0){
+                sql = "select SUBSTR(Qr_consecutivo,7) Consecutivo_qr, Placa, Tipo_Identificacion, No_identificacion, Propietario, TipoVehiculo, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Id_vehiculo = "+idVehiculo;
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    vehiculoConsultado.setQr_consecutivo(rs.getString("Consecutivo_qr"));
+                    vehiculoConsultado.setPlaca(rs.getString("Placa"));
+                    vehiculoConsultado.setTipoIdentificacion(rs.getString("Tipo_Identificacion"));
+                    vehiculoConsultado.setNumIdentificacion(rs.getString("No_identificacion"));
+                    vehiculoConsultado.setPropietario(rs.getString("Propietario"));
+                    vehiculoConsultado.setTipoVehiculo(rs.getString("TipoVehiculo"));
+                    vehiculoConsultado.setId_parqueadero(rs.getInt("Id_parqueadero"));
+                    vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
+                    vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
+                    cn.close();              
+                }else{
+                    vehiculoConsultado = null;
+                }
+            
             }else if(placaDelVehiculo != null){
                 sql = "select Id_vehiculo, SUBSTR(Qr_consecutivo,7) Consecutivo_qr, Placa, Propietario, TipoVehiculo, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Placa = '"+placaDelVehiculo+ "'";
                 pst = cn.prepareStatement(sql);
@@ -547,7 +568,26 @@ public class VehiculoControlador extends Thread{
                 }else{
                     vehiculoConsultado = null;
                 }
-            }          
+            }else if(tipoIdentificacion != null && numIdentificacion != null){
+                sql = "select Id_vehiculo, SUBSTR(Qr_consecutivo,7) Consecutivo_qr, Tipo_Identificacion, No_identificacion, Propietario, TipoVehiculo, Color, Id_parqueadero, Id_convenio, Id_tarifa from vehiculos where Tipo_Identificacion = '"+tipoIdentificacion+ "' and No_identificacion = '"+numIdentificacion+"'";
+                pst = cn.prepareStatement(sql);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    vehiculoConsultado.setId(rs.getInt("Id_vehiculo"));
+                    vehiculoConsultado.setQr_consecutivo(rs.getString("Consecutivo_qr"));
+                    vehiculoConsultado.setTipoIdentificacion(rs.getString("Tipo_Identificacion"));
+                    vehiculoConsultado.setNumIdentificacion(rs.getString("No_identificacion"));
+                    vehiculoConsultado.setPropietario(rs.getString("Propietario"));
+                    vehiculoConsultado.setTipoVehiculo(rs.getString("TipoVehiculo"));
+                    vehiculoConsultado.setColor(rs.getString("Color"));
+                    vehiculoConsultado.setId_parqueadero(rs.getInt("Id_parqueadero"));
+                    vehiculoConsultado.setId_convenio(rs.getInt("Id_convenio"));
+                    vehiculoConsultado.setId_tarifa(rs.getInt("Id_tarifa")); 
+                    cn.close();              
+                }else{
+                    vehiculoConsultado = null;
+                }
+            }         
             
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "¡¡Error al cargar informacion del vehiculo seleccionado!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
@@ -712,25 +752,23 @@ public class VehiculoControlador extends Thread{
             Connection cn = Conexion.conectar();
             PreparedStatement pst;
             ResultSet rs = null;
-            String sql;
+            String sql = "select Id_vehiculo from vehiculos";
             
             if(placa != null){
-                sql = "select Id_vehiculo from vehiculos where Placa = '" + placa + "'";
+                sql = sql+" where Placa = '" + placa + "'";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();
                                 
             }else if(tipoIdentificacion != null && numIdentificacion != null){
-                sql = "select Id_vehiculo from vehiculos where Tipo_Identificacion= '"+tipoIdentificacion+"' and No_identificacion= '"+numIdentificacion+"'";
+                sql = sql+" where Tipo_Identificacion= '"+tipoIdentificacion+"' and No_identificacion= '"+numIdentificacion+"'";
                 pst = cn.prepareStatement(sql);
                 rs = pst.executeQuery();  
             } 
             
             if(rs.next()){
-                idVehi = rs.getInt("Id_vehiculo");
-                cn.close();              
-            }else{
-                log.fatal("ERROR - No se ha encontrado el ID de un vehiculo");
+                idVehi = rs.getInt("Id_vehiculo");                   
             }
+            cn.close();
         
         }catch (SQLException ex){ 
             JOptionPane.showMessageDialog(null, "¡¡ERROR al consultar el id de un vehiculo!!, contacte al administrador.", "Error", JOptionPane.ERROR_MESSAGE, paramControla.getIcon("/icons/Cancelar.png", 32, 32));
@@ -953,19 +991,6 @@ public class VehiculoControlador extends Thread{
             //Reanudamos el proceso actualizacion de ticket qr vehicular
             reanudarProcesoDeActualizaciónQRBicisYOtros();
 
-            //Generamos el nuevo nombre del codigo qr a generar
-            if(!tipoIdentificacionABuscar.equals(tipoIdentificacion)){
-               infoQrNvo = tipoIdentificacion;    
-            }else{
-               infoQrNvo = tipoIdentificacionABuscar; 
-            }
-
-            if(!numIdentificacionABuscar.equals(numIdentificacion)){
-                infoQrNvo = infoQrNvo + numIdentificacion;
-            }else{
-                infoQrNvo = infoQrNvo + numIdentificacionABuscar;
-            }
-
             //Buscamos el codigo qr en la carpeta de qrs de bicis para eliminarlo
             if(carpetaQrsBicis.exists() && carpetaQrsBicis.isDirectory()){
                 listadoDeQrs = carpetaQrsBicis.listFiles();
@@ -978,14 +1003,14 @@ public class VehiculoControlador extends Thread{
                         if(qr.isFile() && qr.getName().equals(qrABuscar+".gif")){
                             //Eliminamos el codigo qr previamente existente y generamos el nvo codigo
                             qr.delete();
-                            generarQR(qrNuevo, infoQrNvo, tipoVehiculo);
+                            generarQR(qrNuevo, contenido, tipoVehiculo);
                         }else{
-                            generarQR(qrNuevo, infoQrNvo, tipoVehiculo);
+                            generarQR(qrNuevo, contenido, tipoVehiculo);
                         }
                    }
                 }else{
                     crearCarpeta(carpetaQrsBicis);
-                    generarQR(qrNuevo, infoQrNvo, tipoVehiculo);
+                    generarQR(qrNuevo, contenido, tipoVehiculo);
                 }
             }
         }  

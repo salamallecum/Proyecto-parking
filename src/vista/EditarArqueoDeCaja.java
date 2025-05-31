@@ -83,7 +83,7 @@ public class EditarArqueoDeCaja extends javax.swing.JFrame{
      */
     public EditarArqueoDeCaja() {
         initComponents();
-        setSize(560, 385);
+        setSize(560, 408);
         setResizable(false);
         setTitle("Arqueo de caja");
         setLocationRelativeTo(null);

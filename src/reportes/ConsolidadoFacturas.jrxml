@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsolidaFacturas" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13c3da4f-d05d-4f9c-805c-806e272971f2">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="509"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="168"/>
 	<parameter name="imagen" class="java.io.InputStream"/>
 	<parameter name="sql" class="java.lang.String"/>
 	<parameter name="perdidas" class="java.lang.String"/>
@@ -15,8 +15,6 @@
      usuarios.`Usuario` AS usuarios_Usuario,
      facturas.`Codigo` AS facturas_Codigo,
      facturas.`Fecha_factura` AS facturas_Fecha_factura,
-     facturas.`Placa` AS facturas_Placa,
-     facturas.`Tipo_vehiculo` AS facturas_Tipo_vehiculo,
      facturas.`Facturado_por` AS facturas_Facturado_por,
      facturas.`Hora_ingreso` AS facturas_Hora_ingreso,
      facturas.`Hora_salida` AS facturas_Hora_salida,
@@ -27,15 +25,14 @@
      facturas.`Cambio` AS facturas_Cambio
 FROM
      `usuarios` usuarios INNER JOIN `facturas` facturas ON usuarios.`Id_usuario` = facturas.`Facturado_por`
-WHERE 1=1
+WHERE
+     1 = 1
 $P!{sql}]]>
 	</queryString>
 	<field name="usuarios_Id_usuario" class="java.lang.Integer"/>
 	<field name="usuarios_Usuario" class="java.lang.String"/>
 	<field name="facturas_Codigo" class="java.lang.String"/>
 	<field name="facturas_Fecha_factura" class="java.sql.Date"/>
-	<field name="facturas_Placa" class="java.lang.String"/>
-	<field name="facturas_Tipo_vehiculo" class="java.lang.String"/>
 	<field name="facturas_Facturado_por" class="java.lang.Integer"/>
 	<field name="facturas_Hora_ingreso" class="java.sql.Timestamp"/>
 	<field name="facturas_Hora_salida" class="java.sql.Timestamp"/>
@@ -107,35 +104,7 @@ $P!{sql}]]>
 				<text><![CDATA[Usuario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="0" width="61" height="20" uuid="812ebc08-5af3-496c-82e4-e0404855e593"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Placa]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="301" y="0" width="72" height="20" uuid="2e48fc82-7939-488c-a792-9f60ffd2ab8b"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Tipo vehículo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="373" y="0" width="112" height="20" uuid="ef739ad0-1761-4924-afec-8332ec04c2ba"/>
+				<reportElement x="240" y="0" width="112" height="20" uuid="ef739ad0-1761-4924-afec-8332ec04c2ba"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -163,7 +132,7 @@ $P!{sql}]]>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="596" y="0" width="82" height="20" uuid="e09c5323-da49-406c-8656-05ee29d479d5"/>
+				<reportElement x="463" y="0" width="82" height="20" uuid="e09c5323-da49-406c-8656-05ee29d479d5"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -177,7 +146,7 @@ $P!{sql}]]>
 				<text><![CDATA[Diferencia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="485" y="0" width="111" height="20" uuid="6553a8a4-8247-475d-8c40-935aa62e5ce6"/>
+				<reportElement x="352" y="0" width="111" height="20" uuid="6553a8a4-8247-475d-8c40-935aa62e5ce6"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -191,7 +160,7 @@ $P!{sql}]]>
 				<text><![CDATA[Fecha salida]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="678" y="0" width="61" height="20" uuid="e8601ed3-91c1-41a1-9490-252936770773"/>
+				<reportElement x="545" y="0" width="61" height="20" uuid="e8601ed3-91c1-41a1-9490-252936770773"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -205,7 +174,7 @@ $P!{sql}]]>
 				<text><![CDATA[Impuesto (%)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="739" y="0" width="79" height="20" uuid="5382fe45-ab8f-4c75-8477-2a3c172648d4"/>
+				<reportElement x="606" y="0" width="79" height="20" uuid="5382fe45-ab8f-4c75-8477-2a3c172648d4"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -219,7 +188,7 @@ $P!{sql}]]>
 				<text><![CDATA[Valor a pagar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="818" y="0" width="79" height="20" uuid="ee92dc37-7327-4c71-adb7-aea247e45af1"/>
+				<reportElement x="685" y="0" width="79" height="20" uuid="ee92dc37-7327-4c71-adb7-aea247e45af1"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -233,7 +202,7 @@ $P!{sql}]]>
 				<text><![CDATA[Efectivo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="897" y="0" width="71" height="20" uuid="b0d1ad9b-7f42-4fd4-94d7-d7cf0e8a3ca4"/>
+				<reportElement x="764" y="0" width="71" height="20" uuid="b0d1ad9b-7f42-4fd4-94d7-d7cf0e8a3ca4"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -249,9 +218,9 @@ $P!{sql}]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="21" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="1" width="86" height="19" uuid="c3e5c22d-8c1a-4def-b231-caf8ec3fa57e"/>
+				<reportElement x="0" y="0" width="86" height="19" uuid="c3e5c22d-8c1a-4def-b231-caf8ec3fa57e"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -265,7 +234,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Fecha_factura}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="86" y="1" width="81" height="19" uuid="6f47ae59-3927-4133-aca3-29084cdb89d2"/>
+				<reportElement x="86" y="0" width="81" height="19" uuid="6f47ae59-3927-4133-aca3-29084cdb89d2"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -279,7 +248,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="167" y="1" width="73" height="19" uuid="44db3e68-b9dd-43ea-8c1f-d55187076075"/>
+				<reportElement x="167" y="0" width="73" height="19" uuid="44db3e68-b9dd-43ea-8c1f-d55187076075"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -293,35 +262,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{usuarios_Usuario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="1" width="61" height="19" uuid="83a20ac8-7f01-4b01-be7e-9d8edde1dbcc"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{facturas_Placa}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="301" y="1" width="72" height="19" uuid="f2d78d1b-c8b3-4c0c-a85f-602ab5b58700"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{facturas_Tipo_vehiculo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="373" y="1" width="112" height="19" uuid="d8e10738-2cce-4482-9084-dee8bcb9e34a"/>
+				<reportElement x="240" y="0" width="112" height="19" uuid="d8e10738-2cce-4482-9084-dee8bcb9e34a"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -335,7 +276,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Hora_ingreso}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="485" y="1" width="111" height="19" uuid="31c51fcb-85cd-481e-92b1-a68a6a3f26fa"/>
+				<reportElement x="352" y="0" width="111" height="19" uuid="31c51fcb-85cd-481e-92b1-a68a6a3f26fa"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -349,7 +290,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Hora_salida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="596" y="1" width="82" height="19" uuid="8be6d984-7484-4c93-bfa6-159170b690bc"/>
+				<reportElement x="463" y="0" width="82" height="19" uuid="8be6d984-7484-4c93-bfa6-159170b690bc"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -363,7 +304,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Diferencia}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="678" y="1" width="61" height="19" uuid="cedac132-6a18-4878-9190-42c2b925d5cf"/>
+				<reportElement x="545" y="0" width="61" height="19" uuid="cedac132-6a18-4878-9190-42c2b925d5cf"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -377,7 +318,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Impuesto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="739" y="1" width="79" height="19" uuid="7635ed89-1b9d-4307-99cd-00254dd26193"/>
+				<reportElement x="606" y="0" width="79" height="19" uuid="7635ed89-1b9d-4307-99cd-00254dd26193"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -391,7 +332,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Valor_a_pagar}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="818" y="1" width="79" height="19" uuid="b7ea8b08-193a-408e-b48b-54bdc775e87b"/>
+				<reportElement x="685" y="0" width="79" height="19" uuid="b7ea8b08-193a-408e-b48b-54bdc775e87b"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -405,7 +346,7 @@ $P!{sql}]]>
 				<textFieldExpression><![CDATA[$F{facturas_Efectivo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="897" y="1" width="71" height="19" uuid="86dac259-8178-4bc3-9137-f09c9db6cf8a"/>
+				<reportElement x="764" y="0" width="71" height="19" uuid="86dac259-8178-4bc3-9137-f09c9db6cf8a"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
